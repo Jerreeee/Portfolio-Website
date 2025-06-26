@@ -1,0 +1,10 @@
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+
+  --highlight: #000000;
+  --background-dark: #e5e5e5;
+
+  --card-bg: #f9fafb;
+  --card-text: #1f2937;
+}
