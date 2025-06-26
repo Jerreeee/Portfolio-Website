@@ -2,56 +2,27 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-// Theme registry: just an array of theme names (should match folder names in public/Themes)
-export const themeNames = ['Dark', 'Light'];
-export type Theme = typeof themeNames[number];
+export type Theme = 'Dark' | 'Light';
 
 interface ThemeContextType {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
-  themes: Theme[];
+  setTheme: React.Dispatch<React.SetStateAction<Theme>>;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const getStoredTheme = (): Theme | null => {
-  if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem('theme');
-  if (stored && themeNames.includes(stored as Theme)) return stored as Theme;
-  return null;
-};
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(themeNames[0]);
-  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<Theme>('Dark');
 
   useEffect(() => {
-    setMounted(true);
-    const storedTheme = getStoredTheme();
-    if (storedTheme) setThemeState(storedTheme);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
     const link = document.getElementById('theme-link') as HTMLLinkElement;
     if (link) {
       link.href = `/Themes/${theme}/theme.css`;
     }
-    localStorage.setItem('theme', theme);
-  }, [theme, mounted]);
-
-  const setTheme = (newTheme: Theme) => {
-    if (themeNames.includes(newTheme)) {
-      setThemeState(newTheme);
-    }
-  };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, themes: themeNames }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
