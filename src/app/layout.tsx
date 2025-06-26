@@ -1,25 +1,25 @@
 import './globals.css';
 import { Navbar } from '@/Components/Navbar';
-import { ThemeProvider } from '@/ThemeProvider';
+import { ThemeProvider } from '@/Themes/ThemeProvider';
+import { PageWrapper } from '@/Components/PageWrapper';
 
 export const metadata = {
   title: 'Jeroen Denayer Portfolio',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
-      <head>
-        <link id="theme-link" rel="stylesheet" href="/Themes/Dark/theme.css" />
-      </head>
-    <body style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
+      <body>
         <ThemeProvider>
-          <div className="sticky top-0 z-50">
-            <Navbar />
-          </div>
-          <div className="pt-4">
+          <PageWrapper>
+            <div className="sticky top-0 z-50">
+              <Navbar />
+            </div>
+            <div className="pt-4">
               {children}
-          </div>
+            </div>
+          </PageWrapper>
         </ThemeProvider>
       </body>
     </html>

@@ -1,24 +1,47 @@
 'use client';
 
-import { Key } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { GetIcon } from '@/components/icon';
-import { Project } from '@/data/projects/project'
+import { GetIcon } from '@/Components/icon';
+import { Project } from '@/data/projects/project';
+import { useTheme } from '@/Themes/ThemeProvider';
+
+export type CardTheme = {
+  background: string;
+  hoverBackground: string;
+  textColor: string;
+  borderRadius: number;
+  shadowColor: string;
+};
 
 export function ProjectCard({ project }: { project: Project }) {
+  const { theme } = useTheme();
+  const cardTheme = theme.components.Card;
+
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="
+      className={`
         flex flex-col space-y-3
         rounded-lg shadow
         transform transition
         hover:shadow-2xl hover:-translate-y-2
         overflow-hidden
-        bg-[var(--card-bg)] text-[var(--card-text)]
-        hover:bg-[color-mix(in srgb var(--card-bg) 85%, var(--card-text) 5%)]
-      "
+      `}
+      style={{
+        backgroundColor: cardTheme.background,
+        color: cardTheme.textColor,
+      }}
+      onMouseEnter={(e) => {
+        if (cardTheme.hoverBackground) {
+          (e.currentTarget as HTMLElement).style.backgroundColor =
+            cardTheme.hoverBackground;
+        }
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.backgroundColor =
+          cardTheme.background;
+      }}
     >
       <div className="w-full relative aspect-video">
         <Image
@@ -31,13 +54,11 @@ export function ProjectCard({ project }: { project: Project }) {
 
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-semibold">{project.title}</h2>
-        {project.shortDescription && (
-          <p>{project.shortDescription}</p>
-        )}
+        {project.shortDescription && <p>{project.shortDescription}</p>}
         <div className="flex space-x-2">
           {project.technologies?.map((tech) => (
-            <div className="w-6 h-6">
-              <div key={tech}>{GetIcon(tech)}</div>
+            <div key={tech} className="w-6 h-6">
+              {GetIcon(tech)}
             </div>
           ))}
         </div>

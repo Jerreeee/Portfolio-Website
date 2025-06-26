@@ -1,13 +1,21 @@
 'use client';
 
 import Image from 'next/image';
-import { GetIcon } from '@/components/icon';
+import { GetIcon } from '@/Components/icon';
+import { Project } from '@/data/projects/project';
+import { useTheme } from '@/Themes/ThemeProvider';
 
-export function ProjectLayout({ project }) {
+export function ProjectLayout({ project }: { project: Project }) {
+  const { theme } = useTheme();
+  const textStyle = { color: theme.colors.foreground };
+
   return (
     <main>
       {/* Title */}
-      <h1 className="text-3xl font-bold">{project.title}</h1>
+      <h1 className="text-3xl font-bold" style={textStyle}>
+        {project.title}
+      </h1>
+
       {/* Hero Image */}
       <div className="mt-4">
         <Image
@@ -20,24 +28,26 @@ export function ProjectLayout({ project }) {
       </div>
 
       {/* Short Description */}
-      <p className="mt-4 text-gray-600 dark:text-gray-300">
+      <p className="mt-4" style={textStyle}>
         {project.shortDescription}
       </p>
 
       {/* Technologies */}
       <div className="mt-4 flex flex-wrap items-center space-x-3">
-          {project.technologies?.map((tech) => (
-            <div key={tech}>{GetIcon(tech)}</div>
-          ))}
-        </div>
+        {project.technologies?.map((tech) => (
+          <div key={tech}>{GetIcon(tech)}</div>
+        ))}
+      </div>
 
       {/* Sections */}
       <div className="mt-8 space-y-8">
         {project.sections?.map((section, index) => (
           <div key={index}>
-            <h2 className="text-2xl font-bold">{section.title}</h2>
+            <h2 className="text-2xl font-bold" style={textStyle}>
+              {section.title}
+            </h2>
             {section.content && (
-              <p className="mt-2 text-gray-600 dark:text-gray-300">
+              <p className="mt-2" style={textStyle}>
                 {section.content}
               </p>
             )}
