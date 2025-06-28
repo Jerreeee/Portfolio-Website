@@ -5,7 +5,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 
 export function PageWrapper({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
-  const Navbar = theme.pages.Navbar;
+  const NavbarCmp = theme.components.navbar.cmp;
 
   return (
     <div
@@ -16,7 +16,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
       }}
     >
             <div className="sticky top-0 z-50">
-              <Navbar />
+              <NavbarCmp />
             </div>
             <div className="pt-4">
               {children}

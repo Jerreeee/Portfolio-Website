@@ -14,9 +14,9 @@ export type CardTheme = {
   shadowColor: string;
 };
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCardCmp({ project }: { project: Project }) {
   const { theme } = useTheme();
-  const card = theme.components.card;
+  const cardTheme = theme.components.card.theme;
 
   return (
     <Link
@@ -29,18 +29,18 @@ export function ProjectCard({ project }: { project: Project }) {
         overflow-hidden
       `}
       style={{
-        backgroundColor: card.background,
-        color: card.textColor,
+        backgroundColor: cardTheme.background,
+        color: cardTheme.textColor,
       }}
       onMouseEnter={(e) => {
-        if (card.hoverBackground) {
+        if (cardTheme.hoverBackground) {
           (e.currentTarget as HTMLElement).style.backgroundColor =
-            card.hoverBackground;
+            cardTheme.hoverBackground;
         }
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.backgroundColor =
-          card.background;
+          cardTheme.background;
       }}
     >
       <div className="w-full relative aspect-video">

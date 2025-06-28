@@ -1,8 +1,10 @@
 import type { BaseTheme } from '@/Themes/BaseTheme';
-import type { ProjectPageTheme } from '@/Themes/Default/Components/ProjectPage';
+import type { Project } from '@/data/projects/project';
 import type { NavbarTheme } from '@/Themes/Default/Components/Navbar';
+import type { ProjectsOverviewTheme } from '@/Themes/Default/Components/ProjectsOverview';
 import type { CardTheme } from '@/Themes/Default/Components/ProjectCard';
 import type { IconTheme } from '@/Themes/Default/Components/Icon';
+import type { IconProps } from '@/Themes/Default/Components/Icon';
 
 export type DefaultTheme = BaseTheme & {
   name: string;
@@ -12,9 +14,24 @@ export type DefaultTheme = BaseTheme & {
   };
   invertIconColor: boolean;
   components: {
-    card: CardTheme;
-    navbar: NavbarTheme;
-    icon: IconTheme;
-    projectPage: ProjectPageTheme;
+    navbar: {
+      cmp: React.ComponentType;
+      theme: NavbarTheme;
+    };
+    projectsOverview: {
+      cmp: React.ComponentType;
+      theme: ProjectsOverviewTheme;
+    };
+    projectDetails: {
+      cmp: React.ComponentType<{ project: Project }>;
+    };
+    card: {
+      cmp: React.ComponentType<{ project:  Project }>;
+      theme: CardTheme;
+    };
+    icon: {
+      cmp: React.ComponentType<IconProps>;
+      theme: IconTheme;
+    };
   };
 };

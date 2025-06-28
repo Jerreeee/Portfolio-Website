@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
-import { getProjectBySlug } from '@/data/projects';
-import { ProjectLayout } from '@/Themes/Default/Components/ProjectLayout';
-import { projects } from '@/data/projects';
+import { getProjectBySlug, projects } from '@/data/projects';
+import ThemedProjectDetailsCmp from '@/Themes/Default/Components/ProjectDetails';
 
 export async function generateStaticParams() {
   return projects.map((project) => ({
@@ -11,7 +10,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  
+
   const project = getProjectBySlug(slug);
   if (!project) {
     return notFound();
@@ -19,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   return (
     <main className="w-full sm:w-[70%] mx-auto p-4">
-      <ProjectLayout project={project} />
+      <ThemedProjectDetailsCmp project={project} />
     </main>
   );
 }

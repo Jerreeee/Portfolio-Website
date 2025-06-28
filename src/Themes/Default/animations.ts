@@ -2,8 +2,8 @@ import { Variants } from "framer-motion";
 
 // Container animation with staggered children
 export const containerVariants: Variants = {
-  hidden: { opacity: 0, y: -20 },
-  show: {
+  initial: { opacity: 0, y: -20 },
+  animate: {
     opacity: 1,
     y: 0,
     transition: {
@@ -14,6 +14,6 @@ export const containerVariants: Variants = {
 };
 
 export const itemVariants: Variants = {
-  hidden: { opacity: 0, y: -20 },
-  show: { opacity: 1, y: 0 },
+  initial: { opacity: 0, y: -20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };

@@ -5,7 +5,13 @@ import { GetIcon } from '@/Themes/Default/Components/Icon';
 import { Project } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 
-export function ProjectLayout({ project }: { project: Project }) {
+export default function ThemedProjectDetailsCmp({ project }: { project: Project }) {
+  const { theme } = useTheme();
+  const ProjectDetailsCmp = theme.components.projectDetails.cmp;
+  return <ProjectDetailsCmp project={project} />;
+}
+
+export function ProjectDetailsCmp({ project }: { project: Project }) {
   const { theme } = useTheme();
   const textStyle = { color: theme.colors.foreground };
 
