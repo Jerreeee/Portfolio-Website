@@ -1,25 +1,37 @@
 import type { NextConfig } from "next";
+import type { Configuration as WebpackConfig, RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  output: "export",
   images: { unoptimized: true },
   devIndicators: false,
   trailingSlash: true,
-  webpack(config) {
-    // Add SVGR loader
-    const fileLoaderRule = config.module.rules.find((rule: { test?: { test?: (str: string) => boolean } }) =>
-      rule.test?.test?.('.svg')
+  webpack(config: WebpackConfig) {
+    const fileLoaderRule = config.module?.rules?.find(
+      (rule): rule is RuleSetRule =>
+        typeof rule === "object" &&
+        rule !== null &&
+        "test" in rule &&
+        rule.test instanceof RegExp &&
+        rule.test.test(".svg")
     );
+
     if (fileLoaderRule) {
-      // Exclude SVG files from the default loader
       fileLoaderRule.exclude = /\.svg$/;
     }
 
-    // Add a new rule for .svg files
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/, // Only when imported from TS/JS files
-      use: ["@svgr/webpack"],
+    config.module?.rules?.push({
+      test: /\.svg$/,
+      issuer: /\.[jt]sx?$/,
+      use: [
+        {
+          loader: "@svgr/webpack",
+          options: {
+            typescript: true,
+            icon: true,
+          },
+        },
+      ],
     });
 
     return config;
