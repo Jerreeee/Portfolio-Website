@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/data/projects';
-import { ProjectLayout } from '@/Components/ProjectLayout';
+import { ProjectLayout } from '@/Themes/Default/Components/ProjectLayout';
 
-export default function ProjectDetailPage({ params }) {
+export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
   const project = getProjectBySlug(slug);

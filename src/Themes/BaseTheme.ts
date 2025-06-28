@@ -1,17 +1,8 @@
-import type { CardTheme } from '@/Components/ProjectCard';
-
-type ColorSet = {
-    foreground: string;
-    background: string;
-} & Record<string, string>;
-
-type ComponentThemes = {
-    Card: CardTheme;
-};
+import React from 'react';
 
 export type BaseTheme = {
   name: string;
-  colors: ColorSet;
-  invertIconColor: boolean;
-  components: ComponentThemes;
+  pages: {
+    ProjectPage: React.ComponentType;
+  }
 };

@@ -2,7 +2,11 @@
 
 import React from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { icons } from '@/icons';
+import { icons } from '@/Themes/Default/Icons';
+
+export type IconTheme = {
+  invert: boolean;
+};
 
 export interface IconProps {
   icon?: React.ReactNode;
@@ -16,6 +20,8 @@ export interface IconProps {
 // Main Icon component
 export const Icon = (props: IconProps) => {
   const { icon, name, imgSrc, className, iconClassName, textClassName } = props;
+  const { theme } = useTheme();
+  const iconTheme = theme.components.icon;
 
   return (
     <span className={className ?? 'inline-flex items-center space-x-2'}>
@@ -37,7 +43,8 @@ export const Icon = (props: IconProps) => {
 // Icon loader with theme-aware inversion
 export function GetIcon(techName: string) {
   const { theme } = useTheme();
-  const iconData = icons[techName];
+  const iconData = icons[techName as keyof typeof icons];
+  const iconTheme = theme.components.icon;
 
   if (!iconData) {
     return <span>{techName}</span>;
@@ -45,7 +52,7 @@ export function GetIcon(techName: string) {
 
   const { component: IconComponent, canInvert } = iconData;
 
-  const shouldInvert = theme.invertIconColor && canInvert;
+  const shouldInvert = iconTheme.invert && canInvert;
 
   return (
     <IconComponent
