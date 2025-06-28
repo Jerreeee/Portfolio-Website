@@ -1,14 +1,17 @@
-'use client';
-
 import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/data/projects';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { ProjectLayout } from '@/Themes/Default/Components/ProjectLayout';
+import { projects } from '@/data/projects';
 
-export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-  const { theme } = useTheme();
-  const ProjectLayout = theme.pages.ProjectLayout;
+export async function generateStaticParams() {
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  
   const project = getProjectBySlug(slug);
   if (!project) {
     return notFound();

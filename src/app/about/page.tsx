@@ -1,8 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
-
 export default function About() {
   return (
     <div className="w-full py-12 px-6 md:px-12 bg-gradient-to-br from-background via-blue-50/30 to-purple-50/30 dark:from-background dark:via-blue-900/10 dark:to-purple-900/10 min-h-screen">
@@ -21,7 +18,7 @@ export default function About() {
               Welcome!
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              I'm Jeroen Denayer, a C++ Programmer/Technical Artist fanatical about saving unnecessary mouse-clicks!
+              I&apos;m Jeroen Denayer, a C++ Programmer/Technical Artist fanatical about saving unnecessary mouse-clicks!
               Having been an Artist myself, I know all about repetitive work and mindlessly repeating the same mouse-clicks to achieve the same thing for the 42nd time in a single day.
               Exhausting! I say, no more! Since this realization, my passion has been to create user-friendly tools to enhance and speed up game development.
             </p>
@@ -44,7 +41,7 @@ export default function About() {
               This resulted in me doing my internship at Neopic (Gent) where I worked as a Technical Artist using Houdini to generate detailed worlds for Overpass 2.
               Integrating this tool into Unreal Engine so artists could use it was an immensely valuable experience.
               It made me realize how much room for workflow improvements there still is.
-              Bulk offline content generation is great and won’t go away, but some things just must be at the artist’s fingertips.
+              Bulk offline content generation is great and won&apos;t go away, but some things just must be at the artist&apos;s fingertips.
 
               and Game Development graduate from Howest Belgium.
             </p>
@@ -52,7 +49,7 @@ export default function About() {
               During my education, I studied a comprehensive curriculum covering graphics fundamentals, applied math and physics, programming, game engine fundamentals, graphics programming, gameplay programming, tool development, and more. This broad foundation has prepared me to work in various aspects of game development.
             </p>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              Today, I focus on creating breathtaking real-time productions such as games, AR and VR simulations. I'm constantly exploring new techniques and technologies to push the boundaries of what's possible in interactive experiences, balancing artistic vision with technical implementation.
+              Today, I focus on creating breathtaking real-time productions such as games, AR and VR simulations. I&apos;m constantly exploring new techniques and technologies to push the boundaries of what&apos;s possible in interactive experiences, balancing artistic vision with technical implementation.
             </p>
           </div>
         </div>
@@ -128,13 +125,13 @@ export default function About() {
           </h2>
           <div className="bg-gradient-to-br from-white to-green-50 dark:from-gray-800 dark:to-green-900/20 rounded-lg overflow-hidden shadow-lg border border-white/50 dark:border-green-900/20 p-8">
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              When I'm not developing games or working on real-time applications, I enjoy exploring emerging technologies in interactive media. I'm constantly inspired by the evolving world of game engines, AR/VR, and the intersection of art and technology.
+              When I&apos;m not developing games or working on real-time applications, I enjoy exploring emerging technologies in interactive media. I&apos;m constantly inspired by the evolving world of game engines, AR/VR, and the intersection of art and technology.
             </p>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-4 italic">
               My education in Game Development has given me a unique perspective on how different elements of a game come together—from engine programming to graphics, from gameplay to sound integration. This holistic understanding allows me to approach projects with both technical precision and creative vision.
             </p>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              I'm always open to new opportunities and collaborations in game development, interactive media, and real-time applications. Whether you need a gameplay programmer, tool developer, or all-in developer for your project, feel free to reach out to discuss how we can work together!
+              I&apos;m always open to new opportunities and collaborations in game development, interactive media, and real-time applications. Whether you need a gameplay programmer, tool developer, or all-in developer for your project, feel free to reach out to discuss how we can work together!
             </p>
           </div>
         </div>

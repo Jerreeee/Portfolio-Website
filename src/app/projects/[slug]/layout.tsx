@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function ProjectSlugLayout({ children }) {
+export default function ProjectSlugLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-auto p-4">
         {/* Left Sidebar */}

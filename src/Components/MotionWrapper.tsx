@@ -1,49 +1,90 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import React from 'react';
+import type {
+  MotionStyle,
+  TargetAndTransition,
+  Transition,
+  Variants,
+} from 'motion/react';
+
+type MotionStageKey =
+  | 'initial'
+  | 'animate'
+  | 'exit'
+  | 'whileHover'
+  | 'whileTap'
+  | 'whileFocus'
+  | 'whileDrag'
+  | 'whileInView';
+
+type MotionPreset = Partial<Record<MotionStageKey, string>>;
+
+export const motionPresets = {
+  default: {
+    initial: 'initial',
+    animate: 'animate',
+  },
+  defaultInv: {
+    initial: 'animate',
+    animate: 'initial',
+  },
+  hoverable: {
+    whileHover: 'hover',
+    whileTap: 'tap',
+  },
+};
+
 
 type MotionWrapperProps = {
   children: React.ReactNode;
   as?: keyof React.JSX.IntrinsicElements;
-  className?: string;
-  style?: React.CSSProperties;
-  variants?: Record<string, any>;
-  initial?: string | boolean;
-  animate?: string | boolean;
-  exit?: string | undefined;
+  presets?: MotionPreset[];
+
+  variants?: Variants;
+  transition?: Transition;
+
+  // Manual overrides (same keys as MotionPreset)
+  initial?: false | string | TargetAndTransition;
+  animate?: string | TargetAndTransition;
+  exit?: string | TargetAndTransition;
   whileHover?: string | MotionStyle;
   whileTap?: string | MotionStyle;
-  transition?: string | Transition;
+  whileFocus?: string | MotionStyle;
+  whileDrag?: string | MotionStyle;
+  whileInView?: string | MotionStyle;
+
+  layout?: boolean | 'position' | 'size' | 'preserve-aspect';
+  layoutId?: string;
+  layoutDependency?: unknown;
+
+  drag?: boolean | 'x' | 'y';
+  dragConstraints?: object;
+  dragElastic?: number | boolean;
+  dragSnapToOrigin?: boolean;
+  dragTransition?: Transition;
+
+  layoutScroll?: boolean;
+  onLayoutAnimationComplete?: () => void;
 };
 
 export function MotionWrapper({
   children,
   as = 'div',
-  className,
-  style,
-  variants,
-  initial = 'initial',
-  animate = 'animate',
-  exit = 'exit',
-  whileHover= 'hover',
-  whileTap= 'tap',
-  transition= 'transition',
+  presets = [],
+  ...motionOverrides
 }: MotionWrapperProps) {
   const MotionComponent = motion(as);
 
+  // Merge presets in order
+  const presetProps = Object.assign({}, ...presets);
+
+  // Apply overrides — props passed in directly win over presets
+  const finalProps = { ...presetProps, ...motionOverrides };
+
   return (
-    <MotionComponent
-      className={className}
-      style={style}
-      variants={variants}
-      initial={initial}
-      animate={animate}
-      exit={exit}
-      whileHover={whileHover}
-      whileTap={whileTap}
-      transition={transition}
-    >
+    <MotionComponent {...(finalProps as Record<string, unknown>)}>
       {children}
     </MotionComponent>
   );

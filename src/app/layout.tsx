@@ -1,5 +1,4 @@
 import './globals.css';
-import { Navbar } from '@/Themes/Default/Components/Navbar';
 import { ThemeProvider } from '@/Themes/ThemeProvider';
 import { PageWrapper } from '@/Components/PageWrapper';
 

@@ -2,6 +2,7 @@ import { DefaultTheme } from "@/Themes/Default/BaseTheme";
 import { ProjectPage } from "@/Themes/Default/Components/ProjectPage";
 import { Navbar } from "@/Themes/Default/Components/Navbar";
 import { ProjectLayout } from "@/Themes/Default/Components/ProjectLayout";
+import { containerVariants, itemVariants } from "@/Themes/Default/animations";
 
 const baseDefaultTheme = {
   pages: {
@@ -9,6 +10,12 @@ const baseDefaultTheme = {
     Navbar,
     ProjectLayout,
   },
+  navbar: {
+    anims: {
+      container: containerVariants,
+      item: itemVariants,
+    }
+  }
 } as const;
 
 export type DarkTheme = DefaultTheme & {
@@ -40,6 +47,7 @@ export const darkTheme: DarkTheme = {
       background: '#181818',
       foreground: '#e0e0e0',
       highlight: '#4a9eff',
+      ...baseDefaultTheme.navbar
     },
     icon: {
       invert: true,
@@ -76,6 +84,7 @@ export const lightTheme: LightTheme = {
       background: '#e8e8e8',
       foreground: '#1a1a1a',
       highlight: '#2563eb',
+      ...baseDefaultTheme.navbar
     },
     icon: {
       invert: false,

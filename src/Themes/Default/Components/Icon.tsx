@@ -20,8 +20,6 @@ export interface IconProps {
 // Main Icon component
 export const Icon = (props: IconProps) => {
   const { icon, name, imgSrc, className, iconClassName, textClassName } = props;
-  const { theme } = useTheme();
-  const iconTheme = theme.components.icon;
 
   return (
     <span className={className ?? 'inline-flex items-center space-x-2'}>
@@ -45,6 +43,7 @@ export function GetIcon(techName: string) {
   const { theme } = useTheme();
   const iconData = icons[techName as keyof typeof icons];
   const iconTheme = theme.components.icon;
+  
 
   if (!iconData) {
     return <span>{techName}</span>;
