@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   output: "export",
   images: { unoptimized: true },
   devIndicators: false,
-  trailingSlash: true,
+  trailingSlash: false,
   webpack(config: WebpackConfig) {
     const fileLoaderRule = config.module?.rules?.find(
       (rule): rule is RuleSetRule =>
