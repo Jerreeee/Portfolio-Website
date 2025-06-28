@@ -1,9 +1,13 @@
+'use client';
+
 import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/data/projects';
-import { ProjectLayout } from '@/Themes/Default/Components/ProjectLayout';
+import { useTheme } from '@/Themes/ThemeProvider';
 
 export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
+  const { theme } = useTheme();
+  const ProjectLayout = theme.pages.ProjectLayout;
 
   const project = getProjectBySlug(slug);
   if (!project) {

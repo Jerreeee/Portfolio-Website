@@ -13,12 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <PageWrapper>
-            <div className="sticky top-0 z-50">
-              <Navbar />
-            </div>
-            <div className="pt-4">
-              {children}
-            </div>
+            {children}
           </PageWrapper>
         </ThemeProvider>
       </body>

@@ -1,9 +1,13 @@
 import { DefaultTheme } from "@/Themes/Default/BaseTheme";
 import { ProjectPage } from "@/Themes/Default/Components/ProjectPage";
+import { Navbar } from "@/Themes/Default/Components/Navbar";
+import { ProjectLayout } from "@/Themes/Default/Components/ProjectLayout";
 
 const baseDefaultTheme = {
   pages: {
     ProjectPage,
+    Navbar,
+    ProjectLayout,
   },
 } as const;
 

@@ -5,6 +5,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 
 export function PageWrapper({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
+  const Navbar = theme.pages.Navbar;
 
   return (
     <div
@@ -14,7 +15,12 @@ export function PageWrapper({ children }: { children: ReactNode }) {
         minHeight: '100vh', // Ensures full background
       }}
     >
-      {children}
+            <div className="sticky top-0 z-50">
+              <Navbar />
+            </div>
+            <div className="pt-4">
+              {children}
+            </div>
     </div>
   );
 }
