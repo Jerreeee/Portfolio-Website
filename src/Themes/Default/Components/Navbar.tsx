@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
 import type { Variants } from 'motion/react';
-import { MotionWrapper, motionPresets } from '@/Components/MotionWrapper'; // Adjust path as needed
+import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
+import { MergeVariants } from '@/Utils/MergeObjects';
 
 export type NavbarTheme = {
   background: string;
@@ -26,57 +27,52 @@ export function NavbarCmp() {
   ];
 
   return (
-    <MotionWrapper
-      as="nav"
-      presets={[motionPresets.default]}
+    <motion.div className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50"
+      style={{
+        backgroundColor: navbarTheme.background,
+        color: navbarTheme.foreground,
+        borderBottom: `1px solid ${navbarTheme.highlight ?? navbarTheme.foreground}`,
+      }}
       variants={anims.fadeInDown()}
+      initial="initial" animate="animate"
     >
-      <div
-        className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50"
-        style={{
-          backgroundColor: navbarTheme.background,
-          color: navbarTheme.foreground,
-          borderBottom: `1px solid ${navbarTheme.highlight ?? navbarTheme.foreground}`,
-        }}
-      >
-        <MotionWrapper as="div" variants={anims.fadeInUp()}>
-          <Link
-            href="/"
-            className="font-bold text-xl transition-opacity hover:opacity-80"
-            style={{ color: navbarTheme.highlight }}
-          >
-            Jeroen Denayer
-          </Link>
-        </MotionWrapper>
+      <motion.div variants={anims.fadeInDown()}>
+        <Link
+          href="/"
+          className="font-bold text-xl transition-opacity hover:opacity-80"
+          style={{ color: navbarTheme.highlight }}
+        >
+          Jeroen Denayer
+        </Link>
+      </motion.div>
 
-        <MotionWrapper as="ul" variants={anims.staggerChildren()}>
-          <div className="flex space-x-1 md:space-x-4">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <MotionWrapper as="li" key={item.href} variants={anims.fadeInUp()}>
-                  <Link
-                    href={item.href}
-                    className="relative rounded-md px-3 py-2 transition-colors"
-                    style={{
-                      fontWeight: isActive ? '500' : undefined,
-                      color: isActive ? navbarTheme.highlight : navbarTheme.foreground,
-                    }}
-                  >
-                    {item.label}
-                    {isActive && (
-                      <span
-                        className="absolute bottom-0 left-0 w-full h-[2px]"
-                        style={{ backgroundColor: navbarTheme.highlight }}
-                      />
-                    )}
-                  </Link>
-                </MotionWrapper>
-              );
-            })}
-          </div>
-        </MotionWrapper>
-      </div>
-    </MotionWrapper>
+      <motion.ol className="hidden md:flex md:space-x-4"
+      variants={anims.staggerChildren(0.25)}
+      >
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <motion.li key={item.href} variants={anims.fadeInDown()}>
+              <Link
+                href={item.href}
+                className="relative rounded-md px-3 py-2 transition-colors"
+                style={{
+                  fontWeight: isActive ? '500' : undefined,
+                  color: isActive ? navbarTheme.highlight : navbarTheme.foreground,
+                }}
+              >
+                {item.label}
+                {isActive && (
+                  <span
+                    className="absolute bottom-0 left-0 w-full h-[2px]"
+                    style={{ backgroundColor: navbarTheme.highlight }}
+                  />
+                )}
+              </Link>
+            </motion.li>
+          );
+        })}
+      </motion.ol>
+    </motion.div>
   );
 }

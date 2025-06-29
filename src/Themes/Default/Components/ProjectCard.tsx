@@ -25,62 +25,63 @@ export function ProjectCardCmp({ project }: { project: Project }) {
   console.log("Merged variants:", mergedVariants);
 
   return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className={`
-        flex flex-col space-y-3
-        rounded-lg shadow
-        transform transition
-        hover:shadow-2xl
-        overflow-hidden
-      `}
-      style={{
-        backgroundColor: cardTheme.background,
-        color: cardTheme.textColor,
-      }}
-      onMouseEnter={(e) => {
-        if (cardTheme.hoverBackground) {
+    <motion.div className="overflow-hidden"
+    variants={anims.hoverScale(1.025)}
+    initial="initial" animate="animate" whileHover="whileHover"
+    >
+      <Link
+        href={`/projects/${project.slug}`}
+        className={`
+          flex flex-col space-y-3
+          rounded-lg shadow
+          hover:shadow-2xl
+        `}
+        style={{
+          backgroundColor: cardTheme.background,
+          color: cardTheme.textColor,
+        }}
+        onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.backgroundColor =
             cardTheme.hoverBackground;
-        }
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.backgroundColor =
-          cardTheme.background;
-      }}
-    >
-      {/* Image */}
-      <div className="w-full relative aspect-video">
-        <Image
-          src={project.thumbnailImage}
-          alt={project.title}
-          fill
-          className="object-cover"
-        />
-      </div>
-
-      {/* Content */}
-      <motion.div className="p-4 space-y-2"
-      variants={anims.staggerChildren()}
-      initial="initial" animate="animate" exit="exit"
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.backgroundColor =
+            cardTheme.background;
+        }}
       >
-        <motion.div variants={anims.fadeInUp()}>
-          <h2 className="text-xl font-semibold">{project.title}</h2>
-          <p>{project.shortDescription}</p>
-        </motion.div>
-        <div className="flex space-x-2">
-          {project.technologies?.map((tech) => (
-            <motion.div key={tech} variants={anims.fadeInUp()}>
-              <motion.div className="h-6"
-              variants={anims.hoverScale()}
-              whileHover="whileHover"
-              >
-                  {GetIcon(tech)}
-              </motion.div>
-            </motion.div>
-          ))}
+        {/* Image */}
+        <div className="w-full relative aspect-video">
+          <Image
+            src={project.thumbnailImage}
+            alt={project.title}
+            fill
+            className="object-cover"
+          />
         </div>
-      </motion.div>
-    </Link>
+
+        {/* Content */}
+        <motion.div className="p-4 space-y-2"
+        variants={anims.staggerChildren()}
+        initial="initial" animate="animate" exit="exit"
+        >
+          <motion.div variants={anims.fadeInUp()}>
+            <h2 className="text-xl font-semibold">{project.title}</h2>
+            <p>{project.shortDescription}</p>
+          </motion.div>
+          <div className="flex space-x-2">
+            {project.technologies?.map((tech) => (
+              <motion.div key={tech} variants={anims.fadeInUp()}>
+                <motion.div className="h-6"
+                variants={anims.hoverScale()}
+                whileHover="whileHover"
+                >
+                    {GetIcon(tech)}
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </Link>
+    </motion.div>
   );
 }

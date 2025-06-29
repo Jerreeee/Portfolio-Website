@@ -4,6 +4,8 @@ import { ProjectCardCmp } from '@/Themes/Default/Components/ProjectCard';
 import { projects } from '@/data/projects';
 import { FaArrowDown } from 'react-icons/fa';
 import { useTheme } from '@/Themes/ThemeProvider';
+import { motion } from 'motion/react';
+import { anims } from '@/Themes/Default/animations';
 
 export type ProjectsOverviewTheme = {
   background: string;
@@ -19,17 +21,24 @@ export function ProjectsOverviewCmp() {
   return (
     <>
       <main className="w-full sm:w-[70%] mx-auto p-4">
-        <h1 className="text-3xl text-center font-bold"
+        <motion.h1 className="text-3xl text-center font-bold"
         style={{ color: projectsOverviewTheme.foreground }}
+        variants={anims.fadeInUp()}
+        initial="initial" animate="animate"
         >
           Featured
-        </h1>
+        </motion.h1>
 
-        <div className="grid gap-6 mt-4 grid-cols-2">
+        <motion.div className="grid gap-6 mt-4 grid-cols-2"
+        variants={anims.staggerChildren(0.15)}
+        initial="initial" animate="animate"
+        >
           {projects.map((project) => (
-            <ProjectCardCmp key={project.slug} project={project} />
+            <motion.div key={project.slug} variants={anims.fadeInUp()}>
+              <ProjectCardCmp project={project} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </main>
 
       <a
