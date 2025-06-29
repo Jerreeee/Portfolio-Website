@@ -8,11 +8,19 @@ import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
 
 export type ProjectsOverviewTheme = {
-  background: string;
-  foreground: string;
-  highlight: string;
-  gradientStart: string;
-  gradientEnd: string;
+  // Background styling for the entire projects overview section
+  sectionBgColor: string;
+  sectionBgGradientStart: string;
+  sectionBgGradientEnd: string;
+
+  // Gradient used for the "Featured" title
+  titleGradientStart: string;
+  titleGradientMid: string;
+  titleGradientEnd: string;
+
+  // Styling for the "All Projects" fixed button
+  ctaButtonBgColor: string;
+  ctaButtonTextColor: string;
 };
 
 export function ProjectsOverviewCmp() {
@@ -20,13 +28,13 @@ export function ProjectsOverviewCmp() {
   const theme = activeTheme.components.projectsOverview.theme;
 
   const gradientText = {
-    background: `linear-gradient(to right, ${theme.gradientStart}, ${theme.gradientEnd})`,
+    background: `linear-gradient(135deg, ${theme.titleGradientStart} 0%, ${theme.titleGradientMid} 50%, ${theme.titleGradientEnd} 100%)`,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   };
-
+  
   const backgroundGradient = {
-    background: `linear-gradient(to bottom, ${theme.background}, ${theme.gradientStart})`,
+    background: `linear-gradient(to bottom, ${theme.sectionBgGradientStart}, ${theme.sectionBgGradientEnd})`,
   };
 
   return (
@@ -65,8 +73,8 @@ export function ProjectsOverviewCmp() {
         href="#all-projects"
         className="fixed left-4 bottom-4 flex items-center space-x-2 rounded-full px-4 py-2 hover:opacity-80 transition-opacity shadow-md"
         style={{
-          backgroundColor: theme.foreground,
-          color: theme.background,
+          backgroundColor: theme.ctaButtonBgColor,
+          color: theme.ctaButtonTextColor,
         }}
       >
         <span>All Projects</span>

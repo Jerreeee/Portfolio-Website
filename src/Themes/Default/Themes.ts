@@ -59,11 +59,16 @@ export const darkTheme: DarkTheme = {
     projectsOverview: {
       cmp: ProjectsOverviewCmp,
       theme: {
-        background: darkColors.backgroundAlt,
-        foreground: darkColors.foreground,
-        highlight: darkColors.highlight,
-        gradientStart: darkColors.gradientStart,
-        gradientEnd: darkColors.gradientEnd,
+        sectionBgColor: '#0b0b0d',
+        sectionBgGradientStart: '#0b0b0d', // very dark near-black
+        sectionBgGradientEnd: '#1e1e28',   // subtle deep bluish gray
+    
+        titleGradientStart: '#3fa0ff', // Vibrant blue
+        titleGradientMid:   '#7b72f0', // Electric lavender
+        titleGradientEnd:   '#ec38bc', // Bright pinkish-purple for punch
+    
+        ctaButtonBgColor: '#f0f0f0',
+        ctaButtonTextColor: '#0b0b0d',
       },
     },
     projectDetails: {
@@ -141,11 +146,16 @@ export const lightTheme: LightTheme = {
     projectsOverview: {
       cmp: ProjectsOverviewCmp,
       theme: {
-        background: lightColors.backgroundAlt,
-        foreground: lightColors.foreground,
-        highlight: lightColors.highlight,
-        gradientStart: lightColors.gradientStart,
-        gradientEnd: lightColors.gradientEnd,
+        sectionBgColor: '#ffffff',
+        sectionBgGradientStart: '#ffffff',
+        sectionBgGradientEnd: '#f2f6ff',
+    
+        titleGradientStart: '#0070f3',
+        titleGradientMid: '#7928ca',
+        titleGradientEnd: '#7928ca',
+    
+        ctaButtonBgColor: '#1a1a1a',
+        ctaButtonTextColor: '#ffffff',
       },
     },
     projectDetails: {
