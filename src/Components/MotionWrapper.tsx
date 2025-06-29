@@ -31,8 +31,8 @@ export const motionPresets = {
     animate: 'initial',
   },
   hoverable: {
-    whileHover: 'hover',
-    whileTap: 'tap',
+    whileHover: 'whileHover',
+    whileTap: 'whileTap',
   },
 };
 
@@ -81,7 +81,11 @@ export function MotionWrapper({
   const presetProps = Object.assign({}, ...presets);
 
   // Apply overrides — props passed in directly win over presets
-  const finalProps = { ...presetProps, ...motionOverrides };
+  const merged = { ...presetProps, ...motionOverrides };
+  const finalProps = Object.fromEntries(
+    Object.entries(merged).filter(([, v]) => v !== undefined)
+  );
+  
 
   return (
     <MotionComponent {...(finalProps as Record<string, unknown>)}>

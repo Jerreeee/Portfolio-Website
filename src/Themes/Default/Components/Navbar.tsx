@@ -3,24 +3,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
-import type { Variants } from 'framer-motion';
+import type { Variants } from 'motion/react';
 import { MotionWrapper, motionPresets } from '@/Components/MotionWrapper'; // Adjust path as needed
+import { anims } from '@/Themes/Default/animations';
 
 export type NavbarTheme = {
   background: string;
   foreground: string;
   highlight: string;
-  anims: {
-    container: Variants;
-    item: Variants;
-  };
 };
 
 export function NavbarCmp() {
   const pathname = usePathname();
   const { theme } = useTheme();
   const navbarTheme = theme.components.navbar.theme;
-  const { container: containerAnim, item: itemAnim } = navbarTheme.anims;
 
   const navItems = [
     { href: '/projects', label: 'Projects' },
@@ -33,7 +29,7 @@ export function NavbarCmp() {
     <MotionWrapper
       as="nav"
       presets={[motionPresets.default]}
-      variants={containerAnim}
+      variants={anims.fadeInDown()}
     >
       <div
         className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50"
@@ -43,7 +39,7 @@ export function NavbarCmp() {
           borderBottom: `1px solid ${navbarTheme.highlight ?? navbarTheme.foreground}`,
         }}
       >
-        <MotionWrapper as="div" variants={itemAnim}>
+        <MotionWrapper as="div" variants={anims.fadeInUp()}>
           <Link
             href="/"
             className="font-bold text-xl transition-opacity hover:opacity-80"
@@ -53,12 +49,12 @@ export function NavbarCmp() {
           </Link>
         </MotionWrapper>
 
-        <MotionWrapper as="ul" variants={containerAnim}>
+        <MotionWrapper as="ul" variants={anims.staggerChildren()}>
           <div className="flex space-x-1 md:space-x-4">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <MotionWrapper as="li" key={item.href} variants={itemAnim}>
+                <MotionWrapper as="li" key={item.href} variants={anims.fadeInUp()}>
                   <Link
                     href={item.href}
                     className="relative rounded-md px-3 py-2 transition-colors"

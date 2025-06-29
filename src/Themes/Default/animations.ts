@@ -1,19 +1,36 @@
 import { Variants } from "framer-motion";
 
-// Container animation with staggered children
-export const containerVariants: Variants = {
-  initial: { opacity: 0, y: -20 },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      staggerChildren: 0.1,
-      when: 'beforeChildren',
+export const anims = {
+  staggerChildren: (duration: number = 0.1): Variants => ({
+    animate: {
+      transition: {
+        staggerChildren: duration,
+      },
     },
-  },
-};
+  }),
 
-export const itemVariants: Variants = {
-  initial: { opacity: 0, y: -20 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  fadeInDown: (offset: number = 10, duration: number = 0.5): Variants => ({
+    initial: { opacity: 0, y: -offset },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration },
+    },
+  }),
+
+  fadeInUp: (offset: number = 10, duration: number = 0.5): Variants => ({
+    initial: { opacity: 0, y: offset },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration },
+    },
+  }),
+
+  hoverScale: (scale: number = 1.25, duration: number = 0.2): Variants => ({
+    whileHover: {
+      scale,
+      transition: { duration },
+    },
+  }),
 };

@@ -3,7 +3,7 @@ import { NavbarCmp } from "@/Themes/Default/Components/Navbar";
 import { ProjectsOverviewCmp } from "@/Themes/Default/Components/ProjectsOverview";
 import { ProjectDetailsCmp } from "@/Themes/Default/Components/ProjectDetails";
 import { ProjectCardCmp } from "@/Themes/Default/Components/ProjectCard";
-import { containerVariants, itemVariants } from "@/Themes/Default/animations";
+import { anims   } from "@/Themes/Default/animations";
 import { IconCmp } from "@/Themes/Default/Components/Icon";
 
 export type DarkTheme = DefaultTheme & {
@@ -24,10 +24,6 @@ export const darkTheme: DarkTheme = {
         background: '#181818',
         foreground: '#e0e0e0',
         highlight: '#4a9eff',
-        anims: {
-          container: containerVariants,
-          item: itemVariants,
-        },
       },
     },
     projectsOverview: {
@@ -78,10 +74,6 @@ export const lightTheme: LightTheme = {
         background: '#e8e8e8',
         foreground: '#1a1a1a',
         highlight: '#2563eb',
-        anims: {
-          container: containerVariants,
-          item: itemVariants,
-        },
       },
     },
     projectsOverview: {
