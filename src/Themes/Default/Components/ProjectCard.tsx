@@ -12,7 +12,8 @@ import { motion } from 'motion/react';
 export type CardTheme = {
   background: string;
   hoverBackground: string;
-  textColor: string;
+  titleColor: string;
+  descriptionColor: string;
   borderRadius: number;
   shadowColor: string;
 };
@@ -25,30 +26,26 @@ export function ProjectCardCmp({ project }: { project: Project }) {
   console.log("Merged variants:", mergedVariants);
 
   return (
-    <motion.div className="overflow-hidden"
+    <motion.div className="overflow-hidden
+      flex flex-col space-y-3
+      rounded-lg shadow
+      hover:shadow-2xl
+    "
     variants={anims.hoverScale(1.025)}
     initial="initial" animate="animate" whileHover="whileHover"
+    style={{
+      backgroundColor: cardTheme.background,
+    }}
+    onMouseEnter={(e) => {
+      (e.currentTarget as HTMLElement).style.backgroundColor =
+        cardTheme.hoverBackground;
+    }}
+    onMouseLeave={(e) => {
+      (e.currentTarget as HTMLElement).style.backgroundColor =
+        cardTheme.background;
+    }}
     >
-      <Link
-        href={`/projects/${project.slug}`}
-        className={`
-          flex flex-col space-y-3
-          rounded-lg shadow
-          hover:shadow-2xl
-        `}
-        style={{
-          backgroundColor: cardTheme.background,
-          color: cardTheme.textColor,
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLElement).style.backgroundColor =
-            cardTheme.hoverBackground;
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLElement).style.backgroundColor =
-            cardTheme.background;
-        }}
-      >
+      <Link href={`/projects/${project.slug}`}>
         {/* Image */}
         <div className="w-full relative aspect-video">
           <Image
@@ -65,8 +62,14 @@ export function ProjectCardCmp({ project }: { project: Project }) {
         initial="initial" animate="animate" exit="exit"
         >
           <motion.div variants={anims.fadeInUp()}>
-            <h2 className="text-xl font-semibold">{project.title}</h2>
-            <p>{project.shortDescription}</p>
+            <h2 className="text-xl font-semibold"
+            style={{ color: cardTheme.titleColor }}
+            >
+              {project.title}
+            </h2>
+            <p style={{ color: cardTheme.descriptionColor }}>
+              {project.shortDescription}
+            </p>
           </motion.div>
           <div className="flex space-x-2">
             {project.technologies?.map((tech) => (

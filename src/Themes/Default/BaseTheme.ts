@@ -9,8 +9,36 @@ import type { IconProps } from '@/Themes/Default/Components/Icon';
 export type DefaultTheme = BaseTheme & {
   name: string;
   colors: {
-    foreground: string;
-    background: string;
+  // Base colors
+  background: string;        // Main page background
+  backgroundAlt: string;     // Alternate background (e.g. cards, sections)
+
+  foreground: string;        // Main text color
+  foregroundMuted: string;   // Muted/subtle text (e.g. descriptions)
+  
+  // Accent & branding
+  highlight: string;         // Primary accent color
+  highlightAlt: string;      // Secondary or hover variant of highlight
+
+  // UI elements
+  border: string;            // Standard borders
+  borderMuted: string;       // Subtle borders (e.g. for cards)
+
+  // Gradients & overlays
+  gradientStart: string;     // For hero sections, buttons, etc.
+  gradientEnd: string;       // Ending color for gradients
+
+  overlay: string;           // For modals, darkening backgrounds
+
+  // Statuses (optional but useful)
+  success: string;
+  warning: string;
+  error: string;
+  info: string;
+
+  // Interactive
+  link: string;              // Link color (can match or differ from highlight)
+  linkHover: string;
   };
   invertIconColor: boolean;
   components: {

@@ -12,6 +12,10 @@ export type NavbarTheme = {
   background: string;
   foreground: string;
   highlight: string;
+  border: string;
+  foregroundMuted: string;
+  gradientStart: string;
+  gradientEnd: string;
 };
 
 export function NavbarCmp() {
@@ -27,14 +31,16 @@ export function NavbarCmp() {
   ];
 
   return (
-    <motion.div className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50"
+    <motion.div
+      className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50"
       style={{
         backgroundColor: navbarTheme.background,
         color: navbarTheme.foreground,
-        borderBottom: `1px solid ${navbarTheme.highlight ?? navbarTheme.foreground}`,
+        borderBottom: `1px solid ${navbarTheme.border ?? navbarTheme.highlight}`,
       }}
       variants={anims.fadeInDown()}
-      initial="initial" animate="animate"
+      initial="initial"
+      animate="animate"
     >
       <motion.div variants={anims.fadeInDown()}>
         <Link
@@ -64,8 +70,10 @@ export function NavbarCmp() {
                 {item.label}
                 {isActive && (
                   <span
-                    className="absolute bottom-0 left-0 w-full h-[2px]"
-                    style={{ backgroundColor: navbarTheme.highlight }}
+                  className="absolute bottom-0 left-0 w-full h-[2px]"
+                  style={{
+                    background: `linear-gradient(to right, ${navbarTheme.gradientStart}, ${navbarTheme.gradientEnd})`,
+                  }}
                   />
                 )}
               </Link>
