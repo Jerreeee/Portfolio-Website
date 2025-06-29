@@ -3,7 +3,6 @@ import { NavbarCmp } from "@/Themes/Default/Components/Navbar";
 import { ProjectsOverviewCmp } from "@/Themes/Default/Components/ProjectsOverview";
 import { ProjectDetailsCmp } from "@/Themes/Default/Components/ProjectDetails";
 import { ProjectCardCmp } from "@/Themes/Default/Components/ProjectCard";
-import { anims   } from "@/Themes/Default/animations";
 import { IconCmp } from "@/Themes/Default/Components/Icon";
 
 export type DarkTheme = DefaultTheme & {

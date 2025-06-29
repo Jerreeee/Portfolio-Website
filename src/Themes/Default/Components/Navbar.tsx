@@ -3,10 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
-import type { Variants } from 'motion/react';
 import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
-import { MergeVariants } from '@/Utils/MergeObjects';
 
 export type NavbarTheme = {
   background: string;

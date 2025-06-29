@@ -55,7 +55,7 @@ export function ProjectsOverviewCmp() {
           </motion.h1>
 
           <motion.div
-            className="grid gap-6 mt-4 grid-cols-2"
+            className="grid gap-6 mt-4 grid-cols-1 md:grid-cols-2"
             variants={anims.staggerChildren(0.15)}
             initial="initial"
             animate="animate"
