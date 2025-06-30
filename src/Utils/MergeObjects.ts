@@ -1,15 +1,33 @@
 import type { Variants } from 'motion/react';
 
+function IsObject(value: any): value is Record<string, any> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function DeepMergePreserveLeaves(target: any, source: any): any {
+  const result = { ...target };
+
+  for (const key in source) {
+    const sourceVal = source[key];
+    const targetVal = result[key];
+
+    if (IsObject(sourceVal) && IsObject(targetVal)) {
+      result[key] = DeepMergePreserveLeaves(targetVal, sourceVal);
+    } else if (targetVal === undefined) {
+      result[key] = sourceVal;
+    }
+    // If target already has a non-object value, we keep it (don't overwrite)
+  }
+
+  return result;
+}
+
 export function MergeVariants(...variants: Variants[]): Variants {
-  const merged: Variants = {};
+  let merged: Variants = {};
 
   for (const variant of variants) {
     for (const key in variant) {
-      // Shallow merge per variant key (e.g. 'animate')
-      merged[key] = {
-        ...(merged[key] || {}),
-        ...(variant[key] || {}),
-      };
+      merged[key] = DeepMergePreserveLeaves(merged[key] || {}, variant[key] || {});
     }
   }
 

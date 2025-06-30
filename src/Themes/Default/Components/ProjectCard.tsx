@@ -8,6 +8,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import { anims } from '@/Themes/Default/animations';
 import { MergeVariants } from '@/Utils/MergeObjects';
 import { motion } from 'motion/react';
+import { WithCSSVars } from '@/Utils/Utils';
 
 export type CardTheme = {
   background: string;
@@ -27,23 +28,18 @@ export function ProjectCardCmp({ project }: { project: Project }) {
 
   return (
     <motion.div className="overflow-hidden
-      flex flex-col space-y-3
-      rounded-lg shadow
-      hover:shadow-2xl
+    flex flex-col space-y-3
+    rounded-lg
+    shadow hover:shadow-2xl
+    bg-[var(--bg-color)] hover:bg-[var(--bg-color-hover)]
+    transition-colors
     "
     variants={anims.hoverScale(1.025)}
     initial="initial" animate="animate" whileHover="whileHover"
-    style={{
-      backgroundColor: cardTheme.background,
-    }}
-    onMouseEnter={(e) => {
-      (e.currentTarget as HTMLElement).style.backgroundColor =
-        cardTheme.hoverBackground;
-    }}
-    onMouseLeave={(e) => {
-      (e.currentTarget as HTMLElement).style.backgroundColor =
-        cardTheme.background;
-    }}
+    style={WithCSSVars({
+      '--bg-color': cardTheme.background,
+      '--bg-color-hover': cardTheme.hoverBackground,
+    })}
     >
       <Link href={`/projects/${project.slug}`}>
         {/* Image */}

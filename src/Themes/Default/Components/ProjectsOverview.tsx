@@ -40,23 +40,22 @@ export function ProjectsOverviewCmp() {
   return (
     <>
       <main
-        className="w-full"
+        className="w-full pt-5"
         style={backgroundGradient}
       >
-        <motion.div className="w-full sm:w-[70%] mx-auto p-4">
+        <motion.div className="w-full sm:w-[70%] mx-auto">
           <motion.h1
-            className="text-3xl text-center font-bold"
-            style={gradientText}
+            className="text-4xl text-center font-bold"
             variants={anims.fadeInUp()}
             initial="initial"
             animate="animate"
           >
-            Featured
+            <span style={gradientText}>Featured</span>
           </motion.h1>
 
           <motion.div
             className="grid gap-6 mt-4 grid-cols-1 md:grid-cols-2"
-            variants={anims.staggerChildren(0.15)}
+            variants={anims.staggerChildren(0.2)}
             initial="initial"
             animate="animate"
           >

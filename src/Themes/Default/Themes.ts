@@ -46,21 +46,26 @@ export const darkTheme: DarkTheme = {
     navbar: {
       cmp: NavbarCmp,
       theme: {
-        background: darkColors.backgroundAlt,
-        foreground: darkColors.foreground,
-        highlight: darkColors.highlight,
-        border: darkColors.border,
-        foregroundMuted: darkColors.foregroundMuted,
-        gradientStart: darkColors.gradientStart,
-        gradientEnd: darkColors.gradientEnd,
+        containerBackground: '#141418',
+        containerBorderColor: '#3fa0ff',
+      
+        brandGradientStart: '#3fa0ff',
+        brandGradientMid: '#7b72f0',
+        brandGradientEnd: '#ec38bc',
+      
+        brandTextColor: '#ec38bc', // fallback or non-gradient context
+      
+        linkTextColor: '#888888',
+        linkTextHoverColor: '#d0d0d0',
+        linkTextActiveColor: '#7b72f0',
       },
     },
     projectsOverview: {
       cmp: ProjectsOverviewCmp,
       theme: {
         sectionBgColor: '#0b0b0d',
-        sectionBgGradientStart: '#0b0b0d', // very dark near-black
-        sectionBgGradientEnd: '#1e1e28',   // subtle deep bluish gray
+        sectionBgGradientStart: '#151a2c', // Dark blue-violet base
+        sectionBgGradientEnd:   '#221730', // Deep purple-gray
     
         titleGradientStart: '#3fa0ff', // Vibrant blue
         titleGradientMid:   '#7b72f0', // Electric lavender
@@ -88,93 +93,6 @@ export const darkTheme: DarkTheme = {
       cmp: IconCmp,
       theme: {
         invert: true,
-      },
-    },
-  },
-};
-
-
-export type LightTheme = DefaultTheme & {
-  name: 'Light';
-};
-
-const lightColors = {
-  background: '#ffffff',
-  backgroundAlt: '#f7f7f7',
-
-  foreground: '#1a1a1a',
-  foregroundMuted: '#666666',
-
-  highlight: '#0070f3',
-  highlightAlt: '#0059c1',
-
-  border: '#e0e0e0',
-  borderMuted: '#f0f0f0',
-
-  gradientStart: '#e0f7ff',
-  gradientEnd: '#cce0ff',
-
-  overlay: 'rgba(0, 0, 0, 0.3)',
-
-  success: '#22c55e',
-  warning: '#facc15',
-  error: '#ef4444',
-  info: '#3b82f6',
-
-  link: '#0366d6',
-  linkHover: '#023e8a',
-};
-
-export const lightTheme: LightTheme = {
-  name: 'Light',
-  colors: lightColors,
-  invertIconColor: false,
-  components: {
-    navbar: {
-      cmp: NavbarCmp,
-      theme: {
-        background: lightColors.backgroundAlt,
-        foreground: lightColors.foreground,
-        highlight: lightColors.highlight,
-        border: lightColors.border,
-        foregroundMuted: lightColors.foregroundMuted,
-        gradientStart: lightColors.gradientStart,
-        gradientEnd: lightColors.gradientEnd,
-      },
-    },
-    projectsOverview: {
-      cmp: ProjectsOverviewCmp,
-      theme: {
-        sectionBgColor: '#ffffff',
-        sectionBgGradientStart: '#ffffff',
-        sectionBgGradientEnd: '#f2f6ff',
-    
-        titleGradientStart: '#0070f3',
-        titleGradientMid: '#7928ca',
-        titleGradientEnd: '#7928ca',
-    
-        ctaButtonBgColor: '#1a1a1a',
-        ctaButtonTextColor: '#ffffff',
-      },
-    },
-    projectDetails: {
-      cmp: ProjectDetailsCmp,
-    },
-    card: {
-      cmp: ProjectCardCmp,
-      theme: {
-        background: '#f4f1ea', // optionally: lightColors.backgroundAlt or a custom neutral
-        hoverBackground: '#f4f1ea', // optionally another token
-        titleColor: lightColors.foreground,
-        descriptionColor: lightColors.foregroundMuted,
-        borderRadius: 8,
-        shadowColor: lightColors.borderMuted,
-      },
-    },
-    icon: {
-      cmp: IconCmp,
-      theme: {
-        invert: false,
       },
     },
   },

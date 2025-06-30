@@ -12,15 +12,15 @@ export function PageWrapper({ children }: { children: ReactNode }) {
       style={{
         backgroundColor: theme.colors.background,
         color: theme.colors.foreground,
-        minHeight: '100vh', // Ensures full background
+        minHeight: '100vh',
       }}
     >
-            <div className="sticky top-0 z-50">
-              <NavbarCmp />
-            </div>
-            <div className="pt-4">
-              {children}
-            </div>
+      <div className="fixed top-0 left-0 w-full z-50">
+        <NavbarCmp />
+      </div>
+      <div className="pt-[60px]">
+        {children}
+      </div>
     </div>
   );
 }

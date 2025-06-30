@@ -43,4 +43,11 @@ export const anims = {
       transition: { duration },
     },
   }),
+
+  tapScale: (scale: number = 1.25, duration: number = 0.2): Variants => ({
+    whileTap: {
+      scale,
+      transition: { duration },
+    },
+  }),
 };
