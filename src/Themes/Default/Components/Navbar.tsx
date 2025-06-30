@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
-import { WithCSSVars } from '@/Utils/Utils';
+import { TypeAsCSSVars } from '@/Utils/Utils';
 import { MergeVariants } from '@/Utils/MergeObjects';
 
 export type NavbarTheme = {
@@ -84,7 +84,7 @@ export function NavbarCmp() {
                   hover:text-[var(--link-hover-color)]
                   ${isActive ? 'font-medium text-[var(--link-active-color)]' : ''}
                 `}
-                style={WithCSSVars({
+                style={TypeAsCSSVars({
                   '--link-color': theme.linkTextColor,
                   '--link-hover-color': theme.linkTextHoverColor,
                   '--link-active-color': theme.linkTextActiveColor,

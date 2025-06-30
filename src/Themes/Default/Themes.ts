@@ -81,12 +81,17 @@ export const darkTheme: DarkTheme = {
     card: {
       cmp: ProjectCardCmp,
       theme: {
-        background: darkColors.backgroundAlt,
-        hoverBackground: '#2c2c2c', // custom, not in shared colors
-        titleColor: darkColors.foreground,
-        descriptionColor: darkColors.foregroundMuted,
-        borderRadius: 8,
-        shadowColor: darkColors.borderMuted,
+        bgColor: '#1a1b20',            // Slightly lighter than navbar/section background
+        bgHoverColor: '#2a2b32',       // Subtle lift on hover
+      
+        borderRadius: 12,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+      
+        titleTextColor: '#f0f0f0',     // Soft white for titles
+        descriptionTextColor: '#aaaaaa', // Muted gray for secondary text
+      
+        forceTechIconColor: false,
+        techIconColor: '#b0c4ff',      // Soft pastel blue
       },
     },
     icon: {

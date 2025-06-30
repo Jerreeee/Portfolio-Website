@@ -7,9 +7,9 @@ import VsCodeIcon from './vscode.svg';
 import HoudiniIcon from './houdini.svg';
 
 export const icons = {
-  cplusplus: { component: CPlusPlusIcon, canInvert: false },
-  unity: { component: UnityIcon, canInvert: true },
-  unreal: { component: UnrealIcon, canInvert: true },
-  vscode: { component: VsCodeIcon, canInvert: false },
-  houdini: { component: HoudiniIcon, canInvert: false },
+  'C++': { component: CPlusPlusIcon, isGrayScale: false },
+  Unity: { component: UnityIcon, isGrayScale: true },
+  Unreal: { component: UnrealIcon, isGrayScale: true },
+  VSCode: { component: VsCodeIcon, isGrayScale: false },
+  Houdini: { component: HoudiniIcon, isGrayScale: false },
 };
