@@ -8,7 +8,6 @@ import { anims } from '@/Themes/Default/animations';
 import { MergeVariants } from '@/Utils/MergeObjects';
 import { motion } from 'motion/react';
 import { WithThemeCSSVars } from '@/Utils/Utils';
-import { icons } from '@/Themes/Default/Icons';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 
 export type ProjectCardTheme = {
@@ -76,18 +75,19 @@ export function ProjectCardCmp({ project }: { project: Project }) {
           <div className="flex space-x-2">
             {project.technologies?.map((tech) => (
               <motion.div key={tech} variants={anims.fadeInUp()}>
-                <motion.div className="h-6"
+                <motion.div className=""
                   variants={anims.hoverScale()}
                   whileHover="whileHover"
                 >
-                  <IconCmp
-                    techName={tech}
-                    iconClassName="text-[var(--techIconColor)] hover:text-[var(--techIconHoverColor)]"
-                    textClassName="text-sm"
-                    showName={true}
-                    forceTechIconColor={theme.forceTechIconColor}
-                    techIconColorClass={theme.techIconColor}
-                  />
+                  <div className="h-6">
+                    <IconCmp techName={tech}
+                      overrideColors={{
+                        color0: '#FF0000', // red
+                        color1: '#00FF00', // green
+                        color2: '#0000FF', // blue
+                      }}
+                    />
+                  </div>
                 </motion.div>
               </motion.div>
             ))}
