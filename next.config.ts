@@ -21,17 +21,8 @@ const nextConfig: NextConfig = {
     }
 
     config.module?.rules?.push({
-      test: /\.svg$/,
-      issuer: /\.[jt]sx?$/,
-      use: [
-        {
-          loader: "@svgr/webpack",
-          options: {
-            typescript: true,
-            icon: true,
-          },
-        },
-      ],
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
     });
 
     return config;

@@ -1,6 +1,6 @@
 import type { Variants } from 'motion/react';
 
-function IsObject(value: any): value is Record<string, any> {
+function IsObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 

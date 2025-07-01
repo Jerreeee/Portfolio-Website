@@ -4,12 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Project } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { GetIcon } from '@/Themes/Default/Components/Icon';
 import { anims } from '@/Themes/Default/animations';
 import { MergeVariants } from '@/Utils/MergeObjects';
 import { motion } from 'motion/react';
 import { WithThemeCSSVars } from '@/Utils/Utils';
 import { icons } from '@/Themes/Default/Icons';
+import { IconCmp } from '@/Themes/Default/Components/Icon';
 
 export type ProjectCardTheme = {
   bgColor: string;
@@ -29,7 +29,6 @@ export function ProjectCardCmp({ project }: { project: Project }) {
   const theme = activeTheme.components.card.theme;
 
   const mergedVariants = MergeVariants(anims.fadeInUp(), anims.hoverScale());
-  console.log('Merged variants:', mergedVariants);
 
   return (
     <motion.div
@@ -75,29 +74,23 @@ export function ProjectCardCmp({ project }: { project: Project }) {
             </p>
           </motion.div>
           <div className="flex space-x-2">
-            {project.technologies?.map((tech) => {
-              const iconData = icons[tech as keyof typeof icons];
-              const isGrayScale = iconData?.isGrayScale ?? false;
-
-              const shouldApplyTechColor =
-                theme.forceTechIconColor || isGrayScale;
-
-              return (
-                <motion.div key={tech} variants={anims.fadeInUp()}>
-                  <motion.div
-                    className={`h-6 ${
-                      shouldApplyTechColor
-                        ? 'text-[var(--techIconColor)] hover:text-[var(--techIconHoverColor)]'
-                        : ''
-                    }`}
-                    variants={anims.hoverScale()}
-                    whileHover="whileHover"
-                  >
-                    {GetIcon(tech)}
-                  </motion.div>
+            {project.technologies?.map((tech) => (
+              <motion.div key={tech} variants={anims.fadeInUp()}>
+                <motion.div className="h-6"
+                  variants={anims.hoverScale()}
+                  whileHover="whileHover"
+                >
+                  <IconCmp
+                    techName={tech}
+                    iconClassName="text-[var(--techIconColor)] hover:text-[var(--techIconHoverColor)]"
+                    textClassName="text-sm"
+                    showName={true}
+                    forceTechIconColor={theme.forceTechIconColor}
+                    techIconColorClass={theme.techIconColor}
+                  />
                 </motion.div>
-              );
-            })}
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </Link>

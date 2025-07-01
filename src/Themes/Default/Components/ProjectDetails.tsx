@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { GetIcon } from '@/Themes/Default/Components/Icon';
 import { Project } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 
@@ -41,7 +40,7 @@ export function ProjectDetailsCmp({ project }: { project: Project }) {
       {/* Technologies */}
       <div className="mt-4 flex flex-wrap items-center space-x-3">
         {project.technologies?.map((tech) => (
-          <div key={tech}>{GetIcon(tech)}</div>
+          <div key={tech}></div>
         ))}
       </div>
     </main>
