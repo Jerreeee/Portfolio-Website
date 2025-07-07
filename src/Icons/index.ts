@@ -6,10 +6,15 @@ import UnrealIcon from './unreal.svg';
 import VsCodeIcon from './vscode.svg';
 import HoudiniIcon from './houdini.svg';
 
+interface IconData {
+  rawSvg: string;
+  isGrayScale: boolean;
+}
+
 export const icons = {
-  'C++': { svg: CPlusPlusIcon, isGrayScale: false },
-  Unity: { svg: UnityIcon, isGrayScale: true },
-  Unreal: { svg: UnrealIcon, isGrayScale: true },
-  VSCode: { svg: VsCodeIcon, isGrayScale: false },
-  Houdini: { svg: HoudiniIcon, isGrayScale: false },
-};
+  'C++': { rawSvg: CPlusPlusIcon, isGrayScale: false } as IconData,
+  Unity: { rawSvg: UnityIcon, isGrayScale: true } as IconData,
+  Unreal: { rawSvg: UnrealIcon, isGrayScale: true } as IconData,
+  VSCode: { rawSvg: VsCodeIcon, isGrayScale: false } as IconData,
+  Houdini: { rawSvg: HoudiniIcon, isGrayScale: false } as IconData,
+

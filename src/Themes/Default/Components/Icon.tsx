@@ -13,7 +13,7 @@ export function IconCmp({ techName, overrideColors, className, style }: IconProp
   const iconEntry = icons[techName];
 
   if (!iconEntry) {
-    console.warn(`No icon found for tech "${techName}"`);
+    // console.warn(`No icon found for tech "${techName}"`);
     return null;
   }
 
@@ -22,6 +22,8 @@ export function IconCmp({ techName, overrideColors, className, style }: IconProp
 
   if (!processedSvg) return null;
 
+
+  // console.log("🔥 IconCmp running", { techName, overrideColors, className, style });
   return (
     <div
       className={className}
