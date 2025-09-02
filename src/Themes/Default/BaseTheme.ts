@@ -2,9 +2,8 @@ import type { BaseTheme } from '@/Themes/BaseTheme';
 import type { Project } from '@/data/projects/project';
 import type { NavbarTheme } from '@/Themes/Default/Components/Navbar';
 import type { ProjectsOverviewTheme } from '@/Themes/Default/Components/ProjectsOverview';
-import type { CardTheme } from '@/Themes/Default/Components/ProjectCard';
-import type { IconTheme } from '@/Themes/Default/Components/Icon';
-import type { IconProps } from '@/Themes/Default/Components/Icon';
+import type { ProjectCardTheme } from '@/Themes/Default/Components/ProjectCard';
+import type { IconTheme, IconProps } from '@/Themes/Default/Components/Icon';
 
 export type DefaultTheme = BaseTheme & {
   name: string;
@@ -55,7 +54,7 @@ export type DefaultTheme = BaseTheme & {
     };
     card: {
       cmp: React.ComponentType<{ project:  Project }>;
-      theme: CardTheme;
+      theme: ProjectCardTheme;
     };
     icon: {
       cmp: React.ComponentType<IconProps>;

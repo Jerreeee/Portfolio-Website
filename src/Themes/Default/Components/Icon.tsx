@@ -1,29 +1,63 @@
-import React from 'react';
-import {useParsedSvg} from '@/Utils/useParsedSVG'
-import { icons } from '@/Icons'; // your icons map
+'use client';
 
-interface IconProps {
+import React from 'react';
+import {useParsedSVG} from '@/Utils/UseParsedSVG';
+import { icons, IconKey, IconData } from '@/Icons';
+import { useTheme } from '@/Themes/ThemeProvider';
+import { toGrayScale, applyTint } from '@/Utils/Color';
+
+export interface IconProps {
   techName: string;
-  overrideColors?: Record<string, string>;
   className?: string;
   style?: React.CSSProperties;
 }
 
-export function IconCmp({ techName, overrideColors, className, style }: IconProps) {
-  const iconEntry = icons[techName];
+export type IconTheme = {
+  convertToGrayScale: boolean;
+  tintColor?: string;
+  tintStrength?: number;
+  grayScaleIconColor: string;
+}
 
+export function IconCmp({ techName, className, style }: IconProps) {
+  const { theme: activeTheme } = useTheme();
+  const theme = activeTheme.components.icon.theme;
+
+  let iconEntry: IconData | undefined = icons[techName as IconKey];
   if (!iconEntry) {
-    // console.warn(`No icon found for tech "${techName}"`);
-    return null;
+    iconEntry = icons.Error;
   }
 
+  const processedSvg = useParsedSVG(techName, iconEntry.rawSvg);
+  if (!processedSvg)
+    return null;
 
-  const { processedSvg, colorVars, aspectRatio } = useParsedSvg(iconEntry.svg, overrideColors);
 
-  if (!processedSvg) return null;
+  const colorVars: Record<string, string> = {};
+  //Modify colors based on theme settings
+  (processedSvg.originalColors ?? []).forEach((c, i) => {
+    let finalColor = c;
 
+    if (iconEntry.isGrayScale)
+    {
+      finalColor = theme.grayScaleIconColor;
+    }
+    else
+    {
+      //Apply grayScale conversion
+      if (theme.convertToGrayScale) {
+        finalColor = toGrayScale(finalColor);
+      }
 
-  // console.log("🔥 IconCmp running", { techName, overrideColors, className, style });
+      //Apply tint
+      if (theme.tintColor) {
+          finalColor = applyTint(finalColor, theme.tintColor, theme.tintStrength);
+      }
+    }
+
+    colorVars[`--color${i}`] = finalColor;
+  });
+
   return (
     <div
       className={className}
@@ -32,11 +66,11 @@ export function IconCmp({ techName, overrideColors, className, style }: IconProp
         height: '100%',
         maxWidth: '100%',
         maxHeight: '100%',
-        aspectRatio: aspectRatio ? `${aspectRatio}` : undefined,
+        aspectRatio: processedSvg.aspectRatio ? `${processedSvg.aspectRatio}` : undefined,
         ...style,
-        ...colorVars,
+        ...colorVars
       }}
-      dangerouslySetInnerHTML={{ __html: processedSvg }}
+      dangerouslySetInnerHTML={{ __html: processedSvg.svgHTML }}
     />
   );
 }

@@ -97,7 +97,8 @@ export const darkTheme: DarkTheme = {
     icon: {
       cmp: IconCmp,
       theme: {
-        invert: true,
+        convertToGrayScale: false,
+        grayScaleIconColor: '#ffffff',
       },
     },
   },

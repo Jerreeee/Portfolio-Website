@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
-import { TypeAsCSSVars } from '@/Utils/Utils';
+import { constructThemeCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
 import { MergeVariants } from '@/Utils/MergeObjects';
 
 export type NavbarTheme = {
@@ -28,10 +28,11 @@ export type NavbarTheme = {
 
 
 export function NavbarCmp() {
-  const pathname = usePathname();
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.navbar.theme;
-
+  
+  const pathname = usePathname();
+  
   const navItems = [
     { href: '/projects', label: 'Projects' },
     { href: '/about', label: 'About' },
@@ -84,11 +85,7 @@ export function NavbarCmp() {
                   hover:text-[var(--link-hover-color)]
                   ${isActive ? 'font-medium text-[var(--link-active-color)]' : ''}
                 `}
-                style={TypeAsCSSVars({
-                  '--link-color': theme.linkTextColor,
-                  '--link-hover-color': theme.linkTextHoverColor,
-                  '--link-active-color': theme.linkTextActiveColor,
-                })}
+                style={constructThemeCSSVarsFromTheme(theme)}
               >
                 {item.label}
                 {isActive && (
