@@ -2,6 +2,7 @@ import { Variants } from "framer-motion";
 
 export const anims = {
   staggerChildren: (duration: number = 0.1): Variants => ({
+    initial: {},
     animate: {
       transition: {
         when: 'beforeChildren',

@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
-import { constructThemeCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
-import { MergeVariants } from '@/Utils/MergeObjects';
+import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
+import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
+import { MotionWrapper } from '@/Components/MotionWrapper';
 
 export type NavbarTheme = {
   containerBackground: string;
@@ -40,65 +41,61 @@ export function NavbarCmp() {
     { href: '/resume', label: 'Resume' },
   ];
 
+  let test = mergeAnims(true, anims.staggerChildren(1))
+  console.log("Merge: ", test);
+
   return (
     <motion.div
-      className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50"
-      style={{
-        backgroundColor: theme.containerBackground,
-        borderBottom: `1px solid ${theme.containerBorderColor}`,
-      }}
-      variants={anims.fadeInDown()}
-      initial="initial"
-      animate="animate"
+      className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50
+      bg-[var(--containerBackground)] border-b border-[var(--containerBorderColor)]
+      "
+      style={constructCSSVarsFromTheme(theme)}
+      {...mergeAnims(true, anims.fadeInDown())}
     >
-      <motion.div variants={MergeVariants(anims.fadeInDown(), anims.hoverScale(1.035), anims.tapScale(0.9))}
-      whileHover="whileHover" whileTap="whileTap"
+      <motion.div {...mergeAnims(true, anims.fadeInDown(), anims.hoverScale(1.035), anims.tapScale(0.9))}
       >
         <Link href="/" className="font-bold text-xl transition-opacity opacity-80 hover:opacity-100">
-          <span
-            style={{
-              background: `linear-gradient(135deg, ${theme.brandGradientStart}, ${theme.brandGradientMid}, ${theme.brandGradientEnd})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              color: 'transparent', // fallback
-            }}
+          <span className="
+          bg-[linear-gradient(135deg,var(--brandGradientStart),var(--brandGradientMid),var(--brandGradientEnd))]
+          bg-clip-text text-transparent"
           >
             Jeroen Denayer
           </span>
         </Link>
       </motion.div>
-
+      
       <motion.ol className="hidden md:flex md:space-x-4"
-      variants={anims.staggerChildren(0.25)}
+      {...mergeAnims(true, anims.staggerChildren(0.2))}
       >
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <motion.li key={item.href} variants={MergeVariants(anims.fadeInDown(), anims.hoverScale(1.035), anims.tapScale(0.9))}
-            whileHover="whileHover" whileTap="whileTap"
-            >
-              <Link
-                href={item.href}
-                className={`
-                  relative rounded-md px-3 py-2 transition-colors
-                  text-[var(--link-color)]
-                  hover:text-[var(--link-hover-color)]
-                  ${isActive ? 'font-medium text-[var(--link-active-color)]' : ''}
-                `}
-                style={constructThemeCSSVarsFromTheme(theme)}
-              >
-                {item.label}
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute bottom-0 left-0 w-full h-[2px]"
-                    style={{
-                      background: theme.linkTextActiveColor,
-                    }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </Link>
+            <motion.li key={item.href} >
+              <MotionWrapper animations={[
+                { addDefaultProps: false, variants: [anims.fadeInDown()] },
+                { addDefaultProps: true, variants: [anims.hoverScale(1.035), anims.tapScale(0.9)] },
+              ]}>
+                <Link
+                  href={item.href}
+                  className={`
+                    relative rounded-md px-3 py-2 transition-colors
+                    text-[var(--link-color)]
+                    hover:text-[var(--link-hover-color)]
+                    ${isActive ? 'font-medium text-[var(--link-active-color)]' : ''}
+                  `}
+                  style={constructCSSVarsFromTheme(theme)}
+                >
+                  {item.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-0 w-full h-[2px]
+                      bg-[var(--linkTextActiveColor)]"
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              </MotionWrapper>
             </motion.li>
           );
         })}

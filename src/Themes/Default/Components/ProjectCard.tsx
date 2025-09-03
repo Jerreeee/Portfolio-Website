@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { Project } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { anims } from '@/Themes/Default/animations';
-import { MergeVariants } from '@/Utils/MergeObjects';
+import { mergeVariants } from '@/Utils/MergeObjects';
 import { motion } from 'motion/react';
-import { constructThemeCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
+import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 
 export type ProjectCardTheme = {
@@ -27,7 +27,7 @@ export function ProjectCardCmp({ project }: { project: Project }) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.card.theme;
 
-  const mergedVariants = MergeVariants(anims.fadeInUp(), anims.hoverScale());
+  const mergedVariants = mergeVariants(anims.fadeInUp(), anims.hoverScale());
 
   return (
     <motion.div
@@ -43,7 +43,7 @@ export function ProjectCardCmp({ project }: { project: Project }) {
       initial="initial"
       animate="animate"
       whileHover="whileHover"
-      style={constructThemeCSSVarsFromTheme(theme)}
+      style={constructCSSVarsFromTheme(theme)}
     >
       <Link href={`/projects/${project.slug}`}>
         {/* Image */}
@@ -79,7 +79,7 @@ export function ProjectCardCmp({ project }: { project: Project }) {
                   variants={anims.hoverScale()}
                   whileHover="whileHover"
                 >
-                  <div className="h-6 w-6">
+                  <div className="h-6">
                     <IconCmp techName={tech} />
                   </div>
                 </motion.div>

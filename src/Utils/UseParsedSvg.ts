@@ -60,8 +60,8 @@ export function useParsedSVG(ID: string, rawSvg: string): SvgParseResult | null 
 
     const walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT);
     let node = walker.nextNode();
-    console.log("ID", ID);
-    console.log("styleColors", styleColors);
+    // console.log("ID", ID);
+    // console.log("styleColors", styleColors);
 
     let colorIndex = originalColors.length;
 

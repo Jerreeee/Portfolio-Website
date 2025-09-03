@@ -6,7 +6,7 @@ export function typeAsCSSVars(vars: Record<`--${string}`, string>): React.CSSPro
  * Converts a theme object into CSS custom properties (CSS vars),
  * using the object's own keys as `--key`, and ignores boolean values.
  */
-export function constructThemeCSSVarsFromTheme<T extends Record<string, string | number | boolean>>(theme: T) {
+export function constructCSSVarsFromTheme<T extends Record<string, string | number | boolean>>(theme: T) {
     const cssVars: Record<string, string> = {};
   
     for (const key in theme) {
