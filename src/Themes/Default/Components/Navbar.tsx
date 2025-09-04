@@ -45,14 +45,14 @@ export function NavbarCmp() {
   console.log("Merge: ", test);
 
   return (
-    <motion.div
-      className="w-full py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50
-      bg-[var(--containerBackground)] border-b border-[var(--containerBorderColor)]
-      "
-      style={constructCSSVarsFromTheme(theme)}
-      {...mergeAnims(true, anims.fadeInDown())}
+    <motion.div className="w-full py-4 px-6 md:px-12 flex
+    justify-between items-center sticky top-0 z-50
+    bg-[var(--containerBackground)] border-b border-[var(--containerBorderColor)]"
+    style={constructCSSVarsFromTheme(theme)}
+    {...mergeAnims(true, anims.fadeInDown())}
     >
-      <motion.div {...mergeAnims(true, anims.fadeInDown(), anims.hoverScale(1.035), anims.tapScale(0.9))}
+      <motion.div
+      {...mergeAnims(true, anims.fadeInDown(), anims.hoverScale(1.035), anims.tapScale(0.9))}
       >
         <Link href="/" className="font-bold text-xl transition-opacity opacity-80 hover:opacity-100">
           <span className="
@@ -70,20 +70,17 @@ export function NavbarCmp() {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <motion.li key={item.href} >
-              <MotionWrapper animations={[
-                { addDefaultProps: false, variants: [anims.fadeInDown()] },
-                { addDefaultProps: true, variants: [anims.hoverScale(1.035), anims.tapScale(0.9)] },
-              ]}>
-                <Link
-                  href={item.href}
+            <motion.li key={item.href}
+            {...mergeAnims(false, anims.fadeInDown())}
+            >
+              <motion.div {...mergeAnims(true, anims.hoverScale(1.035), anims.tapScale(0.9))}> 
+                <Link href={item.href}
                   className={`
                     relative rounded-md px-3 py-2 transition-colors
-                    text-[var(--link-color)]
-                    hover:text-[var(--link-hover-color)]
-                    ${isActive ? 'font-medium text-[var(--link-active-color)]' : ''}
+                    text-[var(--linkTextColor)]
+                    hover:text-[var(--linkTextHoverColor)]
+                    ${isActive ? 'font-medium text-[var(--linkTextActiveColorolor)]' : ''}
                   `}
-                  style={constructCSSVarsFromTheme(theme)}
                 >
                   {item.label}
                   {isActive && (
@@ -95,7 +92,7 @@ export function NavbarCmp() {
                     />
                   )}
                 </Link>
-              </MotionWrapper>
+              </motion.div>
             </motion.li>
           );
         })}
