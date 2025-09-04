@@ -23,15 +23,6 @@ export type ProjectCardTheme = {
   techIconColor: string;
 };
 
-const wrapperVariants = {
-  hidden: { opacity: 0, y: 10 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.3 }
-  }
-};
-
 export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.card.theme;
@@ -75,10 +66,10 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
           {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
           >
             {project.technologies?.map((tech) => (
-              <motion.div
+              <motion.div key={tech}
               {...mergeAnims(false, anims.fadeInUp(20, 0.2))}
               >
-                <motion.div key={tech} className="h-6"
+                <motion.div className="h-6"
                 {...mergeAnims(true, anims.hoverScale())}
                 >
                   <IconCmp techName={tech} />

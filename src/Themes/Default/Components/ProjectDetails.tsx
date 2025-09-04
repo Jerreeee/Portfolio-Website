@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { ProjectInfo } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 
-export default function ThemedProjectDetailsCmp({ project }: { project: ProjectInfo }) {
-  const { theme } = useTheme();
-  const ProjectDetailsCmp = theme.components.projectDetails.cmp;
-  return <ProjectDetailsCmp project={project} />;
-}
+// export default function ThemedProjectDetailsCmp({ project }: { project: ProjectInfo }) {
+//   const { theme } = useTheme();
+//   const ProjectDetailsCmp = theme.components.projectDetails.cmp;
+//   return <ProjectDetailsCmp project={project} />;
+// }
 
 export function ProjectDetailsCmp({ project }: { project: ProjectInfo }) {
   const { theme } = useTheme();
