@@ -59,7 +59,7 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
 
         {/* Content */}
         <motion.div className="p-4 space-y-2"
-          {...mergeAnims(true, anims.staggerChildren(0.5))}
+          {...mergeAnims(true, anims.staggerChildren(0.2))}
         >
           <motion.h2 className="text-xl font-semibold text-[var(--titleTextColor)]"
           {...mergeAnims(false, anims.fadeInUp())}
@@ -72,11 +72,11 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
             {project.shortDescription}
           </motion.p>
           <motion.div className="flex space-x-2"
-          {...mergeAnims(false, anims.staggerChildren(0.1), anims.fadeIn(0))}
+          {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
           >
             {project.technologies?.map((tech) => (
               <motion.div
-              {...mergeAnims(false, anims.fadeInUp())}
+              {...mergeAnims(false, anims.fadeInUp(20, 0.2))}
               >
                 <motion.div key={tech} className="h-6"
                 {...mergeAnims(true, anims.hoverScale())}
