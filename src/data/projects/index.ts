@@ -1,7 +1,7 @@
-import { Project } from '@/data/projects/project'
-import { BubbleBobbleProject } from './BubbleBobble/data';
+import { ProjectInfo } from '@/data/projects/project'
+import { BubbleBobbleProjectInfo } from '@/data/projects/BubbleBobble/data';
 
-const SpaceInvadersProject : Project = {
+const SpaceInvadersProject : ProjectInfo = {
   slug: 'spaceinvaders',
   title: 'Space Invaders',
   thumbnailImage: '/projects/SpaceInvaders/thumbnail.webp',
@@ -15,7 +15,7 @@ const SpaceInvadersProject : Project = {
   `,
 };
 
-const PersonalBlogProject : Project = {
+const PersonalBlogProject : ProjectInfo = {
   slug: 'personalblog',
   title: 'Personal Blog',
   thumbnailImage: '/projects/PersonalBlog/thumbnail.webp',
@@ -29,7 +29,7 @@ const PersonalBlogProject : Project = {
   `,
 };
 
-const WeatherAppProject : Project = {
+const WeatherAppProject : ProjectInfo = {
   slug: 'weatherapp',
   title: 'Weather App',
   thumbnailImage: '/projects/WeatherApp/thumbnail.webp',
@@ -43,7 +43,7 @@ const WeatherAppProject : Project = {
   `,
 };
 
-const EcommerceStoreProject : Project = {
+const EcommerceStoreProject : ProjectInfo = {
   slug: 'ecommerce',
   title: 'E‑commerce Store',
   thumbnailImage: '/projects/EcommerceStore/thumbnail.webp',
@@ -57,7 +57,7 @@ const EcommerceStoreProject : Project = {
   `,
 };
 
-const SaaSDashboardProject : Project = {
+const SaaSDashboardProject : ProjectInfo = {
   slug: 'saasdashboard',
   title: 'SaaS Dashboard',
   thumbnailImage: '/projects/SaaSDashboard/thumbnail.webp',
@@ -71,7 +71,7 @@ const SaaSDashboardProject : Project = {
   `,
 };
 
-const PuzzleGameProject : Project = {
+const PuzzleGameProject : ProjectInfo = {
   slug: 'puzzlegame',
   title: 'Puzzle Game',
   thumbnailImage: '/projects/PuzzleGame/thumbnail.webp',
@@ -85,7 +85,7 @@ const PuzzleGameProject : Project = {
   `,
 };
 
-const MusicAppProject : Project = {
+const MusicAppProject : ProjectInfo = {
   slug: 'musicapp',
   title: 'Music App',
   thumbnailImage: '/projects/MusicApp/thumbnail.webp',
@@ -101,7 +101,7 @@ const MusicAppProject : Project = {
 
 
 export const projects = [
-  BubbleBobbleProject,
+  BubbleBobbleProjectInfo,
   SpaceInvadersProject,
   PersonalBlogProject,
   WeatherAppProject,

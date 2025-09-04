@@ -1,16 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { Project } from '@/data/projects/project';
+import { ProjectInfo } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 
-export default function ThemedProjectDetailsCmp({ project }: { project: Project }) {
+export default function ThemedProjectDetailsCmp({ project }: { project: ProjectInfo }) {
   const { theme } = useTheme();
   const ProjectDetailsCmp = theme.components.projectDetails.cmp;
   return <ProjectDetailsCmp project={project} />;
 }
 
-export function ProjectDetailsCmp({ project }: { project: Project }) {
+export function ProjectDetailsCmp({ project }: { project: ProjectInfo }) {
   const { theme } = useTheme();
   const textStyle = { color: theme.colors.foreground };
 

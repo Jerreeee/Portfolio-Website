@@ -1,4 +1,6 @@
-export type Project = {
+import { ReactNode } from "react";
+
+export type ProjectInfo = {
   slug: string;
   title: string;
   thumbnailImage: string;
@@ -6,4 +8,6 @@ export type Project = {
   technologies: string[];
   shortDescription: string;
   longDescription: string;
+
+   Component?: () => ReactNode;
 };

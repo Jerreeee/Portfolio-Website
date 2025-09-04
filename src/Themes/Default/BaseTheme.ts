@@ -1,5 +1,5 @@
 import type { BaseTheme } from '@/Themes/BaseTheme';
-import type { Project } from '@/data/projects/project';
+import type { ProjectInfo } from '@/data/projects/project';
 import type { NavbarTheme } from '@/Themes/Default/Components/Navbar';
 import type { ProjectsOverviewTheme } from '@/Themes/Default/Components/ProjectsOverview';
 import type { ProjectCardTheme } from '@/Themes/Default/Components/ProjectCard';
@@ -50,10 +50,10 @@ export type DefaultTheme = BaseTheme & {
       theme: ProjectsOverviewTheme;
     };
     projectDetails: {
-      cmp: React.ComponentType<{ project: Project }>;
+      cmp: React.ComponentType<{ project: ProjectInfo }>;
     };
     card: {
-      cmp: React.ComponentType<{ project:  Project }>;
+      cmp: React.ComponentType<{ project:  ProjectInfo }>;
       theme: ProjectCardTheme;
     };
     icon: {

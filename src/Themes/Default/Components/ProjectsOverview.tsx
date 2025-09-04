@@ -48,21 +48,17 @@ export function ProjectsOverviewCmp() {
         <motion.div className="w-full sm:w-[70%] mx-auto">
           <motion.h1
             className="text-4xl text-center font-bold"
-            variants={anims.fadeInUp()}
-            initial="initial"
-            animate="animate"
+            {...mergeAnims(true, anims.fadeInUp())}
           >
             <span style={gradientText}>Featured</span>
           </motion.h1>
 
           <motion.div
             className="grid gap-6 mt-4 grid-cols-1 md:grid-cols-2"
-            variants={anims.staggerChildren(0.2)}
-            initial="initial"
-            animate="animate"
+            {...mergeAnims(true, anims.staggerChildren(0.2))}
           >
             {projects.map((project) => (
-              <motion.div key={project.slug} variants={anims.fadeInUp()}>
+              <motion.div key={project.slug} {...mergeAnims(false, anims.fadeInUp())}>
                 <ProjectCardCmp project={project} />
               </motion.div>
             ))}

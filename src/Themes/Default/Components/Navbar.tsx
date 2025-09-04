@@ -41,9 +41,6 @@ export function NavbarCmp() {
     { href: '/resume', label: 'Resume' },
   ];
 
-  let test = mergeAnims(true, anims.staggerChildren(1))
-  console.log("Merge: ", test);
-
   return (
     <motion.div className="w-full py-4 px-6 md:px-12 flex
     justify-between items-center sticky top-0 z-50

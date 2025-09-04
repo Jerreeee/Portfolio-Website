@@ -1,42 +1,43 @@
 import { Variants } from "framer-motion";
+import { mergeVariants } from '@/Utils/MergeObjects'
 
 export const anims = {
-  staggerChildren: (duration: number = 0.1): Variants => ({
+  staggerChildren: (duration: number = 0.1, delayChildren = 0): Variants => ({
     initial: {},
     animate: {
       transition: {
         when: 'beforeChildren',
         staggerChildren: duration,
+        delayChildren: delayChildren,
       },
     },
   }),
 
-  fadeInDown: (offset: number = 10, duration: number = 0.5): Variants => ({
-    initial: { opacity: 0, y: -offset },
+  fadeIn: (duration: number = 0.5): Variants => ({
+    initial: { opacity: 0 },
     animate: {
       opacity: 1,
-      y: 0,
       transition: { duration },
     },
   }),
 
-  fadeInUp: (offset: number = 10, duration: number = 0.5): Variants => ({
-    initial: { opacity: 0, y: offset },
+  move: (offsetX: number = 10, offsetY: number = 10, duration: number = 0.5): Variants => ({
+    initial: { x: offsetX, y: offsetY },
     animate: {
-      opacity: 1,
-      y: 0,
+      x: 0, y: 0,
       transition: { duration },
     },
   }),
 
-  fadeInRight: (offset: number = 10, duration: number = 0.5): Variants => ({
-    initial: { opacity: 0, x: -offset },
-    animate: {
-      opacity: 1,
-      x: 0,
-      transition: { duration },
-    },
-  }),
+  fadeInDown: (offsetY: number = 10, duration: number = 0.5): Variants => {
+      return mergeVariants(anims.fadeIn(duration), anims.move(0, -offsetY, duration)
+    );
+  },
+
+  fadeInUp: (offsetY: number = 10, duration: number = 0.5): Variants => {
+      return mergeVariants(anims.fadeIn(duration), anims.move(0, offsetY, duration)
+    );
+  },
 
   hoverScale: (scale: number = 1.25, duration: number = 0.2): Variants => ({
     whileHover: {

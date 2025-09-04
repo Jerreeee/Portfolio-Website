@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Project } from '@/data/projects/project';
+import { ProjectInfo } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { anims } from '@/Themes/Default/animations';
 import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
@@ -23,7 +23,16 @@ export type ProjectCardTheme = {
   techIconColor: string;
 };
 
-export function ProjectCardCmp({ project }: { project: Project }) {
+const wrapperVariants = {
+  hidden: { opacity: 0, y: 10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3 }
+  }
+};
+
+export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.card.theme;
 
@@ -62,24 +71,20 @@ export function ProjectCardCmp({ project }: { project: Project }) {
           >
             {project.shortDescription}
           </motion.p>
-          <motion.div
-          {...mergeAnims(false, anims.fadeInUp())}
+          <motion.div className="flex space-x-2"
+          {...mergeAnims(false, anims.staggerChildren(0.1), anims.fadeIn(0))}
           >
-            <motion.div className="flex space-x-2"
-            {...mergeAnims(true, anims.staggerChildren(0.25))}
-            >
-              {project.technologies?.map((tech) => (
-                <motion.div key={tech}
-                {...mergeAnims(false, anims.fadeInUp(20))}
+            {project.technologies?.map((tech) => (
+              <motion.div
+              {...mergeAnims(false, anims.fadeInUp())}
+              >
+                <motion.div key={tech} className="h-6"
+                {...mergeAnims(true, anims.hoverScale())}
                 >
-                  <motion.div  className="h-6"
-                  {...mergeAnims(true, anims.hoverScale())}
-                  >
-                    <IconCmp techName={tech} />
-                  </motion.div>
+                  <IconCmp techName={tech} />
                 </motion.div>
-              ))}
-            </motion.div>
+              </motion.div>
+            ))}
           </motion.div>
         </motion.div>
       </Link>

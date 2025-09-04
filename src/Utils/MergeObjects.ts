@@ -1,67 +1,113 @@
 import type { Variants, MotionProps } from 'motion/react';
 
-function isObject(value: unknown): value is Record<string, unknown> {
+function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-function deepMergePreserveLeaves(target: any, source: any): any {
-  const result = { ...target };
+function arraysEqual(a: unknown[], b: unknown[]) {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
 
-  for (const key in source) {
-    const sourceVal = source[key];
-    const targetVal = result[key];
+/**
+ * Deep-merge two objects.
+ * - If both sides are plain objects: recurse.
+ * - If both sides are arrays: they must be identical, else error (no array merge semantics).
+ * - If both sides are leaves (primitives/functions/etc.): they must be strictly equal, else error.
+ * - If one side is object/array and the other is not: error (type conflict).
+ * - If one side is undefined: return the other.
+ * Throws with the exact conflicting path when a leaf conflict occurs.
+ */
+function deepMergeOrThrowOnLeafConflict(
+  target: any,
+  source: any,
+  path: string[] = []
+): any {
+  // Fast paths for undefined
+  if (target === undefined) return source;
+  if (source === undefined) return target;
 
-    if (isObject(sourceVal) && isObject(targetVal)) {
-      result[key] = deepMergePreserveLeaves(targetVal, sourceVal);
-    } else if (targetVal === undefined) {
-      result[key] = sourceVal;
+  // Both plain objects -> recurse
+  if (isPlainObject(target) && isPlainObject(source)) {
+    const out: Record<string, any> = { ...target };
+    const keys = new Set([...Object.keys(target), ...Object.keys(source)]);
+    for (const key of keys) {
+      out[key] = deepMergeOrThrowOnLeafConflict(
+        target[key],
+        source[key],
+        [...path, key]
+      );
     }
-    // If target already has a non-object value, we keep it (don't overwrite)
+    return out;
   }
 
-  return result;
+  // Both arrays -> must be identical
+  if (Array.isArray(target) && Array.isArray(source)) {
+    if (arraysEqual(target, source)) return target;
+    throw new Error(
+      `mergeAnims: conflicting array at "${path.join('.')}" (${JSON.stringify(
+        target
+      )} vs ${JSON.stringify(source)})`
+    );
+  }
+
+  // Type mismatch (one object/array, one not) -> conflict
+  const targetIsObj = isPlainObject(target) || Array.isArray(target);
+  const sourceIsObj = isPlainObject(source) || Array.isArray(source);
+  if (targetIsObj !== sourceIsObj) {
+    throw new Error(
+      `mergeAnims: type conflict at "${path.join('.')}" (${typeof target} vs ${typeof source})`
+    );
+  }
+
+  // Both leaves -> must be strictly equal
+  if (target !== source) {
+    throw new Error(
+      `mergeAnims: conflicting leaf at "${path.join('.')}" (${JSON.stringify(
+        target
+      )} vs ${JSON.stringify(source)})`
+    );
+  }
+  return target; // equal leaves
 }
 
 export function mergeVariants(...variants: Variants[]): Variants {
   let merged: Variants = {};
-
   for (const variant of variants) {
     for (const key in variant) {
-      merged[key] = deepMergePreserveLeaves(merged[key] || {}, variant[key] || {});
+      merged[key] = deepMergeOrThrowOnLeafConflict(
+        merged[key],
+        (variant as any)[key],
+        [key]
+      );
     }
   }
-
   return merged;
 }
 
 /**
  * Merge multiple Variants into MotionProps
  * - Deep merges all variants
- * - Auto-assigns props when a variant key matches a MotionProp key
+ * - Auto-assigns props when a variant key matches a MotionProp key (e.g., "initial", "animate", "exit")
+ * - Throws ONLY on conflicting leaf values (or incompatible types)
  */
 export function mergeAnims(addDefaultProps: boolean, ...variants: Variants[]): MotionProps {
   const merged: MotionProps = { variants: {} };
 
   for (const variant of variants) {
     for (const key in variant) {
-      const existing = (merged.variants as any)[key];
-      const incoming = (variant as any)[key];
-
-      if (existing && Object.keys(incoming).length > 0) {
-        throw new Error(
-          `mergeAnims: duplicate variant key "${key}" detected. 
-           You tried to merge multiple animations that both define "${key}".`
-        );
-      }
-
-      (merged.variants as any)[key] = deepMergePreserveLeaves(
-        existing || {},
-        incoming || {}
+      (merged.variants as any)[key] = deepMergeOrThrowOnLeafConflict(
+        (merged.variants as any)[key],
+        (variant as any)[key],
+        [key]
       );
     }
   }
 
-  // Auto-assign matching props
+  // Auto-assign matching props (kept as-is from your original behavior)
   if (addDefaultProps && merged.variants) {
     for (const key in merged.variants) {
       if ((merged as any)[key] === undefined) {
