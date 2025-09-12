@@ -1,13 +1,14 @@
 import { ReactNode } from "react";
 
-export type ProjectInfo = {
+export type ProjectRequiredInfo = {
   slug: string;
   title: string;
   thumbnailImage: string;
   heroImage: string;
   technologies: string[];
   shortDescription: string;
-  longDescription: string;
+}
 
-   Component?: () => ReactNode;
+export type ProjectInfo = ProjectRequiredInfo & {
+  Component?: () => ReactNode;
 };

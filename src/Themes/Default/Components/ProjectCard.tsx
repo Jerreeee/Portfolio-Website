@@ -2,13 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ProjectInfo } from '@/data/projects/project';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { anims } from '@/Themes/Default/animations';
 import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
 import { motion } from 'motion/react';
 import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
+import { ProjectInfo } from '@/data/projects/project'
 
 export type ProjectCardTheme = {
   bgColor: string;
