@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {useParsedSVG} from '@/Utils/UseParsedSVG';
-import { icons, IconKey, IconData } from '@/Icons';
+import { icons, IconKey, IconData } from '@/data/Icons';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { toGrayScale, applyTint } from '@/Utils/Color';
 
@@ -31,7 +31,6 @@ export function IconCmp({ techName, className, style }: IconProps) {
   const processedSvg = useParsedSVG(techName, iconEntry.rawSvg);
   if (!processedSvg)
     return null;
-
 
   const colorVars: Record<string, string> = {};
   //Modify colors based on theme settings

@@ -91,19 +91,34 @@ export function useParsedSVG(ID: string, rawSvg: string): SvgParseResult | null 
 
     // Aspect ratio
     let aspectRatio: number | undefined;
-    const viewBox = svg.getAttribute("viewBox");
+    let viewBox = svg.getAttribute("viewBox");
+
     if (viewBox) {
       const [, , wStr, hStr] = viewBox.trim().split(/\s+/);
       const width = parseFloat(wStr);
       const height = parseFloat(hStr);
+      if (width && height) aspectRatio = width / height;
+    } else {
+      // If no viewBox, derive from width/height
+      const widthAttr = svg.getAttribute("width");
+      const heightAttr = svg.getAttribute("height");
+      const width = widthAttr ? parseFloat(widthAttr) : undefined;
+      const height = heightAttr ? parseFloat(heightAttr) : undefined;
       if (width && height) {
         aspectRatio = width / height;
-        svg.setAttribute("width", "100%");
-        svg.setAttribute("height", "100%");
-        svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-        svg.style.display = "block";
-        svg.style.aspectRatio = `${width} / ${height}`;
+        svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
       }
+    }
+
+    svg.removeAttribute("width");
+    svg.removeAttribute("height");
+
+    if (aspectRatio) {
+      svg.setAttribute("width", "100%");
+      svg.setAttribute("height", "100%");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      svg.style.display = "block";
+      svg.style.aspectRatio = aspectRatio.toString();
     }
 
     const result: SvgParseResult = {

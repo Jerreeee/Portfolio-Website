@@ -4,6 +4,7 @@ import type { NavbarTheme } from '@/Themes/Default/Components/Navbar';
 import type { ProjectsOverviewTheme } from '@/Themes/Default/Components/ProjectsOverview';
 import type { ProjectCardTheme } from '@/Themes/Default/Components/ProjectCard';
 import type { IconTheme, IconProps } from '@/Themes/Default/Components/Icon';
+import type { TextTheme, TextProps } from '@/Themes/Default/Components/Text';
 
 export type DefaultTheme = BaseTheme & {
   name: string;
@@ -60,5 +61,13 @@ export type DefaultTheme = BaseTheme & {
       cmp: React.ComponentType<IconProps>;
       theme: IconTheme;
     };
+    h1: {
+      cmp: React.ComponentType<TextProps>;
+      theme: TextTheme;
+    };
+    p: {
+      cmp: React.ComponentType<TextProps>;
+      theme: TextTheme;
+    }
   };
 };

@@ -1,7 +1,7 @@
-import { ProjectRequiredInfo } from '@/data/projects/project'
+import { ProjectRequiredInfo as ProjectRequiredData } from '@/data/projects/project'
 
-export const data: ProjectRequiredInfo = {
-    slug: 'bubblebobble',
+export const data: ProjectRequiredData = {
+    slug: 'BubbleBobble',
     title: 'Bubble Bobble',
     thumbnailImage: '/projects/BubbleBobble/thumbnail.webp',
     heroImage: '/projects/BubbleBobble/hero.png',

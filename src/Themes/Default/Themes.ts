@@ -4,6 +4,7 @@ import { ProjectsOverviewCmp } from "@/Themes/Default/Components/ProjectsOvervie
 import { ProjectDetailsCmp } from "@/Themes/Default/Components/ProjectDetails";
 import { ProjectCardCmp } from "@/Themes/Default/Components/ProjectCard";
 import { IconCmp } from "@/Themes/Default/Components/Icon";
+import * as Text from "@/Themes/Default/Components/Text"
 
 export type DarkTheme = DefaultTheme & {
   name: 'Dark';
@@ -48,13 +49,13 @@ export const darkTheme: DarkTheme = {
       theme: {
         containerBackground: '#141418',
         containerBorderColor: '#3fa0ff',
-      
+
         brandGradientStart: '#3fa0ff',
         brandGradientMid: '#7b72f0',
         brandGradientEnd: '#ec38bc',
-      
+
         brandTextColor: '#ec38bc', // fallback or non-gradient context
-      
+
         linkTextColor: '#888888',
         linkTextHoverColor: '#d0d0d0',
         linkTextActiveColor: '#7b72f0',
@@ -65,12 +66,12 @@ export const darkTheme: DarkTheme = {
       theme: {
         sectionBgColor: '#0b0b0d',
         sectionBgGradientStart: '#151a2c', // Dark blue-violet base
-        sectionBgGradientEnd:   '#221730', // Deep purple-gray
-    
+        sectionBgGradientEnd: '#221730', // Deep purple-gray
+
         titleGradientStart: '#3fa0ff', // Vibrant blue
-        titleGradientMid:   '#7b72f0', // Electric lavender
-        titleGradientEnd:   '#ec38bc', // Bright pinkish-purple for punch
-    
+        titleGradientMid: '#7b72f0', // Electric lavender
+        titleGradientEnd: '#ec38bc', // Bright pinkish-purple for punch
+
         ctaButtonBgColor: '#f0f0f0',
         ctaButtonTextColor: '#0b0b0d',
       },
@@ -81,17 +82,14 @@ export const darkTheme: DarkTheme = {
     card: {
       cmp: ProjectCardCmp,
       theme: {
-        bgColor: '#1a1b20',            // Slightly lighter than navbar/section background
-        bgHoverColor: '#2a2b32',       // Subtle lift on hover
-      
+        bgColor: '#141519',    // darker than #1a1b20
+        bgHoverColor: '#1f2027', // darker than #2a2b32
+
         borderRadius: 12,
         shadowColor: 'rgba(0, 0, 0, 0.3)',
-      
-        titleTextColor: '#f0f0f0',     // Soft white for titles
+
+        titleTextColor: '#F0F0F0', // Soft white for titles
         descriptionTextColor: '#aaaaaa', // Muted gray for secondary text
-      
-        forceTechIconColor: false,
-        techIconColor: '#b0c4ff',      // Soft pastel blue
       },
     },
     icon: {
@@ -101,5 +99,21 @@ export const darkTheme: DarkTheme = {
         grayScaleIconColor: '#FFFFFF',
       },
     },
+    h1: {
+      cmp: Text.H1,
+      theme: {
+        fontSize: "20px",
+        fontWeight: "normal",
+        color: "#FFFFFF",
+      }
+    },
+    p: {
+      cmp: Text.Paragraph,
+      theme: {
+        fontSize: "10px",
+        fontWeight: "normal",
+        color: "#FFFFFF"
+      }
+    }
   },
 };

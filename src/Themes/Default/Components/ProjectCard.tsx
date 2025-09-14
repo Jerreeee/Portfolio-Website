@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { anims } from '@/Themes/Default/animations';
 import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
-import { motion } from 'motion/react';
 import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 import { ProjectInfo } from '@/data/projects/project'
@@ -18,14 +18,14 @@ export type ProjectCardTheme = {
 
   titleTextColor: string;
   descriptionTextColor: string;
-
-  forceTechIconColor: boolean;
-  techIconColor: string;
 };
 
 export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.card.theme;
+
+  const H1 = activeTheme.components.h1.cmp;
+  const P = activeTheme.components.p.cmp;
 
   return (
     <motion.div className="
@@ -52,15 +52,21 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
         <motion.div className="p-4 space-y-2"
           {...mergeAnims(true, anims.staggerChildren(0.2))}
         >
-          <motion.h2 className="text-xl font-semibold text-[var(--titleTextColor)]"
-          {...mergeAnims(false, anims.fadeInUp())}
-          >
-            {project.title}
-          </motion.h2>
-          <motion.p className="text-[var(--descriptionTextColor)]"
-          {...mergeAnims(false, anims.fadeInUp())}
-          >
-            {project.shortDescription}
+          <motion.div {...mergeAnims(false, anims.fadeInUp())} >
+            <H1
+              className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl"
+              text={project.title}
+              color={theme.titleTextColor}
+              fontSize='' fontWeight=''
+            />
+          </motion.div>
+          <motion.p {...mergeAnims(false, anims.fadeInUp())} >
+            <P
+              className="text-sm sm:text-base md:text-lg"
+              text={project.shortDescription}
+              color={theme.descriptionTextColor}
+              fontSize="" fontWeight=''
+            />
           </motion.p>
           <motion.div className="flex space-x-2"
           {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
