@@ -22,7 +22,7 @@ export type ProjectCardTheme = {
 
 export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
   const { theme: activeTheme } = useTheme();
-  const theme = activeTheme.components.card.theme;
+  const theme = activeTheme.components.projectCard.theme;
 
   const H1 = activeTheme.components.h1.cmp;
   const P = activeTheme.components.p.cmp;
@@ -60,14 +60,14 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
               fontSize='' fontWeight=''
             />
           </motion.div>
-          <motion.p {...mergeAnims(false, anims.fadeInUp())} >
+          <motion.div {...mergeAnims(false, anims.fadeInUp())} >
             <P
               className="text-sm sm:text-base md:text-lg"
               text={project.shortDescription}
               color={theme.descriptionTextColor}
               fontSize="" fontWeight=''
             />
-          </motion.p>
+          </motion.div>
           <motion.div className="flex space-x-2"
           {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
           >

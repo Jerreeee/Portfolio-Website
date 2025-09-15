@@ -12,7 +12,8 @@
   };
 
   export interface TextProps extends Partial<TextTheme> {
-    text: string;
+    text?: string;
+    children?: React.ReactNode;
     className?: string;
   }
 
@@ -20,35 +21,24 @@
     as: TextLevel; //h1' | 'h2' | 'h3' | 'h4' | 'p';
   }
 
-  export function TextBaseCmp(props: TextBaseProps) {
-    const { theme: activeTheme } = useTheme();
+export function TextBaseCmp(props: TextBaseProps) {
+  const { theme: activeTheme } = useTheme();
+  const theme: TextTheme = (activeTheme.components as any)[props.as].theme;
 
-    // dynamically select the right theme
-    const theme: TextTheme = (activeTheme.components as any)[props.as].theme;
+  const Tag = props.as as keyof JSX.IntrinsicElements;
 
-    // decide which tag to render
-    const Tag = props.as as keyof JSX.IntrinsicElements;
+  const style: React.CSSProperties = {};
 
-    const style: React.CSSProperties = {};
+  if (props.fontSize)   style.fontSize = props.fontSize ?? theme.fontSize;
+  if (props.fontWeight) style.fontWeight = props.fontWeight ?? theme.fontWeight;
+  if (props.color)      style.color = props.color ?? theme.color;
 
-    if (props.fontSize !== '')
-      style.fontSize = props.fontSize ?? theme.fontSize;
-    
-    if (props.fontWeight !== '')
-      style.fontWeight = props.fontWeight ?? theme.fontWeight;
-    
-    if (props.color !== '')
-      style.color = props.color ?? theme.color;
-
-    return (
-      <Tag
-        className={props.className ?? ''}
-        style={style}
-      >
-        {props.text}
-      </Tag>
-    );
-  }
+  return (
+    <Tag className={props.className ?? ''} style={style}>
+      {props.children ?? props.text}
+    </Tag>
+  );
+}
 
   //Presets
 

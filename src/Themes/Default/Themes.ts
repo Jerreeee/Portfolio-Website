@@ -1,14 +1,17 @@
 import { DefaultTheme } from "@/Themes/Default/BaseTheme";
-import { NavbarCmp } from "@/Themes/Default/Components/Navbar";
-import { ProjectsOverviewCmp } from "@/Themes/Default/Components/ProjectsOverview";
-import { ProjectDetailsCmp } from "@/Themes/Default/Components/ProjectDetails";
-import { ProjectCardCmp } from "@/Themes/Default/Components/ProjectCard";
-import { IconCmp } from "@/Themes/Default/Components/Icon";
+import { NavbarCmp, NavbarTheme } from "@/Themes/Default/Components/Navbar";
+import { ProjectsOverviewCmp, ProjectsOverviewTheme } from "@/Themes/Default/Components/ProjectsOverview";
+import { ProjectCardCmp, ProjectCardTheme } from "@/Themes/Default/Components/ProjectCard";
+import { IconCmp, IconTheme } from "@/Themes/Default/Components/Icon";
 import * as Text from "@/Themes/Default/Components/Text"
 
-export type DarkTheme = DefaultTheme & {
-  name: 'Dark';
-};
+export type DarkTheme = DefaultTheme<
+  NavbarTheme,
+  ProjectsOverviewTheme,
+  ProjectCardTheme,
+  IconTheme,
+  Text.TextTheme
+> & { name: 'Dark'; };
 
 const darkColors = {
   background: '#0b0b0d',           // almost black
@@ -42,7 +45,6 @@ const darkColors = {
 export const darkTheme: DarkTheme = {
   name: 'Dark',
   colors: darkColors,
-  invertIconColor: true,
   components: {
     navbar: {
       cmp: NavbarCmp,
@@ -76,10 +78,7 @@ export const darkTheme: DarkTheme = {
         ctaButtonTextColor: '#0b0b0d',
       },
     },
-    projectDetails: {
-      cmp: ProjectDetailsCmp,
-    },
-    card: {
+    projectCard: {
       cmp: ProjectCardCmp,
       theme: {
         bgColor: '#141519',    // darker than #1a1b20
@@ -102,7 +101,7 @@ export const darkTheme: DarkTheme = {
     h1: {
       cmp: Text.H1,
       theme: {
-        fontSize: "20px",
+        fontSize: "50px",
         fontWeight: "normal",
         color: "#FFFFFF",
       }
@@ -110,7 +109,7 @@ export const darkTheme: DarkTheme = {
     p: {
       cmp: Text.Paragraph,
       theme: {
-        fontSize: "10px",
+        fontSize: "20px",
         fontWeight: "normal",
         color: "#FFFFFF"
       }

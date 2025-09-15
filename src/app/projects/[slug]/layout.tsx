@@ -2,21 +2,24 @@ import Link from 'next/link';
 
 export default function ProjectSlugLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto p-4">
-        {/* Left Sidebar */}
-        <div className="md:col-span-1">
-          <aside className="sticky top-10">
-            <Link
-              href="/projects"
-              className="text-gray-600 dark:text-gray-300 hover:underline"
-            >
-              ← Back to Projects
-            </Link>
-          </aside>
-        </div>
+ <div className="grid grid-cols-[1fr_70%_1fr] gap-8 p-4">
+      {/* Left column (auto-sizing)*/}
+      <aside className="sticky top-10 justify-self-start">
+        <Link
+          href="/projects"
+          className="text-gray-600 dark:text-gray-300 hover:underline"
+        >
+          ← Back to Projects
+        </Link>
+      </aside>
 
-        {/* Main Content Area */}
-        <div className="md:col-span-2">{children}</div>
+      {/* Center column – fixed 70% width */}
+      <main>
+        {children}
+      </main>
+
+      {/* Right column (auto-sizing)*/}
+      <div />
     </div>
   );
 }

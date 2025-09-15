@@ -1,12 +1,21 @@
 import type { BaseTheme } from '@/Themes/BaseTheme';
 import type { ProjectInfo } from '@/data/projects/project';
-import type { NavbarTheme } from '@/Themes/Default/Components/Navbar';
-import type { ProjectsOverviewTheme } from '@/Themes/Default/Components/ProjectsOverview';
-import type { ProjectCardTheme } from '@/Themes/Default/Components/ProjectCard';
-import type { IconTheme, IconProps } from '@/Themes/Default/Components/Icon';
-import type { TextTheme, TextProps } from '@/Themes/Default/Components/Text';
+import type { IconProps } from '@/Themes/Default/Components/Icon';
+import type { TextProps } from '@/Themes/Default/Components/Text';
 
-export type DefaultTheme = BaseTheme & {
+type ComponentDefinition<P extends object, TTheme> = {
+  cmp: React.ComponentType<P>;
+  theme: TTheme;
+};
+
+export type DefaultTheme<
+  NavbarT = unknown,
+  ProjectsOverviewT = unknown,
+  CardT = unknown,
+  IconT = unknown,
+  H1T = unknown,
+  PT = unknown
+> = BaseTheme & {
   name: string;
   colors: {
     // Base colors
@@ -40,34 +49,12 @@ export type DefaultTheme = BaseTheme & {
     link: string;              // Link color (can match or differ from highlight)
     linkHover: string;
   };
-  invertIconColor: boolean;
   components: {
-    navbar: {
-      cmp: React.ComponentType;
-      theme: NavbarTheme;
-    };
-    projectsOverview: {
-      cmp: React.ComponentType;
-      theme: ProjectsOverviewTheme;
-    };
-    projectDetails: {
-      cmp: React.ComponentType<{ project: ProjectInfo }>;
-    };
-    card: {
-      cmp: React.ComponentType<{ project:  ProjectInfo }>;
-      theme: ProjectCardTheme;
-    };
-    icon: {
-      cmp: React.ComponentType<IconProps>;
-      theme: IconTheme;
-    };
-    h1: {
-      cmp: React.ComponentType<TextProps>;
-      theme: TextTheme;
-    };
-    p: {
-      cmp: React.ComponentType<TextProps>;
-      theme: TextTheme;
-    }
+    navbar: ComponentDefinition<{}, NavbarT>;
+    projectsOverview: ComponentDefinition<{}, ProjectsOverviewT>;
+    projectCard: ComponentDefinition<{ project: ProjectInfo }, CardT>;
+    icon: ComponentDefinition<IconProps, IconT>;
+    h1: ComponentDefinition<TextProps, H1T>;
+    p: ComponentDefinition<TextProps, PT>;
   };
 };
