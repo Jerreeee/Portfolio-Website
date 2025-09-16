@@ -39,22 +39,26 @@ export function ProjectsOverviewCmp() {
   };
 
   const ProjectCardCmp = activeTheme.components.projectCard.cmp;
+  const H1 = activeTheme.components.h1.cmp;
 
   return (
     <main
-      className="w-full pt-5 min-h-screen"
+      className="w-full min-h-screen"
       style={backgroundGradient}
     >
       <motion.div className="w-full sm:w-[70%] mx-auto">
-        <motion.h1
-          className="text-4xl text-center font-bold"
-          {...mergeAnims(true, anims.fadeInUp())}
-        >
-          <span style={gradientText}>Featured</span>
-        </motion.h1>
+        <motion.div style={{marginBottom: "0px", marginTop: '0px'}} {...mergeAnims(true, anims.fadeInUp())} >
+          <div className="text-center">
+            <span style={gradientText}>
+              <H1 style={{...gradientText, display: 'inline-block'}} >
+                Featured
+              </H1>
+            </span>
+          </div>
+        </motion.div>
 
         <motion.div
-          className="grid gap-6 mt-4 grid-cols-1 md:grid-cols-2"
+          className="grid gap-6 grid-cols-1 md:grid-cols-2"
           {...mergeAnims(true, anims.staggerChildren(0.2))}
         >
           {projects.map((project) => (

@@ -45,28 +45,25 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
             src={project.thumbnailImage}
             alt={project.title}
             fill
+            priority
           />
         </div>
 
         {/* Content */}
-        <motion.div className="p-4 space-y-2"
+        <motion.div className="p-2 space-y-2 flex flex-col items-center"
           {...mergeAnims(true, anims.staggerChildren(0.2))}
         >
           <motion.div {...mergeAnims(false, anims.fadeInUp())} >
-            <H1
-              className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl"
-              text={project.title}
-              color={theme.titleTextColor}
-              fontSize='' fontWeight=''
-            />
-          </motion.div>
-          <motion.div {...mergeAnims(false, anims.fadeInUp())} >
-            <P
-              className="text-sm sm:text-base md:text-lg"
-              text={project.shortDescription}
-              color={theme.descriptionTextColor}
-              fontSize="" fontWeight=''
-            />
+            <H1 className="${theme.titleTextColor}"
+              style={{
+              fontSize: 'clamp(14px, 1vw + 0.5rem, 20px)',
+              // marginTop: '0px',
+              // marginBottom: '0px',
+              margin: '0px'
+              }}
+            >
+              {project.title}
+            </H1>
           </motion.div>
           <motion.div className="flex space-x-2"
           {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
@@ -75,7 +72,7 @@ export function ProjectCardCmp({ project }: { project: ProjectInfo }) {
               <motion.div key={tech}
               {...mergeAnims(false, anims.fadeInUp(20, 0.2))}
               >
-                <motion.div className="h-6"
+                <motion.div className="h-4"
                 {...mergeAnims(true, anims.hoverScale())}
                 >
                   <IconCmp techName={tech} />

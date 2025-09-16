@@ -6,15 +6,12 @@
   export type TextLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'p';
 
   export type TextTheme = {
-    fontSize: string;
-    fontWeight: string;
-    color: string;
+    className?: string;
+    style?: React.CSSProperties;
   };
 
   export interface TextProps extends Partial<TextTheme> {
-    text?: string;
     children?: React.ReactNode;
-    className?: string;
   }
 
   export interface TextBaseProps extends TextProps {
@@ -27,15 +24,17 @@ export function TextBaseCmp(props: TextBaseProps) {
 
   const Tag = props.as as keyof JSX.IntrinsicElements;
 
-  const style: React.CSSProperties = {};
+  // Merge theme and prop styles. props.style overrides theme.style
+  const finalStyle: React.CSSProperties = {
+    ...(theme.style ?? {}),
+    ...(props.style ?? {}),
+  };
 
-  if (props.fontSize)   style.fontSize = props.fontSize ?? theme.fontSize;
-  if (props.fontWeight) style.fontWeight = props.fontWeight ?? theme.fontWeight;
-  if (props.color)      style.color = props.color ?? theme.color;
+   const finalClassName = [theme.className, props.className].filter(Boolean).join(' ');
 
   return (
-    <Tag className={props.className ?? ''} style={style}>
-      {props.children ?? props.text}
+    <Tag className={finalClassName} style={finalStyle}>
+      {props.children}
     </Tag>
   );
 }

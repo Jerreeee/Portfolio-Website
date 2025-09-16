@@ -6,5 +6,5 @@ export const data: ProjectRequiredInfo = {
     thumbnailImage: '/projects/VulkanDeferredRenderer/PostProcess_Final_Outdoor.webp',
     heroImage: '/projects/VulkanDeferredRenderer/PostProcess_Final_Outdoor.webp',
     technologies: ['Vulkan', 'NVidia', 'RenderDoc', 'C++'],
-    shortDescription: 'A fun and challenging Bubble Bobble clone built with React and Node.',
+    shortDescription: 'My first ever experience with vulkan writing a deferred renderer',
 };

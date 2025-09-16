@@ -4,13 +4,18 @@ import { ProjectsOverviewCmp, ProjectsOverviewTheme } from "@/Themes/Default/Com
 import { ProjectCardCmp, ProjectCardTheme } from "@/Themes/Default/Components/ProjectCard";
 import { IconCmp, IconTheme } from "@/Themes/Default/Components/Icon";
 import * as Text from "@/Themes/Default/Components/Text"
+import { ImageCmp, ImageTheme } from '@/Themes/Default/Components/Image';
+import { MediaGalleryCmp, MediaGalleryTheme } from '@/Themes/Default/Components/MediaGallery';
 
 export type DarkTheme = DefaultTheme<
   NavbarTheme,
   ProjectsOverviewTheme,
   ProjectCardTheme,
   IconTheme,
-  Text.TextTheme
+  Text.TextTheme,
+  Text.TextTheme,
+  ImageTheme,
+  MediaGalleryTheme
 > & { name: 'Dark'; };
 
 const darkColors = {
@@ -81,7 +86,7 @@ export const darkTheme: DarkTheme = {
     projectCard: {
       cmp: ProjectCardCmp,
       theme: {
-        bgColor: '#141519',    // darker than #1a1b20
+        bgColor: '#141519', // darker than #1a1b20
         bgHoverColor: '#1f2027', // darker than #2a2b32
 
         borderRadius: 12,
@@ -101,18 +106,36 @@ export const darkTheme: DarkTheme = {
     h1: {
       cmp: Text.H1,
       theme: {
-        fontSize: "50px",
-        fontWeight: "normal",
-        color: "#FFFFFF",
-      }
+        style: {
+          display: 'block',
+          fontSize: 'clamp(24px, 4vw + 1rem, 48px)',
+          marginTop: '0.25em',
+          marginBottom: '0.25em',
+          color: '#FFFFFF',
+        },
+        className: 'font-normal sm:font-[200] md:font-semibold lg:font-bold'
+      },
     },
     p: {
       cmp: Text.Paragraph,
       theme: {
-        fontSize: "20px",
-        fontWeight: "normal",
-        color: "#FFFFFF"
+        style: {
+          fontSize: '20px',
+          fontWeight: 'normal',
+          color: '#FFFFFF',
+        }
       }
+    },
+    image: {
+      cmp: ImageCmp,
+      theme: {
+        className: 'rounded-lg ring-2 ring-white',
+        style: {}
+      }
+    },
+    mediaGallery: {
+      cmp: MediaGalleryCmp,
+      theme: {}
     }
   },
 };

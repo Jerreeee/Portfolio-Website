@@ -2,6 +2,8 @@ import type { BaseTheme } from '@/Themes/BaseTheme';
 import type { ProjectInfo } from '@/data/projects/project';
 import type { IconProps } from '@/Themes/Default/Components/Icon';
 import type { TextProps } from '@/Themes/Default/Components/Text';
+import { ImageProps } from '@/Themes/Default/Components/Image';
+import { MediaGalleryProps } from '@/Themes/Default/Components/MediaGallery';
 
 type ComponentDefinition<P extends object, TTheme> = {
   cmp: React.ComponentType<P>;
@@ -14,7 +16,9 @@ export type DefaultTheme<
   CardT = unknown,
   IconT = unknown,
   H1T = unknown,
-  PT = unknown
+  PT = unknown,
+  ImageT = unknown,
+  MediaGalleryT = unknown
 > = BaseTheme & {
   name: string;
   colors: {
@@ -56,5 +60,7 @@ export type DefaultTheme<
     icon: ComponentDefinition<IconProps, IconT>;
     h1: ComponentDefinition<TextProps, H1T>;
     p: ComponentDefinition<TextProps, PT>;
+    image: ComponentDefinition<ImageProps, ImageT>;
+    mediaGallery: ComponentDefinition<MediaGalleryProps, MediaGalleryT>;
   };
 };
