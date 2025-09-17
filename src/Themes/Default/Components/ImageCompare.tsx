@@ -122,8 +122,7 @@ export function ImageCompareCmp({ images, className }: ImageCompareProps) {
         <div className="absolute top-0 w-3 h-6 bg-white rounded-full shadow-md cursor-pointer transform -translate-x-1/2"
           style={{ left: `${sliderValue * 100}%` }}
         />
-        <input
-          type="range"
+        <input type="range"
           min={0}
           max={1}
           step="any"
