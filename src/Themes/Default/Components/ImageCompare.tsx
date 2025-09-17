@@ -1,140 +1,136 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { ImageProps } from '@/Themes/Default/Components/Image';
 
-export interface RenderCompareItem {
+export interface ImageCompareItem {
   src: string;
   alt?: string;
   imageProps?: Omit<ImageProps, 'src' | 'alt'>;
 }
 
 export interface ImageCompareProps {
-  images: RenderCompareItem[];
+  images: ImageCompareItem[];
   className?: string;
 }
 
-export function ImageCompareCmp({ images, className }: ImageCompareProps) {
+/** Generic two-image horizontal reveal. */
+function ImageMaskCmp({
+  bottom,
+  top,
+  progress,
+  className,
+  showHandle = true,
+}: {
+  bottom: ImageCompareItem;
+  top: ImageCompareItem;
+  progress: number;
+  className?: string;
+  showHandle?: boolean;
+}) {
   const { theme: activeTheme } = useTheme();
   const Image = activeTheme.components.image.cmp;
+
+  return (
+    <div className={`relative aspect-video overflow-hidden select-none ${className ?? ''}`}>
+      <Image
+        src={bottom.src}
+        alt={bottom.alt || ''}
+        draggable={false}
+        className="absolute inset-0 w-full h-full object-cover select-none"
+        {...bottom.imageProps}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ clipPath: `inset(0 ${100 - progress * 100}% 0 0)` }}
+      >
+        <Image
+          src={top.src}
+          alt={top.alt || ''}
+          draggable={false}
+          className="absolute inset-0 w-full h-full object-cover select-none"
+          {...top.imageProps}
+        />
+      </div>
+      {showHandle && (
+        <div
+          className="absolute top-0 bottom-0 w-1 bg-white/80 shadow-md pointer-events-none"
+          style={{ left: `${progress * 100}%`, transform: 'translateX(-50%)' }}
+        />
+      )}
+    </div>
+  );
+}
+
+export function ImageCompareCmp({ images, className }: ImageCompareProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Two images → handle dragging
   if (images.length === 2) {
-    const [dividerX, setDividerX] = useState(50); // percentage
+    const [dividerX, setDividerX] = useState(0.5);
 
     function handleDrag(e: React.MouseEvent) {
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      setDividerX(Math.min(100, Math.max(0, x)));
+      const x = (e.clientX - rect.left) / rect.width;
+      setDividerX(Math.min(1, Math.max(0, x)));
     }
 
     return (
       <div
         ref={containerRef}
-        className={`relative overflow-hidden aspect-video select-none ${className ?? ''}`}
+        className={`relative ${className ?? ''}`}
         onMouseMove={(e) => e.buttons === 1 && handleDrag(e)}
         onMouseDown={handleDrag}
       >
-        {/* Bottom image (always full size) */}
-        <Image
-          src={images[0].src}
-          alt={images[0].alt || ''}
-          className="absolute inset-0 w-full h-full object-cover"
-          {...images[0].imageProps}
-        />
-
-        {/* Top image, fully sized, clipped to divider */}
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: `inset(0 ${100 - dividerX}% 0 0)`, // reveal left part only
-          }}
-        >
-          <Image
-            src={images[1].src}
-            alt={images[1].alt || ''}
-            className="absolute inset-0 w-full h-full object-cover"
-            {...images[1].imageProps}
-          />
-        </div>
-
-        {/* draggable vertical handle */}
-        <div
-          className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize shadow-md"
-          style={{ left: `${dividerX}%`, transform: 'translateX(-50%)' }}
-        />
+        <ImageMaskCmp bottom={images[0]} top={images[1]} progress={dividerX} />
       </div>
     );
   }
 
-  // n images → slider
-  const [sliderValue, setSliderValue] = useState(0); // 0..1
+  const [sliderValue, setSliderValue] = useState(0);
   const segmentCount = images.length - 1;
   const raw = sliderValue * segmentCount;
-  const segmentIndex = Math.floor(raw);
+  const segmentIndex = Math.min(Math.floor(raw), segmentCount - 1);
   const segmentProgress = raw - segmentIndex;
   const nextIndex = Math.min(segmentIndex + 1, images.length - 1);
 
   return (
     <div className={`flex flex-col gap-4 ${className ?? ''}`}>
-      <div className="relative aspect-video overflow-hidden select-none">
-        {/* Base (current) image */}
-        <Image
-          src={images[segmentIndex].src}
-          alt={images[segmentIndex].alt || ''}
-          draggable={false}
-          className="absolute inset-0 w-full h-full object-cover select-none"
-          {...images[segmentIndex].imageProps}
-        />
-
-        {/* Overlay next image, clipped left→right */}
-        {segmentIndex !== nextIndex && (
-          <div
-            className="absolute inset-0"
-            style={{
-              clipPath: `inset(0 ${100 - segmentProgress * 100}% 0 0)`,
-            }}
-          >
-            <Image
-              src={images[nextIndex].src}
-              alt={images[nextIndex].alt || ''}
-              draggable={false}
-              className="absolute inset-0 w-full h-full object-cover select-none"
-              {...images[nextIndex].imageProps}
-            />
-          </div>
-        )}
-
-        {/* optional handle indicator */}
-        <div
-          className="absolute top-0 bottom-0 w-1 bg-white/80 shadow-md pointer-events-none"
-          style={{
-            left: `${segmentProgress * 100}%`,
-            transform: 'translateX(-50%)',
-          }}
-        />
-      </div>
-
-      {/* Bottom slider controlling whole sequence */}
-      <input
-        type="range"
-        min={0}
-        max={1}
-        step='any'
-        value={sliderValue}
-        onChange={(e) => setSliderValue(parseFloat(e.target.value))}
-        className="w-full accent-white"
+      <ImageMaskCmp bottom={images[segmentIndex]}
+        top={images[nextIndex]}
+        progress={segmentProgress}
       />
 
-      {/* Optional dots */}
-      <div className="flex justify-between px-1 text-xs text-gray-400">
-        {images.map((_, i) => (
-          <span key={i}>•</span>
-        ))}
+      <div className="relative h-6 w-full select-none">
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-700 rounded transform -translate-y-1/2" />
+        <div className="absolute top-1/2 left-0 w-full transform -translate-y-1/2 pointer-events-none">
+          {images.map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-px h-4 bg-gray-500 transform -translate-y-1/2"
+              style={{ left: `${(i / segmentCount) * 100}%`, top: '50%' }}
+            />
+          ))}
+        </div>
+        <div className="absolute top-1/2 h-1 bg-white/20 transform -translate-y-1/2 pointer-events-none"
+          style={{
+            left: `${(segmentIndex / segmentCount) * 100}%`,
+            width: `${100 / segmentCount}%`,
+          }}
+        />
+        <div className="absolute top-0 w-3 h-6 bg-white rounded-full shadow-md cursor-pointer transform -translate-x-1/2"
+          style={{ left: `${sliderValue * 100}%` }}
+        />
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step="any"
+          value={sliderValue}
+          onChange={(e) => setSliderValue(parseFloat(e.target.value))}
+          className="absolute inset-0 w-full opacity-0 cursor-pointer"
+        />
       </div>
     </div>
   );
