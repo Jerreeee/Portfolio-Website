@@ -3,6 +3,7 @@ import type { ProjectInfo } from '@/data/projects/project';
 import type { IconProps } from '@/Themes/Default/Components/Icon';
 import type { TextProps } from '@/Themes/Default/Components/Text';
 import { ImageProps } from '@/Themes/Default/Components/Image';
+import { MediaProps } from '@/Themes/Default/Components/Media';
 import { MediaGalleryProps } from '@/Themes/Default/Components/MediaGallery';
 
 type ComponentDefinition<P extends object, TTheme> = {
@@ -18,6 +19,7 @@ export type DefaultTheme<
   H1T = unknown,
   PT = unknown,
   ImageT = unknown,
+  MediaT = unknown,
   MediaGalleryT = unknown
 > = BaseTheme & {
   name: string;
@@ -61,6 +63,7 @@ export type DefaultTheme<
     h1: ComponentDefinition<TextProps, H1T>;
     p: ComponentDefinition<TextProps, PT>;
     image: ComponentDefinition<ImageProps, ImageT>;
+    media: ComponentDefinition<MediaProps, MediaT>;
     mediaGallery: ComponentDefinition<MediaGalleryProps, MediaGalleryT>;
   };
 };

@@ -5,6 +5,7 @@ import { ProjectCardCmp, ProjectCardTheme } from "@/Themes/Default/Components/Pr
 import { IconCmp, IconTheme } from "@/Themes/Default/Components/Icon";
 import * as Text from "@/Themes/Default/Components/Text"
 import { ImageCmp, ImageTheme } from '@/Themes/Default/Components/Image';
+import { MediaCmp, MediaTheme } from '@/Themes/Default/Components/Media';
 import { MediaGalleryCmp, MediaGalleryTheme } from '@/Themes/Default/Components/MediaGallery';
 
 export type DarkTheme = DefaultTheme<
@@ -15,6 +16,7 @@ export type DarkTheme = DefaultTheme<
   Text.TextTheme,
   Text.TextTheme,
   ImageTheme,
+  MediaTheme,
   MediaGalleryTheme
 > & { name: 'Dark'; };
 
@@ -128,6 +130,10 @@ export const darkTheme: DarkTheme = {
     },
     image: {
       cmp: ImageCmp,
+      theme: {}
+    },
+    media: {
+      cmp: MediaCmp,
       theme: {
         className: 'rounded-lg ring-2 ring-white',
         style: {}
