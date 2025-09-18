@@ -45,7 +45,7 @@ export default function ProjectCmp() {
         <MediaGallery media={media}/>
       </div>
 
-      <div>
+      <div className="w-full aspect-video">
         <ImageCompareCmp
           images={[
             { src: '/projects/VulkanDeferredRenderer/depth.webp', alt: 'Render V1' },
