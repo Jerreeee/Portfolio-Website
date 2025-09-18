@@ -1,18 +1,19 @@
-  'use client';
+'use client';
 
-  import React, { JSX } from 'react';
-  import { useTheme } from '@/Themes/ThemeProvider';
+import React, { JSX } from 'react';
+import { useTheme } from '@/Themes/ThemeProvider';
+import { StyleProps, mergeStyleProps } from '@/Utils/StyleProps'
 
-  export type TextLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'p';
+export type TextLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'p';
 
-  export type TextTheme = {
-    className?: string;
-    style?: React.CSSProperties;
-  };
+export interface TextProps {
+  children?: React.ReactNode;
+  style?: StyleProps;
+}
 
-  export interface TextProps extends Partial<TextTheme> {
-    children?: React.ReactNode;
-  }
+export type TextTheme = {
+  style?: StyleProps;
+};
 
   export interface TextBaseProps extends TextProps {
     as: TextLevel; //h1' | 'h2' | 'h3' | 'h4' | 'p';
@@ -24,16 +25,10 @@ export function TextBaseCmp(props: TextBaseProps) {
 
   const Tag = props.as as keyof JSX.IntrinsicElements;
 
-  // Merge theme and prop styles. props.style overrides theme.style
-  const finalStyle: React.CSSProperties = {
-    ...(theme.style ?? {}),
-    ...(props.style ?? {}),
-  };
-
-   const finalClassName = [theme.className, props.className].filter(Boolean).join(' ');
+  const finalStyle = mergeStyleProps(theme.style, props.style);
 
   return (
-    <Tag className={finalClassName} style={finalStyle}>
+    <Tag className={finalStyle.className} style={finalStyle.style}>
       {props.children}
     </Tag>
   );

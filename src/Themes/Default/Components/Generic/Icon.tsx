@@ -6,12 +6,6 @@ import { icons, IconKey, IconData } from '@/data/Icons';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { toGrayScale, applyTint } from '@/Utils/Color';
 
-export interface IconProps {
-  techName: string;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
 export type IconTheme = {
   convertToGrayScale: boolean;
   tintColor?: string;
@@ -19,16 +13,20 @@ export type IconTheme = {
   grayScaleIconColor: string;
 }
 
-export function IconCmp({ techName, className, style }: IconProps) {
+export interface IconProps {
+  techName: string;
+}
+
+export function IconCmp(props: IconProps) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.icon.theme;
 
-  let iconEntry: IconData | undefined = icons[techName as IconKey];
+  let iconEntry: IconData | undefined = icons[props.techName as IconKey];
   if (!iconEntry) {
     iconEntry = icons.Error;
   }
 
-  const processedSvg = useParsedSVG(techName, iconEntry.rawSvg);
+  const processedSvg = useParsedSVG(props.techName, iconEntry.rawSvg);
   if (!processedSvg)
     return null;
 
@@ -59,14 +57,12 @@ export function IconCmp({ techName, className, style }: IconProps) {
 
   return (
     <div
-      className={className}
       style={{
         width: '100%',
         height: '100%',
         maxWidth: '100%',
         maxHeight: '100%',
         aspectRatio: processedSvg.aspectRatio ? `${processedSvg.aspectRatio}` : undefined,
-        ...style,
         ...colorVars
       }}
       dangerouslySetInnerHTML={{ __html: processedSvg.svgHTML }}

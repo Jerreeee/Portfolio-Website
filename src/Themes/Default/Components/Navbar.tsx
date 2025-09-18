@@ -7,7 +7,6 @@ import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
 import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
 import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
-import { MotionWrapper } from '@/Components/MotionWrapper';
 
 export type NavbarTheme = {
   containerBackground: string;
@@ -27,8 +26,9 @@ export type NavbarTheme = {
   linkTextActiveColor: string;
 };
 
+export interface NavbarProps {}
 
-export function NavbarCmp() {
+export function NavbarCmp(props: NavbarProps) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.navbar.theme;
   

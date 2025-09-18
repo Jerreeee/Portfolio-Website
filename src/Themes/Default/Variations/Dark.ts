@@ -2,11 +2,14 @@ import { DefaultTheme } from "@/Themes/Default/BaseTheme";
 import { NavbarCmp, NavbarTheme } from "@/Themes/Default/Components/Navbar";
 import { ProjectsOverviewCmp, ProjectsOverviewTheme } from "@/Themes/Default/Components/ProjectsOverview";
 import { ProjectCardCmp, ProjectCardTheme } from "@/Themes/Default/Components/ProjectCard";
-import { IconCmp, IconTheme } from "@/Themes/Default/Components/Icon";
-import * as Text from "@/Themes/Default/Components/Text"
-import { ImageCmp, ImageTheme } from '@/Themes/Default/Components/Image';
-import { MediaCmp, MediaTheme } from '@/Themes/Default/Components/Media';
-import { MediaGalleryCmp, MediaGalleryTheme } from '@/Themes/Default/Components/MediaGallery';
+import { IconCmp, IconTheme } from "@/Themes/Default/Components/Generic/Icon";
+import * as Text from "@/Themes/Default/Components/Generic/Text"
+import { ImageCmp, ImageTheme } from '@/Themes/Default/Components/Generic/Image';
+import { ImageCompareCmp, ImageCompareTheme } from '@/Themes/Default/Components/Generic/ImageCompare';
+import { MediaCmp, MediaTheme } from '@/Themes/Default/Components/Generic/Media';
+import { MediaGalleryCmp, MediaGalleryTheme } from '@/Themes/Default/Components/Generic/MediaGallery';
+import { ScrollBarCmp, ScrollBarTheme } from '@/Themes/Default/Components/Generic/ScrollBar';
+import { SegmentSliderCmp, SegmentSliderTheme } from '@/Themes/Default/Components/Generic/SegmentSlider';
 
 export type DarkTheme = DefaultTheme<
   NavbarTheme,
@@ -16,8 +19,11 @@ export type DarkTheme = DefaultTheme<
   Text.TextTheme,
   Text.TextTheme,
   ImageTheme,
+  ImageCompareTheme,
   MediaTheme,
-  MediaGalleryTheme
+  MediaGalleryTheme,
+  ScrollBarTheme,
+  SegmentSliderTheme
 > & { name: 'Dark'; };
 
 const darkColors = {
@@ -109,39 +115,56 @@ export const darkTheme: DarkTheme = {
       cmp: Text.H1,
       theme: {
         style: {
-          display: 'block',
-          fontSize: 'clamp(24px, 4vw + 1rem, 48px)',
-          marginTop: '0.25em',
-          marginBottom: '0.25em',
-          color: '#FFFFFF',
-        },
-        className: 'font-normal sm:font-[200] md:font-semibold lg:font-bold'
+          className: 'font-normal sm:font-[200] md:font-semibold lg:font-bold',
+          style: {
+            display: 'block',
+            fontSize: 'clamp(24px, 4vw + 1rem, 48px)',
+            marginTop: '0.25em',
+            marginBottom: '0.25em',
+            color: '#FFFFFF'
+          }
+        }
       },
     },
     p: {
       cmp: Text.Paragraph,
       theme: {
         style: {
-          fontSize: '20px',
-          fontWeight: 'normal',
-          color: '#FFFFFF',
+          style: {
+            fontSize: '20px',
+            fontWeight: 'normal',
+            color: '#FFFFFF'
+          }
         }
       }
     },
     image: {
       cmp: ImageCmp,
+      theme: {
+        style:  {
+          className: 'ring-2 ring-white'
+        }
+      }
+    },
+    imageCompare: {
+      cmp: ImageCompareCmp,
       theme: {}
     },
     media: {
       cmp: MediaCmp,
-      theme: {
-        className: 'rounded-lg ring-2 ring-white',
-        style: {}
-      }
+      theme: {}
     },
     mediaGallery: {
       cmp: MediaGalleryCmp,
       theme: {}
-    }
+    },
+    scrollBar: {
+      cmp: ScrollBarCmp,
+      theme: {}
+    },
+    segmentSlider: {
+      cmp: SegmentSliderCmp,
+      theme: {}
+    },
   },
 };

@@ -24,7 +24,9 @@ export type ProjectsOverviewTheme = {
   ctaButtonTextColor: string;
 };
 
-export function ProjectsOverviewCmp() {
+export interface ProjectsOverviewProps {}
+
+export function ProjectsOverviewCmp(props: ProjectsOverviewProps) {
   const { theme: activeTheme } = useTheme();
   const theme = activeTheme.components.projectsOverview.theme;
 
@@ -50,7 +52,7 @@ export function ProjectsOverviewCmp() {
         <motion.div style={{marginBottom: "0px", marginTop: '0px'}} {...mergeAnims(true, anims.fadeInUp())} >
           <div className="text-center">
             <span style={gradientText}>
-              <H1 style={{...gradientText, display: 'inline-block'}} >
+              <H1 style={{style: {...gradientText, display: 'inline-block'}}} >
                 Featured
               </H1>
             </span>

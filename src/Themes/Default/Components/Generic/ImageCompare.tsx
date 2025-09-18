@@ -2,7 +2,8 @@
 
 import React, { useLayoutEffect, useState } from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { ImageProps } from '@/Themes/Default/Components/Image';
+import { ImageProps, ImageTheme } from '@/Themes/Default/Components/Generic/Image';
+import { StyleProps, mergeStyleProps } from '@/Utils/StyleProps'
 
 export interface ImageCompareItem {
   src: string;
@@ -10,34 +11,34 @@ export interface ImageCompareItem {
   imageProps?: Omit<ImageProps, 'src' | 'alt'>;
 }
 
+export type ImageCompareTheme = {};
+
 export interface ImageCompareProps {
   images: ImageCompareItem[];
-  className?: string;
+  styleOverride?: StyleProps;
 }
 
-/** Generic two-image horizontal reveal. */
-export function ImageMaskCmp({
-  bottom,
-  top,
-  progress = 0.5,
-  className,
-  showHandle = true,
-  enableDrag = true,
-  onDrag,
-}: {
+export interface ImageMaskProps {
   bottom: ImageCompareItem;
   top: ImageCompareItem;
-  progress?: number;
-  className?: string;
+  progress: number;
+  styleOverride?: StyleProps;
   showHandle?: boolean;
   enableDrag?: boolean;
   onDrag?: (newProgress: number) => void;
-}) {
+}
+
+/** Generic two-image horizontal reveal. */
+export function ImageMaskCmp(props: ImageMaskProps) {
   const { theme: activeTheme } = useTheme();
+  const theme: ImageTheme = activeTheme.components.image.theme;
+
   const Image = activeTheme.components.image.cmp;
+  
+  const finalStyle = mergeStyleProps(theme.style, props.styleOverride);
 
   // Internal progress state, initialized from the `progress` prop
-  const [_progress, setProgress] = useState(progress);
+  const [_progress, setProgress] = useState(props.progress);
 
   // Keep internal `_progress` in perfect sync with the `progress` prop.
   //
@@ -49,27 +50,28 @@ export function ImageMaskCmp({
   //   *before* the browser paints, so setProgress(progress) happens
   //   synchronously and the user never sees an outdated value.
   useLayoutEffect(() => {
-    setProgress(progress);
-  }, [progress]);
+    setProgress(props.progress);
+  }, [props.progress]);
 
   // Handle range input changes
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = parseFloat(e.target.value);
     setProgress(newValue);
-    onDrag?.(newValue);
+    props.onDrag?.(newValue);
   }
 
   return (
     <div
-      className={`relative w-full h-full overflow-hidden select-none ${className ?? ''}`}
+      className={`relative w-full h-full overflow-hidden select-none ${finalStyle.className}`}
+      style={props.styleOverride?.style}
     >
       {/** Bottom Image */}
       <Image
-        src={bottom.src}
-        alt={bottom.alt || ''}
+        src={props.bottom.src}
+        alt={props.bottom.alt || ''}
         draggable={false}
         className="absolute inset-0 w-full h-full object-cover select-none"
-        {...bottom.imageProps}
+        {...props.bottom.imageProps}
       />
 
       {/** Top Image */}
@@ -78,24 +80,24 @@ export function ImageMaskCmp({
         style={{ clipPath: `inset(0 ${100 - _progress * 100}% 0 0)` }}
       >
         <Image
-          src={top.src}
-          alt={top.alt || ''}
+          src={props.top.src}
+          alt={props.top.alt || ''}
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover select-none"
-          {...top.imageProps}
+          {...props.top.imageProps}
         />
       </div>
 
       {/** Vertical Handle */}
-      {showHandle && (
+      {props.showHandle && (
         <div
-          className="absolute top-0 bottom-0 w-1 bg-white/80 shadow-md pointer-events-none"
+          className="absolute top-0 bottom-0 w-[1px] bg-white shadow-md pointer-events-none"
           style={{ left: `${_progress * 100}%`, transform: 'translateX(-50%)' }}
         />
       )}
 
       {/* Transparent range input for drag/touch/keyboard control */}
-      {enableDrag && (
+      {props.enableDrag && (
         <input
           type="range"
           min={0}
@@ -110,76 +112,55 @@ export function ImageMaskCmp({
   );
 }
 
-export function ImageCompareCmp({ images, className }: ImageCompareProps) {
-  if (images.length === 2) {
+export function ImageCompareCmp(props: ImageCompareProps) {
+  const { theme: activeTheme } = useTheme();
+  const SegmentSlider = activeTheme.components.segmentSlider.cmp;
+
+  if (props.images.length === 2) {
     return (
-        <ImageMaskCmp bottom={images[0]} top={images[1]} />
+        <ImageMaskCmp
+          progress={0.5}
+          bottom={props.images[0]}
+          top={props.images[1]}
+          styleOverride={props.styleOverride}
+        />
     );
   }
 
   //images.length > 2
-  const segmentCount = images.length - 1;
+  const segmentCount = props.images.length - 1;
   const [sliderValue, setSliderValue] = useState(0);
   const raw = sliderValue * segmentCount;
   const segmentIndex = Math.min(Math.floor(raw), segmentCount - 1);
   const segmentProgress = raw - segmentIndex;
-  const nextIndex = Math.min(segmentIndex + 1, images.length - 1);
+  const nextIndex = Math.min(segmentIndex + 1, props.images.length - 1);
 
   function handleSegmentDrag(newProgress: number) {
-    // Prevent skipping to next segment when fully dragged
+    // Using 0.99999 to prevent skipping to next segment when fully dragged
     const progress = segmentIndex < segmentCount - 1 ? Math.min(newProgress, 0.99999) : newProgress;
     const newSliderValue = (segmentIndex + progress) / segmentCount;
     setSliderValue(newSliderValue);
   }
 
   return (
-    <div className={`flex flex-col gap-4 w-full h-full ${className ?? ''}`}>
+    <div className="flex flex-col gap-4 w-full h-full">
       <ImageMaskCmp
-        bottom={images[segmentIndex]}
-        top={images[nextIndex]}
+        bottom={props.images[segmentIndex]}
+        top={props.images[nextIndex]}
         progress={segmentProgress}
         enableDrag
         onDrag={handleSegmentDrag}
+        styleOverride={props.styleOverride}
       />
 
       {/* Bottom slider remains unchanged */}
-      <div className="relative h-6 w-full select-none">
-        {/* Horizontal Bar */}
-        <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-700 rounded transform -translate-y-1/2" />
-        {/* Tick Marks */}
-        <div className="absolute top-1/2 left-0 w-full transform -translate-y-1/2 pointer-events-none">
-          {images.map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-px h-4 bg-gray-500 transform -translate-y-1/2"
-              style={{ left: `${(i / segmentCount) * 100}%`, top: '50%' }}
-            />
-          ))}
-        </div>
-        {/* Current Segment Highlight */}
-        <div
-          className="absolute top-1/2 h-1 bg-white/20 transform -translate-y-1/2 pointer-events-none"
-          style={{
-            left: `${(segmentIndex / segmentCount) * 100}%`,
-            width: `${100 / segmentCount}%`,
-          }}
-        />
-        {/* Draggable Handle */}
-        <div
-          className="absolute top-0 w-3 h-6 bg-white rounded-full shadow-md cursor-pointer transform -translate-x-1/2"
-          style={{ left: `${sliderValue * 100}%` }}
-        />
-        {/* Transparent Range Input */}
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step="any"
-          value={sliderValue}
-          onChange={(e) => setSliderValue(parseFloat(e.target.value))}
-          className="absolute inset-0 w-full opacity-0 cursor-pointer"
-        />
-      </div>
+      <SegmentSlider
+        count={props.images.length}
+        segmentCount={segmentCount}
+        segmentIndex={segmentIndex}
+        sliderValue={sliderValue}
+        onChange={setSliderValue}
+      />
     </div>
   );
 }

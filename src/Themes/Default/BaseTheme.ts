@@ -1,10 +1,16 @@
 import type { BaseTheme } from '@/Themes/BaseTheme';
-import type { ProjectInfo } from '@/data/projects/project';
-import type { IconProps } from '@/Themes/Default/Components/Icon';
-import type { TextProps } from '@/Themes/Default/Components/Text';
-import { ImageProps } from '@/Themes/Default/Components/Image';
-import { MediaProps } from '@/Themes/Default/Components/Media';
-import { MediaGalleryProps } from '@/Themes/Default/Components/MediaGallery';
+
+import { NavbarProps } from '@/Themes/Default/Components/Navbar';
+import { ProjectsOverviewProps } from '@/Themes/Default/Components/ProjectsOverview';
+import { ProjectCardProps } from '@/Themes/Default/Components/ProjectCard';
+import { IconProps } from '@/Themes/Default/Components/Generic/Icon';
+import * as Text from '@/Themes/Default/Components/Generic/Text';
+import { ImageProps } from '@/Themes/Default/Components/Generic/Image';
+import { ImageCompareProps } from '@/Themes/Default/Components/Generic/ImageCompare';
+import { MediaProps } from '@/Themes/Default/Components/Generic/Media';
+import { MediaGalleryProps } from '@/Themes/Default/Components/Generic/MediaGallery';
+import { ScrollBarProps } from '@/Themes/Default/Components/Generic/ScrollBar';
+import { SegmentSliderProps } from '@/Themes/Default/Components/Generic/SegmentSlider';
 
 type ComponentDefinition<P extends object, TTheme> = {
   cmp: React.ComponentType<P>;
@@ -19,8 +25,11 @@ export type DefaultTheme<
   H1T = unknown,
   PT = unknown,
   ImageT = unknown,
+  ImageCompareT = unknown,
   MediaT = unknown,
-  MediaGalleryT = unknown
+  MediaGalleryT = unknown,
+  ScrollBarT = unknown,
+  SegmentSliderT = unknown
 > = BaseTheme & {
   name: string;
   colors: {
@@ -56,14 +65,17 @@ export type DefaultTheme<
     linkHover: string;
   };
   components: {
-    navbar: ComponentDefinition<{}, NavbarT>;
-    projectsOverview: ComponentDefinition<{}, ProjectsOverviewT>;
-    projectCard: ComponentDefinition<{ project: ProjectInfo }, CardT>;
+    navbar: ComponentDefinition<NavbarProps, NavbarT>;
+    projectsOverview: ComponentDefinition<ProjectsOverviewProps, ProjectsOverviewT>;
+    projectCard: ComponentDefinition<ProjectCardProps, CardT>;
     icon: ComponentDefinition<IconProps, IconT>;
-    h1: ComponentDefinition<TextProps, H1T>;
-    p: ComponentDefinition<TextProps, PT>;
+    h1: ComponentDefinition<Text.TextProps, H1T>;
+    p: ComponentDefinition<Text.TextProps, PT>;
     image: ComponentDefinition<ImageProps, ImageT>;
+    imageCompare: ComponentDefinition<ImageCompareProps, ImageCompareT>;
     media: ComponentDefinition<MediaProps, MediaT>;
     mediaGallery: ComponentDefinition<MediaGalleryProps, MediaGalleryT>;
+    scrollBar: ComponentDefinition<ScrollBarProps, ScrollBarT>;
+    segmentSlider: ComponentDefinition<SegmentSliderProps, SegmentSliderT>;
   };
 };
