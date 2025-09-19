@@ -143,7 +143,7 @@ export function ImageCompareCmp(props: ImageCompareProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full h-full">
+    <div className="flex flex-col gap-2 w-full h-full">
       <ImageMaskCmp
         bottom={props.images[segmentIndex]}
         top={props.images[nextIndex]}

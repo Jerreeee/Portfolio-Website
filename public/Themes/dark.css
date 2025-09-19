@@ -1,0 +1,12 @@
+* Hide scrollbars for the MediaGallery thumbnail strip */
+.media-gallery-thumbs {
+  /* Works for Firefox */
+  scrollbar-width: none;
+  /* Works for IE/Edge legacy */
+  -ms-overflow-style: none;
+}
+
+/* Works for Chrome, Edge (Chromium), Safari, Opera */
+.media-gallery-thumbs::-webkit-scrollbar {
+  display: none;
+}

@@ -22,9 +22,6 @@ export default function ProjectCmp() {
     { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
     { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
     { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
     { type: 'embeddedVideo', src: "https://www.youtube.com/watch?v=rWRZj4jY_gk"},
   ];
 

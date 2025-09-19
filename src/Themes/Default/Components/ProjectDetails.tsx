@@ -7,7 +7,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 export function ProjectDetailsCmp({ project }: { project: ProjectInfo }) {
   const { theme } = useTheme();
   const textStyle = { color: theme.colors.foreground };
-
+  
   return (
     <main>
       {/* Title */}

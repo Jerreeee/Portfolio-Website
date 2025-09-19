@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
   ReactNode,
+  useEffect
 } from 'react';
 
 import {
@@ -23,6 +24,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [currentThemeName, setCurrentThemeName] = useState<ThemeName>('Dark');
+  const theme = themeRegistry[currentThemeName];
 
   const setThemeByName = (name: ThemeName) => {
     if (themeRegistry[name]) {
@@ -32,7 +34,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const theme = themeRegistry[currentThemeName];
+   useEffect(() => {
+    const href = `/themes/${currentThemeName.toLowerCase()}.css`;
+
+    let linkEl = document.getElementById('theme-style') as HTMLLinkElement | null;
+    if (!linkEl) {
+      linkEl = document.createElement('link');
+      linkEl.id = 'theme-style';
+      linkEl.rel = 'stylesheet';
+      document.head.appendChild(linkEl);
+    }
+    linkEl.href = href;
+  }, [currentThemeName]);
 
   return (
     <ThemeContext.Provider value={{ theme, setThemeByName, currentThemeName }}>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { MediaItem } from '@/Themes/Default/Components/Generic/Media';
@@ -17,6 +17,7 @@ export function MediaGalleryCmp(props: MediaGalleryProps) {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = props.media[activeIndex];
+  const [needsScroll, setNeedsScroll] = useState(false);
 
   const Media = activeTheme.components.media.cmp;
   const ImageTheme = activeTheme.components.image.theme;
@@ -25,8 +26,21 @@ export function MediaGalleryCmp(props: MediaGalleryProps) {
   // Ref for the thumbnail container
   const thumbContainerRef = React.useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    function checkScroll() {
+      const el = thumbContainerRef.current;
+      if (el) {
+        setNeedsScroll(el.scrollWidth > el.clientWidth);
+      }
+    }
+
+    requestAnimationFrame(checkScroll);
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [props.media]);
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-2">
       {/* Main display area */}
       <div
         className={`relative w-full aspect-video overflow-hidden ${ImageTheme.style?.className}`}
@@ -52,7 +66,7 @@ export function MediaGalleryCmp(props: MediaGalleryProps) {
       {/* Thumbnail strip */}
       <div
         ref={thumbContainerRef}
-        className="mt-2 flex gap-3 overflow-x-auto pb-2">
+        className="flex gap-3 overflow-x-auto media-gallery-thumbs">
         {props.media.map((item, index) => {
           const isActive = index === activeIndex;
           return (
@@ -86,7 +100,7 @@ export function MediaGalleryCmp(props: MediaGalleryProps) {
       </div>
 
       {/* ✅ New custom slider */}
-      <ScrollBar scrollContainer={thumbContainerRef} />
+      {needsScroll && <ScrollBar scrollContainer={thumbContainerRef} />}
     </div>
   );
 }

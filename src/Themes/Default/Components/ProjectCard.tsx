@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { useTheme } from '@/Themes/ThemeProvider';
@@ -27,7 +28,6 @@ export function ProjectCardCmp(props : ProjectCardProps) {
   const theme = activeTheme.components.projectCard.theme;
 
   const Icon = activeTheme.components.icon.cmp;
-  const Image = activeTheme.components.image.cmp;
   const H1 = activeTheme.components.h1.cmp;
   const P = activeTheme.components.p.cmp;
 
@@ -61,8 +61,8 @@ export function ProjectCardCmp(props : ProjectCardProps) {
             <H1 style={{
                 className:"${theme.titleTextColor}",
                 style: {
-                fontSize: 'clamp(14px, 1vw + 0.5rem, 20px)',
-                margin: '0px'
+                  fontSize: 'clamp(14px, 1vw + 0.5rem, 20px)',
+                  margin: '0px'
                 }
               }}
             >
