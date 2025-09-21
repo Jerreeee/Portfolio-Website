@@ -32,20 +32,16 @@ export function ProjectCardCmp(props : ProjectCardProps) {
   const P = activeTheme.components.p.cmp;
 
   return (
-    <motion.div className="
-      overflow-hidden
-      flex flex-col space-y-3
-      rounded-lg
-      shadow hover:shadow-2xl
-      bg-[var(--bgColor)] hover:bg-[var(--bgHoverColor)]
-      transition-colors"
+ <motion.div
+      className="project-card overflow-hidden flex flex-col space-y-3 transition-colors"
       {...mergeAnims(true, anims.hoverScale(1.025))}
       style={constructCSSVarsFromTheme(theme)}
     >
       <Link href={`/projects/${props.project.slug}`}>
         {/* Image */}
-        <div className="w-full relative aspect-video">
-          <Image className="object-cover"
+        <div className="project-card__image w-full relative aspect-video">
+          <Image
+            className="project-card__image-inner object-cover"
             src={props.project.thumbnailImage}
             alt={props.project.title}
             fill
@@ -54,30 +50,28 @@ export function ProjectCardCmp(props : ProjectCardProps) {
         </div>
 
         {/* Content */}
-        <motion.div className="p-2 space-y-2 flex flex-col items-center"
+        <motion.div
+          className="project-card__content p-2 space-y-2 flex flex-col items-center"
           {...mergeAnims(true, anims.staggerChildren(0.2))}
         >
-          <motion.div {...mergeAnims(false, anims.fadeInUp())} >
-            <H1 style={{
-                className:"${theme.titleTextColor}",
-                style: {
-                  fontSize: 'clamp(14px, 1vw + 0.5rem, 20px)',
-                  margin: '0px'
-                }
-              }}
-            >
+          <motion.div {...mergeAnims(false, anims.fadeInUp())}>
+            <H1 style={{className: "project-card__title"}}>
               {props.project.title}
             </H1>
           </motion.div>
-          <motion.div className="flex space-x-2"
-          {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
+
+          <motion.div
+            className="project-card__tech flex space-x-2"
+            {...mergeAnims(false, anims.staggerChildren(0.05), anims.fadeIn(0))}
           >
             {props.project.technologies?.map((tech) => (
-              <motion.div key={tech}
-              {...mergeAnims(false, anims.fadeInUp(20, 0.2))}
+              <motion.div
+                key={tech}
+                {...mergeAnims(false, anims.fadeInUp(20, 0.2))}
               >
-                <motion.div className="h-4"
-                {...mergeAnims(true, anims.hoverScale())}
+                <motion.div
+                  className="project-card__tech-icon h-4"
+                  {...mergeAnims(true, anims.hoverScale())}
                 >
                   <Icon techName={tech} />
                 </motion.div>
