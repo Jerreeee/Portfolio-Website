@@ -1,0 +1,19 @@
+/* Dark theme styles for text components */
+
+.theme-dark h1,
+.theme-dark .text-h1 {
+  /* font weights: base, sm, md, lg breakpoints */
+  @apply font-normal sm:font-[200] md:font-semibold lg:font-bold;
+  display: block;
+  font-size: clamp(24px, 4vw + 1rem, 48px);
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  color: #ffffff;
+}
+
+.theme-dark p,
+.theme-dark .text-p {
+  font-size: 20px;
+  font-weight: normal;
+  color: #ffffff;
+}

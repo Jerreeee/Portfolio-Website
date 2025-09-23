@@ -3,29 +3,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
+import { Component } from '@/Themes/BaseTheme'
 import { useTheme } from '@/Themes/ThemeProvider';
 import { anims } from '@/Themes/Default/animations';
 import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
 import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
 import { ProjectInfo } from '@/data/projects/project'
 
-export type ProjectCardTheme = {
-  bgColor: string;
-  bgHoverColor: string;
-  borderRadius: number;
-  shadowColor: string;
-
-  titleTextColor: string;
-  descriptionTextColor: string;
-};
+export type ProjectCardSettings = {};
 
 export interface ProjectCardProps {
   project: ProjectInfo
 }
 
-export function ProjectCardCmp(props : ProjectCardProps) {
+export const ProjectCardCmp = ProjectCardCmpInternal as Component<
+  ProjectCardSettings,
+  ProjectCardProps
+>;
+
+function ProjectCardCmpInternal(props : ProjectCardProps) {
   const { theme: activeTheme } = useTheme();
-  const theme = activeTheme.components.projectCard.theme;
+  const settings: ProjectCardSettings = activeTheme.components.projectCard?.settings;
+  if (!settings) return null;
 
   const Icon = activeTheme.components.icon.cmp;
   const H1 = activeTheme.components.h1.cmp;
@@ -35,7 +34,6 @@ export function ProjectCardCmp(props : ProjectCardProps) {
  <motion.div
       className="project-card overflow-hidden flex flex-col space-y-3 transition-colors"
       {...mergeAnims(true, anims.hoverScale(1.025))}
-      style={constructCSSVarsFromTheme(theme)}
     >
       <Link href={`/projects/${props.project.slug}`}>
         {/* Image */}

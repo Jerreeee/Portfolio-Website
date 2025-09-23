@@ -1,0 +1,21 @@
+.theme-dark .projects-overview {
+  @apply bg-gradient-to-b from-[#141418] to-[#1f2027] min-h-screen;
+}
+
+/* Header / Title */
+.theme-dark .projects-overview__header {
+  @apply mb-8;
+}
+
+.theme-dark .projects-overview__title {
+  display: inline-block;
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  @apply text-4xl font-bold;
+}
+
+/* Grid */
+.theme-dark .projects-overview__grid {
+  @apply gap-6;
+}

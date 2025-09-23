@@ -1,0 +1,7 @@
+.theme-dark .image__wrapper{
+  @apply ring-2 ring-white rounded-lg shadow;
+}
+
+.theme-dark .image {
+  @apply object-cover;
+}

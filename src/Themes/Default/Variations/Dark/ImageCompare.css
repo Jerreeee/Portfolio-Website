@@ -1,0 +1,17 @@
+/* Dark theme styles for ImageMaskCmp and ImageCompareCmp */
+
+.theme-dark .image-mask__handle {
+  @apply bg-white shadow-md;
+}
+
+.theme-dark .image-mask__images {
+  @apply object-cover;
+}
+
+.theme-dark .image-mask__drag {
+  /* stays invisible by default */
+}
+
+.theme-dark .image-compare {
+  /* Unused */
+}

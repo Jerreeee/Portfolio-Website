@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import {useParsedSVG} from '@/Utils/UseParsedSVG';
+import { useParsedSVG } from '@/Utils/UseParsedSVG';
+import { Component } from '@/Themes/BaseTheme'
 import { icons, IconKey, IconData } from '@/data/Icons';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { toGrayScale, applyTint } from '@/Utils/Color';
 
-export type IconTheme = {
+export type IconSettings = {
   convertToGrayScale: boolean;
   tintColor?: string;
   tintStrength?: number;
@@ -17,9 +18,15 @@ export interface IconProps {
   techName: string;
 }
 
-export function IconCmp(props: IconProps) {
+export const IconCmp = IconCmpInternal as Component<
+  IconSettings,
+  IconProps
+>;
+
+export function IconCmpInternal(props: IconProps) {
   const { theme: activeTheme } = useTheme();
-  const theme = activeTheme.components.icon.theme;
+  const settings: IconSettings = activeTheme.components.icon?.settings;
+  if (!settings) return null;
 
   let iconEntry: IconData | undefined = icons[props.techName as IconKey];
   if (!iconEntry) {
@@ -37,18 +44,18 @@ export function IconCmp(props: IconProps) {
 
     if (iconEntry.isGrayScale)
     {
-      finalColor = theme.grayScaleIconColor;
+      finalColor = settings.grayScaleIconColor;
     }
     else
     {
       //Apply grayScale conversion
-      if (theme.convertToGrayScale) {
+      if (settings.convertToGrayScale) {
         finalColor = toGrayScale(finalColor);
       }
 
       //Apply tint
-      if (theme.tintColor) {
-          finalColor = applyTint(finalColor, theme.tintColor, theme.tintStrength);
+      if (settings.tintColor) {
+          finalColor = applyTint(finalColor, settings.tintColor, settings.tintStrength);
       }
     }
 

@@ -35,7 +35,6 @@ export default function ProjectCmp() {
         <Image
           src={data.heroImage} 
           alt={`${data.title} hero image`}
-          styleOverride={{className:"object-cover"}}
         />
       </div>
 

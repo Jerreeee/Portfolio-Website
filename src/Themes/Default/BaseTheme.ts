@@ -1,81 +1,54 @@
-import type { BaseTheme } from '@/Themes/BaseTheme';
+import type { BaseTheme, ComponentDefinition } from '@/Themes/BaseTheme';
+import { NavbarCmp } from './Components/Navbar';
+import { ProjectsOverviewCmp } from './Components/ProjectsOverview';
+import { ProjectCardCmp } from './Components/ProjectCard';
+import { IconCmp } from './Components/Generic/Icon';
+import * as Text from './Components/Generic/Text';
+import { ImageCmp } from './Components/Generic/Image';
+import { ImageCompareCmp, ImageMaskCmp } from './Components/Generic/ImageCompare';
+import { MediaCmp } from './Components/Generic/Media';
+import { MediaGalleryCmp } from './Components/Generic/MediaGallery';
+import { ScrollBarCmp } from './Components/Generic/ScrollBar';
+import { SegmentSliderCmp } from './Components/Generic/SegmentSlider';
 
-import { NavbarProps } from '@/Themes/Default/Components/Navbar';
-import { ProjectsOverviewProps } from '@/Themes/Default/Components/ProjectsOverview';
-import { ProjectCardProps } from '@/Themes/Default/Components/ProjectCard';
-import { IconProps } from '@/Themes/Default/Components/Generic/Icon';
-import * as Text from '@/Themes/Default/Components/Generic/Text';
-import { ImageProps } from '@/Themes/Default/Components/Generic/Image';
-import { ImageCompareProps } from '@/Themes/Default/Components/Generic/ImageCompare';
-import { MediaProps } from '@/Themes/Default/Components/Generic/Media';
-import { MediaGalleryProps } from '@/Themes/Default/Components/Generic/MediaGallery';
-import { ScrollBarProps } from '@/Themes/Default/Components/Generic/ScrollBar';
-import { SegmentSliderProps } from '@/Themes/Default/Components/Generic/SegmentSlider';
-
-type ComponentDefinition<P extends object, TTheme> = {
-  cmp: React.ComponentType<P>;
-  theme: TTheme;
+type ComponentMap = {
+  navbar: typeof NavbarCmp;
+  projectsOverview: typeof ProjectsOverviewCmp;
+  projectCard: typeof ProjectCardCmp;
+  icon: typeof IconCmp;
+  image: typeof ImageCmp;
+  imageMask: typeof ImageMaskCmp;
+  imageCompare: typeof ImageCompareCmp;
+  media: typeof MediaCmp;
+  mediaGallery: typeof MediaGalleryCmp;
+  scrollBar: typeof ScrollBarCmp;
+  segmentSlider: typeof SegmentSliderCmp;
+  h1: typeof Text.H1;
+  h2: typeof Text.H2;
+  h3: typeof Text.H3;
+  h4: typeof Text.H4;
+  p: typeof Text.P;
 };
 
-export type DefaultTheme<
-  NavbarT = unknown,
-  ProjectsOverviewT = unknown,
-  CardT = unknown,
-  IconT = unknown,
-  H1T = unknown,
-  PT = unknown,
-  ImageT = unknown,
-  ImageCompareT = unknown,
-  MediaT = unknown,
-  MediaGalleryT = unknown,
-  ScrollBarT = unknown,
-  SegmentSliderT = unknown
-> = BaseTheme & {
+export type DefaultTheme = BaseTheme<ComponentMap> & {
   name: string;
   colors: {
-    // Base colors
-    background: string;        // Main page background
-    backgroundAlt: string;     // Alternate background (e.g. cards, sections)
-
-    foreground: string;        // Main text color
-    foregroundMuted: string;   // Muted/subtle text (e.g. descriptions)
-    
-    // Accent & branding
-    highlight: string;         // Primary accent color
-    highlightAlt: string;      // Secondary or hover variant of highlight
-
-    // UI elements
-    border: string;            // Standard borders
-    borderMuted: string;       // Subtle borders (e.g. for cards)
-
-    // Gradients & overlays
-    gradientStart: string;     // For hero sections, buttons, etc.
-    gradientEnd: string;       // Ending color for gradients
-
-    overlay: string;           // For modals, darkening backgrounds
-
-    // Statuses (optional but useful)
+    background: string;
+    backgroundAlt: string;
+    foreground: string;
+    foregroundMuted: string;
+    highlight: string;
+    highlightAlt: string;
+    border: string;
+    borderMuted: string;
+    gradientStart: string;
+    gradientEnd: string;
+    overlay: string;
     success: string;
     warning: string;
     error: string;
     info: string;
-
-    // Interactive
-    link: string;              // Link color (can match or differ from highlight)
+    link: string;
     linkHover: string;
-  };
-  components: {
-    navbar: ComponentDefinition<NavbarProps, NavbarT>;
-    projectsOverview: ComponentDefinition<ProjectsOverviewProps, ProjectsOverviewT>;
-    projectCard: ComponentDefinition<ProjectCardProps, CardT>;
-    icon: ComponentDefinition<IconProps, IconT>;
-    h1: ComponentDefinition<Text.TextProps, H1T>;
-    p: ComponentDefinition<Text.TextProps, PT>;
-    image: ComponentDefinition<ImageProps, ImageT>;
-    imageCompare: ComponentDefinition<ImageCompareProps, ImageCompareT>;
-    media: ComponentDefinition<MediaProps, MediaT>;
-    mediaGallery: ComponentDefinition<MediaGalleryProps, MediaGalleryT>;
-    scrollBar: ComponentDefinition<ScrollBarProps, ScrollBarT>;
-    segmentSlider: ComponentDefinition<SegmentSliderProps, SegmentSliderT>;
   };
 };

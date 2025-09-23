@@ -1,0 +1,9 @@
+/* Outer track */
+.theme-dark .scroll-bar__track {
+  @apply rounded bg-gray-700;
+}
+
+/* Draggable thumb */
+.theme-dark .scroll-bar__thumb {
+  @apply rounded bg-white;
+}

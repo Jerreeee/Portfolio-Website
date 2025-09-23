@@ -1,0 +1,23 @@
+.theme-dark .segment-slider {
+  @apply relative h-6 w-full;
+}
+
+/* Base bar */
+.theme-dark .segment-slider__bar {
+  @apply bg-gray-700 rounded;
+}
+
+/* Tick marks */
+.theme-dark .segment-slider__tick {
+  @apply bg-gray-500;
+}
+
+/* Highlighted current segment */
+.theme-dark .segment-slider__highlight {
+  @apply bg-white/20;
+}
+
+/* Draggable handle */
+.theme-dark .segment-slider__handle {
+  @apply bg-white rounded-full shadow-md;
+}

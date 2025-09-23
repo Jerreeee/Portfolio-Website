@@ -1,0 +1,27 @@
+/* Dark theme styles for Navbar */
+
+.theme-dark .navbar {
+  @apply bg-[#141418] border-b border-[#2a2b31];
+}
+
+.theme-dark .navbar__brand-text {
+  background: linear-gradient(135deg, #6366f1, #818cf8, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.theme-dark .navbar__link {
+  @apply relative rounded-md px-3 py-2 transition-colors text-gray-300;
+}
+
+.theme-dark .navbar__link:hover {
+  @apply text-white;
+}
+
+.theme-dark .navbar__link--active {
+  @apply font-medium text-white;
+}
+
+.theme-dark .navbar__link-underline {
+  @apply absolute bottom-0 left-0 w-full h-[2px] bg-white;
+}

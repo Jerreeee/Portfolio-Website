@@ -1,20 +1,28 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { Component } from '@/Themes/BaseTheme'
 import { useTheme } from '@/Themes/ThemeProvider';
 
-export type ScrollBarTheme = {};
+export type ScrollBarSettings = {};
 
 export interface ScrollBarProps {
   scrollContainer: React.RefObject<HTMLDivElement | null>;
 }
 
+
+export const ScrollBarCmp = ScrollBarCmpInternal as Component<
+  ScrollBarSettings,
+  ScrollBarProps
+>;
+
 /**
  * Custom horizontal scrollbar that syncs with a scrollable container.
  */
-export function ScrollBarCmp(props: ScrollBarProps) {
+export function ScrollBarCmpInternal(props: ScrollBarProps) {
   const { theme: activeTheme } = useTheme();
-  const theme: ScrollBarTheme = activeTheme.components.scrollBar.theme;
+  const settings: ScrollBarSettings = activeTheme.components.scrollBar?.settings;
+  if (!settings) return null;
 
   const [thumbWidth, setThumbWidth] = useState(0);
   const [thumbLeft, setThumbLeft] = useState(0);
@@ -75,10 +83,10 @@ export function ScrollBarCmp(props: ScrollBarProps) {
     };
   });
 
-  return (
-    <div className="relative h-2 w-full bg-gray-700 rounded" >
+ return (
+    <div className="scroll-bar relative w-full h-2">
       <div
-        className="absolute top-0 h-2 bg-white rounded cursor-pointer"
+        className="scroll-bar__thumb absolute top-0 h-2 cursor-pointer"
         style={{ width: `${thumbWidth}px`, left: `${thumbLeft}px` }}
         onMouseDown={onMouseDown}
       />

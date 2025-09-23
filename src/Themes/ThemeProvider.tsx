@@ -1,63 +1,74 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect
-} from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { themeRegistry, type Theme, type ThemeName } from '@/Themes';
 
-import {
-  themeRegistry,
-  type Theme,
-  type ThemeName,
-} from '@/Themes';
+// If you still want base + variation types, keep them
+export type ThemeBase = 'Default';
+export type ThemeVariation = 'Dark';
 
-type ThemeContextType = {
-  theme: Theme;
-  setThemeByName: (name: ThemeName) => void;
-  currentThemeName: ThemeName;
-};
+interface ThemeIdentifier {
+  base: ThemeBase;
+  variation: ThemeVariation;
+}
+
+// Context exposes full Theme object + base/variation identifiers
+interface ThemeContextType {
+  theme: Theme & ThemeIdentifier;
+  setTheme: (theme: ThemeIdentifier) => void;
+}
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [currentThemeName, setCurrentThemeName] = useState<ThemeName>('Dark');
-  const theme = themeRegistry[currentThemeName];
+  const [themeId, setThemeId] = useState<ThemeIdentifier>({
+    base: 'Default',
+    variation: 'Dark'
+  });
 
-  const setThemeByName = (name: ThemeName) => {
-    if (themeRegistry[name]) {
-      setCurrentThemeName(name);
-    } else {
-      console.warn(`Theme "${name}" is not registered.`);
-    }
+  // Build the full theme object expected by components
+  const theme: Theme & ThemeIdentifier = {
+    ...themeRegistry[themeId.variation], // or adapt if your registry is organized differently
+    base: themeId.base,
+    variation: themeId.variation
   };
 
-   useEffect(() => {
-    const href = `/themes/${currentThemeName.toLowerCase()}.css`;
+  useEffect(() => {
+    const globalHref = `/themes/${themeId.base}/generalStyle.css`;
+    ensureLink('theme-global-style', globalHref);
 
-    let linkEl = document.getElementById('theme-style') as HTMLLinkElement | null;
+    const variationHref = `/themes/${themeId.base}/Variations/${themeId.variation}/index.css`;
+    ensureLink('theme-variation-style', variationHref);
+
+    // Add the theme class to the html element
+    const htmlEl = document.documentElement;
+    // remove any old theme classes (optional if you plan multiple themes)
+    htmlEl.classList.forEach(cls => {
+      if (cls.startsWith('theme-')) htmlEl.classList.remove(cls);
+    });
+    htmlEl.classList.add(`theme-${themeId.variation.toLowerCase()}`);
+  }, [themeId]);
+
+  const ensureLink = (id: string, href: string) => {
+    let linkEl = document.getElementById(id) as HTMLLinkElement | null;
     if (!linkEl) {
       linkEl = document.createElement('link');
-      linkEl.id = 'theme-style';
+      linkEl.id = id;
       linkEl.rel = 'stylesheet';
       document.head.appendChild(linkEl);
     }
     linkEl.href = href;
-  }, [currentThemeName]);
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme, setThemeByName, currentThemeName }}>
+    <ThemeContext.Provider value={{ theme, setTheme: setThemeId }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
 export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used within a ThemeProvider');
+  return ctx;
 };
