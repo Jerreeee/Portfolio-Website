@@ -2,7 +2,7 @@
 
 import React, { JSX } from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { StyleProps, mergeStyleProps } from '@/Utils/StyleProps'
+import { StyleProps, mergeStyleProps } from '@/utils/StyleProps'
 
 export type TextLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'p';
 

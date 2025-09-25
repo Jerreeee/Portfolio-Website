@@ -1,8 +1,11 @@
-import { darkTheme, type DarkTheme } from '@/Themes/Default/Variations/Dark';
+//mui
+import { ThemeOptions } from '@mui/material/styles';
 
-export type Theme = DarkTheme;
-export type ThemeName = Theme['name'];
+//custom
+import { defaultDarkOptions } from './Default/Variations/Dark';
 
-export const themeRegistry: Record<ThemeName, Theme> = {
-    Dark: darkTheme,
+export const themeRegistry: Record<string, Record<string, ThemeOptions>> = {
+  Default: {
+    Dark: defaultDarkOptions,
+  },
 };

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import type { Variants, MotionProps } from "framer-motion";
-import { mergeAnims } from "@/Utils/MergeObjects";
+import { mergeAnims } from "@/utils/MergeObjects";
 
 type MotionWrapperProps = {
   animations: { addDefaultProps: boolean; variants: Variants[] }[];

@@ -1,5 +1,6 @@
-import { Variants } from "framer-motion";
-import { mergeVariants } from '@/Utils/MergeObjects'
+import { Variants, MotionProps } from "framer-motion";
+import { mergeVariants } from '@/utils/MergeObjects'
+
 
 export const anims = {
   staggerChildren: (duration: number = 0.1, delayChildren = 0): Variants => ({
@@ -39,14 +40,14 @@ export const anims = {
     );
   },
 
-  hoverScale: (scale: number = 1.25, duration: number = 0.2): Variants => ({
+  hoverScale: (scale: number = 1.25, duration: number = 0.2): MotionProps => ({
     whileHover: {
       scale,
       transition: { duration },
     },
   }),
 
-  tapScale: (scale: number = 1.25, duration: number = 0.2): Variants => ({
+  tapScale: (scale: number = 1.25, duration: number = 0.2): MotionProps => ({
     whileTap: {
       scale,
       transition: { duration },

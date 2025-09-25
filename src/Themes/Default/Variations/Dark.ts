@@ -1,170 +1,87 @@
-import { DefaultTheme } from "@/Themes/Default/BaseTheme";
-import { NavbarCmp, NavbarTheme } from "@/Themes/Default/Components/Navbar";
-import { ProjectsOverviewCmp, ProjectsOverviewTheme } from "@/Themes/Default/Components/ProjectsOverview";
-import { ProjectCardCmp, ProjectCardTheme } from "@/Themes/Default/Components/ProjectCard";
-import { IconCmp, IconTheme } from "@/Themes/Default/Components/Generic/Icon";
-import * as Text from "@/Themes/Default/Components/Generic/Text"
-import { ImageCmp, ImageTheme } from '@/Themes/Default/Components/Generic/Image';
-import { ImageCompareCmp, ImageCompareTheme } from '@/Themes/Default/Components/Generic/ImageCompare';
-import { MediaCmp, MediaTheme } from '@/Themes/Default/Components/Generic/Media';
-import { MediaGalleryCmp, MediaGalleryTheme } from '@/Themes/Default/Components/Generic/MediaGallery';
-import { ScrollBarCmp, ScrollBarTheme } from '@/Themes/Default/Components/Generic/ScrollBar';
-import { SegmentSliderCmp, SegmentSliderTheme } from '@/Themes/Default/Components/Generic/SegmentSlider';
+//mui
+import { ThemeOptions } from '@mui/material/styles';
 
-export type DarkTheme = DefaultTheme<
-  NavbarTheme,
-  ProjectsOverviewTheme,
-  ProjectCardTheme,
-  IconTheme,
-  Text.TextTheme,
-  Text.TextTheme,
-  ImageTheme,
-  ImageCompareTheme,
-  MediaTheme,
-  MediaGalleryTheme,
-  ScrollBarTheme,
-  SegmentSliderTheme
-> & { name: 'Dark'; };
+//custom
+import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
+import { anims } from '@/Themes/Default/animations';
 
-const darkColors = {
-  background: '#0b0b0d',           // almost black
-  backgroundAlt: '#141418',        // very dark gray-blue for contrast
+export const defaultDarkOptions: ThemeOptions = {
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#90caf9',    // light blue
+      light: '#e3f2fd',
+      dark: '#42a5f5',
+    },
+    secondary: {
+      main: '#f48fb1',    // pink
+      light: '#f8bbd0',
+      dark: '#f06292',
+    },
+    background: {
+      default: '#121212',
+      paper: '#1e1e1e',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#b0b0b0',
+    },
+    divider: 'rgba(255,255,255,0.12)',
+  },
 
-  foreground: '#f0f0f0',
-  foregroundMuted: '#888888',
+  typography: {
+    fontFamily: `'Roboto', 'Helvetica', 'Arial', sans-serif`,
+    h1: { fontWeight: 500, fontSize: '2.5rem' },
+    h2: { fontWeight: 500, fontSize: '2rem' },
+    h3: { fontWeight: 500, fontSize: '1.75rem' },
+    h6: { fontWeight: 900, fontSize: '1rem' },
+    body1: { fontSize: '1rem' },
+    body2: { fontSize: '0.875rem' },
+  },
 
-  highlight: '#7f5af0',            // lavender purple (matches right side of gradient)
-  highlightAlt: '#60a5fa',         // light blue for hover or accent
+  shape: {
+    borderRadius: 8,
+  },
 
-  border: '#1e1e22',
-  borderMuted: '#131317',
-
-  gradientStart: '#60a5fa',        // light blue (start of gradient)
-  gradientEnd: '#c084fc',          // soft purple (end of gradient)
-  // gradientStart: '#0b0b0d', // almost black
-  // gradientEnd: '#151520',   // just slightly lighter, bluish tint
-
-  overlay: 'rgba(0, 0, 0, 0.7)',
-
-  success: '#22c55e',
-  warning: '#facc15',
-  error: '#ef4444',
-  info: '#7dd3fc',
-
-  link: '#7f5af0',
-  linkHover: '#c084fc',
-};
-
-export const darkTheme: DarkTheme = {
-  name: 'Dark',
-  colors: darkColors,
   components: {
-    navbar: {
-      cmp: NavbarCmp,
-      theme: {
-        containerBackground: '#141418',
-        containerBorderColor: '#3fa0ff',
-
-        brandGradientStart: '#3fa0ff',
-        brandGradientMid: '#7b72f0',
-        brandGradientEnd: '#ec38bc',
-
-        brandTextColor: '#ec38bc', // fallback or non-gradient context
-
-        linkTextColor: '#888888',
-        linkTextHoverColor: '#d0d0d0',
-        linkTextActiveColor: '#7b72f0',
+    //Global MUI overrides
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          borderRadius: 8,
+        },
       },
     },
-    projectsOverview: {
-      cmp: ProjectsOverviewCmp,
-      theme: {
-        sectionBgColor: '#0b0b0d',
-        sectionBgGradientStart: '#151a2c', // Dark blue-violet base
-        sectionBgGradientEnd: '#221730', // Deep purple-gray
-
-        titleGradientStart: '#3fa0ff', // Vibrant blue
-        titleGradientMid: '#7b72f0', // Electric lavender
-        titleGradientEnd: '#ec38bc', // Bright pinkish-purple for punch
-
-        ctaButtonBgColor: '#f0f0f0',
-        ctaButtonTextColor: '#0b0b0d',
-      },
-    },
-    projectCard: {
-      cmp: ProjectCardCmp,
-      theme: {
-        bgColor: '#141519', // darker than #1a1b20
-        bgHoverColor: '#1f2027', // darker than #2a2b32
-
-        borderRadius: 12,
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
-
-        titleTextColor: '#F0F0F0', // Soft white for titles
-        descriptionTextColor: '#aaaaaa', // Muted gray for secondary text
-      },
-    },
-    icon: {
-      cmp: IconCmp,
-      theme: {
-        convertToGrayScale: false,
-        grayScaleIconColor: '#FFFFFF',
-      },
-    },
-    h1: {
-      cmp: Text.H1,
-      theme: {
-        style: {
-          className: 'font-normal sm:font-[200] md:font-semibold lg:font-bold',
-          style: {
-            display: 'block',
-            fontSize: 'clamp(24px, 4vw + 1rem, 48px)',
-            marginTop: '0.25em',
-            marginBottom: '0.25em',
-            color: '#FFFFFF'
-          }
-        }
-      },
-    },
-    p: {
-      cmp: Text.Paragraph,
-      theme: {
-        style: {
-          style: {
-            fontSize: '20px',
-            fontWeight: 'normal',
-            color: '#FFFFFF'
-          }
-        }
+    Icon: {
+      defaultProps: {
+        techName: '',
+        convertToGrayScale: true,
+        grayScaleIconColor: '#FF0000',
       }
     },
-    image: {
-      cmp: ImageCmp,
-      theme: {
-        style:  {
-          className: 'ring-2 ring-white'
+    ProjectCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#1e1e1e',
+          '&:hover': {
+            backgroundColor: '#2c2c2c',
+          },
+        },
+        header: {
+          color: '#fff',
+        },
+        techList: {
+          height: 30
         }
+      },
+      slotAnimations: {
+        root:     mergeAnims(true, anims.hoverScale(1.025)),
+        content:  mergeAnims(true, anims.staggerChildren(0.2)),
+        header:   mergeAnims(false, anims.fadeInUp()),
+        techList: mergeAnims(false, anims.staggerChildren(0.05, 0.5)),
+        techIcon: mergeAnims(false, anims.fadeInUp(20, 0.2), anims.hoverScale())
       }
-    },
-    imageCompare: {
-      cmp: ImageCompareCmp,
-      theme: {}
-    },
-    media: {
-      cmp: MediaCmp,
-      theme: {}
-    },
-    mediaGallery: {
-      cmp: MediaGalleryCmp,
-      theme: {}
-    },
-    scrollBar: {
-      cmp: ScrollBarCmp,
-      theme: {}
-    },
-    segmentSlider: {
-      cmp: SegmentSliderCmp,
-      theme: {}
     },
   },
-};
+};  

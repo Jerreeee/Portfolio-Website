@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
-import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
-import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
+import { constructCSSVarsFromTheme } from '@/utils/ConstructCSSVarsFromTheme';
+import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
 
 export type NavbarTheme = {
   containerBackground: string;

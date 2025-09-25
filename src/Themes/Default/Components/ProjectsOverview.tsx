@@ -5,8 +5,8 @@ import { FaArrowDown } from 'react-icons/fa';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { motion } from 'motion/react';
 import { anims } from '@/Themes/Default/animations';
-import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
-import { constructCSSVarsFromTheme } from '@/Utils/ConstructCSSVarsFromTheme';
+import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
+import { constructCSSVarsFromTheme } from '@/utils/ConstructCSSVarsFromTheme';
 
 export type ProjectsOverviewTheme = {
   // Background styling for the entire projects overview section

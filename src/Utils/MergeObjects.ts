@@ -94,20 +94,30 @@ export function mergeVariants(...variants: Variants[]): Variants {
  * - Auto-assigns props when a variant key matches a MotionProp key (e.g., "initial", "animate", "exit")
  * - Throws ONLY on conflicting leaf values (or incompatible types)
  */
-export function mergeAnims(addDefaultProps: boolean, ...variants: Variants[]): MotionProps {
+export function mergeAnims(
+  addDefaultProps: boolean,
+  ...items: (Variants | MotionProps)[]
+): MotionProps {
   const merged: MotionProps = { variants: {} };
 
-  for (const variant of variants) {
-    for (const key in variant) {
-      (merged.variants as any)[key] = deepMergeOrThrowOnLeafConflict(
-        (merged.variants as any)[key],
-        (variant as any)[key],
-        [key]
-      );
+  for (const item of items) {
+    for (const key in item) {
+      if (['whileHover','whileTap','whileFocus','whileInView','drag','layout'].includes(key)) {
+        (merged as any)[key] = deepMergeOrThrowOnLeafConflict(
+          (merged as any)[key],
+          (item as any)[key],
+          [key]
+        );
+      } else {
+        (merged.variants as any)[key] = deepMergeOrThrowOnLeafConflict(
+          (merged.variants as any)[key],
+          (item as any)[key],
+          [key]
+        );
+      }
     }
   }
 
-  // Auto-assign matching props (kept as-is from your original behavior)
   if (addDefaultProps && merged.variants) {
     for (const key in merged.variants) {
       if ((merged as any)[key] === undefined) {

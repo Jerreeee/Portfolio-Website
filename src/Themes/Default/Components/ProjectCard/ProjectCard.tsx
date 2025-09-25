@@ -1,0 +1,92 @@
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { styled, useTheme } from '@mui/material/styles';
+import { Card, CardContent, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
+import { ProjectInfo } from '@/data/projects/project';
+import IconCmp from '@/Themes/Default/Components/Icon/Icon'
+
+// =====================================================================
+// ========================= Slot Definitions ==========================
+
+const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCard', slot: 'Root' })(({ theme }) => ({
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  boxShadow: theme.shadows[3],
+  cursor: 'pointer',
+}));
+
+const ProjectCardHeader = styled(motion.div, { name: 'ProjectCard', slot: 'Header' })(({ theme }) => ({
+  ...theme.typography.h6,
+  textAlign: 'center',
+  color: theme.palette.text.primary,
+}));
+
+const ProjectCardImage = styled(motion.div, {name: 'ProjectCard', slot: 'Image'})(({ theme }) => ({
+  position: 'relative',
+  width: '100%',
+  aspectRatio: '16 / 9',
+}));
+
+const ProjectCardTechList = styled(motion.div, {name: 'ProjectCard', slot: 'TechList'})(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: theme.spacing(1),
+}));
+
+const ProjectCardTechIcon = styled(motion.div, {name: 'ProjectCard', slot: 'TechIcon'})(({ theme }) => ({
+}));
+
+const ProjectCardContentBox = styled(motion(CardContent), { name: 'ProjectCard', slot: 'Content' })(({ theme }) => ({
+  padding: theme.spacing(2),
+  textAlign: 'center',
+}));
+
+// =====================================================================
+// ============================= Component =============================
+
+export interface ProjectCardSettings {}
+
+export interface ProjectCardProps {
+  project: ProjectInfo;
+}
+
+export default function ProjectCardCmp({ project }: ProjectCardProps) {
+  const theme = useTheme();
+  const anim = theme.components?.ProjectCard?.slotAnimations ?? {};
+
+  return (
+    <ProjectCardRoot {...(anim.root || {})}>
+      <Link href={`/projects/${project.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <ProjectCardImage {...(anim.image || {})}>
+          <Image
+            src={project.thumbnailImage}
+            alt={project.title}
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+          />
+        </ProjectCardImage>
+
+        <ProjectCardContentBox {...(anim.content || {})}>
+          <ProjectCardHeader {...(anim.header || {})}>
+            <Typography variant="h6" component="h3" sx={{ m: 0 }}>
+              {project.title}
+            </Typography>
+          </ProjectCardHeader>
+
+          <ProjectCardTechList {...(anim.techList || {})}>
+            {project.technologies?.map((tech) => (
+              <ProjectCardTechIcon key={tech} {...(anim.techIcon || {})}>
+                <IconCmp techName={tech} />
+              </ProjectCardTechIcon>
+            ))}
+          </ProjectCardTechList>
+        </ProjectCardContentBox>
+      </Link>
+    </ProjectCardRoot>
+  );
+}

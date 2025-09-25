@@ -1,63 +1,47 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect
-} from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
+import { createTheme, Theme, ThemeOptions } from '@mui/material/styles';
+import { StyledEngineProvider as MuiStyledEngineProvider, ThemeProvider as MuiThemeProvider, CssBaseline as MuiCssBaseline } from '@mui/material';
+import { themeRegistry } from 'Themes';
 
-import {
-  themeRegistry,
-  type Theme,
-  type ThemeName,
-} from '@/Themes';
+interface ThemeID {
+  name: string;
+  variation: string;
+}
 
-type ThemeContextType = {
+interface ThemeContextValue {
+  themeID: ThemeID;
   theme: Theme;
-  setThemeByName: (name: ThemeName) => void;
-  currentThemeName: ThemeName;
-};
+  setTheme: (themeID: ThemeID) => void;
+}
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [currentThemeName, setCurrentThemeName] = useState<ThemeName>('Dark');
-  const theme = themeRegistry[currentThemeName];
+export function ThemeProvider({ children }: { children: ReactNode }) {
+    const [themeID, setThemeID] = useState({
+      name: 'Default',
+      variation: 'Dark',
+    });
 
-  const setThemeByName = (name: ThemeName) => {
-    if (themeRegistry[name]) {
-      setCurrentThemeName(name);
-    } else {
-      console.warn(`Theme "${name}" is not registered.`);
-    }
-  };
+  const setTheme = (themeID: ThemeID) => setThemeID(themeID);
 
-   useEffect(() => {
-    const href = `/themes/${currentThemeName.toLowerCase()}.css`;
-
-    let linkEl = document.getElementById('theme-style') as HTMLLinkElement | null;
-    if (!linkEl) {
-      linkEl = document.createElement('link');
-      linkEl.id = 'theme-style';
-      linkEl.rel = 'stylesheet';
-      document.head.appendChild(linkEl);
-    }
-    linkEl.href = href;
-  }, [currentThemeName]);
+  const theme = createTheme(themeRegistry[themeID.name][themeID.variation]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setThemeByName, currentThemeName }}>
-      {children}
+    <ThemeContext.Provider value={{ themeID, theme, setTheme }}>
+      <MuiStyledEngineProvider injectFirst>
+        <MuiThemeProvider theme={theme}>
+          <MuiCssBaseline />
+          {children}
+        </MuiThemeProvider>
+      </MuiStyledEngineProvider>
     </ThemeContext.Provider>
   );
-};
+}
 
-export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+export const useTheme = () => {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be inside ThemeProvider');
+  return ctx;
 };

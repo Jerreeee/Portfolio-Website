@@ -3,7 +3,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { ImageProps, ImageTheme } from '@/Themes/Default/Components/Generic/Image';
-import { StyleProps, mergeStyleProps } from '@/Utils/StyleProps'
+import { StyleProps, mergeStyleProps } from '@/utils/StyleProps'
 
 export interface ImageCompareItem {
   src: string;
