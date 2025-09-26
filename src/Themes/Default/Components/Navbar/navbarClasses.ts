@@ -1,6 +1,6 @@
   import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
-  export const { slots, getUtilityClass, classes: projectCardClasses } =
+  export const { slots, getUtilityClass, classes: navbarClasses } =
     createUtilityClasses('ProjectCard', [
       'root',
       'header',
@@ -10,5 +10,5 @@
       'content'
     ] as const);
 
-  export type ProjectCardClassKey = typeof slots[number];
-  export type ProjectCardClasses = typeof projectCardClasses;
+  export type NavbarClassKey = typeof slots[number];
+  export type NavbarClasses = typeof navbarClasses;

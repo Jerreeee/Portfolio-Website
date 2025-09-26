@@ -17,10 +17,12 @@ const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCard', slot: 'Root'
   flexDirection: 'column',
   boxShadow: theme.shadows[3],
   cursor: 'pointer',
+  borderRadius: typeof theme.shape.borderRadius === 'number'
+    ? `${theme.shape.borderRadius}px`
+    : theme.shape.borderRadius,
 }));
 
 const ProjectCardHeader = styled(motion.div, { name: 'ProjectCard', slot: 'Header' })(({ theme }) => ({
-  ...theme.typography.h6,
   textAlign: 'center',
   color: theme.palette.text.primary,
 }));
@@ -59,7 +61,9 @@ export default function ProjectCardCmp({ project }: ProjectCardProps) {
   const anim = theme.components?.ProjectCard?.slotAnimations ?? {};
 
   return (
-    <ProjectCardRoot {...(anim.root || {})}>
+    <ProjectCardRoot {...(anim.root || {})}
+    viewport={{ once: true, amount: 0.3 }}
+    >
       <Link href={`/projects/${project.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <ProjectCardImage {...(anim.image || {})}>
           <Image
@@ -73,7 +77,7 @@ export default function ProjectCardCmp({ project }: ProjectCardProps) {
 
         <ProjectCardContentBox {...(anim.content || {})}>
           <ProjectCardHeader {...(anim.header || {})}>
-            <Typography variant="h6" component="h3" sx={{ m: 0 }}>
+            <Typography variant="h5" sx={{ m: 0 }}>
               {project.title}
             </Typography>
           </ProjectCardHeader>

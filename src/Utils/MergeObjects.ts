@@ -88,6 +88,19 @@ export function mergeVariants(...variants: Variants[]): Variants {
   return merged;
 }
 
+/** Keys that belong only on MotionProps (never inside variants) */
+const motionPropKeys = new Set([
+  'whileHover',
+  'whileTap',
+  'whileFocus',
+  'whileInView',
+  'drag',
+  'layout',
+  'transition',
+  'style',
+  'viewport',
+]);
+
 /**
  * Merge multiple Variants into MotionProps
  * - Deep merges all variants
@@ -102,7 +115,7 @@ export function mergeAnims(
 
   for (const item of items) {
     for (const key in item) {
-      if (['whileHover','whileTap','whileFocus','whileInView','drag','layout'].includes(key)) {
+      if (motionPropKeys.has(key)) {
         (merged as any)[key] = deepMergeOrThrowOnLeafConflict(
           (merged as any)[key],
           (item as any)[key],

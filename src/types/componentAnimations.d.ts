@@ -5,6 +5,9 @@ import type { AnimationProps } from 'framer-motion';
 import type { IconClassKey } from '@/Themes/Default/Components/Icon/IconClasses';
 import type { MediaClassKey } from '@/Themes/Default/Components/Media/MediaClasses';
 import type { ProjectCardClassKey } from '@/Themes/Default/Components/ProjectCard/projectCardClasses';
+import type { ProjectsOverviewClassKey } from '@/Themes/Default/Components/ProjectsOverview/projectsOverviewClasses'
+import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarClasses'
+
 
 /**
  * For each component, we want a record of slot->AnimationProps.
@@ -32,4 +35,6 @@ export interface ComponentNameToAnimationSlot {
   Media: MediaClassKey;
   Icon: IconClassKey;
   ProjectCard: ProjectCardClassKey;
+  ProjectsOverview: ProjectsOverviewClassKey;
+  Navbar: NavbarClassKey;
 }

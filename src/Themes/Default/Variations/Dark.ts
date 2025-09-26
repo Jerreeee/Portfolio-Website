@@ -3,7 +3,7 @@ import { ThemeOptions } from '@mui/material/styles';
 
 //custom
 import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
-import { anims } from '@/Themes/Default/animations';
+import { anims } from '@/Themes/animations';
 
 export const defaultDarkOptions: ThemeOptions = {
   palette: {
@@ -31,16 +31,15 @@ export const defaultDarkOptions: ThemeOptions = {
 
   typography: {
     fontFamily: `'Roboto', 'Helvetica', 'Arial', sans-serif`,
-    h1: { fontWeight: 500, fontSize: '2.5rem' },
+    h1: { fontWeight: 600, fontSize: '2.5rem' },
     h2: { fontWeight: 500, fontSize: '2rem' },
-    h3: { fontWeight: 500, fontSize: '1.75rem' },
-    h6: { fontWeight: 900, fontSize: '1rem' },
+    h3: { fontWeight: 400, fontSize: '1.75rem' },
     body1: { fontSize: '1rem' },
     body2: { fontSize: '0.875rem' },
   },
 
   shape: {
-    borderRadius: 8,
+    borderRadius: 10,
   },
 
   components: {
@@ -69,7 +68,7 @@ export const defaultDarkOptions: ThemeOptions = {
           },
         },
         header: {
-          color: '#fff',
+          color: '#F0F0F0',
         },
         techList: {
           height: 30
@@ -83,5 +82,72 @@ export const defaultDarkOptions: ThemeOptions = {
         techIcon: mergeAnims(false, anims.fadeInUp(20, 0.2), anims.hoverScale())
       }
     },
+    ProjectsOverview: {
+      styleOverrides: {
+        root: {
+          background: 'linear-gradient(to bottom, #151a2c, #221730)',
+        },
+        header: {
+          marginTop: 30,
+          // marginBottom: 30,
+          paddingTop: 30,
+          textAlign: 'center',
+          '& .MuiTypography-root': {
+            display: 'inline-block',
+            background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          },
+        },
+      },
+      slotAnimations: {
+        root:        mergeAnims(true, anims.staggerChildren(0.25)),
+        header:      mergeAnims(false, anims.fadeInUp()),
+        grid:        mergeAnims(false, anims.staggerChildren(0.2)),
+        cardWrapper: {
+          variants: {
+            initial: { opacity: 0, y: 20 },
+            animate: (i: number) => ({
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.3, delay: i * 0.2 },
+            }),
+          },
+        },
+      }
+    },
+    Navbar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#141418',
+          borderBottom: '1px solid #3fa0ff',
+        },
+        brand: {
+          '& .MuiTypography-root': {
+            display: 'inline-block',
+            background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          },
+        },
+        list: {},
+        item: {},
+        link: {
+          color: '#888888',
+          '&:hover': { color: '#d0d0d0' },
+          '&[data-active="true"]': { color: '#7b72f0' },
+        },
+        underline: {
+          backgroundColor: '#3fa0ff',
+        },
+      },
+      slotAnimations: {
+        root: mergeAnims(true, anims.fadeInDown()),
+        brand: mergeAnims(true, anims.fadeInDown(), anims.hoverScale(1.035), anims.tapScale(0.9)),
+        list: mergeAnims(true, anims.staggerChildren(0.2)),
+        item: mergeAnims(false, anims.fadeInDown()),
+        underline: mergeAnims(false, { transition: { type: 'spring', stiffness: 500, damping: 30 } }),
+      },
+    }
   },
 };  
