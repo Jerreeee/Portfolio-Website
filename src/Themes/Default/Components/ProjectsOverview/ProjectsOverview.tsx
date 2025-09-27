@@ -15,7 +15,7 @@ const ProjectsOverviewRoot = styled(motion.main, {
   slot: 'Root',
 })(({ theme }) => ({
   width: '100%',
-  minHeight: '100vh',
+//   minHeight: '100vh',
 }));
 
 const ProjectsOverviewContainer = styled(motion.main, {
@@ -31,7 +31,7 @@ const ProjectsOverviewHeader = styled(motion.div, {
   slot: 'Header',
 })(({ theme }) => ({
   textAlign: 'center',
-  marginTop: theme.spacing(4),
+//   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
 }));
 

@@ -17,6 +17,7 @@ const NavbarRoot = styled(motion.nav, { name: 'Navbar', slot: 'Root' })(({ theme
   left: 0,
   zIndex: 50,
   width: '100%',
+  height: theme.components?.Navbar?.defaultProps?.height,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -56,19 +57,20 @@ const NavbarUnderline = styled(motion.span, { name: 'Navbar', slot: 'Underline' 
 // =====================================================================
 // ============================= Component =============================
 
-export interface NavbarProps {}
+export interface NavItem {
+  href: string;
+  label: string;
+}
+
+export interface NavbarProps {
+  navItems?: NavItem[];
+  height?: number | string;
+}
 
 export default function NavbarCmp(props: NavbarProps) {
   const theme = useTheme();
   const anim = theme.components?.Navbar?.slotAnimations ?? {};
   const pathname = usePathname();
-
-  const navItems = [
-    { href: '/projects', label: 'Projects' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
-    { href: '/resume', label: 'Resume' },
-  ];
 
   return (
     <NavbarRoot {...(anim.root || {})}>
@@ -81,13 +83,13 @@ export default function NavbarCmp(props: NavbarProps) {
 
       {/* Nav links */}
       <NavbarList {...(anim.list || {})}>
-        {navItems.map((item) => {
+        {props.navItems?.map((item) => {
           const isActive = pathname === item.href;
           return (
             <NavbarItem key={item.href} {...(anim.item || {})}>
               <motion.div {...mergeAnims(true, anims.hoverScale(1.035), anims.tapScale(0.9))}>
                 <NavbarLink href={item.href} active={isActive}>
-                  {item.label}
+                  <Typography variant="h6" component="span">{item.label}</Typography>
                   {isActive && (
                     <NavbarUnderline layoutId="nav-underline" {...(anim.underline || {})} />
                   )}

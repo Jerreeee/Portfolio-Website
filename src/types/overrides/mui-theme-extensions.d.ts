@@ -17,15 +17,6 @@ import type { NavbarProps } from '@/Themes/Default/Components/Navbar/Navbar'
 import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarClasses'
 
 
-/**
- * Generic helper: one component definition can have its own props and
- * its own internal theme settings object.
- */
-interface ComponentDefinition<Props, ThemeSettings = any> {
-  cmp?: React.FC<Props>;
-  theme?: ThemeSettings;
-}
-
 // Augment MUI's Theme
   declare module '@mui/material/styles' {
     // Custom component definitions

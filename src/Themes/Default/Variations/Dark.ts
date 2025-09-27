@@ -88,9 +88,9 @@ export const defaultDarkOptions: ThemeOptions = {
           background: 'linear-gradient(to bottom, #151a2c, #221730)',
         },
         header: {
-          marginTop: 30,
+          // marginTop: 30,
           // marginBottom: 30,
-          paddingTop: 30,
+          // paddingTop: 30,
           textAlign: 'center',
           '& .MuiTypography-root': {
             display: 'inline-block',
@@ -117,6 +117,9 @@ export const defaultDarkOptions: ThemeOptions = {
       }
     },
     Navbar: {
+      defaultProps: {
+        height: '60px'
+      },
       styleOverrides: {
         root: {
           backgroundColor: '#141418',
