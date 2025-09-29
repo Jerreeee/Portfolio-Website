@@ -5,14 +5,6 @@ import { projectInfo as VulkanDeferredRendererProjectInfo } from '@/data/project
 export const projects = [
   BubbleBobbleProjectInfo,
   VulkanDeferredRendererProjectInfo,
-    VulkanDeferredRendererProjectInfo,
-      VulkanDeferredRendererProjectInfo,
-        VulkanDeferredRendererProjectInfo,
-          VulkanDeferredRendererProjectInfo,
-            VulkanDeferredRendererProjectInfo,
-              VulkanDeferredRendererProjectInfo,
-                VulkanDeferredRendererProjectInfo,
-                  VulkanDeferredRendererProjectInfo,
 ];
 
 export const getProjectBySlug = (slug: string) =>

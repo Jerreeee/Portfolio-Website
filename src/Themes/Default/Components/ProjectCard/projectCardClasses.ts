@@ -3,11 +3,11 @@
   export const { slots, getUtilityClass, classes: projectCardClasses } =
     createUtilityClasses('ProjectCard', [
       'root',
-      'header',
       'image',
+      'content',
+      'header',
       'techList',
       'techIcon',
-      'content'
     ] as const);
 
   export type ProjectCardClassKey = typeof slots[number];

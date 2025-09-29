@@ -1,0 +1,76 @@
+'use client';
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { styled } from '@mui/material/styles';
+import { useTheme } from '@/Themes/ThemeProvider';
+import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompare';
+import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSlider';
+
+// =====================================================================
+// ============================= Slot Definitions =================================
+
+// Optional root styling if needed later
+const ImageMultiCompareRoot = styled(motion.div, {
+  name: 'ImageMultiCompare',
+  slot: 'Root',
+})({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem',
+  width: '100%',
+  height: '100%',
+});
+
+// =====================================================================
+// ============================= Component ==============================
+
+export interface ImageMultiCompareProps {
+  images: ImageCompareItem[];
+}
+
+export default function ImageMultiCompareCmp(props: ImageMultiCompareProps) {
+  const { theme } = useTheme();
+
+  const initialProgress = 0.5;
+  // ---- Special case: only two images -> just a single ImageMask
+  if (props.images.length === 2) {
+    return (
+      <ImageCompareCmp
+        bottom={props.images[0]}
+        top={props.images[1]}
+        progress={initialProgress}
+      />
+    );
+  }
+
+  // ---- Multiple images case ----
+  const [sliderState, setSliderState] = useState<SegmentSliderState>(SegmentSliderCmp.computeState(initialProgress, props.images.length));
+
+  return (
+    <ImageMultiCompareRoot>
+      <ImageCompareCmp
+        bottom={props.images[sliderState.segmentIndex]}
+        top={props.images[sliderState.nextTickIdx]}
+        progress={sliderState.segmentPercentage}
+        enableDrag
+        onDrag={(newSegmentProgress) => {
+          const segmentCount = props.images.length - 1;
+          const newGlobalPercentage = (sliderState.segmentIndex + Math.min(newSegmentProgress, 0.9999)) / segmentCount;
+          setSliderState({
+            ...sliderState,
+            percentage: newGlobalPercentage,
+            segmentPercentage: newSegmentProgress,
+          });
+        }}
+      />
+
+      {/* SegmentSlider */}
+      <SegmentSliderCmp
+        tickCount={props.images.length}
+        percentage={sliderState.percentage}
+        onChange={setSliderState}
+      />
+    </ImageMultiCompareRoot>
+  );
+}

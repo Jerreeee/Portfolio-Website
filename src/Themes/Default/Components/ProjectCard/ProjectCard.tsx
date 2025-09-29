@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { styled, useTheme } from '@mui/material/styles';
-import { Card, CardContent, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
+import { styled } from '@mui/material/styles';
+import { Card, CardContent, Typography } from '@mui/material';
+import { useTheme } from '@/Themes/ThemeProvider'
 import { ProjectInfo } from '@/data/projects/project';
 import IconCmp from '@/Themes/Default/Components/Icon/Icon'
 
@@ -57,7 +58,7 @@ export interface ProjectCardProps {
 }
 
 export default function ProjectCardCmp({ project }: ProjectCardProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const anim = theme.components?.ProjectCard?.slotAnimations ?? {};
 
   return (

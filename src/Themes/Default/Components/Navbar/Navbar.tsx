@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
+import { useTheme } from '@/Themes/ThemeProvider'
 import { anims } from '@/Themes/animations';
 import { mergeAnims } from '@/utils/MergeObjects';
 
@@ -36,7 +37,9 @@ const NavbarList = styled(motion.ol, { name: 'Navbar', slot: 'List' })(({ theme 
 
 const NavbarItem = styled(motion.li, { name: 'Navbar', slot: 'Item' })({});
 
-const NavbarLink = styled(Link, { name: 'Navbar', slot: 'Link' })<{ active?: boolean }>(
+const NavbarLink = styled(Link, { name: 'Navbar', slot: 'Link',
+  shouldForwardProp: (prop) => prop !== 'active'
+})<{ active?: boolean }>(
   ({ theme, active }) => ({
     position: 'relative',
     padding: theme.spacing(1, 1.5),
@@ -68,7 +71,7 @@ export interface NavbarProps {
 }
 
 export default function NavbarCmp(props: NavbarProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const anim = theme.components?.Navbar?.slotAnimations ?? {};
   const pathname = usePathname();
 

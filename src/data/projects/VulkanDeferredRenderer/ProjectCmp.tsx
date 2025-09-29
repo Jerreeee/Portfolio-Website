@@ -5,7 +5,7 @@ import React from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { ProjectInfo } from '@/data/projects/project'
 import { data } from './data'
-import { MediaItem } from '@/Themes/Default/Components/Generic/Media';
+import { MediaItem } from '@/Themes/Default/Components/Media/Media';
 import { ImageCompareCmp } from '@/Themes/Default/Components/Generic/ImageCompare'
 
 export default function ProjectCmp() {

@@ -1,13 +1,13 @@
   import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
   export const { slots, getUtilityClass, classes: navbarClasses } =
-    createUtilityClasses('ProjectCard', [
+    createUtilityClasses('Navbar', [
       'root',
-      'header',
-      'image',
-      'techList',
-      'techIcon',
-      'content'
+      'brand',
+      'list',
+      'item',
+      'link',
+      'underline'
     ] as const);
 
   export type NavbarClassKey = typeof slots[number];

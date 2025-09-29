@@ -1,11 +1,12 @@
 'use client';
 
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Container, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { projects } from '@/data/projects';
 import { anims } from '@/Themes/animations';
 import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCard';
+import { useTheme } from '@/Themes/ThemeProvider'
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -58,7 +59,7 @@ const ProjectsOverviewCardWrapper = styled(motion.div, {
 export interface ProjectsOverviewProps {}
 
 export default function ProjectsOverviewCmp(props: ProjectsOverviewProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const anim = theme.components?.ProjectsOverview?.slotAnimations ?? {};
 
   return (

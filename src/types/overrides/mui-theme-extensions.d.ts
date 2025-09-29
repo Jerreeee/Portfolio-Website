@@ -15,7 +15,16 @@ import type { ProjectsOverviewProps } from '@/Themes/Default/Components/Projects
 import type { ProjectsOverviewClassKey } from '@/Themes/Default/Components/ProjectsOverview/projectsOverviewClasses'
 import type { NavbarProps } from '@/Themes/Default/Components/Navbar/Navbar'
 import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarClasses'
-
+import type { SegmentSliderProps } from '@/Themes/Default/Components/SegmentSlider/SegmentSlider'
+import type { SegmentSliderClassKey } from '@/Themes/Default/Components/SegmentSlider/segmentSliderClasses'
+import type { ScrollBarProps } from '@/Themes/Default/Components/ScrollBar/ScrollBar'
+import type { ScrollBarClassKey } from '@/Themes/Default/Components/ScrollBar/scrollBarClasses'
+import type { ImageCompareProps } from '@/Themes/Default/Components/ImageCompare/ImageCompare'
+import type { ImageCompareClassKey } from '@/Themes/Default/Components/ImageCompare/imageCompareClasses'
+import type { ImageMultiCompareProps } from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompare'
+import type { ImageMultiCompareClassKey } from '@/Themes/Default/Components/ImageMultiCompare/imageMultiCompareClasses'
+import type { MediaGalleryProps } from '@/Themes/Default/Components/MediaGallery/MediaGallery'
+import type { MediaGalleryClassKey } from '@/Themes/Default/Components/MediaGallery/mediaGalleryClasses'
 
 // Augment MUI's Theme
   declare module '@mui/material/styles' {
@@ -26,6 +35,11 @@ import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarCl
       ProjectCard?: ProjectCardProps;
       ProjectsOverview?: ProjectsOverviewProps;
       Navbar?: NavbarProps;
+      SegmentSlider?: SegmentSliderProps;
+      ScrollBar?: ScrollBarProps;
+      ImageCompare?: ImageCompareProps;
+      ImageMultiCompare?: ImageMultiCompareProps;
+      MediaGallery?: MediaGalleryProps;
     }
     interface ComponentNameToClassKey {
       Media: MediaClassKey;
@@ -33,6 +47,11 @@ import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarCl
       ProjectCard: ProjectCardClassKey;
       ProjectsOverview: ProjectsOverviewClassKey;
       Navbar: NavbarClassKey;
+      SegmentSlider: SegmentSliderClassKey;
+      ScrollBar: ScrollBarClassKey;
+      ImageCompare: ImageCompareClassKey;
+      ImageMultiCompare: ImageMultiCompareClassKey;
+      MediaGallery: MediaGalleryClassKey;
     }
     interface Components {
       Media?: ThemedComponent<'Media'>;
@@ -40,5 +59,10 @@ import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarCl
       ProjectCard?: ThemedComponent<'ProjectCard'>;
       ProjectsOverview?: ThemedComponent<'ProjectsOverview'>;
       Navbar?: ThemedComponent<'Navbar'>;
+      SegmentSlider?: ThemedComponent<'SegmentSlider'>;
+      ScrollBar?: ThemedComponent<'ScrollBar'>;
+      ImageCompare?: ThemedComponent<'ImageCompare'>;
+      ImageMultiCompare?: ThemedComponent<'ImageMultiCompare'>;
+      MediaGallery?: ThemedComponent<'MediaGallery'>;
     }
   }

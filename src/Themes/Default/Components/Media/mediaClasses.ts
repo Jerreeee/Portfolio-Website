@@ -1,7 +1,7 @@
 import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export const { slots, getUtilityClass, classes: mediaClasses } =
-  createUtilityClasses('ProjectCard', [
+  createUtilityClasses('Media', [
     'root',
     'image',
     'fileVideo',
