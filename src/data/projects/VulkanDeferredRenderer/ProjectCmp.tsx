@@ -10,7 +10,7 @@ import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageMultiCompare/
 import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/Media';
 import Markdown from '@/Themes/Default/Components/Markdown/Markdown';
 import type { ProjectManifest } from "@/types/projectManifest";
-import { getMediaItemsFromManifest } from "@/utils/projectManifest";
+import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 
 import { data } from './data';
 
@@ -19,38 +19,31 @@ export default function ProjectCmp() {
    const [manifest, setManifest] = useState<ProjectManifest | null>(null);
 
   useEffect(() => {
-    async function loadManifest() {
+    let mounted = true;
+
+    (async () => {
       try {
-        const res = await fetch(
-          "/projects/VulkanDeferredRenderer/manifest.json"
-        );
-        if (!res.ok) throw new Error("Failed to load manifest");
-
-        const data: ProjectManifest = await res.json();
-        setManifest(data);
+        const mod = await import(`@/data/projects/${data.slug}/manifest`);
+        if (mounted) setManifest(mod.projectManifest);
       } catch (err) {
-        console.error("⚠️ Failed to load project manifest", err);
+        console.error(`Failed to load media for project ${data.slug}:`, err);
       }
-    }
+    })();
 
-    loadManifest();
-  }, []);
+    return () => {
+      mounted = false;
+    };
+  }, [data.slug]);
 
-   if (!manifest) {
-    return <p>Loading gallery…</p>;
-  }
+  if (!manifest) return <p>Loading media…</p>;
 
-const selectedFiles = [
-    "intro_video",
+  
+  const mediaItems: MediaItem[] = getMediaItemsFromManifest(manifest, [
     "PostProcess_Final_Outdoor.webp",
     "Chain_Final.webp",
-  ];
-
-  const mediaItems: MediaItem[] = getMediaItemsFromManifest(
-    manifest,
-    selectedFiles
-  );
-
+    "intro_video", // careful, your extra.json key was not ".webp"
+  ]);
+  
 const md: string = `
 # Sample Markdown
 

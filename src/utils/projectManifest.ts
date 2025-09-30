@@ -18,7 +18,7 @@ export function getMediaItemsFromManifest(
       console.warn(`⚠️ Media file "${fileName}" not found in manifest`);
       return {
         type: "image",
-        src: fileName, // fallback
+        src: fileName,
         alt: fileName,
       } as MediaItem;
     }
@@ -29,10 +29,9 @@ export function getMediaItemsFromManifest(
           type: "image",
           src: entry.src,
           alt: fileName,
-          imageProps: {
-            width: entry.width,
-            height: entry.height,
-          },
+          width: entry.width,
+          height: entry.height,
+          imageProps: {},
         } satisfies MediaItem;
       case "fileVideo":
         return {

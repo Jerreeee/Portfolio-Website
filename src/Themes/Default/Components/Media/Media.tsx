@@ -47,7 +47,7 @@ export type ImageMediaItem = {
   alt?: string;
   width?: number;
   height?: number;
-  imageProps?: Omit<ImageProps, 'src' | 'alt'>;
+  imageProps?: Omit<ImageProps, 'src' | 'alt' | 'width' | 'height'>;
 };
 
 export type FileVideoMediaItem = {
@@ -72,18 +72,41 @@ export type MediaItem = ImageMediaItem | FileVideoMediaItem | EmbeddedVideoMedia
 export interface MediaProps {
   item: MediaItem;
   fit?: FitMode;
+  override?: {width?: number, height?: number, aspectRatio?: number};
 }
 
-export default function MediaCmp({ item, fit = 'cover' }: MediaProps) {
+export default function MediaCmp({ item, fit = 'cover', override}: MediaProps) {
   const { theme } = useTheme();
   const anim = theme.components?.Media?.slotAnimations ?? {};
   const objectFit = fit;
+  
+ let width: number | string | undefined = override?.width;
+  let height: number | string | undefined = override?.height;
+  let aspectRatio: string | undefined = undefined;
+
+  if (item.width && item.height) {
+    if (override?.width && !override?.height) {
+      // width fixed, height auto, preserve ratio
+      height = 'auto';
+      aspectRatio = `${item.width} / ${item.height}`;
+    } else if (override?.height && !override?.width) {
+      // height fixed, width auto, preserve ratio
+      width = 'auto';
+      aspectRatio = `${item.width} / ${item.height}`;
+    } else if (!override?.width && !override?.height) {
+      // nothing overridden, just use intrinsic aspect ratio
+      width = 'auto';
+      height = 'auto';
+      aspectRatio = `${item.width} / ${item.height}`;
+    }
+    // if both width & height are overridden → no aspectRatio
+  }
 
   return (
     <MediaRoot
-      width={item.width}
-      height={item.height}
-      aspectRatio={item.width && item.height ? `${item.width} / ${item.height}` : undefined}
+      width={width}
+      height={height}
+      aspectRatio={aspectRatio}
       {...(anim.root || {})}
     >
       {item.type === 'image' && (
@@ -91,17 +114,22 @@ export default function MediaCmp({ item, fit = 'cover' }: MediaProps) {
           <Image
             src={item.src}
             alt={item.alt || ''}
-            fill
             style={{ objectFit }}
-              {...(item.imageProps?.width && item.imageProps?.height
-                ? item.imageProps
-                : { fill: true })}
+            fill
+            {...item.imageProps}
           />
         </MediaImage>
       )}
 
       {item.type === 'fileVideo' && (
-        <MediaFileVideo {...(anim.fileVideo || {})} controls style={{ objectFit }} {...item.videoProps}>
+        <MediaFileVideo
+          {...(anim.fileVideo || {})}
+          controls
+          style={{ objectFit }}
+          width={width}
+          height={height}
+          {...item.videoProps}
+        >
           <source src={item.src} />
           Your browser does not support the video tag.
         </MediaFileVideo>
@@ -111,8 +139,8 @@ export default function MediaCmp({ item, fit = 'cover' }: MediaProps) {
         <MediaEmbeddedVideo {...(anim.embeddedVideo || {})}>
           <ReactPlayer
             src={item.src}
-            width="100%"
-            height="100%"
+            width={width || '100%'}
+            height={height || '100%'}
             controls
             style={{ objectFit }}
             {...item.playerProps}

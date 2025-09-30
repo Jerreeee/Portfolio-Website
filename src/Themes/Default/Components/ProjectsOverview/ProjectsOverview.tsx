@@ -16,7 +16,6 @@ const ProjectsOverviewRoot = styled(motion.main, {
   slot: 'Root',
 })(({ theme }) => ({
   width: '100%',
-//   minHeight: '100vh',
 }));
 
 const ProjectsOverviewContainer = styled(motion.main, {

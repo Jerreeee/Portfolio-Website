@@ -12,3 +12,6 @@ export type ProjectRequiredInfo = {
 export type ProjectInfo = ProjectRequiredInfo & {
   Component?: () => ReactNode;
 };
+
+export const getProjectBySlug = (slug: string) =>
+  projects.find((project) => project.slug === slug);

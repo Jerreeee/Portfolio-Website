@@ -45,8 +45,8 @@ const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton'
 })<{ active?: boolean }>(({ theme, active }) => ({
   position: 'relative',
   flexShrink: 0,
-  height: '100%',          // ✅ fill the strip’s height
-  width: 'auto',           // ✅ let MediaCmp decide the width
+  height: '100px',
+  width: 'auto',
   overflow: 'hidden',
   background: 'transparent',
   // border: active ? `2px solid ${theme.palette.common.white}` : 'none',
@@ -115,7 +115,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
 
             return (
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
-                <MediaCmp item={thumbItem} />
+                <MediaCmp item={thumbItem} fit='cover' override={{height: 100}}/>
                 {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
               </ThumbButton>
             );
