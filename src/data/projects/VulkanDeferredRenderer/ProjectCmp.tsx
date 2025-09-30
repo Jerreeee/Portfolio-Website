@@ -1,64 +1,138 @@
 'use client';
 
 import React from 'react';
-// import Image from 'next/image';
-import { useTheme } from '@/Themes/ThemeProvider';
-import { ProjectInfo } from '@/data/projects/project'
-import { data } from './data'
-import { MediaItem } from '@/Themes/Default/Components/Media/Media';
-import { ImageCompareCmp } from '@/Themes/Default/Components/Generic/ImageCompare'
+import { useEffect, useState } from 'react';
+
+import Typography from '@mui/material/Typography';
+
+import MediaGalleryCmp from '@/Themes/Default/Components/MediaGallery/MediaGallery';
+import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompare';
+import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/Media';
+import Markdown from '@/Themes/Default/Components/Markdown/Markdown';
+import type { ProjectManifest } from "@/types/projectManifest";
+import { getMediaItemsFromManifest } from "@/utils/projectManifest";
+
+import { data } from './data';
+
 
 export default function ProjectCmp() {
-  const { theme: activeTheme } = useTheme();
+   const [manifest, setManifest] = useState<ProjectManifest | null>(null);
 
-  const H1 = activeTheme.components.h1.cmp;
-  const P = activeTheme.components.p.cmp;
-  const Image = activeTheme.components.image.cmp;
-  const ImageCompare = activeTheme.components.imageCompare.cmp;
-  const MediaGallery = activeTheme.components.mediaGallery.cmp;
+  useEffect(() => {
+    async function loadManifest() {
+      try {
+        const res = await fetch(
+          "/projects/VulkanDeferredRenderer/manifest.json"
+        );
+        if (!res.ok) throw new Error("Failed to load manifest");
 
-  const media: MediaItem[] = [
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'image', src: data.thumbnailImage, alt: 'Hero image' },
-    { type: 'embeddedVideo', src: "https://www.youtube.com/watch?v=rWRZj4jY_gk"},
+        const data: ProjectManifest = await res.json();
+        setManifest(data);
+      } catch (err) {
+        console.error("⚠️ Failed to load project manifest", err);
+      }
+    }
+
+    loadManifest();
+  }, []);
+
+   if (!manifest) {
+    return <p>Loading gallery…</p>;
+  }
+
+const selectedFiles = [
+    "intro_video",
+    "PostProcess_Final_Outdoor.webp",
+    "Chain_Final.webp",
   ];
 
+  const mediaItems: MediaItem[] = getMediaItemsFromManifest(
+    manifest,
+    selectedFiles
+  );
+
+const md: string = `
+# Sample Markdown
+
+## Subheading
+
+Here is some **bold text** and *italic text*.
+
+Here’s an **inline C++ code snippet** like \`int main() { return 0; }\`.
+
+### Code Example (TypeScript)
+
+\`\`\`typescript
+function greet(name: string): string {
+  return \`Hello, \${name}!\`;
+}
+\`\`\`
+
+### Code Example (C++)
+
+\`\`\`cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, world!" << endl;
+    return 0;
+}
+\`\`\`
+
+### List Example
+
+- Item 1
+- Item 2
+  - Nested Item
+
+### Table Example
+
+| Feature    | Supported |
+|------------|----------:|
+| **Bold**   | ✅        |
+| *Italic*   | ✅        |
+| Code       | ✅        |
+| Lists      | ✅        |
+| Tables     | ✅        |
+`;
+
+
   return (
-    <div className="space-y-6">
+    <div>
       {/* Project title */}
-      <H1 style={{className:'text-center'}}>{data.title}</H1>
+      <Typography variant="h3" align="center" gutterBottom>
+        {data.title}
+      </Typography>
 
       {/* Hero image */}
-      <div className="relative w-full max-w-3xl mx-auto h-96">
-        <Image
-          src={data.heroImage} 
-          alt={`${data.title} hero image`}
-          styleOverride={{className:"object-cover"}}
-        />
-      </div>
+      <MediaCmp item={{
+        type: 'image',
+        src: data.heroImage,
+        alt: `${data.title} hero image`
+      }} 
+      />
 
-      {/* Description paragraph */}
-      <P>
+      {/* Description */}
+      <Typography variant="body1" paragraph>
         {data.shortDescription}
-      </P>
+      </Typography>
 
-      <div>
-        <MediaGallery media={media}/>
-      </div>
+      {/* Media gallery */}
+      <MediaGalleryCmp media={mediaItems} />
 
-      <div className="w-full aspect-video">
-        <ImageCompare
+      {/* Multi-image comparison */}
+      <div style={{height: '400px'}}>
+        <ImageMultiCompareCmp
           images={[
             { src: '/projects/VulkanDeferredRenderer/depth.webp', alt: 'Render V1' },
             { src: '/projects/VulkanDeferredRenderer/GBuffer_Albedo.webp', alt: 'Render V2' },
-            { src: '/projects/VulkanDeferredRenderer/GBuffer_MetallicRoughness.webp', alt: 'Render V2' },
-            { src: '/projects/VulkanDeferredRenderer/GBuffer_WorldNormal.webp', alt: 'Render V2' },
-            // { src: '/projects/VulkanDeferredRenderer/PostProcess_Final_Outdoor.webp', alt: 'Render V3' }
+            { src: '/projects/VulkanDeferredRenderer/GBuffer_MetallicRoughness.webp', alt: 'Render V3' },
+            { src: '/projects/VulkanDeferredRenderer/GBuffer_WorldNormal.webp', alt: 'Render V4' },
           ]}
         />
       </div>
+      <Markdown markdown={md} ></Markdown>
     </div>
   );
 }

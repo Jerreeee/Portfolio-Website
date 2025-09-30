@@ -34,24 +34,27 @@ const GalleryMotionFrame = styled(motion.div, {
   height: '100%',
 });
 
-const ThumbsContainer = styled('div', { name: 'MediaGallery', slot: 'ThumbsContainer' })({
-  display: 'flex',
-  gap: '0.75rem',
-  overflowX: 'auto',
-});
+const GalleryThumbs = styled('div', { name: 'MediaGallery', slot: 'Thumbs' })(({ theme }) => ({
+  height: "100px",
+  overflow: 'hidden',
+  border: "1px solid yellow",
+}));
 
-const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton' })<{
-  active?: boolean;
-}>(({ theme, active }) => ({
+const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton',
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => ({
   position: 'relative',
   flexShrink: 0,
-  width: 128,
-  aspectRatio: '16 / 9',
+  height: '100%',          // ✅ fill the strip’s height
+  width: 'auto',           // ✅ let MediaCmp decide the width
   overflow: 'hidden',
-  border: `2px solid ${active ? theme.palette.common.white : 'transparent'}`,
-  borderRadius: theme.shape.borderRadius,
+  background: 'transparent',
+  // border: active ? `2px solid ${theme.palette.common.white}` : 'none',
+  border: '2px solid red',
   transition: 'border-color 0.2s',
   cursor: 'pointer',
+  display: 'inline-flex',         // ensures child fills height
+  alignItems: 'center',
   '&:hover': {
     borderColor: active ? theme.palette.common.white : theme.palette.grey[400],
   },
@@ -99,7 +102,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
       </GalleryMain>
 
       {/* Thumbnails */}
-      <ThumbsContainer>
+      <GalleryThumbs>
         <ScrollableCmp>
           {media.map((item, index) => {
             const isActive = index === activeIndex;
@@ -118,7 +121,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
             );
           })}
         </ScrollableCmp>
-      </ThumbsContainer>
+      </GalleryThumbs>
     </GalleryRoot>
   );
 }

@@ -27,12 +27,13 @@ const NavbarRoot = styled(motion.nav, { name: 'Navbar', slot: 'Root' })(({ theme
 
 const NavbarBrand = styled(motion.div, { name: 'Navbar', slot: 'Brand' })(({ theme }) => ({}));
 
-const NavbarList = styled(motion.ol, { name: 'Navbar', slot: 'List' })(({ theme }) => ({
+const NavbarList = styled(motion.ul, { name: 'Navbar', slot: 'List' })(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.up('md')]: {
     display: 'flex',
     gap: theme.spacing(4),
   },
+  listStyle: 'none'
 }));
 
 const NavbarItem = styled(motion.li, { name: 'Navbar', slot: 'Item' })({});

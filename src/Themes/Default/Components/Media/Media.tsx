@@ -6,95 +6,117 @@ import { motion } from 'framer-motion';
 import ReactPlayer from 'react-player';
 export type ReactPlayerProps = ComponentProps<typeof ReactPlayer>;
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@/Themes/ThemeProvider'
+import { useTheme } from '@/Themes/ThemeProvider';
 
-// =====================================================================
-// ========================= Slot Definitions ==========================
-
-const MediaRoot = styled(motion.div, { name: 'Media', slot: 'Root' })(({ theme }) => ({
+const MediaRoot = styled(motion.div, {
+  shouldForwardProp: (prop) =>
+    prop !== 'width' && prop !== 'height' && prop !== 'aspectRatio',
+})<{
+  width?: number | string;
+  height?: number | string;
+  aspectRatio?: string;
+}>(({ width, height, aspectRatio }) => ({
+  position: 'relative',
+  width: width ?? 'auto',
+  height: height ?? 'auto',
+  ...(aspectRatio ? { aspectRatio } : {}),
+  maxWidth: '100%',
+  maxHeight: '100%',
+  overflow: 'hidden',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  position: 'relative',
 }));
 
-const MediaImage = styled(motion.div, { name: 'Media', slot: 'Image' })(({ theme }) => ({
-  position: 'relative',
+const sharedMediaStyles = {
+  position: 'relative' as const,
   width: '100%',
-  aspectRatio: '16 / 9',
+  height: '100%',
   overflow: 'hidden',
-  borderRadius: theme.shape.borderRadius,
-}));
+};
 
-const MediaFileVideo = styled(motion.video, { name: 'Media', slot: 'FileVideo' })(({ theme }) => ({
-  width: '100%',
-  height: 'auto',
-  borderRadius: theme.shape.borderRadius,
-}));
+const MediaImage = styled(motion.div)(sharedMediaStyles);
+const MediaFileVideo = styled(motion.video)(sharedMediaStyles);
+const MediaEmbeddedVideo = styled(motion.div)(sharedMediaStyles);
 
-const MediaEmbeddedVideo = styled(motion.div, { name: 'Media', slot: 'EmbeddedVideo' })(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
-  aspectRatio: '16 / 9',
-  borderRadius: theme.shape.borderRadius,
-  overflow: 'hidden',
-}));
-
-// =====================================================================
-// ============================= Component =============================
+type FitMode = 'cover' | 'contain' | 'fill';
 
 export type ImageMediaItem = {
-    type: 'image';
-    src: string;
-    alt?: string;
-    imageProps?: Omit<ImageProps, 'src' | 'alt'>;
+  type: 'image';
+  src: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+  imageProps?: Omit<ImageProps, 'src' | 'alt'>;
 };
 
 export type FileVideoMediaItem = {
-    type: 'fileVideo';
-    src: string;
-    thumbnail?: string;
-    videoProps?: Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src'>;
+  type: 'fileVideo';
+  src: string;
+  width?: number;
+  height?: number;
+  thumbnail?: string;
+  videoProps?: Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src'>;
 };
 
 export type EmbeddedVideoMediaItem = {
-    type: 'embeddedVideo';
-    src: string;
-    playerProps?: Omit<ReactPlayerProps, 'src'>;
+  type: 'embeddedVideo';
+  src: string;
+  width?: number;
+  height?: number;
+  playerProps?: Omit<ReactPlayerProps, 'src'>;
 };
 
-// Union of all types
-export type MediaItem =
-    | ImageMediaItem
-    | FileVideoMediaItem
-    | EmbeddedVideoMediaItem;
+export type MediaItem = ImageMediaItem | FileVideoMediaItem | EmbeddedVideoMediaItem;
 
 export interface MediaProps {
-  item: MediaItem
+  item: MediaItem;
+  fit?: FitMode;
 }
 
-export default function MediaCmp(props: MediaProps) {
+export default function MediaCmp({ item, fit = 'cover' }: MediaProps) {
   const { theme } = useTheme();
   const anim = theme.components?.Media?.slotAnimations ?? {};
+  const objectFit = fit;
 
   return (
-    <MediaRoot {...(anim.root || {})}>
-      {props.item.type === 'image' && (
+    <MediaRoot
+      width={item.width}
+      height={item.height}
+      aspectRatio={item.width && item.height ? `${item.width} / ${item.height}` : undefined}
+      {...(anim.root || {})}
+    >
+      {item.type === 'image' && (
         <MediaImage {...(anim.image || {})}>
-          <Image src={props.item.src} alt={props.item.alt || ''} fill style={{ objectFit: 'cover' }} />
+          <Image
+            src={item.src}
+            alt={item.alt || ''}
+            fill
+            style={{ objectFit }}
+              {...(item.imageProps?.width && item.imageProps?.height
+                ? item.imageProps
+                : { fill: true })}
+          />
         </MediaImage>
       )}
 
-      {props.item.type === 'fileVideo' && (
-        <MediaFileVideo {...(anim.fileVideo || {})} controls>
-          <source src={props.item.src} />
+      {item.type === 'fileVideo' && (
+        <MediaFileVideo {...(anim.fileVideo || {})} controls style={{ objectFit }} {...item.videoProps}>
+          <source src={item.src} />
           Your browser does not support the video tag.
         </MediaFileVideo>
       )}
 
-      {props.item.type === 'embeddedVideo' && (
+      {item.type === 'embeddedVideo' && (
         <MediaEmbeddedVideo {...(anim.embeddedVideo || {})}>
-          <ReactPlayer src={props.item.src} width="100%" height="100%" controls />
+          <ReactPlayer
+            src={item.src}
+            width="100%"
+            height="100%"
+            controls
+            style={{ objectFit }}
+            {...item.playerProps}
+          />
         </MediaEmbeddedVideo>
       )}
     </MediaRoot>

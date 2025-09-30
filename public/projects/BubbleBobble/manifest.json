@@ -1,0 +1,10 @@
+{
+  "media": {
+    "thumbnail.webp": {
+      "type": "image",
+      "src": "/projects/BubbleBobble/Images/thumbnail.webp",
+      "width": 750,
+      "height": 733
+    }
+  }
+}

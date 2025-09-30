@@ -5,6 +5,7 @@ export const { slots, getUtilityClass, classes: mediaGalleryClasses } =
     'root',
     'main',
     'motionFrame',
+    'thumbs',
     'thumbsButton',
     'videoOverlay'
   ] as const);
