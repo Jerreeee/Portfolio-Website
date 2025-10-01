@@ -259,4 +259,4 @@ export const projectManifest: ProjectManifest = {
     "src": "https://vimeo.com/123456"
   }
 }
-};
+} as const;

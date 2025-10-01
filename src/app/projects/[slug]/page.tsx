@@ -13,7 +13,10 @@
     if (!project)
       return notFound();
 
+    const mod = await import(`@/data/projects/${slug}/manifest`);
+    project.manifest = mod.projectManifest;
+
     {/* Wrapping everything in a client side component. Otherwise generateStaticParams
-    wouldnt work because it needs to run on the server. */}
+    wouldnt work because it needs to run on the server/at build time for SSG (static site generation). */}
     return <ProjectDetailsClient project={project} />;
   }

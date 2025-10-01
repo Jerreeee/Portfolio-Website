@@ -12,12 +12,12 @@ import VulkanDeferredRendererCmp from '@/data/projects/VulkanDeferredRenderer/Pr
 
 const BubbleBobbleProjectInfo: ProjectInfo = {
   ...BubbleBobbleData,
-  Component: BubbleBobbleCmp,
+  component: BubbleBobbleCmp,
 };
 
 const VulkanDeferredRendererProjectInfo: ProjectInfo = {
   ...VulkanDeferredRendererData,
-  Component: VulkanDeferredRendererCmp,
+  component: VulkanDeferredRendererCmp,
 };
 
 export const projects: ProjectInfo[] = [

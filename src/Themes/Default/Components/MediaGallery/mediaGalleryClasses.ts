@@ -4,7 +4,6 @@ export const { slots, getUtilityClass, classes: mediaGalleryClasses } =
   createUtilityClasses('MediaGallery', [
     'root',
     'main',
-    'motionFrame',
     'thumbs',
     'thumbsButton',
     'videoOverlay'

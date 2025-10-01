@@ -20,24 +20,15 @@ const GalleryMain = styled('div', { name: 'MediaGallery', slot: 'Main' })(({ the
   position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   overflow: 'hidden',
+  border: '2px solid white',
   borderRadius: theme.shape.borderRadius,
 }));
 
-const GalleryMotionFrame = styled(motion.div, {
-  name: 'MediaGallery',
-  slot: 'MotionFrame',
-})({
-  position: 'absolute',
-  inset: 0,
-  width: '100%',
-  height: '100%',
-});
-
 const GalleryThumbs = styled('div', { name: 'MediaGallery', slot: 'Thumbs' })(({ theme }) => ({
-  height: "100px",
-  overflow: 'hidden',
-  border: "1px solid yellow",
 }));
 
 const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton',
@@ -45,16 +36,14 @@ const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton'
 })<{ active?: boolean }>(({ theme, active }) => ({
   position: 'relative',
   flexShrink: 0,
-  height: '100px',
   width: 'auto',
   overflow: 'hidden',
+  alignItems: 'center',
   background: 'transparent',
-  // border: active ? `2px solid ${theme.palette.common.white}` : 'none',
-  border: '2px solid red',
+  border: `2px solid ${active ? theme.palette.common.white : 'transparent'}`,
   transition: 'border-color 0.2s',
   cursor: 'pointer',
-  display: 'inline-flex',         // ensures child fills height
-  alignItems: 'center',
+  borderRadius: theme.shape.borderRadius,
   '&:hover': {
     borderColor: active ? theme.palette.common.white : theme.palette.grey[400],
   },
@@ -84,20 +73,35 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = media[activeIndex];
 
+  const mainRef = useRef<HTMLDivElement>(null);
+  const [mainSize, setMainSize] = useState<{ width: number; height: number } | null>(null);
+
+  useEffect(() => {
+    if (!mainRef.current) return;
+    const observer = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        if (entry.contentRect) {
+          setMainSize({
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          });
+        }
+      }
+    });
+    observer.observe(mainRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <GalleryRoot>
       {/* Main media display */}
-      <GalleryMain>
+      <GalleryMain ref={mainRef}>
         <AnimatePresence mode="wait">
-          <GalleryMotionFrame
-            key={activeIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <MediaCmp item={activeItem} />
-          </GalleryMotionFrame>
+          <MediaCmp
+            item={activeItem}
+            fit='contain'
+            override={{ width: mainSize?.width, height: mainSize?.height }}
+          />
         </AnimatePresence>
       </GalleryMain>
 
@@ -115,7 +119,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
 
             return (
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
-                <MediaCmp item={thumbItem} fit='cover' override={{height: 100}}/>
+                <MediaCmp item={thumbItem} override={{height: 100}}/>
                 {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
               </ThumbButton>
             );

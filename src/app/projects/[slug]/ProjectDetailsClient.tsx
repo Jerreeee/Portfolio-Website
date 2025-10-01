@@ -1,13 +1,10 @@
   'use client';
 
-  import { useTheme } from '@/Themes/ThemeProvider';
+  import { ProjectInfo } from '@/data/projects/project';
 
-export default function ProjectDetailsClient({ project }: { project: any }) {
+export default function ProjectDetailsClient({ project }: { project: ProjectInfo }) {
   // Each project provides its own component
-  const ProjectComponent = project.Component;
+  const ProjectComponent = project.component;
 
-  if (!ProjectComponent)
-    return <p>No project details available.</p>;
-
-  return <ProjectComponent />;
+  return <ProjectComponent project={project} />;
 }

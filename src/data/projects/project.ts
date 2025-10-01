@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import type { ReactNode, ComponentType } from "react";
+import { ProjectManifest } from "@/types/projectManifest";
 
 export type ProjectRequiredInfo = {
   slug: string;
@@ -10,8 +11,6 @@ export type ProjectRequiredInfo = {
 }
 
 export type ProjectInfo = ProjectRequiredInfo & {
-  Component?: () => ReactNode;
+  manifest: ProjectManifest;
+  component: ComponentType<{ project: ProjectInfo }>;
 };
-
-export const getProjectBySlug = (slug: string) =>
-  projects.find((project) => project.slug === slug);
