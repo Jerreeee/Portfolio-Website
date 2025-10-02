@@ -24,7 +24,6 @@ const GalleryMain = styled('div', { name: 'MediaGallery', slot: 'Main' })(({ the
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
-  border: '2px solid white',
   borderRadius: theme.shape.borderRadius,
 }));
 

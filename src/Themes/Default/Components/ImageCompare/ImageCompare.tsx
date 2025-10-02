@@ -5,24 +5,24 @@ import Image, { ImageProps } from 'next/image';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider'
+import { ImageMediaItem } from '../Media/Media';
+import { Size } from '@/types/extra';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ImageCompareRoot = styled(motion.div, { name: 'ImageCompare', slot: 'Root' })({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
-  overflow: 'hidden',
-  userSelect: 'none',
-});
-
-const ImageCompareLayer = styled('div', { name: 'ImageCompare', slot: 'Layer' })({
-  position: 'absolute',
-  inset: 0,
-  width: '100%',
-  height: '100%',
-});
+const ImageCompareRoot = styled(motion.div, {
+  name: "ImageCompare",
+  slot: "Root",
+  shouldForwardProp: (prop) => prop !== "size",
+})<{ size?: Size }>(({ theme, size }) => ({
+  position: "relative",
+  width: size?.width ? `${size.width}px` : "100%",
+  height: size?.height ? `${size.height}px` : "100%",
+  overflow: "hidden",
+  userSelect: "none",
+  borderRadius: theme.shape.borderRadius,
+}));
 
 const ImageCompareHandle = styled('div', { name: 'ImageCompare', slot: 'Handle' })(({ theme }) => ({
   position: 'absolute',
@@ -38,15 +38,13 @@ const ImageCompareHandle = styled('div', { name: 'ImageCompare', slot: 'Handle' 
 // =====================================================================
 // ============================= Component =============================
 
-export interface ImageCompareItem {
-  src: string;
-  alt?: string;
-}
+export type ImageCompareItem = Omit<ImageMediaItem, 'imageProps'>;
 
 export interface ImageCompareProps {
-    bottom: ImageCompareItem;
-    top: ImageCompareItem;
-    imageProps?: ImageProps;
+  bottom: ImageCompareItem;
+  top: ImageCompareItem;
+  size?: Size;
+  imageProps?: ImageProps;
   /** progress between 0 and 1 */
   progress: number;
   /** show a vertical handle at the split */
@@ -75,32 +73,31 @@ export default function ImageCompareCmp(props: ImageCompareProps) {
   }
 
   return (
-    <ImageCompareRoot {...(anim.root || {})} >
+    <ImageCompareRoot
+      {...(anim.root || {})}
+      size={props.size}
+    >
       {/* Bottom image */}
-      <ImageCompareLayer>
         <Image
-            fill
           src={props.bottom.src}
           alt={props.bottom.alt || ''}
           draggable={false}
-          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          fill
+          style={{ objectFit: 'contain', width: '100%', height: '100%'}}
           {...props.imageProps}
         />
-      </ImageCompareLayer>
 
       {/* Top clipped image */}
-      <ImageCompareLayer
-        style={{ clipPath: `inset(0 ${100 - _progress * 100}% 0 0)` }}
-      >
+      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - _progress * 100}% 0 0)` }} >
         <Image
-            fill
+          fill
           src={props.top.src}
           alt={props.top.alt || ''}
           draggable={false}
-          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          style={{ objectFit: 'contain' }}
           {...props.imageProps}
         />
-      </ImageCompareLayer>
+      </div>
 
       {/* Optional vertical handle */}
       {props.showHandle && (

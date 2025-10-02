@@ -6,7 +6,8 @@ export const projectManifest: ProjectManifest = {
     "type": "image",
     "src": "/projects/BubbleBobble/Images/thumbnail.webp",
     "width": 750,
-    "height": 733
+    "height": 733,
+    "aspectRatio": 1.0231923601637107
   }
 }
 };

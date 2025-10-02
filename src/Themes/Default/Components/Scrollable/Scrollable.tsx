@@ -4,6 +4,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import ScrollBarCmp from '@/Themes/Default/Components/ScrollBar/ScrollBar';
 
+// =====================================================================
+// ========================= Slot Definitions ==========================
+
 const ScrollableRoot = styled('div', { name: 'Scrollable', slot: 'Root' })({
   position: 'relative',
   width: '100%',
@@ -17,6 +20,9 @@ const ScrollableContainer = styled('div', { name: 'Scrollable', slot: 'Container
   msOverflowStyle: 'none',
   '&::-webkit-scrollbar': { display: 'none' },
 });
+
+// =====================================================================
+// ============================= Component =============================
 
 export interface ScrollableProps {
   children: React.ReactNode;

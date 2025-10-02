@@ -3,7 +3,6 @@ import { createUtilityClasses } from '@/utils/createUtilityClasses';
 export const { slots, getUtilityClass, classes: imageCompareClasses } =
   createUtilityClasses('ImageCompare', [
     'root',
-    'layer',
     'handle',
   ] as const);
 

@@ -49,6 +49,7 @@ export default function ScrollBarCmp({ scrollContainer }: ScrollBarProps) {
     if (!el) return;
 
     function update() {
+      if (!el) return;
       const visibleRatio = el.clientWidth / el.scrollWidth;
       const newThumbWidth = Math.max(visibleRatio * el.clientWidth, 20); // minimum width
       const scrollRatio = el.scrollLeft / (el.scrollWidth - el.clientWidth || 1);

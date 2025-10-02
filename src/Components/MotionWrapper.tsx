@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import type { Variants, MotionProps } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { mergeAnims } from "@/utils/MergeObjects";
 
 type MotionWrapperProps = {

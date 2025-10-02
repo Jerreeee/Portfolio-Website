@@ -14,6 +14,8 @@ import Markdown from '@/Themes/Default/Components/Markdown/Markdown';
 import type { ProjectManifest } from "@/types/projectManifest";
 import { ProjectInfo } from '../project';
 import { getMediaItemsFromManifest } from '@/utils/projectManifest';
+import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompare';
+import { ParentSizeObserver } from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserver';
 
 import { data } from './data';
 
@@ -85,25 +87,28 @@ int main() {
         {data.title}
       </Typography>
 
-<Box display="flex" flexDirection="column" gap={4}>
-  <Typography variant="h4" align="center" paragraph>
-    {data.shortDescription}
-  </Typography>
-  <MediaGalleryCmp media={mediaItems} />
-</Box>
+      <Box display="flex" flexDirection="column" gap={4} >
+        <Typography variant="h4" align="center" paragraph>
+          {data.shortDescription}
+        </Typography>
+        <MediaGalleryCmp media={mediaItems} />
 
-      {/* Multi-image comparison */}
-      <div style={{height: '400px'}}>
-        <ImageMultiCompareCmp
-          images={[
-            { src: '/projects/VulkanDeferredRenderer/Images/depth.webp', alt: 'Render V1' },
-            { src: '/projects/VulkanDeferredRenderer/Images/GBuffer_Albedo.webp', alt: 'Render V2' },
-            { src: '/projects/VulkanDeferredRenderer/Images/GBuffer_MetallicRoughness.webp', alt: 'Render V3' },
-            { src: '/projects/VulkanDeferredRenderer/Images/GBuffer_WorldNormal.webp', alt: 'Render V4' },
-          ]}
-        />
-      </div>
-      <Markdown markdown={md} ></Markdown>
+        {/* Multi-image comparison */}
+        <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
+          {size => (
+            <ImageMultiCompareCmp size={size}
+              images={getMediaItemsFromManifest(manifest, [
+                'depth.webp',
+                'GBuffer_Albedo.webp',
+                'GBuffer_MetallicRoughness.webp',
+                'GBuffer_WorldNormal.webp',
+              ]).filter((item): item is ImageCompareItem => item.type === 'image')}
+            />
+          )}
+        </ParentSizeObserver>
+
+        <Markdown markdown={md} ></Markdown>
+      </Box>
     </div>
   );
 }

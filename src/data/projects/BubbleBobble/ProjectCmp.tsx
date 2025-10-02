@@ -16,7 +16,7 @@ const media: MediaItem = {
 
   return (
     <div>
-      <div>
+      {/* <div>s
         <div style={{ border: '2px solid white', marginBottom: '1rem' }}>
           <MediaCmp item={media} />
         </div>
@@ -48,7 +48,7 @@ const media: MediaItem = {
         <div style={{ border: '2px solid white', marginBottom: '1rem' }}>
           <MediaCmp item={media} fit="fill" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

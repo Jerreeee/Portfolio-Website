@@ -7,11 +7,14 @@ export type ReactPlayerProps = ComponentProps<typeof ReactPlayer>;
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import Image, { ImageProps } from 'next/image';
+import { shouldForwardProp } from '@mui/system';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const MediaRoot = styled(motion.div)<{
+const MediaRoot = styled(motion.div, {
+  shouldForwardProp: (prop) => prop !== 'aspectRatio' && prop !== 'width' && prop !== 'height',
+})<{
   aspectRatio: string | number;
   width?: number | string;
   height?: number | string;
@@ -71,7 +74,6 @@ export default function MediaCmp({ item, fit = 'cover', override }: MediaProps) 
     item.aspectRatio ?? null
   );
   const objectFit = fit;
-  console.log("calculatedRatio", calculatedRatio);
 
   // For images: calculate natural ratio
   useEffect(() => {
@@ -110,10 +112,10 @@ export default function MediaCmp({ item, fit = 'cover', override }: MediaProps) 
           src={item.src}
           alt={item.alt ?? ''}
           fill
+          style={{ objectFit}}
           // width={item.width}
           // height={item.height}
           // style={{ objectFit, width: '100%', height: '100%' }}
-          style={{ objectFit}}
           {...item.imageProps}
         />
       )}

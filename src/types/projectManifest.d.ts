@@ -3,6 +3,7 @@ export type ImageManifestItem = {
   src: string;
   width: number;
   height: number;
+  aspectRatio: number;
 };
 
 export type FileVideoManifestItem = {
