@@ -33,7 +33,7 @@ export interface IconProps {
 export default function IconCmp(props: IconProps) {
   const { theme } = useTheme();
 
-  let iconEntry: IconData | undefined = icons[props.techName as IconKey] ?? icons.Error;
+  const iconEntry: IconData | undefined = icons[props.techName as IconKey] ?? icons.Error;
   const processedSvg = useParsedSVG(props.techName, iconEntry.rawSvg);
   if (!processedSvg) return null;
 

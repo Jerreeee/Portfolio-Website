@@ -91,7 +91,7 @@ export function useParsedSVG(ID: string, rawSvg: string): SvgParseResult | null 
 
     // Aspect ratio
     let aspectRatio: number | undefined;
-    let viewBox = svg.getAttribute("viewBox");
+    const viewBox = svg.getAttribute("viewBox");
 
     if (viewBox) {
       const [, , wStr, hStr] = viewBox.trim().split(/\s+/);

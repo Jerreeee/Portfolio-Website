@@ -26,31 +26,31 @@ export function ParentSizeObserver({
 
   const passThroughSize = typeof children === "function";
 
-  const measure = () => {
-    if (!markerRef.current?.parentElement) return;
-    const rect = markerRef.current.parentElement.getBoundingClientRect();
-
-    let measured: Size = { width: rect.width, height: rect.height };
-
-    if (aspectRatio) {
-      if (mode === "width") {
-        measured = {
-          width: rect.width,
-          height: rect.width / aspectRatio,
-        };
-      } else if (mode === "height") {
-        measured = {
-          width: rect.height * aspectRatio,
-          height: rect.height,
-        };
-      }
-      // mode === "both" → keep rect as is
-    }
-
-    setSize(measured);
-  };
-
   useEffect(() => {
+    const measure = () => {
+      if (!markerRef.current?.parentElement) return;
+      const rect = markerRef.current.parentElement.getBoundingClientRect();
+
+      let measured: Size = { width: rect.width, height: rect.height };
+
+      if (aspectRatio) {
+        if (mode === "width") {
+          measured = {
+            width: rect.width,
+            height: rect.width / aspectRatio,
+          };
+        } else if (mode === "height") {
+          measured = {
+            width: rect.height * aspectRatio,
+            height: rect.height,
+          };
+        }
+        // mode === "both" → keep rect as is
+      }
+
+      setSize(measured);
+    };
+    
     // initial measure
     measure();
 

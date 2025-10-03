@@ -50,8 +50,10 @@ export function getMediaItemsFromManifest(
           playerProps: {},
         } satisfies MediaItem;
 
-      default:
-        throw new Error(`Unknown media type: ${(entry as any).type}`);
+      default: {
+        const _exhaustive: never = entry;
+        throw new Error(`Unknown media type: ${(entry as ManifestEntry).type}`);
+      }
     }
   });
 }

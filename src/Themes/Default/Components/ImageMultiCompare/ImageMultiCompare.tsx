@@ -37,6 +37,8 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareProps) {
   const { theme } = useTheme();
 
   const initialProgress = 0.5;
+  // Multiple images case
+  const [sliderState, setSliderState] = useState<SegmentSliderState>(SegmentSliderCmp.computeState(initialProgress, props.images.length));
 
   // Two images -> single ImageMask
   if (props.images.length === 2) {
@@ -50,8 +52,6 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareProps) {
     );
   }
 
-  // Multiple images case
-  const [sliderState, setSliderState] = useState<SegmentSliderState>(SegmentSliderCmp.computeState(initialProgress, props.images.length));
 
   return (
       <ImageMultiCompareRoot>

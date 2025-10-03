@@ -78,7 +78,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
   useEffect(() => {
     if (!mainRef.current) return;
     const observer = new ResizeObserver(entries => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         if (entry.contentRect) {
           setMainSize({
             width: entry.contentRect.width,
