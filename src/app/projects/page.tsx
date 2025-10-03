@@ -1,10 +1,6 @@
-'use client';
-
-import { useTheme } from '@/Themes/ThemeProvider';
-import ProjectsOverviewCmp from '@/Themes/Default/Components/ProjectsOverview/ProjectsOverview';
+import ProjectsOverviewClient from './ProjectsOverviewClient';
 
 export default function ProjectsPage() {
-  // const { theme } = useTheme();
-
-  return <ProjectsOverviewCmp />;
+  return <ProjectsOverviewClient />;
 }
+

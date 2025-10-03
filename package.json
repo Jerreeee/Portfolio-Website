@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",
-    "generate:projects": "node scripts/generate-project-manifests.js && node scripts/generate-project-index.js"
+    "generate:projects": "node scripts/generate-project-manifests.js && node scripts/generate-project-index.js",
+    "serve": "npx serve out"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -24,6 +25,7 @@
     "react-icons": "5.5.0",
     "react-markdown": "10.1.0",
     "react-player": "3.3.2",
+    "react-syntax-highlighter": "15.6.6",
     "rehype-highlight": "7.0.2",
     "remark-gfm": "4.0.1"
   },
@@ -33,6 +35,7 @@
     "@types/node": "20",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
+    "@types/react-syntax-highlighter": "15.5.13",
     "@types/webpack": "5.28.5",
     "eslint": "9",
     "eslint-config-next": "15.3.4",

@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider'
 
 // =====================================================================
-// ========================= Slot Definitions ==========================
+// ============================= Component =============================
 
 const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })(({ theme }) => ({
   position: 'relative',
