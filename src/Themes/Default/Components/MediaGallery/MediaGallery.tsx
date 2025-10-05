@@ -32,6 +32,7 @@ const GalleryThumbs = styled('div', { name: 'MediaGallery', slot: 'Thumbs' })(({
   width: '100%',
   height: '100px',
   border: '2px solid red',
+  gap: '1rem',
 }));
 
 const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton',
@@ -93,7 +94,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
 
       {/* Thumbnails */}
       <GalleryThumbs>
-        <ScrollableCmp>
+        <ScrollableCmp direction='horizontal'>
           {media.map((item, index) => {
             const isActive = index === activeIndex;
             const thumbItem =
@@ -105,7 +106,10 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
 
             return (
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
-                <MediaCmp item={thumbItem} />
+                <MediaCmp
+                  item={thumbItem}
+                  override={{ height: '100%', aspectRatio: '16/9' }}
+                />
                 {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
               </ThumbButton>
             );

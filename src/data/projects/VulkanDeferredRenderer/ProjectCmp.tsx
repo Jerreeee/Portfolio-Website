@@ -137,7 +137,7 @@ int main() {
         <MediaGalleryCmp media={mediaItems} />
 
         {/* Multi-image comparison */}
-        <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
+        {/* <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
           {size => (
             <ImageMultiCompareCmp size={size}
               images={getMediaItemsFromManifest(manifest, [
@@ -148,7 +148,7 @@ int main() {
               ]).filter((item): item is ImageCompareItem => item.type === 'image')}
             />
           )}
-        </ParentSizeObserver>
+        </ParentSizeObserver> */}
 
         <div style={{width: '60%', height: '600px'}}>
           <CodeBlock file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />

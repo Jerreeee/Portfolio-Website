@@ -111,11 +111,8 @@ export default function MediaCmp({ item, fit = 'contain', override }: MediaProps
         <Image
           src={item.src}
           alt={item.alt ?? ''}
-          // fill
-          // style={{ objectFit}}
-          width={item.width}
-          height={item.height}
-          style={{ objectFit, width: '100%', height: '100%' }}
+          fill
+          style={{ objectFit}}
           {...item.imageProps}
         />
       )}

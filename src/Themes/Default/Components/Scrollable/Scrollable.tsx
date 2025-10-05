@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import ScrollBarCmp from '@/Themes/Default/Components/ScrollBar/ScrollBar';
 import { Size } from '@/types/extra';
 import { ParentSizeObserver } from '../ParentSizeObserver/ParentSizeObserver';
-import { useCheckChildOverflow } from '@/hooks/useCheckChildOverflow';
+import { useCheckOverflow } from '@/hooks/useCheckOverflow';
 import { useSizeObserver } from '@/hooks/useSizeObserver';
 
 // =====================================================================
@@ -20,12 +20,17 @@ const ScrollableRoot = styled('div', {
   height: '100%',
 });
 
-const ScrollableContainer = styled('div')<{ size?: Size }>(({ size }) => ({
+const ScrollableContainer = styled('div')<{
+  size?: Size;
+  direction?: 'both' | 'horizontal' | 'vertical';
+}>(({ size, direction }) => ({
   position: 'relative',
-  display: 'block',
+  display: direction === 'both' ? 'block' : 'flex',
+  flexDirection: direction === 'horizontal' ? 'row' :  direction === 'vertical' ? 'column' : undefined,
   width: size?.width ? `${size.width}px` : '100%',
-  height: size?.height ? `${size.height}px` : 'auto',
-  overflow: 'auto',
+  height: size?.height ? `${size.height}px` : '100%',
+  overflowX: direction === 'horizontal' || direction === 'both' ? 'auto' : 'hidden',
+  overflowY: direction === 'vertical' || direction === 'both' ? 'auto' : 'hidden',
   zIndex: 0,
   scrollbarWidth: 'none',
   msOverflowStyle: 'none',
@@ -47,30 +52,26 @@ const OverlayScrollbar = styled('div')({
 
 export interface ScrollableProps {
   children: React.ReactNode;
+  direction?: 'both' | 'horizontal' | 'vertical';
 }
 
-export default function ScrollableCmp(props: ScrollableProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export default function ScrollableCmp({children, direction = 'both'}: ScrollableProps) {
   const { ref: sizeRef, size } = useSizeObserver<HTMLDivElement>({});
-  const { overflowsX, overflowsY } = useCheckChildOverflow(containerRef, [
-    size?.width,
-    size?.height,
-    props.children,
-  ]);
+  const { ref: containerRef, overflowsX, overflowsY } = useCheckOverflow<HTMLDivElement>([size, children]);
 
   return (
     <ScrollableRoot ref={sizeRef}>
-      <ScrollableContainer ref={containerRef} size={size}>
-        {props.children}
+      <ScrollableContainer ref={containerRef} size={size} direction={direction}>
+        {children}
       </ScrollableContainer>
 
-      {overflowsX && (
+      {direction !== 'vertical' && overflowsX && (
         <OverlayScrollbar style={{ left: 0, right: 0, bottom: 0 }}>
           <ScrollBarCmp scrollContainer={containerRef} direction="horizontal" />
         </OverlayScrollbar>
       )}
 
-      {overflowsY && (
+      {direction !== 'horizontal' && overflowsY && (
         <OverlayScrollbar style={{ top: 0, bottom: 0, right: 0 }}>
           <ScrollBarCmp scrollContainer={containerRef} direction="vertical" />
         </OverlayScrollbar>

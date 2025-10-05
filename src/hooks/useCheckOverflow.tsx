@@ -1,24 +1,24 @@
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Detects whether an element's content overflows horizontally or vertically.
  *
- * @param containerRef - React ref of the scrollable container
+ * Returns both the ref and overflow booleans.
+ *
  * @param deps - Additional dependencies to trigger recalculation (optional)
- * @returns { overflowsX, overflowsY }
+ * @returns { ref, overflowsX, overflowsY }
  */
-export function useCheckChildOverflow(
-  containerRef: RefObject<HTMLElement | null>,
+export function useCheckOverflow<T extends HTMLElement = HTMLElement>(
   deps: React.DependencyList = []
 ) {
+  const ref = useRef<T | null>(null);
   const [overflowsX, setOverflowsX] = useState(false);
   const [overflowsY, setOverflowsY] = useState(false);
 
   useEffect(() => {
-    const el = containerRef.current;
+    const el = ref.current;
     if (!el) return;
 
-    // define inside effect
     const checkOverflow = () => {
       if (!el) return;
       const hasX = el.scrollWidth > el.clientWidth;
@@ -27,27 +27,22 @@ export function useCheckChildOverflow(
       setOverflowsY(hasY);
     };
 
-    // Initial check
     checkOverflow();
 
-    // Observe content size changes dynamically
     const content = el.firstElementChild as HTMLElement | null;
     const contentObserver = new ResizeObserver(checkOverflow);
     if (content) contentObserver.observe(content);
 
-    // Observe container size changes
     const containerObserver = new ResizeObserver(checkOverflow);
     containerObserver.observe(el);
 
-    // Also re-check on window resize
     window.addEventListener('resize', checkOverflow);
-
     return () => {
       contentObserver.disconnect();
       containerObserver.disconnect();
       window.removeEventListener('resize', checkOverflow);
     };
-  }, [containerRef, ...deps]);
+  }, deps);
 
-  return { overflowsX, overflowsY };
+  return { ref, overflowsX, overflowsY };
 }
