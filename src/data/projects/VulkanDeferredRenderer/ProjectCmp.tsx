@@ -150,9 +150,11 @@ int main() {
           )}
         </ParentSizeObserver> */}
 
-        <div style={{width: '60%', height: '600px'}}>
+        {/* <div style={{width: '100%', height: '600px'}}> */}
+        <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
           <CodeBlock file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
-        </div>
+        </ParentSizeObserver>
+        {/* </div> */}
 
         <CodeBlock language="js">
         {`

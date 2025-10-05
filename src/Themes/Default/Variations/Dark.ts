@@ -151,6 +151,12 @@ export const defaultDarkOptions: ThemeOptions = {
         item: mergeAnims(false, anims.fadeInDown()),
         underline: mergeAnims(false, { transition: { type: 'spring', stiffness: 500, damping: 30 } }),
       },
+    },
+    ScrollBar: {
+      defaultProps: {
+        thickness: 10,
+        scrollContainer: null,
+      }
     }
   },
 };  

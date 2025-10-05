@@ -14,12 +14,12 @@ const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })<
   backgroundColor: theme.palette.grey[700],
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
-  opacity: dragging ? 1 : 0.5,                  // ← opaque when dragging
+  opacity: dragging ? 1 : 0.5, // opaque when dragging
   transition: 'opacity 0.2s ease',
-  '&:hover': { opacity: 1 },                    // ← also opaque on hover
+  '&:hover': { opacity: 1 }, // opaque on hover
   ...(direction === 'horizontal'
-    ? { height: theme.spacing(1), width: '100%' }
-    : { width: theme.spacing(1), height: '100%' }),
+    ? { height: theme.components?.ScrollBar?.defaultProps?.thickness, width: '100%' }
+    : { width: theme.components?.ScrollBar?.defaultProps?.thickness, height: '100%' }),
 }));
 
 const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
@@ -32,19 +32,23 @@ const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
   opacity: dragging ? 1 : 0.6,                  // ← thumb also opaque when dragging
   transition: 'opacity 0.2s ease, background-color 0.2s ease',
   ...(direction === 'horizontal'
-    ? { top: 0, height: theme.spacing(1) }
-    : { left: 0, width: theme.spacing(1) }),
+    ? { top: 0, height: theme.components?.ScrollBar?.defaultProps?.thickness ?? 12 }
+    : { left: 0, width: theme.components?.ScrollBar?.defaultProps?.thickness ?? 12 }),
 }));
 
 // =====================================================================
 // ============================= Component =============================
 
-export interface ScrollBarProps {
+export interface ScrollbarSettings {
+  thickness: number;
+}
+
+export interface ScrollBarProps extends ScrollbarSettings{
   scrollContainer: React.RefObject<HTMLDivElement | null>;
   direction?: 'horizontal' | 'vertical';
 }
 
-export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal' }: ScrollBarProps) {
+export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal', ...props}: ScrollBarProps) {
   const { theme } = useTheme();
 
   const [thumbSize, setThumbSize] = useState(0);

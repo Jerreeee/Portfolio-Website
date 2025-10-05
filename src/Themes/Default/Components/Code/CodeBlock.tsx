@@ -15,8 +15,6 @@ const CodeRoot = styled('div', {
   position: 'relative',
   width: '100%',
   height: '100%',
-  borderRadius: theme.shape.borderRadius,
-  border: `2px solid green`,
   overflow: 'hidden',
 }));
 
@@ -116,7 +114,7 @@ const CodeStyling = styled('div', {
 
     return (
       <CodeRoot>
-          <ScrollableCmp>
+        <ScrollableCmp>
           <CodeBackground>
             <CodeStyling>
               <SyntaxHighlighter
@@ -141,7 +139,7 @@ const CodeStyling = styled('div', {
               </SyntaxHighlighter>
             </CodeStyling>
           </CodeBackground>
-      </ScrollableCmp>
-        </CodeRoot>
+        </ScrollableCmp>
+      </CodeRoot>
     );
   }
