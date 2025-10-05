@@ -2,59 +2,80 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@/Themes/ThemeProvider'
+import { useTheme } from '@/Themes/ThemeProvider';
 
 // =====================================================================
-// ============================= Component =============================
+// ========================= Slot Definitions ==========================
 
-const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })(({ theme }) => ({
+const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })<
+  { direction: 'horizontal' | 'vertical'; dragging?: boolean }
+>(({ theme, direction, dragging }) => ({
   position: 'relative',
-  height: theme.spacing(1), // ~8px
-  width: '100%',
   backgroundColor: theme.palette.grey[700],
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
+  opacity: dragging ? 1 : 0.5,                  // ← opaque when dragging
+  transition: 'opacity 0.2s ease',
+  '&:hover': { opacity: 1 },                    // ← also opaque on hover
+  ...(direction === 'horizontal'
+    ? { height: theme.spacing(1), width: '100%' }
+    : { width: theme.spacing(1), height: '100%' }),
 }));
 
-const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })(({ theme }) => ({
+const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
+  { direction: 'horizontal' | 'vertical'; dragging?: boolean }
+>(({ theme, direction, dragging }) => ({
   position: 'absolute',
-  top: 0,
-  height: theme.spacing(1),
   backgroundColor: theme.palette.common.white,
   borderRadius: theme.shape.borderRadius,
   cursor: 'pointer',
+  opacity: dragging ? 1 : 0.6,                  // ← thumb also opaque when dragging
+  transition: 'opacity 0.2s ease, background-color 0.2s ease',
+  ...(direction === 'horizontal'
+    ? { top: 0, height: theme.spacing(1) }
+    : { left: 0, width: theme.spacing(1) }),
 }));
 
 // =====================================================================
 // ============================= Component =============================
 
 export interface ScrollBarProps {
-  /** Ref to the horizontally scrollable container this bar controls */
   scrollContainer: React.RefObject<HTMLDivElement | null>;
+  direction?: 'horizontal' | 'vertical';
 }
 
-export default function ScrollBarCmp({ scrollContainer }: ScrollBarProps) {
+export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal' }: ScrollBarProps) {
   const { theme } = useTheme();
 
-  const [thumbWidth, setThumbWidth] = useState(0);
-  const [thumbLeft, setThumbLeft] = useState(0);
+  const [thumbSize, setThumbSize] = useState(0);
+  const [thumbOffset, setThumbOffset] = useState(0);
 
   const dragging = useRef(false);
-  const startX = useRef(0);
-  const startLeft = useRef(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const startPos = useRef(0);
+  const startOffset = useRef(0);
 
-  // Update thumb size and position when the container scrolls or resizes
+  // Update thumb size and position
   useEffect(() => {
     const el = scrollContainer.current;
     if (!el) return;
 
     function update() {
       if (!el) return;
-      const visibleRatio = el.clientWidth / el.scrollWidth;
-      const newThumbWidth = Math.max(visibleRatio * el.clientWidth, 20); // minimum width
-      const scrollRatio = el.scrollLeft / (el.scrollWidth - el.clientWidth || 1);
-      setThumbWidth(newThumbWidth);
-      setThumbLeft(scrollRatio * (el.clientWidth - newThumbWidth));
+
+      if (direction === 'horizontal') {
+        const visibleRatio = el.clientWidth / el.scrollWidth;
+        const newSize = Math.max(visibleRatio * el.clientWidth, 20);
+        const scrollRatio = el.scrollLeft / (el.scrollWidth - el.clientWidth || 1);
+        setThumbSize(newSize);
+        setThumbOffset(scrollRatio * (el.clientWidth - newSize));
+      } else {
+        const visibleRatio = el.clientHeight / el.scrollHeight;
+        const newSize = Math.max(visibleRatio * el.clientHeight, 20);
+        const scrollRatio = el.scrollTop / (el.scrollHeight - el.clientHeight || 1);
+        setThumbSize(newSize);
+        setThumbOffset(scrollRatio * (el.clientHeight - newSize));
+      }
     }
 
     update();
@@ -65,27 +86,43 @@ export default function ScrollBarCmp({ scrollContainer }: ScrollBarProps) {
       el.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
     };
-  }, [scrollContainer]);
+  }, [scrollContainer, direction]);
 
   // Drag handlers
   function onMouseDown(e: React.MouseEvent) {
     dragging.current = true;
-    startX.current = e.clientX;
-    startLeft.current = thumbLeft;
+    setIsDragging(true);
+    startPos.current = direction === 'horizontal' ? e.clientX : e.clientY;
+    startOffset.current = thumbOffset;
     e.preventDefault();
   }
 
   function onMouseMove(e: MouseEvent) {
     if (!dragging.current || !scrollContainer.current) return;
     const el = scrollContainer.current;
-    const maxLeft = el.clientWidth - thumbWidth;
-    const newLeft = Math.min(Math.max(startLeft.current + (e.clientX - startX.current), 0), maxLeft);
-    const scrollRatio = newLeft / (maxLeft || 1);
-    el.scrollLeft = scrollRatio * (el.scrollWidth - el.clientWidth);
+
+    if (direction === 'horizontal') {
+      const maxOffset = el.clientWidth - thumbSize;
+      const newOffset = Math.min(
+        Math.max(startOffset.current + (e.clientX - startPos.current), 0),
+        maxOffset
+      );
+      const scrollRatio = newOffset / (maxOffset || 1);
+      el.scrollLeft = scrollRatio * (el.scrollWidth - el.clientWidth);
+    } else {
+      const maxOffset = el.clientHeight - thumbSize;
+      const newOffset = Math.min(
+        Math.max(startOffset.current + (e.clientY - startPos.current), 0),
+        maxOffset
+      );
+      const scrollRatio = newOffset / (maxOffset || 1);
+      el.scrollTop = scrollRatio * (el.scrollHeight - el.clientHeight);
+    }
   }
 
   function onMouseUp() {
     dragging.current = false;
+    setIsDragging(false);
   }
 
   useEffect(() => {
@@ -95,12 +132,18 @@ export default function ScrollBarCmp({ scrollContainer }: ScrollBarProps) {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
-  });
+  }, [thumbSize, direction]);
 
   return (
-    <ScrollBarRoot>
+    <ScrollBarRoot direction={direction} dragging={isDragging}>
       <ScrollBarThumb
-        style={{ width: thumbWidth, left: thumbLeft }}
+        direction={direction}
+        dragging={isDragging}
+        style={
+          direction === 'horizontal'
+            ? { width: thumbSize, left: thumbOffset }
+            : { height: thumbSize, top: thumbOffset }
+        }
         onMouseDown={onMouseDown}
       />
     </ScrollBarRoot>

@@ -19,6 +19,7 @@ import { ParentSizeObserver } from '@/Themes/Default/Components/ParentSizeObserv
 import CodeBlock from '@/Themes/Default/Components/Code/CodeBlock';
 
 import { data } from './data';
+import ScrollableCmp from '@/Themes/Default/Components/Scrollable/Scrollable';
 
 
 export default function ProjectCmp({ project }: { project: ProjectInfo }) {
@@ -149,7 +150,13 @@ int main() {
           )}
         </ParentSizeObserver>
 
-        <CodeBlock file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
+        {/* <div style={{width: '60%'}}> */}
+        <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
+          { (size) => (
+              <CodeBlock size={size} file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
+          )}
+        </ParentSizeObserver>
+        {/* </div> */}
 
         <CodeBlock language="js">
         {`
