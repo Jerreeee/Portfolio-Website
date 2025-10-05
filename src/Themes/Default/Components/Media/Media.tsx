@@ -69,7 +69,7 @@ export type MediaProps = {
   override?: { width?: number | string; height?: number | string, aspectRatio?: number | string };
 };
 
-export default function MediaCmp({ item, fit = 'cover', override }: MediaProps) {
+export default function MediaCmp({ item, fit = 'contain', override }: MediaProps) {
   const [calculatedRatio, setCalculatedRatio] = useState<string | number | null>(
     item.aspectRatio ?? null
   );
@@ -111,11 +111,11 @@ export default function MediaCmp({ item, fit = 'cover', override }: MediaProps) 
         <Image
           src={item.src}
           alt={item.alt ?? ''}
-          fill
-          style={{ objectFit}}
-          // width={item.width}
-          // height={item.height}
-          // style={{ objectFit, width: '100%', height: '100%' }}
+          // fill
+          // style={{ objectFit}}
+          width={item.width}
+          height={item.height}
+          style={{ objectFit, width: '100%', height: '100%' }}
           {...item.imageProps}
         />
       )}

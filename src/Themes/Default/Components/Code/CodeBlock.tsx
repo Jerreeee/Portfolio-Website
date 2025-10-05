@@ -116,7 +116,7 @@ const CodeStyling = styled('div', {
 
     return (
       <CodeRoot>
-        <ScrollableCmp size={props.size}>
+          <ScrollableCmp>
           <CodeBackground>
             <CodeStyling>
               <SyntaxHighlighter
@@ -141,7 +141,7 @@ const CodeStyling = styled('div', {
               </SyntaxHighlighter>
             </CodeStyling>
           </CodeBackground>
-        </ScrollableCmp>
-      </CodeRoot>
+      </ScrollableCmp>
+        </CodeRoot>
     );
   }

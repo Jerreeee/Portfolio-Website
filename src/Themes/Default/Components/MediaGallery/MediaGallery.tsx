@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
 import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/Media';
 import ScrollableCmp from '../Scrollable/Scrollable';
+import { useElementSize } from '@/hooks/useElementSize';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -28,6 +29,9 @@ const GalleryMain = styled('div', { name: 'MediaGallery', slot: 'Main' })(({ the
 }));
 
 const GalleryThumbs = styled('div', { name: 'MediaGallery', slot: 'Thumbs' })(({ theme }) => ({
+  width: '100%',
+  height: '100px',
+  border: '2px solid red',
 }));
 
 const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton',
@@ -72,24 +76,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = media[activeIndex];
 
-  const mainRef = useRef<HTMLDivElement>(null);
-  const [mainSize, setMainSize] = useState<{ width: number; height: number } | null>(null);
-
-  useEffect(() => {
-    if (!mainRef.current) return;
-    const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        if (entry.contentRect) {
-          setMainSize({
-            width: entry.contentRect.width,
-            height: entry.contentRect.height,
-          });
-        }
-      }
-    });
-    observer.observe(mainRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const [mainRef, mainSize] = useElementSize<HTMLDivElement>();
 
   return (
     <GalleryRoot>
@@ -118,7 +105,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
 
             return (
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
-                <MediaCmp item={thumbItem} override={{height: 100}}/>
+                <MediaCmp item={thumbItem} />
                 {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
               </ThumbButton>
             );
