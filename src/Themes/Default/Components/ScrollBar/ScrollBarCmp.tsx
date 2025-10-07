@@ -7,9 +7,14 @@ import { useTheme } from '@/Themes/ThemeProvider';
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })<
-  { direction: 'horizontal' | 'vertical'; dragging?: boolean }
->(({ theme, direction, dragging }) => ({
+const ScrollBarRoot = styled('div', {
+  name: 'ScrollBar',
+  slot: 'Root',
+  shouldForwardProp: (prop) => prop !== 'direction' && prop !== 'dragging',
+})<{
+  direction: 'horizontal' | 'vertical';
+  dragging?: boolean
+}>(({ theme, direction, dragging }) => ({
   position: 'relative',
   backgroundColor: theme.palette.grey[700],
   borderRadius: theme.shape.borderRadius,
@@ -32,8 +37,8 @@ const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
   opacity: dragging ? 1 : 0.6,                  // ← thumb also opaque when dragging
   transition: 'opacity 0.2s ease, background-color 0.2s ease',
   ...(direction === 'horizontal'
-    ? { top: 0, height: theme.components?.ScrollBarCmp?.defaultProps?.thickness ?? 12 }
-    : { left: 0, width: theme.components?.ScrollBarCmp?.defaultProps?.thickness ?? 12 }),
+    ? { top: 0, height: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12 }
+    : { left: 0, width: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12 }),
 }));
 
 // =====================================================================

@@ -52,14 +52,13 @@ export const defaultDarkOptions: ThemeOptions = {
         },
       },
     },
-    Icon: {
+    IconCmp: {
       defaultProps: {
-        techName: '',
         convertToGrayScale: true,
         grayScaleIconColor: '#FF0000',
       }
     },
-    ProjectCard: {
+    ProjectCardCmp: {
       styleOverrides: {
         root: {
           backgroundColor: '#1e1e1e',
@@ -82,7 +81,7 @@ export const defaultDarkOptions: ThemeOptions = {
         techIcon: mergeAnims(false, anims.fadeInUp(20, 0.2), anims.hoverScale())
       }
     },
-    ProjectsOverview: {
+    ProjectsOverviewCmp: {
       styleOverrides: {
         root: {
           background: 'linear-gradient(to bottom, #151a2c, #221730)',
@@ -116,7 +115,7 @@ export const defaultDarkOptions: ThemeOptions = {
         },
       }
     },
-    Navbar: {
+    NavbarCmp: {
       defaultProps: {
         height: '60px'
       },
@@ -152,10 +151,9 @@ export const defaultDarkOptions: ThemeOptions = {
         underline: mergeAnims(false, { transition: { type: 'spring', stiffness: 500, damping: 30 } }),
       },
     },
-    ScrollBar: {
-      defaultProps: {
-        thickness: 10,
-        scrollContainer: null,
+    ScrollBarCmp: {
+      settings: {
+        thickness: 10
       }
     }
   },

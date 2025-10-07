@@ -5,10 +5,11 @@
   "scripts": {
     "ts": "ts-node -P scripts/tsconfig.scripts.json",
     "dev": "next dev",
-    "build": "npm run generate:projects && next build",
+    "build": "npm run generate:all && next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",
+    "generate:all": "npm run generate:projects && npm run generate:components && npm run generate:mui-theme-augmentation",
     "generate:projects": "npm run generate:projects-manifest && npm run generate:projects-index",
     "generate:projects-manifest": "npm run ts -- scripts/generate-project-manifests.ts",
     "generate:projects-index": "npm run ts -- scripts/generate-project-index.ts",

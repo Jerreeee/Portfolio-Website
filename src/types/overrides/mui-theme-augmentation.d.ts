@@ -3,6 +3,8 @@
 import '@mui/system';
 import '@mui/material/styles';
 
+import { ThemedComponent } from '../componentDefinition';
+
 // AUTO-GENERATED Component IMPORTS START
 import type { CodeBlockCmpProps, CodeBlockCmpClassKey } from '@/Themes/Default/Components/Code';
 import type { CodeInlineCmpProps, CodeInlineCmpClassKey } from '@/Themes/Default/Components/Code';

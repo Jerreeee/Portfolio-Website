@@ -28,17 +28,6 @@ const MediaRoot = styled(motion.div, {
   alignItems: 'center',
 }));
 
-const sharedMediaStyles = {
-  position: 'relative' as const,
-  width: '100%',
-  height: '100%',
-  overflow: 'hidden',
-};
-
-const MediaImage = styled(motion.div)(sharedMediaStyles);
-const MediaFileVideo = styled(motion.video)(sharedMediaStyles);
-const MediaEmbeddedVideo = styled(motion.div)(sharedMediaStyles);
-
 type FitMode = 'cover' | 'contain' | 'fill';
 
 export interface ImageMetaData {
@@ -55,7 +44,7 @@ export interface ImageMediaItem {
   width?: number;
   height?: number;
   imageProps?: Omit<ImageProps, 'src' | 'alt' | 'width' | 'height'>;
-};
+}
 
 export interface FileVideoMediaItem {
   type: 'fileVideo';
@@ -64,7 +53,7 @@ export interface FileVideoMediaItem {
   height?: number;
   thumbnail?: string;
   videoProps?: Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src'>;
-};
+}
 
 export interface EmbeddedVideoMediaItem {
   type: 'embeddedVideo';
@@ -72,7 +61,7 @@ export interface EmbeddedVideoMediaItem {
   width?: number;
   height?: number;
   playerProps?: Omit<ReactPlayerProps, 'src'>;
-};
+}
 
 export type MediaItem = ImageMediaItem | FileVideoMediaItem | EmbeddedVideoMediaItem;
 
@@ -81,80 +70,71 @@ export interface MediaCmpSettings {}
 export interface MediaCmpProps {
   item: MediaItem;
   fit?: FitMode;
-  override?: {width?: number, height?: number, aspectRatio?: number};
+  override?: { width?: number; height?: number; aspectRatio?: number };
 }
 
-export default function MediaCmp({ item, fit = 'cover', override}: MediaCmpProps) {
+export default function MediaCmp({ item, fit = 'cover', override }: MediaCmpProps) {
   const { theme } = useTheme();
   const anim = theme.components?.MediaCmp?.slotAnimations ?? {};
   const objectFit = fit;
-  
- let width: number | string | undefined = override?.width;
+
+  let width: number | string | undefined = override?.width;
   let height: number | string | undefined = override?.height;
   let aspectRatio: string | undefined = undefined;
 
   if (item.width && item.height) {
     if (override?.width && !override?.height) {
-      // width fixed, height auto, preserve ratio
       height = 'auto';
       aspectRatio = `${item.width} / ${item.height}`;
     } else if (override?.height && !override?.width) {
-      // height fixed, width auto, preserve ratio
       width = 'auto';
       aspectRatio = `${item.width} / ${item.height}`;
     } else if (!override?.width && !override?.height) {
-      // nothing overridden, just use intrinsic aspect ratio
       width = 'auto';
       height = 'auto';
       aspectRatio = `${item.width} / ${item.height}`;
     }
-    // if both width & height are overridden → no aspectRatio
   }
 
   return (
-    <MediaRoot
-      width={width}
-      height={height}
-      aspectRatio={aspectRatio}
-      {...(anim.root || {})}
-    >
+    <MediaRoot width={width} height={height} aspectRatio={aspectRatio}>
       {item.type === 'image' && (
-        <MediaImage {...(anim.image || {})}>
-          <Image
-            src={item.src}
-            alt={item.alt || ''}
-            style={{ objectFit }}
-            fill
-            {...item.imageProps}
-          />
-        </MediaImage>
+        <Image
+          src={item.src}
+          alt={item.alt || ''}
+          style={{ objectFit }}
+          fill
+          {...item.imageProps}
+        />
       )}
 
       {item.type === 'fileVideo' && (
-        <MediaFileVideo
-          {...(anim.fileVideo || {})}
+        <video
           controls
-          style={{ objectFit }}
+          style={{
+            objectFit,
+            width: '100%',
+            height: '100%',
+            display: 'block',
+          }}
           width={width}
           height={height}
           {...item.videoProps}
         >
           <source src={item.src} />
           Your browser does not support the video tag.
-        </MediaFileVideo>
+        </video>
       )}
 
       {item.type === 'embeddedVideo' && (
-        <MediaEmbeddedVideo {...(anim.embeddedVideo || {})}>
-          <ReactPlayer
-            src={item.src}
-            width={width || '100%'}
-            height={height || '100%'}
-            controls
-            style={{ objectFit }}
-            {...item.playerProps}
-          />
-        </MediaEmbeddedVideo>
+        <ReactPlayer
+          src={item.src}
+          width={width || '100%'}
+          height={height || '100%'}
+          controls
+          style={{ objectFit }}
+          {...item.playerProps}
+        />
       )}
     </MediaRoot>
   );
