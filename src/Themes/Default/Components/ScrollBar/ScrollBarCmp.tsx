@@ -18,8 +18,8 @@ const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })<
   transition: 'opacity 0.2s ease',
   '&:hover': { opacity: 1 }, // opaque on hover
   ...(direction === 'horizontal'
-    ? { height: theme.components?.ScrollBar?.settings?.thickness, width: '100%' }
-    : { width: theme.components?.ScrollBar?.settings?.thickness, height: '100%' }),
+    ? { height: theme.components?.ScrollBarCmp?.settings?.thickness, width: '100%' }
+    : { width: theme.components?.ScrollBarCmp?.settings?.thickness, height: '100%' }),
 }));
 
 const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
@@ -32,8 +32,8 @@ const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
   opacity: dragging ? 1 : 0.6,                  // ← thumb also opaque when dragging
   transition: 'opacity 0.2s ease, background-color 0.2s ease',
   ...(direction === 'horizontal'
-    ? { top: 0, height: theme.components?.ScrollBar?.defaultProps?.thickness ?? 12 }
-    : { left: 0, width: theme.components?.ScrollBar?.defaultProps?.thickness ?? 12 }),
+    ? { top: 0, height: theme.components?.ScrollBarCmp?.defaultProps?.thickness ?? 12 }
+    : { left: 0, width: theme.components?.ScrollBarCmp?.defaultProps?.thickness ?? 12 }),
 }));
 
 // =====================================================================

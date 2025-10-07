@@ -3,8 +3,7 @@
 import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export { default as NavbarCmp } from './NavbarCmp';
-export type { NavbarCmpProps } from './NavbarCmp';
-export type { NavbarCmpSettings } from './NavbarCmp';
+export type { NavbarCmpProps, NavbarCmpSettings } from './NavbarCmp';
 
 export const navbarCmp = createUtilityClasses('NavbarCmp', [
   'root',
@@ -12,7 +11,7 @@ export const navbarCmp = createUtilityClasses('NavbarCmp', [
   'list',
   'item',
   'link',
-  'underline',
+  'underline'
 ] as const);
 
 export type NavbarCmpClassKey = typeof navbarCmp.slots[number];

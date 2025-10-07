@@ -86,7 +86,7 @@ export interface MediaCmpProps {
 
 export default function MediaCmp({ item, fit = 'cover', override}: MediaCmpProps) {
   const { theme } = useTheme();
-  const anim = theme.components?.Media?.slotAnimations ?? {};
+  const anim = theme.components?.MediaCmp?.slotAnimations ?? {};
   const objectFit = fit;
   
  let width: number | string | undefined = override?.width;

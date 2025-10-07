@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import MediaGalleryCmp from '@/Themes/Default/Components/MediaGallery/MediaGalleryCmp';
-import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompareCmp';
+import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
 import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
 import Markdown from '@/Themes/Default/Components/Markdown/MarkdownRendererCmp';
 import type { ProjectManifest } from "@/types/projectManifest";

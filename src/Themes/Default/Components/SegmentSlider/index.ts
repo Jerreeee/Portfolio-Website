@@ -3,8 +3,7 @@
 import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export { default as SegmentSliderCmp } from './SegmentSliderCmp';
-export type { SegmentSliderCmpProps } from './SegmentSliderCmp';
-export type { SegmentSliderCmpSettings } from './SegmentSliderCmp';
+export type { SegmentSliderCmpProps, SegmentSliderCmpSettings } from './SegmentSliderCmp';
 
 export const segmentSliderCmp = createUtilityClasses('SegmentSliderCmp', [
   'root',
@@ -12,7 +11,7 @@ export const segmentSliderCmp = createUtilityClasses('SegmentSliderCmp', [
   'ticks',
   'tick',
   'highlight',
-  'handle',
+  'handle'
 ] as const);
 
 export type SegmentSliderCmpClassKey = typeof segmentSliderCmp.slots[number];

@@ -25,13 +25,19 @@ import type {
   CodeInlineCmpClassKey,
 } from '@/Themes/Default/Components/Code';
 import type { IconCmpClassKey } from '@/Themes/Default/Components/Icon';
-import type { ImageCompareCmpClassKey } from '@/Themes/Default/Components/ImageCompare';
-import type { ImageMultiCompareCmpClassKey } from '@/Themes/Default/Components/ImageMultiCompare';
+import type {
+  ImageCompareCmpClassKey,
+  ImageMultiCompareCmpClassKey,
+} from '@/Themes/Default/Components/ImageCompare';
+import type { MarkdownRendererCmpClassKey } from '@/Themes/Default/Components/Markdown';
+import type { MediaCmpClassKey } from '@/Themes/Default/Components/Media';
 import type { MediaGalleryCmpClassKey } from '@/Themes/Default/Components/MediaGallery';
 import type { NavbarCmpClassKey } from '@/Themes/Default/Components/Navbar';
+import type { ParentSizeObserverCmpClassKey } from '@/Themes/Default/Components/ParentSizeObserver';
 import type { ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
 import type { ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
 import type { ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
+import type { ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
 
 export interface ComponentNameToAnimationSlot {
@@ -40,11 +46,15 @@ export interface ComponentNameToAnimationSlot {
   IconCmp: IconCmpClassKey;
   ImageCompareCmp: ImageCompareCmpClassKey;
   ImageMultiCompareCmp: ImageMultiCompareCmpClassKey;
+  MarkdownRendererCmp: MarkdownRendererCmpClassKey;
+  MediaCmp: MediaCmpClassKey;
   MediaGalleryCmp: MediaGalleryCmpClassKey;
   NavbarCmp: NavbarCmpClassKey;
+  ParentSizeObserverCmp: ParentSizeObserverCmpClassKey;
   ProjectCardCmp: ProjectCardCmpClassKey;
   ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
   ScrollBarCmp: ScrollBarCmpClassKey;
+  ScrollableCmp: ScrollableCmpClassKey;
   SegmentSliderCmp: SegmentSliderCmpClassKey;
 }
 // AUTO-GENERATED END

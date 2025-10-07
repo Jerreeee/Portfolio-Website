@@ -18,7 +18,7 @@ const NavbarRoot = styled(motion.nav, { name: 'Navbar', slot: 'Root' })(({ theme
   left: 0,
   zIndex: 50,
   width: '100%',
-  height: theme.components?.Navbar?.defaultProps?.height,
+  height: theme.components?.NavbarCmp?.defaultProps?.height,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -75,7 +75,7 @@ export interface NavbarCmpProps {
 
 export default function NavbarCmp(props: NavbarCmpProps) {
   const { theme } = useTheme();
-  const anim = theme.components?.Navbar?.slotAnimations ?? {};
+  const anim = theme.components?.NavbarCmp?.slotAnimations ?? {};
   const pathname = usePathname();
 
   return (

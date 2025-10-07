@@ -1,0 +1,84 @@
+
+//mui
+import '@mui/system';
+import '@mui/material/styles';
+
+// AUTO-GENERATED Component IMPORTS START
+import type { CodeBlockCmpProps, CodeBlockCmpClassKey } from '@/Themes/Default/Components/Code';
+import type { CodeInlineCmpProps, CodeInlineCmpClassKey } from '@/Themes/Default/Components/Code';
+import type { IconCmpProps, IconCmpClassKey } from '@/Themes/Default/Components/Icon';
+import type { ImageCompareCmpProps, ImageCompareCmpClassKey } from '@/Themes/Default/Components/ImageCompare';
+import type { ImageMultiCompareCmpProps, ImageMultiCompareCmpClassKey } from '@/Themes/Default/Components/ImageCompare';
+import type { MarkdownRendererCmpProps, MarkdownRendererCmpClassKey } from '@/Themes/Default/Components/Markdown';
+import type { MediaCmpProps, MediaCmpClassKey } from '@/Themes/Default/Components/Media';
+import type { MediaGalleryCmpProps, MediaGalleryCmpClassKey } from '@/Themes/Default/Components/MediaGallery';
+import type { NavbarCmpProps, NavbarCmpClassKey } from '@/Themes/Default/Components/Navbar';
+import type { ParentSizeObserverCmpProps, ParentSizeObserverCmpClassKey } from '@/Themes/Default/Components/ParentSizeObserver';
+import type { ProjectCardCmpProps, ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
+import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
+import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
+import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
+import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
+// AUTO-GENERATED Component IMPORTS END
+
+// Augment MUI's Theme
+declare module '@mui/material/styles' {
+  // Custom component definitions
+  interface ComponentsProps {
+    // AUTO-GENERATED ComponentsProps START
+    CodeBlockCmp?: CodeBlockCmpProps;
+    CodeInlineCmp?: CodeInlineCmpProps;
+    IconCmp?: IconCmpProps;
+    ImageCompareCmp?: ImageCompareCmpProps;
+    ImageMultiCompareCmp?: ImageMultiCompareCmpProps;
+    MarkdownRendererCmp?: MarkdownRendererCmpProps;
+    MediaCmp?: MediaCmpProps;
+    MediaGalleryCmp?: MediaGalleryCmpProps;
+    NavbarCmp?: NavbarCmpProps;
+    ParentSizeObserverCmp?: ParentSizeObserverCmpProps;
+    ProjectCardCmp?: ProjectCardCmpProps;
+    ProjectsOverviewCmp?: ProjectsOverviewCmpProps;
+    ScrollableCmp?: ScrollableCmpProps;
+    ScrollBarCmp?: ScrollBarCmpProps;
+    SegmentSliderCmp?: SegmentSliderCmpProps;
+// AUTO-GENERATED ComponentsProps END
+  }
+  interface ComponentNameToClassKey {
+    // AUTO-GENERATED ComponentNameToClassKey START
+    CodeBlockCmp: CodeBlockCmpClassKey;
+    CodeInlineCmp: CodeInlineCmpClassKey;
+    IconCmp: IconCmpClassKey;
+    ImageCompareCmp: ImageCompareCmpClassKey;
+    ImageMultiCompareCmp: ImageMultiCompareCmpClassKey;
+    MarkdownRendererCmp: MarkdownRendererCmpClassKey;
+    MediaCmp: MediaCmpClassKey;
+    MediaGalleryCmp: MediaGalleryCmpClassKey;
+    NavbarCmp: NavbarCmpClassKey;
+    ParentSizeObserverCmp: ParentSizeObserverCmpClassKey;
+    ProjectCardCmp: ProjectCardCmpClassKey;
+    ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
+    ScrollableCmp: ScrollableCmpClassKey;
+    ScrollBarCmp: ScrollBarCmpClassKey;
+    SegmentSliderCmp: SegmentSliderCmpClassKey;
+// AUTO-GENERATED ComponentNameToClassKey END
+  }
+  interface Components {
+    // AUTO-GENERATED Components START
+    CodeBlockCmp?: ThemedComponent<'CodeBlockCmp'>;
+    CodeInlineCmp?: ThemedComponent<'CodeInlineCmp'>;
+    IconCmp?: ThemedComponent<'IconCmp'>;
+    ImageCompareCmp?: ThemedComponent<'ImageCompareCmp'>;
+    ImageMultiCompareCmp?: ThemedComponent<'ImageMultiCompareCmp'>;
+    MarkdownRendererCmp?: ThemedComponent<'MarkdownRendererCmp'>;
+    MediaCmp?: ThemedComponent<'MediaCmp'>;
+    MediaGalleryCmp?: ThemedComponent<'MediaGalleryCmp'>;
+    NavbarCmp?: ThemedComponent<'NavbarCmp'>;
+    ParentSizeObserverCmp?: ThemedComponent<'ParentSizeObserverCmp'>;
+    ProjectCardCmp?: ThemedComponent<'ProjectCardCmp'>;
+    ProjectsOverviewCmp?: ThemedComponent<'ProjectsOverviewCmp'>;
+    ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
+    ScrollBarCmp?: ThemedComponent<'ScrollBarCmp'>;
+    SegmentSliderCmp?: ThemedComponent<'SegmentSliderCmp'>;
+// AUTO-GENERATED Components END
+  }
+}

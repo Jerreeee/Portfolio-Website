@@ -3,15 +3,14 @@
 import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export { default as MediaGalleryCmp } from './MediaGalleryCmp';
-export type { MediaGalleryCmpProps } from './MediaGalleryCmp';
-export type { MediaGalleryCmpSettings } from './MediaGalleryCmp';
+export type { MediaGalleryCmpProps, MediaGalleryCmpSettings } from './MediaGalleryCmp';
 
 export const mediaGalleryCmp = createUtilityClasses('MediaGalleryCmp', [
   'root',
   'main',
   'thumbs',
   'thumbButton',
-  'videoOverlay',
+  'videoOverlay'
 ] as const);
 
 export type MediaGalleryCmpClassKey = typeof mediaGalleryCmp.slots[number];

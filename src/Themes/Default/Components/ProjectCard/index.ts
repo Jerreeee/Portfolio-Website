@@ -3,8 +3,7 @@
 import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export { default as ProjectCardCmp } from './ProjectCardCmp';
-export type { ProjectCardCmpProps } from './ProjectCardCmp';
-export type { ProjectCardCmpSettings } from './ProjectCardCmp';
+export type { ProjectCardCmpProps, ProjectCardCmpSettings } from './ProjectCardCmp';
 
 export const projectCardCmp = createUtilityClasses('ProjectCardCmp', [
   'root',
@@ -12,7 +11,7 @@ export const projectCardCmp = createUtilityClasses('ProjectCardCmp', [
   'image',
   'techList',
   'techIcon',
-  'content',
+  'content'
 ] as const);
 
 export type ProjectCardCmpClassKey = typeof projectCardCmp.slots[number];

@@ -61,7 +61,7 @@ export interface ProjectsOverviewCmpProps {}
 
 export default function ProjectsOverviewCmp(props: ProjectsOverviewCmpProps) {
   const { theme } = useTheme();
-  const anim = theme.components?.ProjectsOverview?.slotAnimations ?? {};
+  const anim = theme.components?.ProjectsOverviewCmp?.slotAnimations ?? {};
 
   return (
     <ProjectsOverviewRoot {...(anim.root || {})}>

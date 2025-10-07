@@ -1,5 +1,14 @@
 // ⚙️ Auto-generated file — do not edit manually
 
+import { createUtilityClasses } from '@/utils/createUtilityClasses';
+
 export { default as MediaCmp } from './MediaCmp';
-export type { MediaCmpProps } from './MediaCmp';
-export type { MediaCmpSettings } from './MediaCmp';
+export type { MediaCmpProps, MediaCmpSettings } from './MediaCmp';
+
+export const mediaCmp = createUtilityClasses('MediaCmp', [
+  
+] as const);
+
+export type MediaCmpClassKey = typeof mediaCmp.slots[number];
+export type MediaCmpClasses = typeof mediaCmp.classes;
+

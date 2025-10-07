@@ -59,7 +59,7 @@ export interface ImageCompareCmpProps {
 
 export default function ImageCompareCmp(props: ImageCompareCmpProps) {
   const { theme } = useTheme();
-  const anim = theme.components?.ImageCompare?.slotAnimations ?? {};
+  const anim = theme.components?.ImageCompareCmp?.slotAnimations ?? {};
 
   // internal state to sync with external progress without flicker
   const [_progress, SetProgress] = useState(props.progress);

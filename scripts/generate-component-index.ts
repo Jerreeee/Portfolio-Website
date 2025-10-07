@@ -65,34 +65,41 @@ interface ComponentMeta {
   hasSettings: boolean;
 }
 
-// Generate index.ts for a folder with multiple *Cmp files
+// Generate index.ts for a folder with one or more *Cmp files
 function generateIndex(folderPath: string, componentsData: ComponentMeta[]): void {
   const outputPath = path.join(folderPath, "index.ts");
   const lines: string[] = ["// ⚙️ Auto-generated file — do not edit manually\n"];
 
-  const anyWithSlots = componentsData.some((c) => c.slots.length > 0);
-  if (anyWithSlots) {
-    lines.push(`import { createUtilityClasses } from '@/utils/createUtilityClasses';\n`);
-  }
+  // Always import utility generator
+  lines.push(`import { createUtilityClasses } from '@/utils/createUtilityClasses';\n`);
 
   for (const { name, slots, hasProps, hasSettings } of componentsData) {
     const camelName = firstLetterToLower(name);
 
+    // --- Combine component + type re-exports ---
     lines.push(`export { default as ${name} } from './${name}';`);
-    if (hasProps) lines.push(`export type { ${name}Props } from './${name}';`);
-    if (hasSettings) lines.push(`export type { ${name}Settings } from './${name}';`);
 
-    if (slots.length > 0) {
-      const slotList = slots.map((s) => `'${firstLetterToLower(s)}'`).join(",\n  ");
-      lines.push(`
+    const typeExports: string[] = [];
+    if (hasProps) typeExports.push(`${name}Props`);
+    if (hasSettings) typeExports.push(`${name}Settings`);
+
+    if (typeExports.length > 0) {
+      lines.push(`export type { ${typeExports.join(", ")} } from './${name}';`);
+    }
+
+    // --- Always add slots + class types (even if empty) ---
+    const slotList = slots.length
+      ? slots.map((s) => `'${firstLetterToLower(s)}'`).join(",\n  ")
+      : "";
+
+    lines.push(`
 export const ${camelName} = createUtilityClasses('${name}', [
-  ${slotList},
+  ${slotList}
 ] as const);
 
 export type ${name}ClassKey = typeof ${camelName}.slots[number];
 export type ${name}Classes = typeof ${camelName}.classes;
 `);
-    }
 
     lines.push(""); // spacing between components
   }
@@ -132,25 +139,21 @@ function run(): void {
       const { hasProps, hasSettings } = findExportedTypes(content, componentName);
       componentsData.push({ name: componentName, slots, hasProps, hasSettings });
 
-      // Log nicely
+      // Log details
       console.log(`    ✅ Processed "${componentName}"`);
       console.log(
         `       ${slots.length ? "✅" : "⚠️"} slots: ${
-          slots.length ? slots.map(firstLetterToLower).join(", ") : "not found"
+          slots.length ? slots.map(firstLetterToLower).join(", ") : "none"
         }`
       );
       console.log(
         `       ${hasProps ? "✅" : "⚠️"} props type: ${
-          hasProps
-            ? `${componentName}Props`
-            : `${componentName}Props (expected but not found)`
+          hasProps ? `${componentName}Props` : "not found"
         }`
       );
       console.log(
         `       ${hasSettings ? "✅" : "⚠️"} settings type: ${
-          hasSettings
-            ? `${componentName}Settings`
-            : `${componentName}Settings (expected but not found)`
+          hasSettings ? `${componentName}Settings` : "not found"
         }`
       );
     }

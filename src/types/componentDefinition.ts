@@ -8,6 +8,7 @@ import type {
 
 // custom
 import type { ComponentsAnimations } from './componentAnimations';
+import { ComponentsSettings } from './componentSettings';
 
 /**
  * Generic helper for a theme component definition.
@@ -18,4 +19,5 @@ export type ThemedComponent<Name extends keyof ComponentsProps> = {
   styleOverrides?: ComponentsOverrides<Theme>[Extract<Name, keyof ComponentsOverrides<Theme>>];
   variants?: ComponentsVariants<Theme>[Extract<Name, keyof ComponentsVariants<Theme>>];
   slotAnimations?: ComponentsAnimations<Theme>[Extract<Name, keyof ComponentsAnimations<Theme>>];
+  settings?: ComponentsSettings<Theme>[Extract<Name, keyof ComponentsAnimations<Theme>>];
 };

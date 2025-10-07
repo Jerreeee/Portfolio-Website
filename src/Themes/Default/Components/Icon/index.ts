@@ -3,11 +3,10 @@
 import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export { default as IconCmp } from './IconCmp';
-export type { IconCmpProps } from './IconCmp';
-export type { IconCmpSettings } from './IconCmp';
+export type { IconCmpProps, IconCmpSettings } from './IconCmp';
 
 export const iconCmp = createUtilityClasses('IconCmp', [
-  'root',
+  'root'
 ] as const);
 
 export type IconCmpClassKey = typeof iconCmp.slots[number];

@@ -9,11 +9,14 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",
+    "generate:projects": "npm run generate:projects-manifest && npm run generate:projects-index",
     "generate:projects-manifest": "npm run ts -- scripts/generate-project-manifests.ts",
     "generate:projects-index": "npm run ts -- scripts/generate-project-index.ts",
-    "generate:projects": "npm run generate:projects-manifest && npm run generate:projects-index",
-    "generate:components": "npm run ts -- scripts/generate-component-index.ts",
+    "generate:components": "npm run generate:components-index && npm run generate:components-animationTypes && npm run generate:components-settingTypes",
+    "generate:components-index": "npm run ts -- scripts/generate-component-index.ts",
     "generate:components-animationTypes": "npm run ts -- scripts/generate-component-animationTypes.ts",
+    "generate:components-settingTypes": "npm run ts -- scripts/generate-component-settingTypes.ts",
+    "generate:mui-theme-augmentation": "npm run ts -- scripts/generate-mui-theme-augmentation.ts",
     "serve": "npx serve out"
   },
   "dependencies": {

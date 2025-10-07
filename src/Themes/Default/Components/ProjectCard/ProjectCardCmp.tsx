@@ -59,7 +59,7 @@ export interface ProjectCardCmpProps {
 
 export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   const { theme } = useTheme();
-  const anim = theme.components?.ProjectCard?.slotAnimations ?? {};
+  const anim = theme.components?.ProjectCardCmp?.slotAnimations ?? {};
 
   return (
     <ProjectCardRoot {...(anim.root || {})}
