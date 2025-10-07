@@ -18,8 +18,8 @@ const ScrollBarRoot = styled('div', { name: 'ScrollBar', slot: 'Root' })<
   transition: 'opacity 0.2s ease',
   '&:hover': { opacity: 1 }, // opaque on hover
   ...(direction === 'horizontal'
-    ? { height: theme.components?.ScrollBar?.defaultProps?.thickness, width: '100%' }
-    : { width: theme.components?.ScrollBar?.defaultProps?.thickness, height: '100%' }),
+    ? { height: theme.components?.ScrollBar?.settings?.thickness, width: '100%' }
+    : { width: theme.components?.ScrollBar?.settings?.thickness, height: '100%' }),
 }));
 
 const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
@@ -39,16 +39,16 @@ const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
 // =====================================================================
 // ============================= Component =============================
 
-export interface ScrollbarSettings {
+export interface ScrollBarCmpSettings {
   thickness: number;
 }
 
-export interface ScrollBarProps extends ScrollbarSettings{
+export interface ScrollBarCmpProps {
   scrollContainer: React.RefObject<HTMLDivElement | null>;
   direction?: 'horizontal' | 'vertical';
 }
 
-export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal', ...props}: ScrollBarProps) {
+export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal', ...props}: ScrollBarCmpProps) {
   const { theme } = useTheme();
 
   const [thumbSize, setThumbSize] = useState(0);

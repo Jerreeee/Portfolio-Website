@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { icons, IconKey, IconData } from '@/data/Icons';
-import { useParsedSVG } from '@/utils/UseParsedSVG';
+import { useParsedSVG } from '@/utils/UseParsedSvg';
 import { toGrayScale, applyTint } from '@/utils/Color';
 
 // =====================================================================
@@ -22,7 +22,9 @@ const IconRoot = styled(motion.div, { name: 'Icon', slot: 'Root' })(({ theme }) 
 // =====================================================================
 // ============================= Component =============================
 
-export interface IconProps {
+export interface IconCmpSettings {}
+
+export interface IconCmpProps {
   techName: string;
   convertToGrayScale?: boolean;
   tintColor?: string;
@@ -30,7 +32,7 @@ export interface IconProps {
   grayScaleIconColor?: string;
 }
 
-export default function IconCmp(props: IconProps) {
+export default function IconCmp(props: IconCmpProps) {
   const { theme } = useTheme();
 
   const iconEntry: IconData | undefined = icons[props.techName as IconKey] ?? icons.Error;

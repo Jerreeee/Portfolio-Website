@@ -1,5 +1,5 @@
-import type { MediaItem } from "@/Themes/Default/Components/Media/Media";
-import { ManifestEntry, ProjectManifest } from "@/types/projectManifest";
+import type { MediaItem } from "@/Themes/Default/Components/Media/MediaCmp";
+import { MediaManifestEntry, ProjectManifest } from "@/types/projectManifest";
 
 /**
  * Builds an array of MediaItems based on a list of filenames.
@@ -12,7 +12,7 @@ export function getMediaItemsFromManifest(
   fileNames: string[]
 ): MediaItem[] {
   return fileNames.map((fileName) => {
-    const entry: ManifestEntry = manifest.media[fileName];
+    const entry: MediaManifestEntry = manifest.media[fileName];
     
     if (!entry) {
       console.warn(`⚠️ Media file "${fileName}" not found in manifest`);
@@ -52,7 +52,7 @@ export function getMediaItemsFromManifest(
 
       default: {
         const _exhaustive: never = entry;
-        throw new Error(`Unknown media type: ${(entry as ManifestEntry).type}`);
+        throw new Error(`Unknown media type: ${(entry as MediaManifestEntry).type}`);
       }
     }
   });

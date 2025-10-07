@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "ts": "ts-node -P scripts/tsconfig.scripts.json",
     "dev": "next dev",
     "build": "npm run generate:projects && next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",
-    "generate:projects": "node scripts/generate-project-manifests.js && node scripts/generate-project-index.js",
+    "generate:projects-manifest": "npm run ts -- scripts/generate-project-manifests.ts",
+    "generate:projects-index": "npm run ts -- scripts/generate-project-index.ts",
+    "generate:projects": "npm run generate:projects-manifest && npm run generate:projects-index",
+    "generate:components": "npm run ts -- scripts/generate-component-index.ts",
+    "generate:components-animationTypes": "npm run ts -- scripts/generate-component-animationTypes.ts",
     "serve": "npx serve out"
   },
   "dependencies": {
@@ -43,6 +48,7 @@
     "postcss": "8.5.6",
     "svg-inline-loader": "0.8.2",
     "tailwindcss": "4.1.11",
+    "ts-node": "10.9.2",
     "typescript": "5"
   }
 }

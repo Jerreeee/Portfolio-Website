@@ -1,4 +1,4 @@
-import type { ReactNode, ComponentType } from "react";
+import type { ReactNode, FC } from 'react';
 import { ProjectManifest } from "@/types/projectManifest";
 
 export type ProjectRequiredInfo = {
@@ -11,6 +11,10 @@ export type ProjectRequiredInfo = {
 }
 
 export type ProjectInfo = ProjectRequiredInfo & {
+  component: FC<ProjectCmpProps>;
   manifest: ProjectManifest;
-  component: ComponentType<{ project: ProjectInfo }>;
 };
+
+export interface ProjectCmpProps {
+  project: ProjectInfo;
+}

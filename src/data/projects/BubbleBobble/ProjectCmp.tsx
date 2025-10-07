@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
+import { ProjectCmpProps } from '../project';
 import { ProjectInfo } from '@/data/projects/project'
 import { data } from './data'
 
-import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/Media';
+import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
 
-export default function ProjectCmp() {
+export default function ProjectCmp({ project }: ProjectCmpProps) {
 
 const media: MediaItem = {
   type: 'image',

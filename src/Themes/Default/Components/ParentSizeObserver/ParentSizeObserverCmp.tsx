@@ -10,7 +10,9 @@ import { styled } from "@mui/material/styles";
 
 type RenderProp = (size: Size | undefined) => ReactNode;
 
-type ParentSizeObserverProps = {
+export interface ParentSizeObserverCmpSettings {}
+
+export type ParentSizeObserverCmpProps = {
   children: ReactNode | RenderProp;
   aspectRatio?: number; // width / height
   mode?: "width" | "height" | "both";
@@ -20,7 +22,7 @@ export function ParentSizeObserver({
   children,
   aspectRatio,
   mode = "both",
-}: ParentSizeObserverProps) {
+}: ParentSizeObserverCmpProps) {
   const markerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size | undefined>(undefined);
 

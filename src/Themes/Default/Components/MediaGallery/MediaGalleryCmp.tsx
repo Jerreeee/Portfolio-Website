@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
-import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/Media';
-import ScrollableCmp from '../Scrollable/Scrollable';
+import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
+import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { useElementSize } from '@/hooks/useElementSize';
 
 // =====================================================================
@@ -67,11 +67,13 @@ const VideoOverlay = styled('div', { name: 'MediaGallery', slot: 'VideoOverlay' 
 // =====================================================================
 // ============================= Component =============================
 
-export interface MediaGalleryProps {
+export interface MediaGalleryCmpSettings {}
+
+export interface MediaGalleryCmpProps {
   media: MediaItem[];
 }
 
-export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
+export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
   const { theme: activeTheme } = useTheme();
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -108,7 +110,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryProps) {
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
                 <MediaCmp
                   item={thumbItem}
-                  override={{ height: '100%', aspectRatio: '16/9' }}
+                  override={{ height: 100, aspectRatio: 16/9 }}
                 />
                 {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
               </ThumbButton>

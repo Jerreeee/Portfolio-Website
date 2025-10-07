@@ -21,13 +21,15 @@ export type EmbeddedVideoManifestItem = {
   height?: number;
 };
 
-export type ManifestEntry =
+export type MediaManifestEntry =
   | ImageManifestItem
   | FileVideoManifestItem
   | EmbeddedVideoManifestItem;
 
 export type ProjectManifest = {
   media: {
-    [fileName: string]: ManifestEntry;
+    [fileName: string]: MediaManifestEntry;
   };
 };
+
+export type Media = ProjectManifest['media'];

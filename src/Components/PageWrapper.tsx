@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { useTheme } from 'Themes/ThemeProvider';
-import NavbarCmp from '@/Themes/Default/Components/Navbar/Navbar';
+import NavbarCmp from '@/Themes/Default/Components/Navbar/NavbarCmp';
 
 export function PageWrapper({ children }: { children: ReactNode }) {
   const { theme } = useTheme();

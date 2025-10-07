@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import { Card, CardContent, Typography } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider'
 import { ProjectInfo } from '@/data/projects/project';
-import IconCmp from '@/Themes/Default/Components/Icon/Icon'
+import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -51,13 +51,13 @@ const ProjectCardContentBox = styled(motion(CardContent), { name: 'ProjectCard',
 // =====================================================================
 // ============================= Component =============================
 
-export interface ProjectCardSettings {}
+export interface ProjectCardCmpSettings {}
 
-export interface ProjectCardProps {
+export interface ProjectCardCmpProps {
   project: ProjectInfo;
 }
 
-export default function ProjectCardCmp({ project }: ProjectCardProps) {
+export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   const { theme } = useTheme();
   const anim = theme.components?.ProjectCard?.slotAnimations ?? {};
 

@@ -77,7 +77,9 @@ export interface SegmentSliderState {
     nextTickIdx: number;
 }
 
-export interface SegmentSliderProps {
+export interface SegmentSliderCmpSettings {}
+
+export interface SegmentSliderCmpProps {
   tickCount: number;          // number of tick marks, segmentCount will be tickCount - 1
   percentage: number;         // 0 – 1
   segmentIndex?: number;       // currently active segment
@@ -105,7 +107,7 @@ SegmentSliderCmp.computeGlobalPercentage = function computeGlobalPercentage(
   return segmentIndex !== undefined ? (segmentIndex + percentage) / (tickCount - 1) : percentage;
 };
 
-export default function SegmentSliderCmp(props: SegmentSliderProps) {
+export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
   const { theme } = useTheme();
   
   const segmentCount = props.tickCount - 1;

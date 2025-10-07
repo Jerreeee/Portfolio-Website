@@ -7,22 +7,23 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import MediaGalleryCmp from '@/Themes/Default/Components/MediaGallery/MediaGallery';
-import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompare';
-import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/Media';
-import Markdown from '@/Themes/Default/Components/Markdown/Markdown';
+import MediaGalleryCmp from '@/Themes/Default/Components/MediaGallery/MediaGalleryCmp';
+import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompareCmp';
+import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
+import Markdown from '@/Themes/Default/Components/Markdown/MarkdownRendererCmp';
 import type { ProjectManifest } from "@/types/projectManifest";
 import { ProjectInfo } from '../project';
 import { getMediaItemsFromManifest } from '@/utils/projectManifest';
-import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompare';
-import { ParentSizeObserver } from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserver';
-import CodeBlock from '@/Themes/Default/Components/Code/CodeBlock';
+import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
+import { ParentSizeObserver } from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
+import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
 
+import { ProjectCmpProps } from '../project';
 import { data } from './data';
-import ScrollableCmp from '@/Themes/Default/Components/Scrollable/Scrollable';
+import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp';
 
 
-export default function ProjectCmp({ project }: { project: ProjectInfo }) {
+export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
   
   const mediaItems: MediaItem[] = getMediaItemsFromManifest(manifest, [
@@ -152,17 +153,17 @@ int main() {
 
         {/* <div style={{width: '100%', height: '600px'}}> */}
         <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
-          <CodeBlock file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
+          <CodeBlockCmp file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
         </ParentSizeObserver>
         {/* </div> */}
 
-        <CodeBlock language="js">
+        <CodeBlockCmp language="js">
         {`
 function hello() {
   console.log("Hello World!");
 }
         `}
-        </CodeBlock>
+        </CodeBlockCmp>
 
         <Markdown markdown={md} ></Markdown>
       </Box>

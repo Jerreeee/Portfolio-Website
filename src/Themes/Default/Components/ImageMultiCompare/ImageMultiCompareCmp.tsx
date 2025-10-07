@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider';
-import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompare';
-import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSlider';
+import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
+import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSliderCmp';
 import { Size } from '@/types/extra';
 
 // =====================================================================
@@ -28,12 +28,14 @@ const ImageMultiCompareRoot = styled(motion.div, {
 // =====================================================================
 // ============================= Component ==============================
 
-export interface ImageMultiCompareProps {
+export interface ImageMultiCompareCmpSettings {}
+
+export interface ImageMultiCompareCmpProps {
   images: ImageCompareItem[];
   size?: Size;
 }
 
-export default function ImageMultiCompareCmp(props: ImageMultiCompareProps) {
+export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
   const { theme } = useTheme();
 
   const initialProgress = 0.5;

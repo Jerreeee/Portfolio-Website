@@ -21,10 +21,12 @@ const CodeInlineRoot = styled('code', {
   },
 }));
 
-export interface CodeInlineProps {
+export interface CodeInlineCmpSettings {}
+
+export interface CodeInlineCmpProps {
   children: React.ReactNode;
 }
 
-export default function CodeInline({ children }: CodeInlineProps) {
+export default function CodeInlineCmp({ children }: CodeInlineCmpProps) {
   return <CodeInlineRoot>{children}</CodeInlineRoot>;
 }

@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import ScrollBarCmp from '@/Themes/Default/Components/ScrollBar/ScrollBar';
+import ScrollBarCmp from '@/Themes/Default/Components/ScrollBar/ScrollBarCmp';
 import { Size } from '@/types/extra';
-import { ParentSizeObserver } from '../ParentSizeObserver/ParentSizeObserver';
+import { ParentSizeObserver } from '../ParentSizeObserver/ParentSizeObserverCmp';
 import { useCheckOverflow } from '@/hooks/useCheckOverflow';
 import { useSizeObserver } from '@/hooks/useSizeObserver';
 import { SxProps, Theme } from '@mui/material/styles';
@@ -74,7 +74,9 @@ const ScrollbarColumn = styled('div')({
 // =====================================================================
 // ============================= Component =============================
 
-export interface ScrollableProps {
+export interface ScrollableCmpSettings {}
+
+export interface ScrollableCmpProps {
   children: React.ReactNode;
   direction?: 'both' | 'horizontal' | 'vertical';
   containerSx?: SxProps<Theme>;
@@ -84,7 +86,7 @@ export default function ScrollableCmp({
   children,
   direction = 'both',
   containerSx,
-}: ScrollableProps) {
+}: ScrollableCmpProps) {
   const { ref: sizeRef, size } = useSizeObserver<HTMLDivElement>({});
   const { ref: containerRef, overflowsX, overflowsY } = useCheckOverflow<HTMLDivElement>([size?.width, size?.height, children]);
 

@@ -5,25 +5,25 @@ import '@mui/material/styles';
 
 //custom
 import type { ThemedComponent } from '@/types/componentDefinition';
-import type { MediaProps } from '@/Themes/Default/Components/Media/Media';
+import type { MediaProps } from '@/Themes/Default/Components/Media/MediaCmp';
 import type { MediaClassKey } from '@/Themes/Default/Components/Media/MediaClasses';
-import type { IconProps } from '@/Themes/Default/Components/Icon/Icon';
+import type { IconProps } from '@/Themes/Default/Components/Icon/IconCmp';
 import type { IconClassKey } from '@/Themes/Default/Components/Icon/IconClasses';
-import type { ProjectCardProps } from '@/Themes/Default/Components/ProjectCard/ProjectCard';
+import type { ProjectCardProps } from '@/Themes/Default/Components/ProjectCard/ProjectCardCmp';
 import type { ProjectCardClassKey } from '@/Themes/Default/Components/ProjectCard/projectCardClasses';
-import type { ProjectsOverviewProps } from '@/Themes/Default/Components/ProjectsOverview/ProjectsOverview'
+import type { ProjectsOverviewProps } from '@/Themes/Default/Components/ProjectsOverview/ProjectsOverviewCmp'
 import type { ProjectsOverviewClassKey } from '@/Themes/Default/Components/ProjectsOverview/projectsOverviewClasses'
-import type { NavbarProps } from '@/Themes/Default/Components/Navbar/Navbar'
+import type { NavbarProps } from '@/Themes/Default/Components/Navbar/NavbarCmp'
 import type { NavbarClassKey } from '@/Themes/Default/Components/Navbar/navbarClasses'
-import type { SegmentSliderProps } from '@/Themes/Default/Components/SegmentSlider/SegmentSlider'
+import type { SegmentSliderCmpProps } from '@/Themes/Default/Components/SegmentSlider/SegmentSliderCmp'
 import type { SegmentSliderClassKey } from '@/Themes/Default/Components/SegmentSlider/segmentSliderClasses'
-import type { ScrollBarProps } from '@/Themes/Default/Components/ScrollBar/ScrollBar'
+import type { ScrollBarProps } from '@/Themes/Default/Components/ScrollBar/ScrollBarCmp'
 import type { ScrollBarClassKey } from '@/Themes/Default/Components/ScrollBar/scrollBarClasses'
-import type { ImageCompareProps } from '@/Themes/Default/Components/ImageCompare/ImageCompare'
+import type { ImageCompareProps } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp'
 import type { ImageCompareClassKey } from '@/Themes/Default/Components/ImageCompare/imageCompareClasses'
-import type { ImageMultiCompareProps } from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompare'
+import type { ImageMultiCompareProps } from '@/Themes/Default/Components/ImageMultiCompare/ImageMultiCompareCmp'
 import type { ImageMultiCompareClassKey } from '@/Themes/Default/Components/ImageMultiCompare/imageMultiCompareClasses'
-import type { MediaGalleryProps } from '@/Themes/Default/Components/MediaGallery/MediaGallery'
+import type { MediaGalleryProps } from '@/Themes/Default/Components/MediaGallery/MediaGalleryCmp'
 import type { MediaGalleryClassKey } from '@/Themes/Default/Components/MediaGallery/mediaGalleryClasses'
 
 // Augment MUI's Theme
@@ -35,7 +35,7 @@ import type { MediaGalleryClassKey } from '@/Themes/Default/Components/MediaGall
       ProjectCard?: ProjectCardProps;
       ProjectsOverview?: ProjectsOverviewProps;
       Navbar?: NavbarProps;
-      SegmentSlider?: SegmentSliderProps;
+      SegmentSlider?: SegmentSliderCmpProps;
       ScrollBar?: ScrollBarProps;
       ImageCompare?: ImageCompareProps;
       ImageMultiCompare?: ImageMultiCompareProps;

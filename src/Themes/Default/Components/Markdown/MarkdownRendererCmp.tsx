@@ -5,14 +5,16 @@ import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Typography, Link as MuiLink } from '@mui/material';
 import { Box } from '@mui/material';
-import CodeBlock from '../Code/CodeBlock';
-import CodeInline from '../Code/CodeInline';
+import CodeBlockCmp from '../Code/CodeBlockCmp';
+import CodeInlineCmp from '../Code/CodeInlineCmp';
 
-export interface MarkdownRendererProps {
+export interface MarkdownRendererCmpSettings {}
+
+export interface MarkdownRendererCmpProps {
   markdown: string;
 }
 
-export default function MarkdownRendererCmp({ markdown }: MarkdownRendererProps) {
+export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpProps) {
   return (
     <Box className="markdown-body">
       <ReactMarkdown
@@ -38,16 +40,16 @@ export default function MarkdownRendererCmp({ markdown }: MarkdownRendererProps)
               const language = codeElement.props.className?.replace("language-", "") || "";
 
               return (
-                <CodeBlock language={language}>
+                <CodeBlockCmp language={language}>
                   {codeElement.props.children ?? ""}
-                </CodeBlock>
+                </CodeBlockCmp>
               );
             }
 
             // fallback if it's not valid
             return <pre>{children}</pre>;
           },
-          code: ({ children }) => <CodeInline>{children}</CodeInline>,
+          code: ({ children }) => <CodeInlineCmp>{children}</CodeInlineCmp>,
         }}
       >
         {markdown}

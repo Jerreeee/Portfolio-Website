@@ -5,7 +5,7 @@ import { Container, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { projects } from '@/data/projects';
 import { anims } from '@/Themes/animations';
-import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCard';
+import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCardCmp';
 import { useTheme } from '@/Themes/ThemeProvider'
 
 // =====================================================================
@@ -55,9 +55,11 @@ const ProjectsOverviewCardWrapper = styled(motion.div, {
 // =====================================================================
 // ============================= Component =============================
 
-export interface ProjectsOverviewProps {}
+export interface ProjectsOverviewCmpSettings {}
 
-export default function ProjectsOverviewCmp(props: ProjectsOverviewProps) {
+export interface ProjectsOverviewCmpProps {}
+
+export default function ProjectsOverviewCmp(props: ProjectsOverviewCmpProps) {
   const { theme } = useTheme();
   const anim = theme.components?.ProjectsOverview?.slotAnimations ?? {};
 

@@ -5,7 +5,7 @@ import Image, { ImageProps } from 'next/image';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider'
-import { ImageMediaItem } from '../Media/Media';
+import { ImageMediaItem } from '../Media/MediaCmp';
 import { Size } from '@/types/extra';
 
 // =====================================================================
@@ -40,7 +40,9 @@ const ImageCompareHandle = styled('div', { name: 'ImageCompare', slot: 'Handle' 
 
 export type ImageCompareItem = Omit<ImageMediaItem, 'imageProps'>;
 
-export interface ImageCompareProps {
+export interface ImageCompareCmpSettings {}
+
+export interface ImageCompareCmpProps {
   bottom: ImageCompareItem;
   top: ImageCompareItem;
   size?: Size;
@@ -55,7 +57,7 @@ export interface ImageCompareProps {
   onDrag?: (newProgress: number) => void;
 }
 
-export default function ImageCompareCmp(props: ImageCompareProps) {
+export default function ImageCompareCmp(props: ImageCompareCmpProps) {
   const { theme } = useTheme();
   const anim = theme.components?.ImageCompare?.slotAnimations ?? {};
 

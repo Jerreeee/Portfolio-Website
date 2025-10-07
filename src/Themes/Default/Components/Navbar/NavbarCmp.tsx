@@ -66,12 +66,14 @@ export interface NavItem {
   label: string;
 }
 
-export interface NavbarProps {
+export interface NavbarCmpSettings {}
+
+export interface NavbarCmpProps {
   navItems?: NavItem[];
   height?: number | string;
 }
 
-export default function NavbarCmp(props: NavbarProps) {
+export default function NavbarCmp(props: NavbarCmpProps) {
   const { theme } = useTheme();
   const anim = theme.components?.Navbar?.slotAnimations ?? {};
   const pathname = usePathname();

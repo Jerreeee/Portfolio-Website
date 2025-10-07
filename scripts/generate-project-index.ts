@@ -2,8 +2,8 @@
 // Update src/data/projects/index.ts
 // ----------------------------------------------------
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 const dataProjectsDir = path.join(process.cwd(), "src", "data", "projects");
 const indexFile = path.join(dataProjectsDir, "index.ts");
@@ -13,10 +13,11 @@ const projectFolders = fs
   .readdirSync(dataProjectsDir)
   .filter((f) => fs.statSync(path.join(dataProjectsDir, f)).isDirectory());
 
-const validProjects = projectFolders.filter((name) => {
+// Filter valid projects (must have data.ts, ProjectCmp.tsx, and manifest.ts)
+const validProjects: string[] = projectFolders.filter((name) => {
   const dataFile = path.join(dataProjectsDir, name, "data.ts");
   const cmpFile = path.join(dataProjectsDir, name, "ProjectCmp.tsx");
-  const manifestFile = path.join(dataProjectsDir, name, 'manifest.ts');
+  const manifestFile = path.join(dataProjectsDir, name, "manifest.ts");
 
   if (!fs.existsSync(dataFile)) {
     console.warn(`⚠️ Skipping ${name}: missing data.ts`);
@@ -27,12 +28,15 @@ const validProjects = projectFolders.filter((name) => {
     return false;
   }
   if (!fs.existsSync(manifestFile)) {
-    console.warn(`⚠️ Skipping ${name}: missing manifestFile.ts, run "npm run generate:manifests" to (re)generate them`);
+    console.warn(
+      `⚠️ Skipping ${name}: missing manifest.ts — run "npm run generate:projects-manifest" to (re)generate them`
+    );
     return false;
   }
   return true;
 });
 
+// Generate import statements
 const imports = validProjects
   .map(
     (name) => `import { data as ${name}Data } from '@/data/projects/${name}/data';
@@ -41,6 +45,7 @@ import { projectManifest as ${name}Manifest } from '@/data/projects/${name}/mani
   )
   .join("\n\n");
 
+// Generate ProjectInfo objects
 const projectInfos = validProjects
   .map(
     (name) => `const ${name}ProjectInfo: ProjectInfo = {
@@ -51,6 +56,7 @@ const projectInfos = validProjects
   )
   .join("\n\n");
 
+// Create export array
 const arrayEntries = validProjects.map((name) => `${name}ProjectInfo`).join(",\n  ");
 
 const generatedBlock = `// AUTO-GENERATED PROJECT IMPORTS START
@@ -77,5 +83,6 @@ if (pattern.test(existing)) {
   existing = existing.trimEnd() + "\n\n" + generatedBlock;
 }
 
-fs.writeFileSync(indexFile, existing + "\n");
+fs.writeFileSync(indexFile, existing + "\n", "utf-8");
+
 console.log(`✅ Updated project index with ${validProjects.length} valid projects`);
