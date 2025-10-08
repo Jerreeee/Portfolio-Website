@@ -7,12 +7,14 @@ import { Size } from '@/types/extra';
 import { ParentSizeObserver } from '../ParentSizeObserver/ParentSizeObserverCmp';
 import { useCheckOverflow } from '@/hooks/useCheckOverflow';
 import { useSizeObserver } from '@/hooks/useSizeObserver';
-import { SxProps, Theme } from '@mui/material/styles';
+
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ScrollableRoot = styled('div')({
+const ScrollableRoot = styled('div',
+  {name: 'ScrollableCmp', slot: 'Root'}
+)({
   position: 'relative',
   width: '100%',
   height: '100%',
@@ -20,7 +22,9 @@ const ScrollableRoot = styled('div')({
   flexDirection: 'column', // vertical stacking by default
 });
 
-const ViewportWrapper = styled('div')({
+const ViewportWrapper = styled('div',
+  {name: 'ScrollableCmp', slot: 'ViewportWrapper'}
+)({
   position: 'relative',
   flex: '1 1 auto',
   width: '100%',
@@ -29,7 +33,9 @@ const ViewportWrapper = styled('div')({
   display: 'flex',
 });
 
-const ScrollableContainer = styled('div')<{
+const ScrollableContainer = styled('div', 
+  {name: 'ScrollableCmp', slot: 'Container'}
+)<{
   size?: Size;
   direction?: 'both' | 'horizontal' | 'vertical';
 }>(({ theme, size, direction }) => ({
@@ -52,7 +58,9 @@ const ScrollableContainer = styled('div')<{
   '&::-webkit-scrollbar': { display: 'none', width: 0, height: 0 },
 }));
 
-const ScrollbarRow = styled('div')({
+const ScrollbarRow = styled('div',
+  {name: 'ScrollableCmp', slot: 'Row'}
+)({
   flexShrink: 0,
   width: '100%',
   height: '12px', // your scrollbar height
@@ -61,7 +69,9 @@ const ScrollbarRow = styled('div')({
   justifyContent: 'center',
 });
 
-const ScrollbarColumn = styled('div')({
+const ScrollbarColumn = styled('div',
+  {name: 'ScrollableCmp', slot: 'Column'}
+)({
   flexShrink: 0,
   width: '12px', // your scrollbar width
   height: '100%',
@@ -79,13 +89,11 @@ export interface ScrollableCmpSettings {}
 export interface ScrollableCmpProps {
   children: React.ReactNode;
   direction?: 'both' | 'horizontal' | 'vertical';
-  containerSx?: SxProps<Theme>;
 }
 
 export default function ScrollableCmp({
   children,
   direction = 'both',
-  containerSx,
 }: ScrollableCmpProps) {
   const { ref: sizeRef, size } = useSizeObserver<HTMLDivElement>({});
   const { ref: containerRef, overflowsX, overflowsY } = useCheckOverflow<HTMLDivElement>([size?.width, size?.height, children]);
@@ -94,7 +102,7 @@ export default function ScrollableCmp({
     <ScrollableRoot>
       {/* Viewport measured separately */}
       <ViewportWrapper ref={sizeRef}>
-        <ScrollableContainer ref={containerRef} size={size} direction={direction} sx={containerSx}>
+        <ScrollableContainer ref={containerRef} size={size} direction={direction}>
           {children}
         </ScrollableContainer>
 

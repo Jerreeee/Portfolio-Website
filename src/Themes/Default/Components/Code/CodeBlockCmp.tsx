@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -16,6 +16,7 @@ position: 'relative',
 width: '100%',
 height: '100%',
 overflow: 'hidden',
+borderRadius: theme.shape.borderRadius,
 }));
 
 const CodeBackground = styled('div', {
@@ -37,7 +38,6 @@ display: 'flex',
 flexDirection: 'column',
 padding: '1rem 1.25rem',
 backgroundColor: '#1e1e1e',
-borderRadius: theme.shape.borderRadius,
 fontFamily: `'Fira Code', monospace`,
 fontSize: '0.9rem',
 lineHeight: 1.6,
@@ -84,7 +84,7 @@ export interface CodeBlockCmpProps {
 export default function CodeBlockCmp(props: CodeBlockCmpProps) {
   const [content, setContent] = React.useState<string>("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.file) {
       fetch(props.file)
         .then(res => {

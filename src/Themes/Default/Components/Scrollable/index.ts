@@ -6,7 +6,11 @@ export { default as ScrollableCmp } from './ScrollableCmp';
 export type { ScrollableCmpProps, ScrollableCmpSettings } from './ScrollableCmp';
 
 export const scrollableCmp = createUtilityClasses('ScrollableCmp', [
-  
+  'root',
+  'viewportWrapper',
+  'container',
+  'row',
+  'column'
 ] as const);
 
 export type ScrollableCmpClassKey = typeof scrollableCmp.slots[number];

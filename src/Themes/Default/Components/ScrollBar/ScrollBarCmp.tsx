@@ -8,7 +8,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 // ========================= Slot Definitions ==========================
 
 const ScrollBarRoot = styled('div', {
-  name: 'ScrollBar',
+  name: 'ScrollBarCmp',
   slot: 'Root',
   shouldForwardProp: (prop) => prop !== 'direction' && prop !== 'dragging',
 })<{
@@ -27,9 +27,14 @@ const ScrollBarRoot = styled('div', {
     : { width: theme.components?.ScrollBarCmp?.settings?.thickness, height: '100%' }),
 }));
 
-const ScrollBarThumb = styled('div', { name: 'ScrollBar', slot: 'Thumb' })<
-  { direction: 'horizontal' | 'vertical'; dragging?: boolean }
->(({ theme, direction, dragging }) => ({
+const ScrollBarThumb = styled('div', {
+  name: 'ScrollBarCmp',
+  slot: 'Thumb',
+  shouldForwardProp: (prop) => prop !== 'direction' && prop !== 'dragging',
+})<{
+  direction: 'horizontal' | 'vertical';
+  dragging?: boolean
+}>(({ theme, direction, dragging }) => ({
   position: 'absolute',
   backgroundColor: theme.palette.common.white,
   borderRadius: theme.shape.borderRadius,
@@ -54,7 +59,9 @@ export interface ScrollBarCmpProps {
 }
 
 export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal', ...props}: ScrollBarCmpProps) {
-  const { theme } = useTheme();
+  const { theme: activeTheme } = useTheme();
+  const cmp = activeTheme.components?.ScrollBarCmp;
+  console.log("ScrollBarCMp: ", cmp);
 
   const [thumbSize, setThumbSize] = useState(0);
   const [thumbOffset, setThumbOffset] = useState(0);

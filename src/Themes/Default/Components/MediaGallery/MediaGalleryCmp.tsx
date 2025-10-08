@@ -31,7 +31,6 @@ const GalleryMain = styled('div', { name: 'MediaGallery', slot: 'Main' })(({ the
 const GalleryThumbs = styled('div', { name: 'MediaGallery', slot: 'Thumbs' })(({ theme }) => ({
   width: '100%',
   height: '100px',
-  border: '2px solid red',
   gap: '1rem',
 }));
 

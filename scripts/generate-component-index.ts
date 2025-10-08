@@ -31,9 +31,9 @@ function getAllTsxFiles(dir: string): string[] {
 // Extract slots from styled() definitions
 function extractSlots(content: string): string[] {
   const regex =
-    /styled\s*\([^,]+,\s*\{\s*[^}]*slot\s*:\s*['"]([^'"]+)['"][^}]*\}\)/g;
+    /styled\s*\([\s\S]*?\{\s*[\s\S]*?slot\s*:\s*['"]([^'"]+)['"][\s\S]*?\}\)/g;
   const slots: string[] = [];
-  let match: RegExpExecArray | null;
+  let match;
   while ((match = regex.exec(content)) !== null) {
     slots.push(match[1]);
   }
