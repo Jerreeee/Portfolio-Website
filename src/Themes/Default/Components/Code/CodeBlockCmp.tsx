@@ -6,6 +6,7 @@ import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Size } from '@/types/extra';
+import { codeBlockCmp } from './CodeBlockCmpClasses';
 
 // ---------- Styles ----------
 const CodeRoot = styled('div', {
@@ -116,10 +117,10 @@ export default function CodeBlockCmp(props: CodeBlockCmpProps) {
   const code = props.file ? content : String(props.children ?? "").trim();
 
   return (
-    <CodeRoot>
+    <CodeRoot className={codeBlockCmp.classes.root}>
       <ScrollableCmp>
-        <CodeBackground>
-          <CodeStyling>
+        <CodeBackground className={codeBlockCmp.classes.background}>
+          <CodeStyling className={codeBlockCmp.classes.styling}>
             <SyntaxHighlighter
               language={detectedLanguage}
               style={oneDark}

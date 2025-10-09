@@ -1,15 +1,28 @@
 // ----------------------------------------------------
 // Generates src/types/componentAnimations.d.ts
-// by scanning each index.ts for exported *ClassKey types
-// Groups components from the same folder into one import
-// Uses single-line import for folders with one component
+// by scanning each index.ts for exported components
+// (and/or re-exports from *Classes.ts), then importing
+// `${Name}ClassKey` from that folder's index.
+// Groups components from the same folder into one import.
+// Uses single-line import for folders with one component.
 // ----------------------------------------------------
 
 import fs from "fs";
 import path from "path";
 
-const COMPONENTS_DIR = path.join(process.cwd(), "src", "Themes", "Default", "Components");
-const OUTPUT_FILE = path.join(process.cwd(), "src", "types", "componentAnimations.d.ts");
+const COMPONENTS_DIR = path.join(
+  process.cwd(),
+  "src",
+  "Themes",
+  "Default",
+  "Components"
+);
+const OUTPUT_FILE = path.join(
+  process.cwd(),
+  "src",
+  "types",
+  "componentAnimations.d.ts"
+);
 
 // Recursively find all index.ts files
 function getAllIndexFiles(dir: string): string[] {
@@ -27,15 +40,28 @@ function getAllIndexFiles(dir: string): string[] {
   return files;
 }
 
-// Extract all exported ClassKey types from index.ts
-function extractClassKeys(fileContent: string): string[] {
-  const regex = /export\s+type\s+([A-Za-z0-9_]+)ClassKey\b/g;
-  const matches: string[] = [];
-  let match;
-  while ((match = regex.exec(fileContent)) !== null) {
-    matches.push(match[1]);
+// Extract component names from "export { default as Name } from './Name'"
+function extractNamesFromDefaultExports(fileContent: string): string[] {
+  const re =
+    /export\s*\{\s*default\s+as\s+([A-Za-z0-9_]+)\s*\}\s*from\s*['"][.^'"]+['"];?/g;
+  const out: string[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(fileContent)) !== null) {
+    out.push(m[1]); // Name
   }
-  return matches;
+  return [...new Set(out)];
+}
+
+// Fallback: extract names from "export * from './NameClasses'"
+function extractNamesFromStarClasses(fileContent: string): string[] {
+  const re = /export\s*\*\s*from\s*['"]\.\/([A-Za-z0-9_]+)Classes['"];?/g;
+  const out: string[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(fileContent)) !== null) {
+    const base = m[1]; // e.g. "MediaGalleryCmp"
+    out.push(base);
+  }
+  return [...new Set(out)];
 }
 
 // Generate imports + interface entries
@@ -46,12 +72,10 @@ function generateImportsAndInterface(
 
   const importLines = sortedFolders
     .map((folder) => {
-      const components = componentsByFolder[folder].sort();
+      const components = [...new Set(componentsByFolder[folder])].sort();
       if (components.length === 1) {
-        // Single component → single line import
         return `import type { ${components[0]}ClassKey } from '${folder}';`;
       } else {
-        // Multiple components → multi-line import
         const imports = components.map((c) => `${c}ClassKey`).join(",\n  ");
         return `import type {\n  ${imports},\n} from '${folder}';`;
       }
@@ -60,9 +84,9 @@ function generateImportsAndInterface(
 
   const interfaceEntries = sortedFolders
     .flatMap((folder) =>
-      componentsByFolder[folder].map(
-        (component) => `  ${component}: ${component}ClassKey;`
-      )
+      [...new Set(componentsByFolder[folder])]
+        .sort()
+        .map((component) => `  ${component}: ${component}ClassKey;`)
     )
     .join("\n");
 
@@ -106,8 +130,14 @@ function run(): void {
 
   for (const file of indexFiles) {
     const content = fs.readFileSync(file, "utf8");
-    const classKeys = extractClassKeys(content);
-    if (classKeys.length === 0) continue;
+
+    // Prefer explicit default export lines; fallback to star re-exports
+    let names = extractNamesFromDefaultExports(content);
+    if (names.length === 0) {
+      names = extractNamesFromStarClasses(content);
+    }
+
+    if (names.length === 0) continue;
 
     const folder = path.dirname(file);
     const relativeFolder = path
@@ -116,12 +146,11 @@ function run(): void {
 
     const importPath = `@/${relativeFolder}`;
     if (!componentsByFolder[importPath]) componentsByFolder[importPath] = [];
-
-    componentsByFolder[importPath].push(...classKeys);
+    componentsByFolder[importPath].push(...names);
   }
 
   if (Object.keys(componentsByFolder).length === 0) {
-    console.warn("⚠️ No exported *ClassKey types found in index.ts files.");
+    console.warn("⚠️ No components discovered in index.ts files.");
     return;
   }
 
@@ -131,7 +160,7 @@ function run(): void {
   fs.writeFileSync(OUTPUT_FILE, content, "utf8");
 
   const total = Object.values(componentsByFolder).reduce(
-    (sum, arr) => sum + arr.length,
+    (sum, arr) => sum + new Set(arr).size,
     0
   );
 

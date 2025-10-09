@@ -27,38 +27,36 @@ function getAllIndexFiles(dir: string): string[] {
   return files;
 }
 
-// Extract component exports
-function extractComponentData(fileContent: string): { props: string[]; classKeys: string[] } {
-  const props: string[] = [];
-  const classKeys: string[] = [];
+/**
+ * Extract component "Names" from:
+ *   export type { FooCmpProps, FooCmpSettings } from './FooCmp';
+ * We only need the ones ending in "Props" to infer the component base name "FooCmp".
+ */
+function extractComponentNamesViaProps(content: string): string[] {
+  const out: string[] = [];
+  const exportBlockRegex = /export\s+type\s+\{([^}]+)\}\s+from\s+['"][^'"]+['"]/g;
+  let m: RegExpExecArray | null;
 
-  // --- Match any "export type { ... } from '...'" block ---
-  const exportBlockRegex = /export\s+type\s+\{([^}]+)\}\s+from\s+['"].*?['"]/g;
-  let match: RegExpExecArray | null;
-
-  while ((match = exportBlockRegex.exec(fileContent)) !== null) {
-    const names = match[1]
+  while ((m = exportBlockRegex.exec(content)) !== null) {
+    const names = m[1]
       .split(",")
       .map((n) => n.trim())
       .filter(Boolean);
 
     for (const n of names) {
-      if (n.endsWith("Props")) props.push(n);
+      const propsMatch = /^([A-Za-z0-9_]+)Props$/.exec(n);
+      if (propsMatch) out.push(propsMatch[1]); // component base name (e.g. FooCmp)
     }
   }
 
-  // --- Match any "export type SomethingClassKey" declared in the file ---
-  const classKeyDeclRegex = /export\s+type\s+([A-Za-z0-9_]+ClassKey)\b/g;
-  while ((match = classKeyDeclRegex.exec(fileContent)) !== null) {
-    classKeys.push(match[1]);
-  }
-
-  return { props, classKeys };
+  // de-dupe
+  return [...new Set(out)];
 }
 
 // Generate all block contents
 function generateBlocks(components: { name: string; importPath: string }[]) {
   // --- IMPORTS ---
+  // We import both Props and ClassKey from the folder's index (it re-exports *Classes.ts)
   const importLines = components
     .map(
       ({ name, importPath }) =>
@@ -76,7 +74,7 @@ function generateBlocks(components: { name: string; importPath: string }[]) {
     .map(({ name }) => `    ${name}: ${name}ClassKey;`)
     .join("\n");
 
-  // --- Components ---
+  // --- Components (theme.components augmentation) ---
   const themedLines = components
     .map(({ name }) => `    ${name}?: ThemedComponent<'${name}'>;`)
     .join("\n");
@@ -92,6 +90,10 @@ function generateBlocks(components: { name: string; importPath: string }[]) {
 // Replace a block between START and END
 function replaceBlock(content: string, name: string, replacement: string): string {
   const regex = blockRegex(name);
+  if (!regex.test(content)) {
+    console.warn(`⚠️ Could not find AUTO-GENERATED block named "${name}" in augmentation file.`);
+    return content;
+  }
   return content.replace(regex, `$1\n${replacement}\n$3`);
 }
 
@@ -101,27 +103,37 @@ function run(): void {
 
   const indexFiles = getAllIndexFiles(COMPONENTS_DIR);
   const components: { name: string; importPath: string }[] = [];
+  const seenKey = new Set<string>();
 
   for (const file of indexFiles) {
     const content = fs.readFileSync(file, "utf8");
-    const { props, classKeys } = extractComponentData(content);
 
-    if (props.length === 0 || classKeys.length === 0) continue;
+    // Derive component names purely from exported *Props* types
+    const names = extractComponentNamesViaProps(content);
+    if (names.length === 0) continue;
 
-    for (const propName of props) {
-      const componentName = propName.replace(/Props$/, "");
-      const relativeFolder = path
-        .relative(path.join(process.cwd(), "src"), path.dirname(file))
-        .replace(/\\/g, "/");
+    const relativeFolder = path
+      .relative(path.join(process.cwd(), "src"), path.dirname(file))
+      .replace(/\\/g, "/");
 
-      const importPath = `@/${relativeFolder}`;
-      components.push({ name: componentName, importPath });
+    const importPath = `@/${relativeFolder}`;
+
+    for (const name of names) {
+      const key = `${importPath}::${name}`;
+      if (seenKey.has(key)) continue;
+      seenKey.add(key);
+
+      components.push({ name, importPath });
     }
   }
 
   if (!fs.existsSync(AUGMENTATION_FILE)) {
     console.error(`❌ File not found: ${AUGMENTATION_FILE}`);
     return;
+  }
+
+  if (components.length === 0) {
+    console.warn("⚠️ No components with exported *Props types found in index.ts files.");
   }
 
   const original = fs.readFileSync(AUGMENTATION_FILE, "utf8");

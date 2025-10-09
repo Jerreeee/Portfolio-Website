@@ -160,7 +160,7 @@ export const defaultDarkOptions: ThemeOptions = {
     // },
     ScrollBarCmp: {
       settings: {
-        thickness: 10
+        thickness: 50
       },
     },
     // CodeBlockCmp: {
