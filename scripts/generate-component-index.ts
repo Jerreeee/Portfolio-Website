@@ -1,5 +1,6 @@
 // ----------------------------------------------------
 // Generates index.ts files for folders containing *Cmp.tsx components
+// AND validates that every styled({ name }) matches the component filename
 // ----------------------------------------------------
 
 import fs from "fs";
@@ -40,6 +41,19 @@ function extractSlots(content: string): string[] {
   return [...new Set(slots)];
 }
 
+// NEW: Extract all `name` values from styled() option objects
+function extractStyledNames(content: string): string[] {
+  // Matches: styled( something, { ... name: 'Foo', ... } )
+  const regex =
+    /styled\s*\([\s\S]*?\{\s*[\s\S]*?name\s*:\s*['"]([^'"]+)['"][\s\S]*?\}\)/g;
+  const names: string[] = [];
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    names.push(match[1]);
+  }
+  return [...new Set(names)];
+}
+
 // Detect Props and Settings exports
 function findExportedTypes(
   content: string,
@@ -63,6 +77,7 @@ interface ComponentMeta {
   slots: string[];
   hasProps: boolean;
   hasSettings: boolean;
+  styledNames: string[];
 }
 
 // Generate index.ts for a folder with one or more *Cmp files
@@ -127,17 +142,39 @@ function run(): void {
   }
 
   let total = 0;
+  const mismatches: Array<{
+    file: string;
+    expected: string;
+    found: string[];
+  }> = [];
+
   for (const [folderPath, files] of Object.entries(folders)) {
     const folderName = path.relative(BASE_DIR, folderPath);
     console.log(`\n📁 Folder: ${folderName}`);
 
     const componentsData: ComponentMeta[] = [];
     for (const file of files) {
-      const componentName = path.basename(file, ".tsx");
+      const componentName = path.basename(file, ".tsx"); // e.g. MediaGalleryCmp
       const content = fs.readFileSync(file, "utf8");
+
       const slots = extractSlots(content);
+      const styledNames = extractStyledNames(content);   // e.g. ['MediaGallery', 'MediaGallery']
       const { hasProps, hasSettings } = findExportedTypes(content, componentName);
-      componentsData.push({ name: componentName, slots, hasProps, hasSettings });
+
+      // Validate: every styled({ name }) must equal the filename/base component name
+      const invalid = styledNames.filter((n) => n !== componentName);
+      if (styledNames.length > 0 && invalid.length > 0) {
+        mismatches.push({
+          file: path.relative(process.cwd(), file),
+          expected: componentName,
+          found: [...new Set(styledNames)],
+        });
+      } else if (styledNames.length === 0) {
+        // Optional: warn when no `name` was found at all
+        console.log(`    ⚠️  No styled({ name: ... }) found in "${componentName}"`);
+      }
+
+      componentsData.push({ name: componentName, slots, hasProps, hasSettings, styledNames });
 
       // Log details
       console.log(`    ✅ Processed "${componentName}"`);
@@ -156,10 +193,29 @@ function run(): void {
           hasSettings ? `${componentName}Settings` : "not found"
         }`
       );
+      if (styledNames.length) {
+        console.log(`       🔎 styled({ name }): ${styledNames.join(", ")}`);
+      }
     }
 
+    // If any mismatches for this folder, do NOT generate index for it
     generateIndex(folderPath, componentsData);
     total += files.length;
+  }
+
+  // After scanning everything, fail fast if mismatches found
+  if (mismatches.length > 0) {
+    console.error("\n❌ MUI `styled({ name })` mismatches detected:");
+    for (const m of mismatches) {
+      console.error(
+        `   • ${m.file}\n` +
+        `     expected name: "${m.expected}"\n` +
+        `     found name(s): ${m.found.map((x) => `"${x}"`).join(", ")}\n` +
+        `     ➜ Fix: update styled(..., { name: '${m.expected}', slot: '...' })`
+      );
+    }
+    console.error("\n💡 Tip: The styled `name` must EXACTLY match the component filename (e.g. MediaGalleryCmp.tsx → name: 'MediaGalleryCmp').");
+    process.exit(1);
   }
 
   console.log("\n✨ Done!");

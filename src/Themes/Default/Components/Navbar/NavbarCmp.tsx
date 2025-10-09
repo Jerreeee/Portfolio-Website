@@ -12,7 +12,7 @@ import { mergeAnims } from '@/utils/MergeObjects';
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const NavbarRoot = styled(motion.nav, { name: 'Navbar', slot: 'Root' })(({ theme }) => ({
+const NavbarRoot = styled(motion.nav, { name: 'NavbarCmp', slot: 'Root' })(({ theme }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -25,9 +25,9 @@ const NavbarRoot = styled(motion.nav, { name: 'Navbar', slot: 'Root' })(({ theme
   padding: theme.spacing(2, 3),
 }));
 
-const NavbarBrand = styled(motion.div, { name: 'Navbar', slot: 'Brand' })(({ theme }) => ({}));
+const NavbarBrand = styled(motion.div, { name: 'NavbarCmp', slot: 'Brand' })(({ theme }) => ({}));
 
-const NavbarList = styled(motion.ul, { name: 'Navbar', slot: 'List' })(({ theme }) => ({
+const NavbarList = styled(motion.ul, { name: 'NavbarCmp', slot: 'List' })(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.up('md')]: {
     display: 'flex',
@@ -36,9 +36,9 @@ const NavbarList = styled(motion.ul, { name: 'Navbar', slot: 'List' })(({ theme 
   listStyle: 'none'
 }));
 
-const NavbarItem = styled(motion.li, { name: 'Navbar', slot: 'Item' })({});
+const NavbarItem = styled(motion.li, { name: 'NavbarCmp', slot: 'Item' })({});
 
-const NavbarLink = styled(Link, { name: 'Navbar', slot: 'Link',
+const NavbarLink = styled(Link, { name: 'NavbarCmp', slot: 'Link',
   shouldForwardProp: (prop) => prop !== 'active'
 })<{ active?: boolean }>(
   ({ theme, active }) => ({
@@ -50,7 +50,7 @@ const NavbarLink = styled(Link, { name: 'Navbar', slot: 'Link',
   })
 );
 
-const NavbarUnderline = styled(motion.span, { name: 'Navbar', slot: 'Underline' })(({ theme }) => ({
+const NavbarUnderline = styled(motion.span, { name: 'NavbarCmp', slot: 'Underline' })(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: 0,

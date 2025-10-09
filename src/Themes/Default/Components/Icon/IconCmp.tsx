@@ -11,7 +11,7 @@ import { toGrayScale, applyTint } from '@/utils/Color';
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const IconRoot = styled(motion.div, { name: 'Icon', slot: 'Root' })(({ theme }) => ({
+const IconRoot = styled(motion.div, { name: 'IconCmp', slot: 'Root' })(({ theme }) => ({
   display: 'inline-block',
   width: '100%',
   height: '100%',

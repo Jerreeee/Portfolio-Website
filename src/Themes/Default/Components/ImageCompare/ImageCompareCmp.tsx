@@ -12,7 +12,7 @@ import { Size } from '@/types/extra';
 // ========================= Slot Definitions ==========================
 
 const ImageCompareRoot = styled(motion.div, {
-  name: "ImageCompare",
+  name: "ImageCompareCmp",
   slot: "Root",
   shouldForwardProp: (prop) => prop !== "size",
 })<{ size?: Size }>(({ theme, size }) => ({
@@ -24,7 +24,7 @@ const ImageCompareRoot = styled(motion.div, {
   borderRadius: theme.shape.borderRadius,
 }));
 
-const ImageCompareHandle = styled('div', { name: 'ImageCompare', slot: 'Handle' })(({ theme }) => ({
+const ImageCompareHandle = styled('div', { name: 'ImageCompareCmp', slot: 'Handle' })(({ theme }) => ({
   position: 'absolute',
   top: 0,
   bottom: 0,

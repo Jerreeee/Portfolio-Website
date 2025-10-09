@@ -6,7 +6,7 @@ export { default as MediaCmp } from './MediaCmp';
 export type { MediaCmpProps, MediaCmpSettings } from './MediaCmp';
 
 export const mediaCmp = createUtilityClasses('MediaCmp', [
-  
+  'root'
 ] as const);
 
 export type MediaCmpClassKey = typeof mediaCmp.slots[number];

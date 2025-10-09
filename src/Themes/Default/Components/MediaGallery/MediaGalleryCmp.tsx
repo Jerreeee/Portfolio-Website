@@ -11,13 +11,13 @@ import { useElementSize } from '@/hooks/useElementSize';
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const GalleryRoot = styled('div', { name: 'MediaGallery', slot: 'Root' })({
+const GalleryRoot = styled('div', { name: 'MediaGalleryCmp', slot: 'Root' })({
   display: 'flex',
   flexDirection: 'column',
   gap: '0.5rem',
 });
 
-const GalleryMain = styled('div', { name: 'MediaGallery', slot: 'Main' })(({ theme }) => ({
+const GalleryMain = styled('div', { name: 'MediaGalleryCmp', slot: 'Main' })(({ theme }) => ({
   position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
@@ -28,13 +28,13 @@ const GalleryMain = styled('div', { name: 'MediaGallery', slot: 'Main' })(({ the
   borderRadius: theme.shape.borderRadius,
 }));
 
-const GalleryThumbs = styled('div', { name: 'MediaGallery', slot: 'Thumbs' })(({ theme }) => ({
+const GalleryThumbs = styled('div', { name: 'MediaGalleryCmp', slot: 'Thumbs' })(({ theme }) => ({
   width: '100%',
   height: '100px',
   gap: '1rem',
 }));
 
-const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton',
+const ThumbButton = styled('button', { name: 'MediaGalleryCmp', slot: 'ThumbButton',
   shouldForwardProp: (prop) => prop !== 'active',
 })<{ active?: boolean }>(({ theme, active }) => ({
   position: 'relative',
@@ -52,7 +52,7 @@ const ThumbButton = styled('button', { name: 'MediaGallery', slot: 'ThumbButton'
   },
 }));
 
-const VideoOverlay = styled('div', { name: 'MediaGallery', slot: 'VideoOverlay' })({
+const VideoOverlay = styled('div', { name: 'MediaGalleryCmp', slot: 'VideoOverlay' })({
   position: 'absolute',
   inset: 0,
   display: 'flex',

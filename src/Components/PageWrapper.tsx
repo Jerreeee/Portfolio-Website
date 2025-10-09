@@ -17,7 +17,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
       ]}
       />
       <div
-        style={{ paddingTop: theme.components?.Navbar?.defaultProps?.height }}
+        style={{ paddingTop: theme.components?.NavbarCmp?.defaultProps?.height }}
       />
       {children}
     </div>

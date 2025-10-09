@@ -12,14 +12,14 @@ import { useTheme } from '@/Themes/ThemeProvider'
 // ========================= Slot Definitions ==========================
 
 const ProjectsOverviewRoot = styled(motion.main, {
-  name: 'ProjectsOverview',
+  name: 'ProjectsOverviewCmp',
   slot: 'Root',
 })(({ theme }) => ({
   width: '100%',
 }));
 
 const ProjectsOverviewContainer = styled(motion.main, {
-  name: 'ProjectsOverview',
+  name: 'ProjectsOverviewCmp',
   slot: 'Container',
 })(({ theme }) => ({
   maxWidth: '70%',
@@ -27,7 +27,7 @@ const ProjectsOverviewContainer = styled(motion.main, {
 }));
 
 const ProjectsOverviewHeader = styled(motion.div, {
-  name: 'ProjectsOverview',
+  name: 'ProjectsOverviewCmp',
   slot: 'Header',
 })(({ theme }) => ({
   textAlign: 'center',
@@ -36,7 +36,7 @@ const ProjectsOverviewHeader = styled(motion.div, {
 }));
 
 const ProjectsOverviewGrid = styled(motion.div, {
-  name: 'ProjectsOverview',
+  name: 'ProjectsOverviewCmp',
   slot: 'Grid',
 })(({ theme }) => ({
   display: 'grid',
@@ -48,7 +48,7 @@ const ProjectsOverviewGrid = styled(motion.div, {
 }));
 
 const ProjectsOverviewCardWrapper = styled(motion.div, {
-  name: 'ProjectsOverview',
+  name: 'ProjectsOverviewCmp',
   slot: 'CardWrapper',
 })({});
 

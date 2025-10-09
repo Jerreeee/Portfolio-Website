@@ -7,14 +7,14 @@ import { useTheme } from '@/Themes/ThemeProvider'
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const SegmentSliderRoot = styled('div', { name: 'SegmentSlider', slot: 'Root' })(({ theme }) => ({
+const SegmentSliderRoot = styled('div', { name: 'SegmentSliderCmp', slot: 'Root' })(({ theme }) => ({
   position: 'relative',
   height: theme.spacing(3), // ~24px
   width: '100%',
   userSelect: 'none',
 }));
 
-const SegmentSliderBar = styled('div', { name: 'SegmentSlider', slot: 'Bar' })(({ theme }) => ({
+const SegmentSliderBar = styled('div', { name: 'SegmentSliderCmp', slot: 'Bar' })(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: 0,
@@ -25,7 +25,7 @@ const SegmentSliderBar = styled('div', { name: 'SegmentSlider', slot: 'Bar' })((
   transform: 'translateY(-50%)',
 }));
 
-const SegmentSliderTicks = styled('div', { name: 'SegmentSlider', slot: 'Ticks' })({
+const SegmentSliderTicks = styled('div', { name: 'SegmentSliderCmp', slot: 'Ticks' })({
   position: 'absolute',
   top: '50%',
   left: 0,
@@ -34,7 +34,7 @@ const SegmentSliderTicks = styled('div', { name: 'SegmentSlider', slot: 'Ticks' 
   pointerEvents: 'none',
 });
 
-const SegmentSliderTick = styled('div', { name: 'SegmentSlider', slot: 'Tick' })(({ theme }) => ({
+const SegmentSliderTick = styled('div', { name: 'SegmentSliderCmp', slot: 'Tick' })(({ theme }) => ({
   position: 'absolute',
   width: 1,
   height: theme.spacing(1),
@@ -42,7 +42,7 @@ const SegmentSliderTick = styled('div', { name: 'SegmentSlider', slot: 'Tick' })
   transform: 'translateY(-50%)',
 }));
 
-const SegmentSliderHighlight = styled('div', { name: 'SegmentSlider', slot: 'Highlight' })(({ theme }) => ({
+const SegmentSliderHighlight = styled('div', { name: 'SegmentSliderCmp', slot: 'Highlight' })(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   height: theme.spacing(0.25),
@@ -51,7 +51,7 @@ const SegmentSliderHighlight = styled('div', { name: 'SegmentSlider', slot: 'Hig
   pointerEvents: 'none',
 }));
 
-const SegmentSliderHandle = styled('div', { name: 'SegmentSlider', slot: 'Handle' })(({ theme }) => ({
+const SegmentSliderHandle = styled('div', { name: 'SegmentSliderCmp', slot: 'Handle' })(({ theme }) => ({
   position: 'absolute',
   top: 0,
   width: theme.spacing(1),

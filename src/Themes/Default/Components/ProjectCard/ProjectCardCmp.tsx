@@ -12,7 +12,7 @@ import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCard', slot: 'Root' })(({ theme }) => ({
+const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCardCmp', slot: 'Root' })(({ theme }) => ({
   overflow: 'hidden',
   display: 'flex',
   flexDirection: 'column',
@@ -23,27 +23,27 @@ const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCard', slot: 'Root'
     : theme.shape.borderRadius,
 }));
 
-const ProjectCardHeader = styled(motion.div, { name: 'ProjectCard', slot: 'Header' })(({ theme }) => ({
+const ProjectCardHeader = styled(motion.div, { name: 'ProjectCardCmp', slot: 'Header' })(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.primary,
 }));
 
-const ProjectCardImage = styled(motion.div, {name: 'ProjectCard', slot: 'Image'})(({ theme }) => ({
+const ProjectCardImage = styled(motion.div, {name: 'ProjectCardCmp', slot: 'Image'})(({ theme }) => ({
   position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
 }));
 
-const ProjectCardTechList = styled(motion.div, {name: 'ProjectCard', slot: 'TechList'})(({ theme }) => ({
+const ProjectCardTechList = styled(motion.div, {name: 'ProjectCardCmp', slot: 'TechList'})(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(1),
 }));
 
-const ProjectCardTechIcon = styled(motion.div, {name: 'ProjectCard', slot: 'TechIcon'})(({ theme }) => ({
+const ProjectCardTechIcon = styled(motion.div, {name: 'ProjectCardCmp', slot: 'TechIcon'})(({ theme }) => ({
 }));
 
-const ProjectCardContentBox = styled(motion(CardContent), { name: 'ProjectCard', slot: 'Content' })(({ theme }) => ({
+const ProjectCardContentBox = styled(motion(CardContent), { name: 'ProjectCardCmp', slot: 'Content' })(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: 'center',
 }));

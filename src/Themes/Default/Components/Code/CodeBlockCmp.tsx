@@ -9,7 +9,7 @@ import { Size } from '@/types/extra';
 
 // ---------- Styles ----------
 const CodeRoot = styled('div', {
-name: 'CodeBlock',
+name: 'CodeBlockCmp',
 slot: 'Root',
 })(({ theme }) => ({
 position: 'relative',
@@ -20,7 +20,7 @@ borderRadius: theme.shape.borderRadius,
 }));
 
 const CodeBackground = styled('div', {
-name: 'CodeBlock',
+name: 'CodeBlockCmp',
 slot: 'Background',
 })(() => ({
 display: 'inline-block',
@@ -31,7 +31,7 @@ minHeight: '100%',
 
 // Inner: purely visual styles
 const CodeStyling = styled('div', {
-name: 'CodeBlock',
+name: 'CodeBlockCmp',
 slot: 'Styling',
 })(({ theme }) => ({
 display: 'flex',

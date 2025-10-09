@@ -9,6 +9,8 @@ import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider';
 
 const MediaRoot = styled(motion.div, {
+  name: 'MediaCmp',
+  slot: 'Root',
   shouldForwardProp: (prop) =>
     prop !== 'width' && prop !== 'height' && prop !== 'aspectRatio',
 })<{

@@ -13,7 +13,7 @@ import { Size } from '@/types/extra';
 
 // Optional root styling if needed later
 const ImageMultiCompareRoot = styled(motion.div, {
-  name: "ImageMultiCompare",
+  name: "ImageMultiCompareCmp",
   slot: "Root",
   shouldForwardProp: (prop) => prop !== "size",
 })<{ size?: Size }>(({ size }) => ({

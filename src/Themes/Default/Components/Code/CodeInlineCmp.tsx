@@ -4,7 +4,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 
 const CodeInlineRoot = styled('code', {
-  name: 'CodeInline',
+  name: 'CodeInlineCmp',
   slot: 'Root',
 })(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
