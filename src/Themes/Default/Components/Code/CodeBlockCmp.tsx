@@ -6,42 +6,38 @@ import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Size } from '@/types/extra';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import { codeBlockCmp } from './CodeBlockCmpClasses';
 
-// ---------- Styles ----------
-const CodeRoot = styled('div', {
-name: 'CodeBlockCmp',
-slot: 'Root',
-})(({ theme }) => ({
-position: 'relative',
-width: '100%',
-height: '100%',
-overflow: 'hidden',
-borderRadius: theme.shape.borderRadius,
+// =====================================================================
+// ========================= Slot Definitions ==========================
+
+const makeSlot = makeSlotFactory('CodeBlockCmp', codeBlockCmp);
+
+const CodeRoot = makeSlot('div', 'root')(({ theme }) => ({
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  overflow: 'hidden',
+  borderRadius: theme.shape.borderRadius,
 }));
 
-const CodeBackground = styled('div', {
-name: 'CodeBlockCmp',
-slot: 'Background',
-})(() => ({
-display: 'inline-block',
-minWidth: '100%',
-height: 'auto',
-minHeight: '100%',
+const CodeBackground = makeSlot('div', 'background')(() => ({
+  display: 'inline-block',
+  minWidth: '100%',
+  height: 'auto',
+  minHeight: '100%',
 }));
 
 // Inner: purely visual styles
-const CodeStyling = styled('div', {
-name: 'CodeBlockCmp',
-slot: 'Styling',
-})(({ theme }) => ({
-display: 'flex',
-flexDirection: 'column',
-padding: '1rem 1.25rem',
-backgroundColor: '#1e1e1e',
-fontFamily: `'Fira Code', monospace`,
-fontSize: '0.9rem',
-lineHeight: 1.6,
+const CodeStyling = makeSlot('div', 'styling')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '1rem 1.25rem',
+  backgroundColor: '#1e1e1e',
+  fontFamily: `'Fira Code', monospace`,
+  fontSize: '0.9rem',
+  lineHeight: 1.6,
 }));
 
 // ---------- File extension → Prism language map ----------
@@ -70,7 +66,8 @@ const extensionToLanguage: Record<string, string> = {
   yml: 'yaml',
 };
 
-// ---------- Props ----------
+// =====================================================================
+// ============================= Component =============================
 
 export interface CodeBlockCmpSettings {}
 
@@ -117,10 +114,10 @@ export default function CodeBlockCmp(props: CodeBlockCmpProps) {
   const code = props.file ? content : String(props.children ?? "").trim();
 
   return (
-    <CodeRoot className={codeBlockCmp.classes.root}>
+    <CodeRoot>
       <ScrollableCmp>
-        <CodeBackground className={codeBlockCmp.classes.background}>
-          <CodeStyling className={codeBlockCmp.classes.styling}>
+        <CodeBackground>
+          <CodeStyling>
             <SyntaxHighlighter
               language={detectedLanguage}
               style={oneDark}

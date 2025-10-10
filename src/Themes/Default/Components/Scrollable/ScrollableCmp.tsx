@@ -7,14 +7,15 @@ import { Size } from '@/types/extra';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { useCheckOverflow } from '@/hooks/useCheckOverflow';
 import { useSizeObserver } from '@/hooks/useSizeObserver';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import { scrollableCmp } from './ScrollableCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ScrollableRoot = styled('div',
-  {name: 'ScrollableCmp', slot: 'Root'}
-)({
+const makeSlot = makeSlotFactory('ScrollableCmp', scrollableCmp);
+
+const ScrollableRoot = makeSlot('div', 'root')({
   position: 'relative',
   width: '100%',
   height: '100%',
@@ -22,9 +23,7 @@ const ScrollableRoot = styled('div',
   flexDirection: 'column', // vertical stacking by default
 });
 
-const ViewportWrapper = styled('div',
-  {name: 'ScrollableCmp', slot: 'ViewportWrapper'}
-)({
+const ViewportWrapper = makeSlot('div', 'viewportWrapper')({
   position: 'relative',
   flex: '1 1 auto',
   width: '100%',
@@ -33,9 +32,7 @@ const ViewportWrapper = styled('div',
   display: 'flex',
 });
 
-const ScrollableContainer = styled('div', 
-  {name: 'ScrollableCmp', slot: 'Container'}
-)<{
+const ScrollableContainer = makeSlot('div', 'container')<{
   size?: Size;
   direction?: 'both' | 'horizontal' | 'vertical';
 }>(({ theme, size, direction }) => ({
@@ -58,10 +55,7 @@ const ScrollableContainer = styled('div',
   '&::-webkit-scrollbar': { display: 'none', width: 0, height: 0 },
 }));
 
-const ScrollbarRow = styled('div', {
-  name: 'ScrollableCmp',
-  slot: 'Row',
-})(({ theme }) => ({
+const ScrollbarRow = makeSlot('div', 'row')(({ theme }) => ({
   flexShrink: 0,
   width: '100%',
   height: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12,
@@ -70,10 +64,7 @@ const ScrollbarRow = styled('div', {
   justifyContent: 'center',
 }));
 
-const ScrollbarColumn = styled('div', {
-  name: 'ScrollableCmp',
-  slot: 'Column',
-})(({ theme }) => ({
+const ScrollbarColumn = makeSlot('div', 'column')(({ theme }) => ({
   flexShrink: 0,
   width: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12,
   height: '100%',
@@ -103,14 +94,10 @@ export default function ScrollableCmp({
   const { ref: containerRef, overflowsX, overflowsY } = useCheckOverflow<HTMLDivElement>([size?.width, size?.height, children]);
 
   return (
-    <ScrollableRoot className={scrollableCmp.classes.root}>
+    <ScrollableRoot>
       {/* Viewport measured separately */}
-      <ViewportWrapper
-        className={scrollableCmp.classes.viewportWrapper}
-        ref={sizeRef}
-      >
+      <ViewportWrapper ref={sizeRef}>
         <ScrollableContainer
-          className={scrollableCmp.classes.container}
           ref={containerRef}
           size={size}
           direction={direction}
@@ -120,7 +107,7 @@ export default function ScrollableCmp({
 
         {/* Vertical scrollbar on the right */}
         {direction !== 'horizontal' && overflowsY && (
-          <ScrollbarColumn className={scrollableCmp.classes.column}>
+          <ScrollbarColumn>
             <ScrollBarCmp scrollContainer={containerRef} direction="vertical" />
           </ScrollbarColumn>
         )}
@@ -131,7 +118,6 @@ export default function ScrollableCmp({
         <div style={{ display: 'flex', width: '100%' }}>
           {/* Horizontal scrollbar */}
           <ScrollbarRow
-            className={scrollableCmp.classes.row}
             sx={{
               width: overflowsY ? `calc(100% - ${thickness}px)` : '100%',
             }}

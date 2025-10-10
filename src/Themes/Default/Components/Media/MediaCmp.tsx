@@ -7,10 +7,15 @@ import ReactPlayer from 'react-player';
 export type ReactPlayerProps = ComponentProps<typeof ReactPlayer>;
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { mediaCmp } from './MediaCmpClasses';
 
-const MediaRoot = styled(motion.div, {
-  name: 'MediaCmp',
-  slot: 'Root',
+// =====================================================================
+// ========================= Slot Definitions ==========================
+
+const makeSlot = makeSlotFactory('MediaCmp', mediaCmp);
+
+const MediaRoot = makeSlot(motion.div, 'root', {
   shouldForwardProp: (prop) =>
     prop !== 'width' && prop !== 'height' && prop !== 'aspectRatio',
 })<{
@@ -29,6 +34,9 @@ const MediaRoot = styled(motion.div, {
   justifyContent: 'center',
   alignItems: 'center',
 }));
+
+// =====================================================================
+// ============================= Component =============================
 
 type FitMode = 'cover' | 'contain' | 'fill';
 

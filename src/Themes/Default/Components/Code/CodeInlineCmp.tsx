@@ -2,11 +2,15 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { codeInlineCmp } from './CodeInlineCmpClasses';
 
-const CodeInlineRoot = styled('code', {
-  name: 'CodeInlineCmp',
-  slot: 'Root',
-})(({ theme }) => ({
+// =====================================================================
+// ========================= Slot Definitions ==========================
+
+const makeSlot = makeSlotFactory('CodeInlineCmp', codeInlineCmp);
+
+const CodeInlineRoot = makeSlot('code', 'root')(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   padding: '0 0.25rem',
   borderRadius: theme.shape.borderRadius,
@@ -20,6 +24,9 @@ const CodeInlineRoot = styled('code', {
     background: 'transparent !important',
   },
 }));
+
+// =====================================================================
+// ============================= Component =============================
 
 export interface CodeInlineCmpSettings {}
 

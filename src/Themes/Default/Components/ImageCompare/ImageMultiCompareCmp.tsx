@@ -7,14 +7,15 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
 import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSliderCmp';
 import { Size } from '@/types/extra';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { imageMultiCompareCmp } from './ImageMultiCompareCmpClasses';
 
 // =====================================================================
 // ============================= Slot Definitions =================================
 
-// Optional root styling if needed later
-const ImageMultiCompareRoot = styled(motion.div, {
-  name: "ImageMultiCompareCmp",
-  slot: "Root",
+const makeSlot = makeSlotFactory('ImageMultiCompareCmp', imageMultiCompareCmp);
+
+const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
   shouldForwardProp: (prop) => prop !== "size",
 })<{ size?: Size }>(({ size }) => ({
   display: 'flex',

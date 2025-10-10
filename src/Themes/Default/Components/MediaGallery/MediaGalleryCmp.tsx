@@ -7,17 +7,21 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { useElementSize } from '@/hooks/useElementSize';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { mediaGalleryCmp } from './MediaGalleryCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const GalleryRoot = styled('div', { name: 'MediaGalleryCmp', slot: 'Root' })({
+const makeSlot = makeSlotFactory('MediaGalleryCmp', mediaGalleryCmp);
+
+const GalleryRoot = makeSlot('div', 'root')({
   display: 'flex',
   flexDirection: 'column',
   gap: '0.5rem',
 });
 
-const GalleryMain = styled('div', { name: 'MediaGalleryCmp', slot: 'Main' })(({ theme }) => ({
+const GalleryMain = makeSlot('div', 'main')(({ theme }) => ({
   position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
@@ -28,15 +32,13 @@ const GalleryMain = styled('div', { name: 'MediaGalleryCmp', slot: 'Main' })(({ 
   borderRadius: theme.shape.borderRadius,
 }));
 
-const GalleryThumbs = styled('div', { name: 'MediaGalleryCmp', slot: 'Thumbs' })(({ theme }) => ({
+const GalleryThumbs = makeSlot('div', 'thumbs')(({ theme }) => ({
   width: '100%',
   height: '100px',
   gap: '1rem',
 }));
 
-const ThumbButton = styled('button', { name: 'MediaGalleryCmp', slot: 'ThumbButton',
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
+const ThumbButton = makeSlot('button', 'thumbButton')<{ active?: boolean }>(({ theme, active }) => ({
   position: 'relative',
   flexShrink: 0,
   width: 'auto',
@@ -52,7 +54,7 @@ const ThumbButton = styled('button', { name: 'MediaGalleryCmp', slot: 'ThumbButt
   },
 }));
 
-const VideoOverlay = styled('div', { name: 'MediaGalleryCmp', slot: 'VideoOverlay' })({
+const VideoOverlay = makeSlot('div', 'videoOverlay')({
   position: 'absolute',
   inset: 0,
   display: 'flex',

@@ -3,16 +3,19 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { styled } from '@mui/material/styles';
 import { Card, CardContent, Typography } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider'
 import { ProjectInfo } from '@/data/projects/project';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { projectCardCmp } from './ProjectCardCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCardCmp', slot: 'Root' })(({ theme }) => ({
+const makeSlot = makeSlotFactory('ProjectCardCmp', projectCardCmp);
+
+const ProjectCardRoot = makeSlot(motion.create(Card), 'root')(({ theme }) => ({
   overflow: 'hidden',
   display: 'flex',
   flexDirection: 'column',
@@ -23,27 +26,27 @@ const ProjectCardRoot = styled(motion(Card), { name: 'ProjectCardCmp', slot: 'Ro
     : theme.shape.borderRadius,
 }));
 
-const ProjectCardHeader = styled(motion.div, { name: 'ProjectCardCmp', slot: 'Header' })(({ theme }) => ({
+const ProjectCardHeader = makeSlot(motion.div, 'header')(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.primary,
 }));
 
-const ProjectCardImage = styled(motion.div, {name: 'ProjectCardCmp', slot: 'Image'})(({ theme }) => ({
+const ProjectCardImage = makeSlot(motion.div, 'image')(({ theme }) => ({
   position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
 }));
 
-const ProjectCardTechList = styled(motion.div, {name: 'ProjectCardCmp', slot: 'TechList'})(({ theme }) => ({
+const ProjectCardTechList = makeSlot(motion.div, 'techList')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(1),
 }));
 
-const ProjectCardTechIcon = styled(motion.div, {name: 'ProjectCardCmp', slot: 'TechIcon'})(({ theme }) => ({
+const ProjectCardTechIcon = makeSlot(motion.div, 'techIcon')(({ theme }) => ({
 }));
 
-const ProjectCardContentBox = styled(motion(CardContent), { name: 'ProjectCardCmp', slot: 'Content' })(({ theme }) => ({
+const ProjectCardContentBox = makeSlot(motion(CardContent), 'content')(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: 'center',
 }));
@@ -62,11 +65,11 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   const anim = theme.components?.ProjectCardCmp?.slotAnimations ?? {};
 
   return (
-    <ProjectCardRoot {...(anim.root || {})}
-    viewport={{ once: true, amount: 0.3 }}
+    <ProjectCardRoot
+      viewport={{ once: true, amount: 0.3 }}
     >
       <Link href={`/projects/${project.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <ProjectCardImage {...(anim.image || {})}>
+        <ProjectCardImage>
           <Image
             src={project.thumbnailImage}
             alt={project.title}
@@ -76,16 +79,16 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
           />
         </ProjectCardImage>
 
-        <ProjectCardContentBox {...(anim.content || {})}>
-          <ProjectCardHeader {...(anim.header || {})}>
+        <ProjectCardContentBox>
+          <ProjectCardHeader>
             <Typography variant="h5" sx={{ m: 0 }}>
               {project.title}
             </Typography>
           </ProjectCardHeader>
 
-          <ProjectCardTechList {...(anim.techList || {})}>
+          <ProjectCardTechList>
             {project.technologies?.map((tech) => (
-              <ProjectCardTechIcon key={tech} {...(anim.techIcon || {})}>
+              <ProjectCardTechIcon key={tech}>
                 <IconCmp techName={tech} />
               </ProjectCardTechIcon>
             ))}

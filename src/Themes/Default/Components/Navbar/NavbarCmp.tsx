@@ -8,11 +8,15 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider'
 import { anims } from '@/Themes/animations';
 import { mergeAnims } from '@/utils/MergeObjects';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { navbarCmp } from './NavbarCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const NavbarRoot = styled(motion.nav, { name: 'NavbarCmp', slot: 'Root' })(({ theme }) => ({
+const makeSlot = makeSlotFactory('NavbarCmp', navbarCmp);
+
+const NavbarRoot = makeSlot(motion.nav, 'root')(({ theme }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -25,9 +29,9 @@ const NavbarRoot = styled(motion.nav, { name: 'NavbarCmp', slot: 'Root' })(({ th
   padding: theme.spacing(2, 3),
 }));
 
-const NavbarBrand = styled(motion.div, { name: 'NavbarCmp', slot: 'Brand' })(({ theme }) => ({}));
+const NavbarBrand = makeSlot(motion.div, 'brand')(({ theme }) => ({}));
 
-const NavbarList = styled(motion.ul, { name: 'NavbarCmp', slot: 'List' })(({ theme }) => ({
+const NavbarList = makeSlot(motion.ul, 'list')(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.up('md')]: {
     display: 'flex',
@@ -36,9 +40,9 @@ const NavbarList = styled(motion.ul, { name: 'NavbarCmp', slot: 'List' })(({ the
   listStyle: 'none'
 }));
 
-const NavbarItem = styled(motion.li, { name: 'NavbarCmp', slot: 'Item' })({});
+const NavbarItem = makeSlot(motion.li, 'item')({});
 
-const NavbarLink = styled(Link, { name: 'NavbarCmp', slot: 'Link',
+const NavbarLink = makeSlot(Link, 'link', {
   shouldForwardProp: (prop) => prop !== 'active'
 })<{ active?: boolean }>(
   ({ theme, active }) => ({
@@ -50,7 +54,7 @@ const NavbarLink = styled(Link, { name: 'NavbarCmp', slot: 'Link',
   })
 );
 
-const NavbarUnderline = styled(motion.span, { name: 'NavbarCmp', slot: 'Underline' })(({ theme }) => ({
+const NavbarUnderline = makeSlot(motion.span, 'underline')(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: 0,
@@ -79,25 +83,24 @@ export default function NavbarCmp(props: NavbarCmpProps) {
   const pathname = usePathname();
 
   return (
-    <NavbarRoot {...(anim.root || {})}>
-      {/* Brand */}
-      <NavbarBrand {...(anim.brand || {})}>
+    <NavbarRoot>
+      <NavbarBrand>
         <Link href="/" style={{ textDecoration: 'none' }}>
           <Typography variant="h6">Jeroen Denayer</Typography>
         </Link>
       </NavbarBrand>
 
       {/* Nav links */}
-      <NavbarList {...(anim.list || {})}>
+      <NavbarList>
         {props.navItems?.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <NavbarItem key={item.href} {...(anim.item || {})}>
+            <NavbarItem key={item.href}>
               <motion.div {...mergeAnims(true, anims.hoverScale(1.035), anims.tapScale(0.9))}>
                 <NavbarLink href={item.href} active={isActive}>
                   <Typography variant="h6" component="span">{item.label}</Typography>
                   {isActive && (
-                    <NavbarUnderline layoutId="nav-underline" {...(anim.underline || {})} />
+                    <NavbarUnderline layoutId="nav-underline" />
                   )}
                 </NavbarLink>
               </motion.div>

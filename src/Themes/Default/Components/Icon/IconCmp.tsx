@@ -7,11 +7,15 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import { icons, IconKey, IconData } from '@/data/Icons';
 import { useParsedSVG } from '@/utils/UseParsedSvg';
 import { toGrayScale, applyTint } from '@/utils/Color';
+import {makeSlotFactory} from "@/utils/makeSlotFactory";
+import { iconCmp } from './IconCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const IconRoot = styled(motion.div, { name: 'IconCmp', slot: 'Root' })(({ theme }) => ({
+const makeSlot = makeSlotFactory('IconCmp', iconCmp);
+
+const IconRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   display: 'inline-block',
   width: '100%',
   height: '100%',

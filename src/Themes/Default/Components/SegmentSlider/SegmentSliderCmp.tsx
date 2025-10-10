@@ -3,18 +3,22 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider'
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { segmentSliderCmp } from './SegmentSliderCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const SegmentSliderRoot = styled('div', { name: 'SegmentSliderCmp', slot: 'Root' })(({ theme }) => ({
+const makeSlot = makeSlotFactory('SegmentSliderCmp', segmentSliderCmp);
+
+const SegmentSliderRoot = makeSlot('div', 'root')(({ theme }) => ({
   position: 'relative',
   height: theme.spacing(3), // ~24px
   width: '100%',
   userSelect: 'none',
 }));
 
-const SegmentSliderBar = styled('div', { name: 'SegmentSliderCmp', slot: 'Bar' })(({ theme }) => ({
+const SegmentSliderBar = makeSlot('div', 'bar')(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: 0,
@@ -25,7 +29,7 @@ const SegmentSliderBar = styled('div', { name: 'SegmentSliderCmp', slot: 'Bar' }
   transform: 'translateY(-50%)',
 }));
 
-const SegmentSliderTicks = styled('div', { name: 'SegmentSliderCmp', slot: 'Ticks' })({
+const SegmentSliderTicks = makeSlot('div', 'ticks')({
   position: 'absolute',
   top: '50%',
   left: 0,
@@ -34,7 +38,7 @@ const SegmentSliderTicks = styled('div', { name: 'SegmentSliderCmp', slot: 'Tick
   pointerEvents: 'none',
 });
 
-const SegmentSliderTick = styled('div', { name: 'SegmentSliderCmp', slot: 'Tick' })(({ theme }) => ({
+const SegmentSliderTick = makeSlot('div', 'tick')(({ theme }) => ({
   position: 'absolute',
   width: 1,
   height: theme.spacing(1),
@@ -42,7 +46,7 @@ const SegmentSliderTick = styled('div', { name: 'SegmentSliderCmp', slot: 'Tick'
   transform: 'translateY(-50%)',
 }));
 
-const SegmentSliderHighlight = styled('div', { name: 'SegmentSliderCmp', slot: 'Highlight' })(({ theme }) => ({
+const SegmentSliderHighlight = makeSlot('div', 'highlight')(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   height: theme.spacing(0.25),
@@ -51,7 +55,7 @@ const SegmentSliderHighlight = styled('div', { name: 'SegmentSliderCmp', slot: '
   pointerEvents: 'none',
 }));
 
-const SegmentSliderHandle = styled('div', { name: 'SegmentSliderCmp', slot: 'Handle' })(({ theme }) => ({
+const SegmentSliderHandle = makeSlot('div', 'handle')(({ theme }) => ({
   position: 'absolute',
   top: 0,
   width: theme.spacing(1),
@@ -129,21 +133,21 @@ export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
   return (
     <SegmentSliderRoot>
       {/* Horizontal Bar */}
-      <SegmentSliderBar />
+      <SegmentSliderBar/>
 
       {/* Tick Marks */}
       <SegmentSliderTicks>
         {Array.from({ length: props.tickCount }).map((_, i) => (
           <SegmentSliderTick
             key={i}
-            style={{ left: `${(i / segmentCount) * 100}%` }}
+            sx={{ left: `${(i / segmentCount) * 100}%` }}
           />
         ))}
       </SegmentSliderTicks>
 
       {/* Current Segment Highlight */}
       <SegmentSliderHighlight
-        style={{
+        sx={{
           left: `${(state.segmentIndex / segmentCount) * 100}%`,
           width: `${100 / segmentCount}%`,
         }}
@@ -151,7 +155,7 @@ export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
 
       {/* Draggable Handle */}
       <SegmentSliderHandle
-        style={{ left: `${state.percentage * 100}%` }}
+        sx={{ left: `${state.percentage * 100}%` }}
       />
 
       {/* Transparent Range Input */}

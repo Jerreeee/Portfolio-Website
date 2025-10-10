@@ -151,26 +151,19 @@ export const defaultDarkOptions: ThemeOptions = {
         underline: mergeAnims(false, { transition: { type: 'spring', stiffness: 500, damping: 30 } }),
       },
     },
-    // ScrollableCmp: {
-    //   styleOverrides: {
-    //     root: {
-    //       // border: '2px solid green',
-    //     }
-    //   }
-    // },
     ScrollBarCmp: {
       settings: {
-        thickness: 50
+        thickness: 10
       },
     },
-    // CodeBlockCmp: {
-    //   styleOverrides: {
-    //     root: {
-    //       '& .ScrollableCmp-container': {
-    //         border: '2px solid green',
-    //       }
-    //     }
-    //   }
-    // }
+    CodeBlockCmp: {
+      styleOverrides: {
+        root: {
+          '& .ScrollableCmp-container': {
+            border: '2px solid green',
+          }
+        }
+      }
+    }
   },
 };  

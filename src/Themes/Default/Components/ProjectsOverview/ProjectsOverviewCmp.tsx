@@ -1,44 +1,34 @@
 'use client';
 
-import { styled } from '@mui/material/styles';
-import { Container, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { projects } from '@/data/projects';
-import { anims } from '@/Themes/animations';
 import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCardCmp';
 import { useTheme } from '@/Themes/ThemeProvider'
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { projectsOverviewCmp } from './ProjectsOverviewCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ProjectsOverviewRoot = styled(motion.main, {
-  name: 'ProjectsOverviewCmp',
-  slot: 'Root',
-})(({ theme }) => ({
+const makeSlot = makeSlotFactory('ProjectsOverviewCmp', projectsOverviewCmp);
+
+const ProjectsOverviewRoot = makeSlot('div', 'root')(({ theme }) => ({
   width: '100%',
 }));
 
-const ProjectsOverviewContainer = styled(motion.main, {
-  name: 'ProjectsOverviewCmp',
-  slot: 'Container',
-})(({ theme }) => ({
+const ProjectsOverviewContainer = makeSlot(motion.main, 'container')(({ theme }) => ({
   maxWidth: '70%',
   margin: '0 auto',
 }));
 
-const ProjectsOverviewHeader = styled(motion.div, {
-  name: 'ProjectsOverviewCmp',
-  slot: 'Header',
-})(({ theme }) => ({
+const ProjectsOverviewHeader = makeSlot(motion.div, 'header')(({ theme }) => ({
   textAlign: 'center',
 //   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
 }));
 
-const ProjectsOverviewGrid = styled(motion.div, {
-  name: 'ProjectsOverviewCmp',
-  slot: 'Grid',
-})(({ theme }) => ({
+const ProjectsOverviewGrid = makeSlot(motion.div, 'grid')(({ theme }) => ({
   display: 'grid',
   gap: theme.spacing(3),
   gridTemplateColumns: '1fr',
@@ -47,10 +37,7 @@ const ProjectsOverviewGrid = styled(motion.div, {
   },
 }));
 
-const ProjectsOverviewCardWrapper = styled(motion.div, {
-  name: 'ProjectsOverviewCmp',
-  slot: 'CardWrapper',
-})({});
+const ProjectsOverviewCardWrapper = makeSlot(motion.div, 'cardWrapper')({});
 
 // =====================================================================
 // ============================= Component =============================
@@ -64,24 +51,23 @@ export default function ProjectsOverviewCmp(props: ProjectsOverviewCmpProps) {
   const anim = theme.components?.ProjectsOverviewCmp?.slotAnimations ?? {};
 
   return (
-    <ProjectsOverviewRoot {...(anim.root || {})}>
+      <ProjectsOverviewRoot>
         <ProjectsOverviewContainer>
-            <ProjectsOverviewHeader {...(anim.header || {})}>
-            <Typography variant="h1">
-                Featured
-            </Typography>
+            <ProjectsOverviewHeader>
+              <Typography variant="h1">
+                  Featured
+              </Typography>
             </ProjectsOverviewHeader>
 
-            <ProjectsOverviewGrid {...(anim.grid || {})}>
-            {projects.map((project, i) => (
-                <ProjectsOverviewCardWrapper
+            <ProjectsOverviewGrid>
+              {projects.map((project, i) => (
+                  <ProjectsOverviewCardWrapper
                     key={project.slug}
                     custom={i}
-                    {...(anim.cardWrapper || {})}
-                >
-                <ProjectCardCmp project={project} />
-                </ProjectsOverviewCardWrapper>
-            ))}
+                  >
+                    <ProjectCardCmp project={project} />
+                  </ProjectsOverviewCardWrapper>
+              ))}
             </ProjectsOverviewGrid>
         </ProjectsOverviewContainer>
     </ProjectsOverviewRoot>

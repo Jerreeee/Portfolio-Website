@@ -8,6 +8,12 @@ import { Box } from '@mui/material';
 import CodeBlockCmp from '../Code/CodeBlockCmp';
 import CodeInlineCmp from '../Code/CodeInlineCmp';
 
+// =====================================================================
+// ========================= Slot Definitions ==========================
+
+// =====================================================================
+// ============================= Component =============================
+
 export interface MarkdownRendererCmpSettings {}
 
 export interface MarkdownRendererCmpProps {

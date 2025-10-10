@@ -3,13 +3,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { scrollBarCmp } from './ScrollBarCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ScrollBarRoot = styled('div', {
-  name: 'ScrollBarCmp',
-  slot: 'Root',
+const makeSlot = makeSlotFactory('ScrollBarCmp', scrollBarCmp);
+
+const ScrollBarRoot = makeSlot('div', 'root', {
   shouldForwardProp: (prop) => prop !== 'direction' && prop !== 'dragging',
 })<{
   direction: 'horizontal' | 'vertical';
@@ -27,9 +29,7 @@ const ScrollBarRoot = styled('div', {
     : { width: theme.components?.ScrollBarCmp?.settings?.thickness, height: '100%' }),
 }));
 
-const ScrollBarThumb = styled('div', {
-  name: 'ScrollBarCmp',
-  slot: 'Thumb',
+const ScrollBarThumb = makeSlot('div', 'thumb', {
   shouldForwardProp: (prop) => prop !== 'direction' && prop !== 'dragging',
 })<{
   direction: 'horizontal' | 'vertical';
@@ -151,7 +151,10 @@ export default function ScrollBarCmp({ scrollContainer, direction = 'horizontal'
   }, [thumbSize, direction]);
 
   return (
-    <ScrollBarRoot direction={direction} dragging={isDragging}>
+    <ScrollBarRoot
+      direction={direction}
+      dragging={isDragging}
+    >
       <ScrollBarThumb
         direction={direction}
         dragging={isDragging}

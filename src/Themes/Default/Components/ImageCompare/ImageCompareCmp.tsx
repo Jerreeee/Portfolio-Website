@@ -3,17 +3,18 @@
 import React, { useLayoutEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 import { motion } from 'framer-motion';
-import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider'
 import { ImageMediaItem } from '../Media/MediaCmp';
 import { Size } from '@/types/extra';
+import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { imageCompareCmp } from './ImageCompareCmpClasses';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
 
-const ImageCompareRoot = styled(motion.div, {
-  name: "ImageCompareCmp",
-  slot: "Root",
+const makeSlot = makeSlotFactory('ImageCompareCmp', imageCompareCmp);
+
+const ImageCompareRoot = makeSlot(motion.div, 'root', {
   shouldForwardProp: (prop) => prop !== "size",
 })<{ size?: Size }>(({ theme, size }) => ({
   position: "relative",
@@ -24,7 +25,7 @@ const ImageCompareRoot = styled(motion.div, {
   borderRadius: theme.shape.borderRadius,
 }));
 
-const ImageCompareHandle = styled('div', { name: 'ImageCompareCmp', slot: 'Handle' })(({ theme }) => ({
+const ImageCompareHandle = makeSlot('div', 'handle')(({ theme }) => ({
   position: 'absolute',
   top: 0,
   bottom: 0,
@@ -76,18 +77,17 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
 
   return (
     <ImageCompareRoot
-      {...(anim.root || {})}
       size={props.size}
     >
       {/* Bottom image */}
-        <Image
-          src={props.bottom.src}
-          alt={props.bottom.alt || ''}
-          draggable={false}
-          fill
-          style={{ objectFit: 'contain', width: '100%', height: '100%'}}
-          {...props.imageProps}
-        />
+      <Image
+        src={props.bottom.src}
+        alt={props.bottom.alt || ''}
+        draggable={false}
+        fill
+        style={{ objectFit: 'contain', width: '100%', height: '100%'}}
+        {...props.imageProps}
+      />
 
       {/* Top clipped image */}
       <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - _progress * 100}% 0 0)` }} >
