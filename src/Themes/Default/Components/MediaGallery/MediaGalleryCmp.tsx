@@ -38,7 +38,9 @@ const GalleryThumbs = makeSlot('div', 'thumbs')(({ theme }) => ({
   gap: '1rem',
 }));
 
-const ThumbButton = makeSlot('button', 'thumbButton')<{ active?: boolean }>(({ theme, active }) => ({
+const ThumbButton = makeSlot('button', 'thumbButton',
+{shouldForwardProp: (prop) => prop !== 'active',}
+)<{ active: boolean }>(({ theme, active }) => ({
   position: 'relative',
   flexShrink: 0,
   width: 'auto',
