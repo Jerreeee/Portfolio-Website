@@ -24,8 +24,9 @@ const ProjectsOverviewContainer = makeSlot(motion.main, 'container')(({ theme })
 
 const ProjectsOverviewHeader = makeSlot(motion.div, 'header')(({ theme }) => ({
   textAlign: 'center',
-//   marginTop: theme.spacing(4),
-  marginBottom: theme.spacing(4),
+  //   marginTop: theme.spacing(4),
+  // paddingTop: theme.components?.NavbarCmp?.defaultProps?.height,
+  // paddingBottom: 200,
 }));
 
 const ProjectsOverviewGrid = makeSlot(motion.div, 'grid')(({ theme }) => ({
@@ -48,7 +49,6 @@ export interface ProjectsOverviewCmpProps {}
 
 export default function ProjectsOverviewCmp(props: ProjectsOverviewCmpProps) {
   const { theme } = useTheme();
-  const anim = theme.components?.ProjectsOverviewCmp?.slotAnimations ?? {};
 
   return (
       <ProjectsOverviewRoot>

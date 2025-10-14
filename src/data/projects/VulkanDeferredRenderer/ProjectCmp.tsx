@@ -1,146 +1,144 @@
 'use client';
 
 import React from 'react';
-import { useEffect, useState } from 'react';
-
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-
-import MediaGalleryCmp from '@/Themes/Default/Components/MediaGallery/MediaGalleryCmp';
-import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
-import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
-import Markdown from '@/Themes/Default/Components/Markdown/MarkdownRendererCmp';
-import type { ProjectManifest } from "@/types/projectManifest";
-import { ProjectInfo } from '../project';
+import { Box, Typography, Container, Grid, Divider } from '@mui/material';
+import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
 import { getMediaItemsFromManifest } from '@/utils/projectManifest';
-import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
 import { ParentSizeObserver } from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
+import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
+import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
 import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
-
-import { ProjectCmpProps } from '../project';
+import type { ProjectManifest } from "@/types/projectManifest";
+import type { ProjectCmpProps } from '../project';
 import { data } from './data';
-import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp';
-
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
-  
-  const mediaItems: MediaItem[] = getMediaItemsFromManifest(manifest, [
-    "PostProcess_Final_Outdoor.webp",
-    "Chain_Final.webp",
-    "intro_video",
-    "GPU_Trace_Profiler_Timeline.webp",
-    "GPU_Trace_Profiler_Timeline_2.webp",
-    "GPU_Trace_Profiler_timeline_3.webp",
-    "OutDoor_Env_Cross.webp", 
-  ]);
-  
-const md: string = `
-# Sample Markdown
-
-## Subheading
-
-Here is some **bold text** and *italic text*.
-
-Here’s an **inline C++ code snippet** like \`int main() { return 0; }\`.
-
-### Code Example (TypeScript)
-
-\`\`\`typescript
-function greet(name: string): string {
-  return \`Hello, \${name}!\`;
-}
-\`\`\`
-
-### Code Example (C++)
-
-\`\`\`cpp
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <iomanip>
-#include <map>
-#include <string>
-using namespace std;
-
-struct Student {
-    string name;
-    vector<int> grades;
-};
-
-double average(const vector<int>& grades) {
-    if (grades.empty()) return 0.0;
-    int sum = 0;
-    for (int g : grades) sum += g;
-    return static_cast<double>(sum) / grades.size();
-}
-
-int main() {
-    vector<Student> students = {
-        {"Alice", {90, 85, 88, 92, 95, 87, 91}},
-        {"Bob",   {72, 81, 77, 69, 85, 90, 78}},
-        {"Carol", {100, 100, 100, 99, 98, 97, 96}},
-        {"David", {65, 70, 68, 72, 60, 75, 80}},
-        {"Eve",   {88, 91, 85, 87, 90, 86, 89}}
-    };
-
-    // Print table header
-    cout << left << setw(10) << "Name" 
-         << right << setw(15) << "Average Grade" 
-         << endl;
-    cout << string(30, '-') << endl;
-
-    // Print each student's average grade
-    for (const auto& s : students) {
-        cout << left << setw(10) << s.name
-             << right << setw(15) << fixed << setprecision(2) << average(s.grades)
-             << endl;
-    }
-
-    // Example of a very long line to test horizontal scrolling:
-    cout << "This_is_a_really_long_line_with_no_spaces_just_to_test_how_your_code_block_handles_overflow_and_scrolling_behavior_in_a_static_site_layout." 
-         << endl;
-
-    return 0;
-}
-\`\`\`
-
-### List Example
-
-- Item 1
-- Item 2
-  - Nested Item
-
-### Table Example
-
-| Feature    | Supported |
-|------------|----------:|
-| **Bold**   | ✅        |
-| *Italic*   | ✅        |
-| Code       | ✅        |
-| Lists      | ✅        |
-| Tables     | ✅        |
-`;
-
 
   return (
-    <div>
-      {/* Project title */}
-      <Typography variant="h1" align="center" gutterBottom>
-        {data.title}
-      </Typography>
-
-      <Box display="flex" flexDirection="column" gap={4} >
-        <Typography variant="h4" align="center" paragraph>
-          {data.shortDescription}
+    <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
+      {/* ==================== HERO SECTION ==================== */}
+      <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
+        <Typography variant="gradientH1">
+          {data.title}
         </Typography>
-        <MediaGalleryCmp media={mediaItems} />
 
-        {/* Multi-image comparison */}
-        {/* <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
+        <MediaCmp
+          item={getMediaItemsFromManifest(manifest, ['PostProcess_Final_Outdoor.webp'])[0]}
+        />
+      </Container>
+
+      {/* ==================== OVERVIEW ==================== */}
+      <Container maxWidth="lg" sx={{ mb: 12 }}>
+        <Grid container spacing={6} alignItems="flex-start">
+          {/* --- Left: Overview Text --- */}
+          <Grid size={{ xs: 12, md: 7 }}>
+            <Typography variant="h3" gutterBottom>
+              Overview
+            </Typography>
+
+            <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
+              A Vulkan-based deferred rendering pipeline written in C++.  
+              Built to explore how modern rendering works and to learn Vulkan’s low-level API.  
+              It supports PBR materials, multiple light types, HDR tone mapping, and uses newer Vulkan features like Dynamic Rendering, Synchronization2, and Bindless Rendering.
+            </Typography>
+          </Grid>
+
+          {/* --- Right: Tech Stack --- */}
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box
+              sx={{
+                p: 3,
+                borderRadius: 2,
+                bgcolor: 'rgba(255,255,255,0.05)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 3,
+              }}
+            >
+              {/* Core */}
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Core
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <img src="/icons/vulkan.svg" alt="Vulkan" width={32} height={32} />
+                  <img src="/icons/cpp.svg" alt="C++" width={32} height={32} />
+                  <img src="/icons/glfw.svg" alt="GLFW" width={32} height={32} />
+                </Box>
+              </Box>
+
+              {/* Libraries */}
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Libraries
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <img src="/icons/glm.svg" alt="GLM" width={32} height={32} />
+                  <img src="/icons/stb.svg" alt="stb_image" width={32} height={32} />
+                  <img src="/icons/tinyobjloader.svg" alt="tinyobjloader" width={32} height={32} />
+                </Box>
+              </Box>
+
+              {/* Tools */}
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Tools
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <img src="/icons/visualstudio.svg" alt="Visual Studio" width={32} height={32} />
+                  <img src="/icons/renderdoc.svg" alt="RenderDoc" width={32} height={32} />
+                  <img src="/icons/cmake.svg" alt="CMake" width={32} height={32} />
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+
+      <Divider sx={{ my: 6, opacity: 0.2 }} />
+
+      {/* ==================== ARCHITECTURE SECTION ==================== */}
+      <Container maxWidth="md" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Architecture
+        </Typography>
+
+        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 4 }}>
+          The renderer is built around a modular frame graph system that defines each render pass
+          explicitly, controlling synchronization and resource transitions between stages.
+        </Typography>
+
+        {/* You could later replace this placeholder with a pipeline diagram image */}
+        <Box
+          sx={{
+            width: '100%',
+            height: 400,
+            bgcolor: 'rgba(255,255,255,0.05)',
+            borderRadius: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'text.disabled',
+            fontStyle: 'italic',
+          }}
+        >
+          [ Pipeline Diagram Placeholder ]
+        </Box>
+      </Container>
+
+      <Divider sx={{ my: 6, opacity: 0.2 }} />
+
+      {/* ==================== RENDER PASS BREAKDOWN ==================== */}
+      <Container maxWidth="lg" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Render Pass Breakdown
+        </Typography>
+
+        <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
           {size => (
-            <ImageMultiCompareCmp size={size}
+            <ImageMultiCompareCmp
+              size={size}
               images={getMediaItemsFromManifest(manifest, [
                 'depth.webp',
                 'GBuffer_Albedo.webp',
@@ -149,24 +147,85 @@ int main() {
               ]).filter((item): item is ImageCompareItem => item.type === 'image')}
             />
           )}
-        </ParentSizeObserver> */}
-
-        {/* <div style={{width: '100%', height: '600px'}}> */}
-        <ParentSizeObserver mode='width' aspectRatio={16 / 9}>
-          <CodeBlockCmp file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
         </ParentSizeObserver>
-        {/* </div> */}
 
-        <CodeBlockCmp language="js">
-        {`
-function hello() {
-  console.log("Hello World!");
-}
-        `}
-        </CodeBlockCmp>
+        <Typography variant="body1" align="center" sx={{ mt: 3, color: 'text.secondary' }}>
+          Multiple G-buffer render targets capture position, normal, albedo, and material properties,
+          which are later combined in the lighting pass.
+        </Typography>
+      </Container>
 
-        <Markdown markdown={md} ></Markdown>
-      </Box>
-    </div>
+      <Divider sx={{ my: 6, opacity: 0.2 }} />
+
+      {/* ==================== MAIN FEATURES ==================== */}
+      <Container maxWidth="md" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Main Features
+        </Typography>
+
+        <Grid container spacing={3} sx={{ mt: 2 }}>
+          {[
+            'Deferred shading pipeline with HDR lighting',
+            'Physically-based materials (PBR)',
+            'SSAO and Bloom post-processing',
+            'Dynamic GPU descriptor management',
+            'Frame graph and synchronization system',
+          ].map((feature, index) => (
+            <Grid size={{ xs: 12, sm: 6 }} key={index}>
+              <Box
+                sx={{
+                  p: 2,
+                  bgcolor: 'rgba(255,255,255,0.05)',
+                  borderRadius: 2,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography variant="body1">{feature}</Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Box sx={{ mt: 6 }}>
+          <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
+            <CodeBlockCmp file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
+          </ParentSizeObserver>
+        </Box>
+      </Container>
+
+      <Divider sx={{ my: 6, opacity: 0.2 }} />
+
+      {/* ==================== TECHNICAL CHALLENGES ==================== */}
+      <Container maxWidth="md" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Technical Challenges & Learnings
+        </Typography>
+
+        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
+          One of the key challenges was efficiently managing synchronization across Vulkan’s multiple
+          subpasses. I implemented a lightweight dependency graph that tracks read/write hazards
+          between attachments, reducing unnecessary barriers.
+        </Typography>
+
+        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+          I also designed a descriptor set allocator to handle thousands of dynamic bindings per frame,
+          significantly improving performance when rendering large scenes.
+        </Typography>
+      </Container>
+
+      <Divider sx={{ my: 6, opacity: 0.2 }} />
+
+      {/* ==================== CLOSING / FUTURE WORK ==================== */}
+      <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Future Work
+        </Typography>
+
+        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+          Next steps include clustered deferred lighting, GPU-driven culling, and temporal
+          anti-aliasing to further improve performance and image quality.
+        </Typography>
+      </Container>
+    </Box>
   );
 }

@@ -2,6 +2,7 @@
 //mui
 import '@mui/system';
 import '@mui/material/styles';
+import { TypographyPropsVariantOverrides } from '@mui/material/Typography';
 
 import { ThemedComponent } from '../componentDefinition';
 
@@ -23,8 +24,28 @@ import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/C
 import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
 // AUTO-GENERATED Component IMPORTS END
 
+declare module '@mui/material/Typography' {
+  // Allow <Typography variant="gradientH1" />
+  interface TypographyPropsVariantOverrides {
+    gradientH1: true;
+  }
+
+  // Allow variantMapping: { gradientH1: 'h1' }
+  interface TypographyVariantOverrides {
+    gradientH1: true;
+  }
+}
+
 // Augment MUI's Theme
 declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    gradientH1: React.CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    gradientH1?: React.CSSProperties;
+  }
+
   // Custom component definitions
   interface ComponentsProps {
     // AUTO-GENERATED ComponentsProps START

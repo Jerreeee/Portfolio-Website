@@ -26,10 +26,11 @@ type ExtractStyleProps<T> = T extends (props: infer P) => any ? P : unknown;
 /**
  * MUI-accurate typing for a style argument.
  * Supports both plain style objects and prop-based style functions.
+ * !!! ownerState isnt properly typed like how mui does it. This would require a lot of work per component
  */
 type StyleArg<P = {}> =
   | CSSInterpolation
-  | ((props: P & { theme: Theme }) => CSSInterpolation);
+  | ((props: P & { theme: Theme; ownerState?: P }) => CSSInterpolation);
 
 /**
  * Creates a single styled slot component.
@@ -51,7 +52,6 @@ export function makeSlot<
     slot: slot.charAt(0).toUpperCase() + slot.slice(1),
   };
 
-  // ============= Create base styled component ===========
   const StyledComponent =
     typeof element === 'string'
       ? styled(element, muiStyledOptions)
@@ -61,24 +61,19 @@ export function makeSlot<
     P = unknown,
     StyleArgs extends StyleArg<P>[] = StyleArg<P>[]
   >(...styleArgs: StyleArgs) {
-    // Add `& P` because props like `active` can’t be inferred correctly
-    // eventhough we use `StyleArg<P>` above,
-    // if the style function doesn’t explicitly type its params.
-    // e.g. ({ theme, active }) => (...) makes `active: any` instead of
-    //      ({ theme, active }: {theme: Theme: active: boolean}) => (...)
-    // but `<ThumbButton active />` should still accept `active?: boolean`.
+    // `& P` ensures props like `active` are typed even if style function doesn’t annotate them.
     type StyleProps = Omit<ExtractStyleProps<StyleArgs[number]>, 'theme'> & P;
 
     const Base = StyledComponent(...(styleArgs as any)) as React.ElementType;
 
     type CombinedProps = React.ComponentPropsWithRef<ElementType> &
-      StyleProps & MUIStyledCommonProps<Theme> & {
+      StyleProps &
+      MUIStyledCommonProps<Theme> & {
         component?: React.ElementType;
         variant?: string;
         children?: React.ReactNode;
       };
 
-    // ============= Wrapped slot component ==============
     const Wrapped = React.forwardRef<unknown, CombinedProps>((props, ref) => {
       const {
         className,
@@ -89,22 +84,20 @@ export function makeSlot<
       } = props as any;
 
       const theme = useTheme();
-      const anim =
-        (theme.components as any)?.[componentName]?.slotAnimations ?? {};
+      const anim = (theme.components as any)?.[componentName]?.slotAnimations ?? {};
       const slotAnim = anim[slot] ?? {};
 
       const combinedClassName = clsx(cmpClasses.classes[slot], className);
-      const RenderComponent = componentProp || asProp || Base;
 
-      const safeProps = {
+      return React.createElement(Base, {
         ref,
         className: combinedClassName,
         sx,
+        as: asProp,
+        component: componentProp,
         ...slotAnim,
         ...rest,
-      };
-
-      return React.createElement(RenderComponent, safeProps);
+      });
     });
 
     Wrapped.displayName = `${componentName}${slot

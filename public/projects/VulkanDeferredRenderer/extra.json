@@ -1,8 +1,4 @@
 {
   "media": {
-    "intro_video": {
-      "type": "embeddedVideo",
-      "src": "https://vimeo.com/123456"
-    }
   }
 }

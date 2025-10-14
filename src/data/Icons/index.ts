@@ -10,6 +10,12 @@ import VulkanIcon from './vulkan.svg';
 import NVidiaIcon from './nvidia.svg';
 import RenderDocIcon from './renderdoc.svg'
 
+// export interface IconData {
+//   rawSvg?: string;          // optional — inline SVG markup or import
+//   imageSrc?: string;        // optional — fallback image path (PNG, WebP, etc.)
+//   isGrayScale?: boolean;
+// }
+
 export const icons = {
   Error: {rawSvg: ErrorIcon, isGrayScale: true },
   'C++': { rawSvg: CPlusPlusIcon, isGrayScale: false },

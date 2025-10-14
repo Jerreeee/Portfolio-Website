@@ -5,6 +5,13 @@ import { ThemeOptions } from '@mui/material/styles';
 import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
 import { anims } from '@/Themes/animations';
 
+const h1Base = {
+  fontWeight: 600,
+  fontSize: '2.5rem',
+  lineHeight: 1.2,
+  padding: '2rem 0 1rem 0',
+};
+
 export const defaultDarkOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
@@ -31,11 +38,54 @@ export const defaultDarkOptions: ThemeOptions = {
 
   typography: {
     fontFamily: `'Roboto', 'Helvetica', 'Arial', sans-serif`,
-    h1: { fontWeight: 600, fontSize: '2.5rem' },
-    h2: { fontWeight: 500, fontSize: '2rem' },
-    h3: { fontWeight: 400, fontSize: '1.75rem' },
-    body1: { fontSize: '1rem' },
-    body2: { fontSize: '0.875rem' },
+    h1: h1Base,
+    h2: { 
+      fontWeight: 500, 
+      fontSize: '2rem', 
+      lineHeight: 1.3,
+      padding: '1.75rem 0 0.75rem 0',
+    },
+    h3: { 
+      fontWeight: 400, 
+      fontSize: '1.75rem', 
+      lineHeight: 1.4,
+      padding: '1.5rem 0 0.5rem 0',
+    },
+    h4: { 
+      fontWeight: 400, 
+      fontSize: '1.5rem', 
+      lineHeight: 1.4,
+      padding: '1rem 0 0.5rem 0',
+    },
+    h5: { 
+      fontWeight: 400, 
+      fontSize: '1.25rem', 
+      lineHeight: 1.4,
+      padding: '0.75rem 0 0.25rem 0',
+    },
+    h6: { 
+      fontWeight: 400, 
+      fontSize: '1.125rem', 
+      lineHeight: 1.5,
+      padding: '0.5rem 0 0.25rem 0',
+    },
+    body1: { 
+      fontSize: '1rem', 
+      lineHeight: 1.6,
+      padding: '0.5rem 0',
+    },
+    body2: { 
+      fontSize: '0.875rem', 
+      lineHeight: 1.6,
+      padding: '0.25rem 0',
+    },
+    gradientH1: {
+      ...h1Base,
+      background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      display: 'inline-block',
+    },
   },
 
   shape: {
@@ -43,6 +93,13 @@ export const defaultDarkOptions: ThemeOptions = {
   },
 
   components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          gradientH1: 'h1',
+        },
+      },
+    },
     //Global MUI overrides
     MuiButton: {
       styleOverrides: {

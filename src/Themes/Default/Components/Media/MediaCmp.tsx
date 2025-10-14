@@ -22,7 +22,7 @@ const MediaRoot = makeSlot(motion.div, 'root', {
   width?: number | string;
   height?: number | string;
   aspectRatio?: string;
-}>(({ width, height, aspectRatio }) => ({
+}>(({ theme, width, height, aspectRatio }) => ({
   position: 'relative',
   width: width ?? 'auto',
   height: height ?? 'auto',
@@ -33,6 +33,7 @@ const MediaRoot = makeSlot(motion.div, 'root', {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  borderRadius: theme.shape.borderRadius,
 }));
 
 // =====================================================================

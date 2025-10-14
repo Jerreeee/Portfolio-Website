@@ -6,5 +6,5 @@ export const data: ProjectRequiredInfo = {
     thumbnailImage: 'PostProcess_Final_Outdoor.webp',
     heroImage: '/projects/VulkanDeferredRenderer/PostProcess_Final_Outdoor.webp',
     technologies: ['Vulkan', 'NVidia', 'RenderDoc', 'C++'],
-    shortDescription: 'My first ever experience with vulkan writing a deferred renderer',
+    shortDescription: 'A physically-based rendering pipeline built in C++ and Vulkan.',
 };

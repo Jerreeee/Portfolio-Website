@@ -55,7 +55,6 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
     );
   }
 
-
   return (
       <ImageMultiCompareRoot>
         <ImageCompareCmp
