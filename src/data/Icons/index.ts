@@ -1,32 +1,42 @@
 'use client';
 
-import ErrorIcon from './error.svg';
-import CPlusPlusIcon from './cplusplus.svg';
-import UnityIcon from './unity.svg';
-import UnrealIcon from './unreal.svg';
-import VsCodeIcon from './vscode.svg';
-import HoudiniIcon from './houdini.svg';
-import VulkanIcon from './vulkan.svg';
-import NVidiaIcon from './nvidia.svg';
-import RenderDocIcon from './renderdoc.svg'
+import vulkan from './vulkan.svg';
+import cplusplus from './cplusplus.svg';
+import unity from './unity.svg';
+import unreal from './unreal.svg';
+import vscode from './vscode.svg';
+import houdini from './houdini.svg';
+import nvidia from './nvidia.svg';
+import renderdoc from './renderdoc.svg';
+import errorIcon from './error.svg';
 
-// export interface IconData {
-//   rawSvg?: string;          // optional — inline SVG markup or import
-//   imageSrc?: string;        // optional — fallback image path (PNG, WebP, etc.)
-//   isGrayScale?: boolean;
-// }
+// ================================================================
+// ========================= Type Setup ============================
 
-export const icons = {
-  Error: {rawSvg: ErrorIcon, isGrayScale: true },
-  'C++': { rawSvg: CPlusPlusIcon, isGrayScale: false },
-  Unity: { rawSvg: UnityIcon, isGrayScale: true },
-  Unreal: { rawSvg: UnrealIcon, isGrayScale: true },
-  VSCode: { rawSvg: VsCodeIcon, isGrayScale: false },
-  Houdini: { rawSvg: HoudiniIcon, isGrayScale: false },
-  Vulkan: {rawSvg: VulkanIcon, isGrayScale: false },
-  NVidia: {rawSvg: NVidiaIcon, isGrayScale: false },
-  RenderDoc: {rawSvg: RenderDocIcon, isGrayScale: false },
-} as const;
+export interface IconData {
+  /** For PNGs, JPGs, etc. */
+  fileName?: string;
+  /** For inline-loaded SVGs */
+  rawSvg?: string;
+  /** If true, icon is monochrome */
+  isGrayScale?: boolean;
+}
 
-export type IconKey = keyof typeof icons;
-export type IconData = (typeof icons)[IconKey];
+// ================================================================
+// ========================= Icon Mapping ==========================
+
+export const _icons = {
+  Error: { rawSvg: errorIcon, isGrayScale: true },
+  'C++': { rawSvg: cplusplus },
+  Unity: { rawSvg: unity, isGrayScale: true },
+  Unreal: { rawSvg: unreal, isGrayScale: true },
+  VSCode: { rawSvg: vscode },
+  Houdini: { rawSvg: houdini },
+  Vulkan: { rawSvg: vulkan },
+  NVidia: { rawSvg: nvidia },
+  RenderDoc: { rawSvg: renderdoc },
+};
+
+export const icons: Record<string, IconData> = _icons;
+
+export type IconKey = keyof typeof _icons;

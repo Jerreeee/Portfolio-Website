@@ -9,7 +9,6 @@ import type {
   CodeBlockCmpSettings,
   CodeInlineCmpSettings,
 } from '@/Themes/Default/Components/Code';
-import type { IconCmpSettings } from '@/Themes/Default/Components/Icon';
 import type {
   ImageCompareCmpSettings,
   ImageMultiCompareCmpSettings,
@@ -20,6 +19,7 @@ import type { MediaGalleryCmpSettings } from '@/Themes/Default/Components/MediaG
 import type { NavbarCmpSettings } from '@/Themes/Default/Components/Navbar';
 import type { ParentSizeObserverCmpSettings } from '@/Themes/Default/Components/ParentSizeObserver';
 import type { ProjectCardCmpSettings } from '@/Themes/Default/Components/ProjectCard';
+import type { ProjectOverviewCmpSettings } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpSettings } from '@/Themes/Default/Components/ProjectsOverview';
 import type { ScrollBarCmpSettings } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpSettings } from '@/Themes/Default/Components/Scrollable';
@@ -28,7 +28,6 @@ import type { SegmentSliderCmpSettings } from '@/Themes/Default/Components/Segme
 export interface ComponentNameToSettings {
   CodeBlockCmp: CodeBlockCmpSettings;
   CodeInlineCmp: CodeInlineCmpSettings;
-  IconCmp: IconCmpSettings;
   ImageCompareCmp: ImageCompareCmpSettings;
   ImageMultiCompareCmp: ImageMultiCompareCmpSettings;
   MarkdownRendererCmp: MarkdownRendererCmpSettings;
@@ -37,6 +36,7 @@ export interface ComponentNameToSettings {
   NavbarCmp: NavbarCmpSettings;
   ParentSizeObserverCmp: ParentSizeObserverCmpSettings;
   ProjectCardCmp: ProjectCardCmpSettings;
+  ProjectOverviewCmp: ProjectOverviewCmpSettings;
   ProjectsOverviewCmp: ProjectsOverviewCmpSettings;
   ScrollBarCmp: ScrollBarCmpSettings;
   ScrollableCmp: ScrollableCmpSettings;

@@ -18,6 +18,7 @@ import type { MediaGalleryCmpProps, MediaGalleryCmpClassKey } from '@/Themes/Def
 import type { NavbarCmpProps, NavbarCmpClassKey } from '@/Themes/Default/Components/Navbar';
 import type { ParentSizeObserverCmpProps, ParentSizeObserverCmpClassKey } from '@/Themes/Default/Components/ParentSizeObserver';
 import type { ProjectCardCmpProps, ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
+import type { ProjectOverviewCmpProps, ProjectOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
 import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
@@ -60,6 +61,7 @@ declare module '@mui/material/styles' {
     NavbarCmp?: NavbarCmpProps;
     ParentSizeObserverCmp?: ParentSizeObserverCmpProps;
     ProjectCardCmp?: ProjectCardCmpProps;
+    ProjectOverviewCmp?: ProjectOverviewCmpProps;
     ProjectsOverviewCmp?: ProjectsOverviewCmpProps;
     ScrollableCmp?: ScrollableCmpProps;
     ScrollBarCmp?: ScrollBarCmpProps;
@@ -79,6 +81,7 @@ declare module '@mui/material/styles' {
     NavbarCmp: NavbarCmpClassKey;
     ParentSizeObserverCmp: ParentSizeObserverCmpClassKey;
     ProjectCardCmp: ProjectCardCmpClassKey;
+    ProjectOverviewCmp: ProjectOverviewCmpClassKey;
     ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
     ScrollableCmp: ScrollableCmpClassKey;
     ScrollBarCmp: ScrollBarCmpClassKey;
@@ -98,6 +101,7 @@ declare module '@mui/material/styles' {
     NavbarCmp?: ThemedComponent<'NavbarCmp'>;
     ParentSizeObserverCmp?: ThemedComponent<'ParentSizeObserverCmp'>;
     ProjectCardCmp?: ThemedComponent<'ProjectCardCmp'>;
+    ProjectOverviewCmp?: ThemedComponent<'ProjectOverviewCmp'>;
     ProjectsOverviewCmp?: ThemedComponent<'ProjectsOverviewCmp'>;
     ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
     ScrollBarCmp?: ThemedComponent<'ScrollBarCmp'>;

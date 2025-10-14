@@ -35,6 +35,7 @@ import type { MediaGalleryCmpClassKey } from '@/Themes/Default/Components/MediaG
 import type { NavbarCmpClassKey } from '@/Themes/Default/Components/Navbar';
 import type { ParentSizeObserverCmpClassKey } from '@/Themes/Default/Components/ParentSizeObserver';
 import type { ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
+import type { ProjectOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
 import type { ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
@@ -52,6 +53,7 @@ export interface ComponentNameToAnimationSlot {
   NavbarCmp: NavbarCmpClassKey;
   ParentSizeObserverCmp: ParentSizeObserverCmpClassKey;
   ProjectCardCmp: ProjectCardCmpClassKey;
+  ProjectOverviewCmp: ProjectOverviewCmpClassKey;
   ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
   ScrollBarCmp: ScrollBarCmpClassKey;
   ScrollableCmp: ScrollableCmpClassKey;

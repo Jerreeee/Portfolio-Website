@@ -1,141 +1,398 @@
 'use client';
 
+import React from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  Tooltip,
+  useTheme,
+} from '@mui/material';
+import { GitHub, LinkedIn, Email, Brush } from '@mui/icons-material';
+import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
+
 export default function About() {
+  const theme = useTheme();
+
+  const renderDenseIcons = (items: string[]) => (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+        gap: 1.5,
+        justifyItems: 'center',
+        alignItems: 'center',
+      }}
+    >
+      {items.map((item) => (
+        <Box
+          key={item}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            gap: 0.5,
+          }}
+        >
+          <Box sx={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <IconCmp techName={item} />
+          </Box>
+          <Typography variant="caption" sx={{ color: theme.palette.text.secondary, fontSize: '0.75rem' }}>
+            {item}
+          </Typography>
+        </Box>
+      ))}
+    </Box>
+  );
+
   return (
-    <div className="w-full py-12 px-6 md:px-12 bg-gradient-to-br from-background via-blue-50/30 to-purple-50/30 dark:from-background dark:via-blue-900/10 dark:to-purple-900/10 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Profile Image */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="w-64 h-64 md:w-80 md:h-80 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full overflow-hidden relative shadow-xl border border-white/50 dark:border-gray-700/50 flex items-center justify-center text-gray-400">
-              Profile Image
-            </div>
-          </div>
+    <Box
+      sx={{
+        width: '100%',
+        minHeight: '100vh',
+        py: { xs: 6, md: 12 },
+        background: 'linear-gradient(to bottom, #151a2c, #221730)',
+      }}
+    >
+      <Container maxWidth="lg">
+        {/* ================= ABOUT HEADER ================= */}
+        <Grid container spacing={8} alignItems="center" sx={{ mb: 10 }}>
+          {/* Profile + Contact */}
+          <Grid
+            size={{ xs: 12, md: 5 }}
+            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}
+          >
+            <Box
+              component="img"
+              src="/profile.jpg"
+              alt="Profile"
+              sx={{
+                width: { xs: 200, md: 240 },
+                height: { xs: 200, md: 240 },
+                borderRadius: '50%',
+                border: `3px solid ${theme.palette.primary.main}`,
+                boxShadow: `0 0 25px ${theme.palette.primary.main}40`,
+                objectFit: 'cover',
+              }}
+            />
+
+            {/* Contact Icons */}
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Tooltip title="Email">
+                <IconButton
+                  component="a"
+                  href="mailto:jeroen.denayer@outlook.com"
+                  color="primary"
+                  size="large"
+                >
+                  <Email />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="GitHub">
+                <IconButton
+                  component="a"
+                  href="https://github.com/JeroenDenayer"
+                  target="_blank"
+                  color="primary"
+                  size="large"
+                >
+                  <GitHub />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="LinkedIn">
+                <IconButton
+                  component="a"
+                  href="https://www.linkedin.com/in/jeroendenayer/"
+                  target="_blank"
+                  color="primary"
+                  size="large"
+                >
+                  <LinkedIn />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="ArtStation">
+                <IconButton
+                  component="a"
+                  href="https://www.artstation.com/jeroendenayer"
+                  target="_blank"
+                  color="primary"
+                  size="large"
+                >
+                  <Brush />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Grid>
 
           {/* Bio */}
-          <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">
-              Welcome!
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              I&apos;m Jeroen Denayer, a C++ Programmer/Technical Artist fanatical about saving unnecessary mouse-clicks!
-              Having been an Artist myself, I know all about repetitive work and mindlessly repeating the same mouse-clicks to achieve the same thing for the 42nd time in a single day.
-              Exhausting! I say, no more! Since this realization, my passion has been to create user-friendly tools to enhance and speed up game development.
-            </p>
-          </div>
-        </div>
+          <Grid size={{ xs: 12, md: 7 }}>
+            <Typography variant="gradientH1" sx={{ mb: 2 }}>
+              About Me
+            </Typography>
 
-        {/* My Story */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">
-            My Journey
-          </h2>
-          <div className="bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-lg overflow-hidden shadow-lg border border-white/50 dark:border-blue-900/20 p-8">
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              Being in love with pretty game vistas, I started my game dev journey in 2019 by enrolling in the Game Graphics Production bachelor at Digital Arts and Entertainment (DAE) Howest Belgium.
-              In the 2nd year there was an elective
+            <Typography
+              variant="body1"
+              sx={{
+                color: theme.palette.text.secondary,
+                fontSize: '1.05rem',
+                lineHeight: 1.7,
+                maxWidth: 700,
+              }}
+            >
+              I’m Jeroen Denayer, a C++ programmer and technical artist turned toolmaker who became fascinated by how
+              much of creative work can be automated and improved. During my Game Graphics Production studies at DAE, I
+              discovered procedural workflows through Houdini and quickly grew interested in how smart tools can remove
+              repetitive tasks and streamline production. This eventually pushed me to dive deep into C++ and low-level
+              GPU programming. Now, I’m driven to build tools and pipelines that make complex work simpler, faster, and
+              far less repetitive.
+            </Typography>
+          </Grid>
+        </Grid>
 
-              I dream of creating real-time
-              This passion has grown naturally as back then, I was an artist myself studying Game Graphics Production at Howest Belgium.
-              During my studies I already pivoted to using Houdini for proceduralism to save time and gain flexibility.
-              This resulted in me doing my internship at Neopic (Gent) where I worked as a Technical Artist using Houdini to generate detailed worlds for Overpass 2.
-              Integrating this tool into Unreal Engine so artists could use it was an immensely valuable experience.
-              It made me realize how much room for workflow improvements there still is.
-              Bulk offline content generation is great and won&apos;t go away, but some things just must be at the artist&apos;s fingertips.
+{/* ================= SKILLS SECTION ================= */}
+<Box sx={{ mb: 6 }}>
+  <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
+    <Typography
+      variant="h4"
+      sx={{
+        fontWeight: 600,
+        background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        display: 'inline-block',
+      }}
+    >
+      Skills & Technologies
+    </Typography>
+  </Box>
 
-              and Game Development graduate from Howest Belgium.
-            </p>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4 italic">
-              During my education, I studied a comprehensive curriculum covering graphics fundamentals, applied math and physics, programming, game engine fundamentals, graphics programming, gameplay programming, tool development, and more. This broad foundation has prepared me to work in various aspects of game development.
-            </p>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              Today, I focus on creating breathtaking real-time productions such as games, AR and VR simulations. I&apos;m constantly exploring new techniques and technologies to push the boundaries of what&apos;s possible in interactive experiences, balancing artistic vision with technical implementation.
-            </p>
-          </div>
-        </div>
+  {/* Divider */}
+  <Box
+    sx={{
+      height: 2,
+      width: '60%',
+      mx: 'auto',
+      mb: 3,
+      background: 'linear-gradient(90deg, #3fa0ff, #7b72f0, #ec38bc)',
+      borderRadius: 1,
+      opacity: 0.5,
+    }}
+  />
 
-        {/* Skills */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">
-            My Skills
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-white to-purple-50 dark:from-gray-800 dark:to-purple-900/20 rounded-lg overflow-hidden shadow-lg border border-white/50 dark:border-purple-900/20 p-8">
-              <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">
-                Technical Skills
-              </h3>
-              <ul className="space-y-2">
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Game Development:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Unreal Engine, Game Engine Fundamentals, AR/VR Development</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Programming:</span>
-                  <span className="text-gray-600 dark:text-gray-300">C++, Python, Graphics Programming, Gameplay Programming</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Technical:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Tool Development, Shader Development, Software Engineering</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">3D Graphics:</span>
-                  <span className="text-gray-600 dark:text-gray-300">3D Modeling, Texturing, VFX, Animation</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Other:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Game Sound Integration, Applied Math and Physics</span>
-                </li>
-              </ul>
-            </div>
+  {/* ===== Languages (Centered, Compact) ===== */}
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      mb: 2,
+    }}
+  >
+    <Typography
+      variant="subtitle1"
+      sx={{
+        color: theme.palette.text.primary,
+        fontSize: '0.9rem',
+        mb: 0.5,
+      }}
+    >
+      Languages
+    </Typography>
 
-            <div className="bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-lg overflow-hidden shadow-lg border border-white/50 dark:border-blue-900/20 p-8">
-              <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">
-                Other Skills
-              </h3>
-              <ul className="space-y-2">
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">All-in Development:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Balancing game graphics and gameplay programming for a complete experience</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Problem Solving:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Analytical thinking and creative solutions for complex game development challenges</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Technical Design:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Creating efficient systems and architectures for games and real-time applications</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Adaptability:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Quick learning and mastery of new game development technologies and frameworks</span>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-1/3 font-medium">Collaboration:</span>
-                  <span className="text-gray-600 dark:text-gray-300">Working effectively across disciplines in game development teams</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25, alignItems: 'center' }}>
+      <Typography
+        variant="caption"
+        sx={{
+          color: theme.palette.text.secondary,
+          fontSize: '0.75rem',
+        }}
+      >
+        Dutch — Native
+      </Typography>
+      <Typography
+        variant="caption"
+        sx={{
+          color: theme.palette.text.secondary,
+          fontSize: '0.75rem',
+        }}
+      >
+        English — Fluent
+      </Typography>
+    </Box>
+  </Box>
 
-        {/* Interests */}
-        <div>
-          <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">
-            Beyond Game Development
-          </h2>
-          <div className="bg-gradient-to-br from-white to-green-50 dark:from-gray-800 dark:to-green-900/20 rounded-lg overflow-hidden shadow-lg border border-white/50 dark:border-green-900/20 p-8">
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              When I&apos;m not developing games or working on real-time applications, I enjoy exploring emerging technologies in interactive media. I&apos;m constantly inspired by the evolving world of game engines, AR/VR, and the intersection of art and technology.
-            </p>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4 italic">
-              My education in Game Development has given me a unique perspective on how different elements of a game come together—from engine programming to graphics, from gameplay to sound integration. This holistic understanding allows me to approach projects with both technical precision and creative vision.
-            </p>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              I&apos;m always open to new opportunities and collaborations in game development, interactive media, and real-time applications. Whether you need a gameplay programmer, tool developer, or all-in developer for your project, feel free to reach out to discuss how we can work together!
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+
+  {/* ===== Two Columns of Skill Groups ===== */}
+  <Grid
+    container
+    spacing={2}
+    justifyContent="center"
+    sx={{
+      px: { xs: 1, md: 2 },
+    }}
+  >
+    {/* Left Column */}
+    <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+      {[ 
+        { title: 'Programming Languages', items: ['C++', 'Python', 'HLSL/GLSL', 'C#', 'TypeScript', 'Lua'] },
+        { title: 'APIs & Libraries', items: ['Vulkan', 'OpenGL', 'ImGui', 'SDL', 'GLM', 'Assimp'] },
+        { title: 'Game Engines', items: ['Unreal Engine', 'Unity'] },
+      ].map((section) => (
+        <Box
+          key={section.title}
+          sx={{
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            border: `1px solid rgba(255,255,255,0.06)`,
+            borderRadius: 2,
+            p: 1.25,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.5,
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: theme.palette.text.primary,
+              fontSize: '0.85rem',
+              mb: 0.25,
+            }}
+          >
+            {section.title}
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 1,
+              alignItems: 'center',
+            }}
+          >
+            {section.items.map((item) => (
+              <Box
+                key={item}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  minWidth: 'fit-content',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 22,
+                    height: 22,
+                    opacity: 0.9,
+                    transition: 'transform 0.15s ease',
+                    '&:hover': { transform: 'scale(1.1)' },
+                  }}
+                >
+                  <IconCmp techName={item} />
+                </Box>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: theme.palette.text.secondary,
+                    fontSize: '0.7rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      ))}
+    </Grid>
+
+    {/* Right Column */}
+    <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+      {[
+        { title: 'Tools & Pipeline', items: ['Houdini', 'Visual Studio', 'Visual Studio Code', 'RenderDoc', 'CMake', 'Substance Designer', 'Substance Painter', 'Blender', '3DS Max', 'Maya'] },
+        { title: 'Art & Design', items: ['Photoshop', 'Premiere Pro', 'Marmoset Toolbag'] },
+      ].map((section) => (
+        <Box
+          key={section.title}
+          sx={{
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            border: `1px solid rgba(255,255,255,0.06)`,
+            borderRadius: 2,
+            p: 1.25,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.5,
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: theme.palette.text.primary,
+              fontSize: '0.85rem',
+              mb: 0.25,
+            }}
+          >
+            {section.title}
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 1,
+              alignItems: 'center',
+            }}
+          >
+            {section.items.map((item) => (
+              <Box
+                key={item}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  minWidth: 'fit-content',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 22,
+                    height: 22,
+                    opacity: 0.9,
+                    transition: 'transform 0.15s ease',
+                    '&:hover': { transform: 'scale(1.1)' },
+                  }}
+                >
+                  <IconCmp techName={item} />
+                </Box>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: theme.palette.text.secondary,
+                    fontSize: '0.7rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      ))}
+    </Grid>
+  </Grid>
+</Box>
+
+      </Container>
+    </Box>
   );
 }

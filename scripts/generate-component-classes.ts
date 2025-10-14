@@ -31,13 +31,15 @@ function getAllTsxFiles(dir: string): string[] {
 
 // Extract slots from styled() definitions
 function extractSlots(content: string): string[] {
-  const regex =
-    /styled\s*\([\s\S]*?\{\s*[\s\S]*?slot\s*:\s*['"]([^'"]+)['"][\s\S]*?\}\)/g;
+  // Matches: makeSlot(motion.div, 'root') or makeSlot(SomeComponent, "techCategory")
+  const regex = /makeSlot\s*\(\s*[^,]+,\s*['"]([^'"]+)['"](?:\s*,\s*\{[\s\S]*?\})?\s*\)/g;
   const slots: string[] = [];
   let match;
+
   while ((match = regex.exec(content)) !== null) {
     slots.push(match[1]);
   }
+
   return [...new Set(slots)];
 }
 
