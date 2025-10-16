@@ -69,7 +69,7 @@ export default function About() {
           >
             <Box
               component="img"
-              src="/profile.jpg"
+              src="other/profilepic.jpg"
               alt="Profile"
               sx={{
                 width: { xs: 200, md: 240 },
@@ -83,21 +83,22 @@ export default function About() {
 
             {/* Contact Icons */}
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Tooltip title="Email">
-                <IconButton
-                  component="a"
-                  href="mailto:jeroen.denayer@outlook.com"
-                  color="primary"
-                  size="large"
-                >
-                  <Email />
-                </IconButton>
-              </Tooltip>
+              <Tooltip title="Copy Email">
+                  <IconButton
+                    color="primary"
+                    size="large"
+                    onClick={() => {
+                      navigator.clipboard.writeText("jeroen@denayer.com");
+                    }}
+                  >
+                    <Email />
+                  </IconButton>
+                </Tooltip>
 
               <Tooltip title="GitHub">
                 <IconButton
                   component="a"
-                  href="https://github.com/JeroenDenayer"
+                  href="https://github.com/Jerreeee"
                   target="_blank"
                   color="primary"
                   size="large"
@@ -109,7 +110,7 @@ export default function About() {
               <Tooltip title="LinkedIn">
                 <IconButton
                   component="a"
-                  href="https://www.linkedin.com/in/jeroendenayer/"
+                  href="https://www.linkedin.com/in/jeroen-denayer"
                   target="_blank"
                   color="primary"
                   size="large"
@@ -147,12 +148,7 @@ export default function About() {
                 maxWidth: 700,
               }}
             >
-              I’m Jeroen Denayer, a C++ programmer and technical artist turned toolmaker who became fascinated by how
-              much of creative work can be automated and improved. During my Game Graphics Production studies at DAE, I
-              discovered procedural workflows through Houdini and quickly grew interested in how smart tools can remove
-              repetitive tasks and streamline production. This eventually pushed me to dive deep into C++ and low-level
-              GPU programming. Now, I’m driven to build tools and pipelines that make complex work simpler, faster, and
-              far less repetitive.
+I’m Jeroen Denayer, a technical artist and C++ programmer who became fascinated by how much of creative work can be automated and improved. During my Game Graphics Production studies at DAE, I discovered procedural workflows through Houdini and grew passionate about optimizing processes through smart tools. This interest eventually led me to pursue a second bachelor in Game Development, where I focused on C++ and low-level GPU programming. Now, I’m driven to build tools and pipelines that make complex work simpler, faster, and far less repetitive.
             </Typography>
           </Grid>
         </Grid>

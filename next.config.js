@@ -2,9 +2,6 @@
   const nextConfig = {
     output: 'export',
     images: { unoptimized: true },
-    devIndicators: {
-      buildActivity: false,
-    },
     trailingSlash: false,
     webpack(config) {
       // Find the existing file-loader rule that handles SVGs
@@ -33,6 +30,15 @@
       });
 
       return config;
+    },
+    // This will rewrite all internal hrefs like /page -> /page.html
+    async rewrites() {
+      return [
+        {
+          source: '/:path((?!.*\\.html$).*)', // match anything without .html
+          destination: '/:path.html',
+        },
+      ];
     },
   };
 

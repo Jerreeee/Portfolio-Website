@@ -18,7 +18,7 @@ export type ParentSizeObserverCmpProps = {
   mode?: "width" | "height" | "both";
 };
 
-export function ParentSizeObserver({
+export default function ParentSizeObserver({
   children,
   aspectRatio,
   mode = "both",

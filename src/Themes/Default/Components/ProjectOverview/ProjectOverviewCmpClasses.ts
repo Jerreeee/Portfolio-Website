@@ -5,7 +5,6 @@ import { createUtilityClasses } from '@/utils/createUtilityClasses';
 
 export const projectOverviewCmp = createUtilityClasses('ProjectOverviewCmp', [
   'root',
-  'header',
   'textBox',
   'techCategory',
   'techCategoryItem',

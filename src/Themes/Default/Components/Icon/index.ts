@@ -3,5 +3,5 @@
 // ----------------------------------------------------
 
 export { default as IconCmp } from './IconCmp';
-export type { IconCmpProps } from './IconCmp';
+export type { IconCmpProps, IconCmpSettings } from './IconCmp';
 export * from './IconCmpClasses';

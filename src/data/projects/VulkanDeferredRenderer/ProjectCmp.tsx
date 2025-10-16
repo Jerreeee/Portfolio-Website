@@ -1,172 +1,253 @@
-  'use client';
+'use client';
 
-  import React from 'react';
-  import { Box, Typography, Container, Grid, Divider } from '@mui/material';
-  import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
-  import { getMediaItemsFromManifest } from '@/utils/projectManifest';
-  import { ParentSizeObserver } from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
-  import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
-  import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
-  import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
-  import type { ProjectManifest } from "@/types/projectManifest";
-  import type { ProjectCmpProps } from '../project';
-  import { data } from './data';
-  import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
-  import { IconCmp } from '@/Themes/Default/Components/Icon';
+import React from 'react';
+import { Box, Typography, Container, Grid, Divider,
+  Accordion,
+AccordionSummary,
+AccordionDetails,
+} from '@mui/material';
+import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
+import { getMediaItemsFromManifest } from '@/utils/projectManifest';
+import ParentSizeObserver from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
+import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
+import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
+import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
+import type { ProjectManifest } from "@/types/projectManifest";
+import type { ProjectCmpProps } from '../project';
+import { data } from './data';
+import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
+import { IconCmp } from '@/Themes/Default/Components/Icon';
+import TimelineCmp from '@/Themes/Default/Components/Timeline/TimelineCmp';
 
-  export default function ProjectCmp({ project }: ProjectCmpProps) {
-    const manifest: ProjectManifest = project.manifest;
+export default function ProjectCmp({ project }: ProjectCmpProps) {
+  const manifest: ProjectManifest = project.manifest;
 
-    return (
-      <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
-        {/* ==================== HERO SECTION ==================== */}
-        <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography variant="gradientH1">
-            {data.title}
-          </Typography>
-
-          <MediaCmp
-            item={getMediaItemsFromManifest(manifest, ['PostProcess_Final_Outdoor.webp'])[0]}
-          />
-        </Container>
-
-        {/* ==================== OVERVIEW ==================== */}
-        <Typography variant="h3" align="center">
-          Overview
+  return (
+    <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
+      {/* ==================== HERO SECTION ==================== */}
+      <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
+        <Typography variant="gradientH1">
+          {data.title}
         </Typography>
-        <ProjectOverviewCmp project={project} />
+
+        <MediaCmp
+          item={getMediaItemsFromManifest(manifest, ['PostProcess_Final_Outdoor.webp'])[0]}
+        />
+      </Container>
+
+      {/* ==================== OVERVIEW ==================== */}
+      <Typography variant="h3" align="center">
+        Overview
+      </Typography>
+      <ProjectOverviewCmp project={project} />
+
+ {/* <div style={{ width: '100%', padding: '1rem', background: '#1e1e1e' }}>
+      <TimelineCmp
+        range={[0, 10]}          // timeline covers values from 0 to 10
+        interval={2}             // tick marks every 2 units (0, 2, 4, 6, 8, 10)
+        showTopBar               // enable top bar with tick labels
+        bars={[
+          // Layer 0: more granular bars
+          { layerIndex: 0, start: 0, end: 2.5, label: 'GBuffer Albedo', color: '#88C0D0' },
+          { layerIndex: 0, start: 2.5, end: 5, label: 'GBuffer Normal', color: '#81A1C1' },
+          { layerIndex: 0, start: 5, end: 7.5, label: 'GBuffer Metal/Rough', color: '#5E81AC' },
+          { layerIndex: 0, start: 7.5, end: 10, label: 'GBuffer Final', color: '#4C566A' },
+
+          // Layer 1: larger groupings that span multiple smaller ones
+          { layerIndex: 1, start: 0, end: 7.5, label: 'GBuffer Pass', color: '#A3BE8C' },
+          { layerIndex: 1, start: 7.5, end: 10, label: 'Lighting Pass', color: '#EBCB8B' },
+
+          // Layer 2: overall frame grouping
+          { layerIndex: 2, start: 0, end: 10, label: 'Frame Build', color: '#BF616A' },
+        ]}
+      />
+    </div> */}
 
 
-        <Divider sx={{ my: 6, opacity: 0.2 }} />
+      <Divider sx={{ my: 3, opacity: 0.2 }} />
 
-        {/* ==================== ARCHITECTURE SECTION ==================== */}
-        <Container maxWidth="md" sx={{ mb: 10 }}>
-          <Typography variant="h3" align="center" gutterBottom>
-            Architecture
-          </Typography>
+      {/* ==================== MAIN FEATURES ==================== */}
+      <Container maxWidth="md" sx={{ mb: 6 }}>
+      <Typography
+        variant="h3"
+        align="center"
+        gutterBottom
+        sx={{ mb: 2, fontSize: '1.75rem' }}
+      >
+        Main Features
+      </Typography>
 
-          <Typography variant="body1" sx={{ color: 'text.secondary', mb: 4 }}>
-            The renderer is built around a modular frame graph system that defines each render pass
-            explicitly, controlling synchronization and resource transitions between stages.
-          </Typography>
+      <Grid container spacing={1.5}>
+        {[
+          'Deferred Rendering',
+          'Physically-based materials (PBR)',
+          'Directional/Point Lights',
+          'Skybox',
+          'IBL (diffuse irradiance)',
+          'Physical Camera Settings',
+          'Tone Mapping',
+        ].map((feature, index) => (
+          <Grid size={{ xs: 12, sm: 6 }} key={index}>
+            <Box
+              sx={{
+                p: 1,
+                bgcolor: 'rgba(255,255,255,0.04)',
+                borderRadius: 1.5,
+                textAlign: 'center',
+                border: '1px solid rgba(255,255,255,0.06)',
+                transition: 'background 0.2s ease',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.4,
+                }}
+              >
+                {feature}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+      </Container>
 
-          {/* You could later replace this placeholder with a pipeline diagram image */}
+      <Divider sx={{ my: 3, opacity: 0.2 }} />
+
+      {/* ==================== RENDER PASS BREAKDOWN ==================== */}
+      <Container maxWidth="lg" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Frame Breakdown
+        </Typography>
+
+        <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
+          {size => (
+            <ImageMultiCompareCmp
+              size={size}
+              images={getMediaItemsFromManifest(manifest, [
+                'depth.webp',
+                'GBuffer_Albedo.webp',
+                'GBuffer_MetallicRoughness.webp',
+                'LightingPass_InWorldNormal.webp',
+                'GBuffer_WorldNormal.webp',
+                'LightingPass_Ambient_Albedo.webp',
+                'LightingPass_DirLight_Albedo.webp',
+                'LightingPass_DirLight_AlbedoNormal.webp',
+                'LightingPass_DirLight_PBR.webp',
+                'LightingPass_DirAndPointLight_PBR.webp',
+                'LightingPass_DirAndPointLight_PBR_Skybox.webp',
+                'LightingPass_DirAndPointLight_PBR_Skybox_IBL.webp',
+              ]).filter((item): item is ImageCompareItem => item.type === 'image')}
+            />
+          )}
+        </ParentSizeObserver>
+      </Container>
+
+      <Divider sx={{ my: 3, opacity: 0.2 }} />
+
+      {/* ==================== CODE SNIPPETS ==================== */}
+      <Container maxWidth="md" sx={{ mb: 12 }}>
+      <Typography variant="h3" align="center">
+        Code Snippets
+      </Typography>
+
+        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
+          Here some code snippets demonstrating key part of my Deferred Renderer.
+        </Typography>
+
+      {[
+          {
+            title: 'Depth Prepass',
+            description:
+              'This function handles my Depth Pre-Pass stage. I first transition the depth image into the proper layout for depth writes, then begin a depth-only rendering pass using Vulkan’s dynamic rendering. I bind the depth pre-pass pipeline, set the viewport and scissor, and draw all meshes to fill the depth buffer. This ensures early depth testing works efficiently in later passes like the G-buffer and lighting stages.',
+            file: '/projects/VulkanDeferredRenderer/Code/DepthPrepass.cpp',
+          },
+          {
+            title: 'Lighting Pass — Fragment Shader',
+            description:
+              'This is my deferred lighting fragment shader. It reconstructs the world position from the depth buffer, samples the G-buffer textures (albedo, normal, metallic, roughness), and applies physically-based lighting (PBR). It supports both directional and point lights, using GGX microfacet BRDF for specular reflection, Schlick’s Fresnel approximation, and Smith’s geometry term. When no geometry is present (depth ≥ 1), it renders the skybox. It also includes image-based lighting (IBL) using a diffuse irradiance cubemap for ambient contribution. The final output is the combined diffuse + specular lighting written to outColor.',
+            file: '/projects/VulkanDeferredRenderer/Code/LightingFrag.glsl',
+          },
+          {
+            title: 'Creating Descriptor Set Layouts',
+            description:
+              'This function creates all the descriptor set layouts used in my renderer. To make this process easier and less error-prone, I used a builder pattern for the Vulkan descriptor bindings and layouts. Instead of manually filling in big Vulkan structs every time, I can call methods like .SetDescriptorType(...).SetStageFlags(...).Build(). This makes it a lot cleaner and faster to set up all my descriptor sets — for the camera, materials, G-buffer, lights, and post-processing — without repeating tons of Vulkan boilerplate.',
+            file: '/projects/VulkanDeferredRenderer/Code/CreateDescriptorSetLayouts.cpp',
+          },
+        ].map((snippet, index) => (
           <Box
+            key={index}
             sx={{
-              width: '100%',
-              height: 400,
-              bgcolor: 'rgba(255,255,255,0.05)',
+              mb: 2,
+              backgroundColor: 'rgba(255,255,255,0.03)',
               borderRadius: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'text.disabled',
-              fontStyle: 'italic',
+              border: '1px solid rgba(255,255,255,0.08)',
+              overflow: 'hidden',
             }}
           >
-            [ Pipeline Diagram Placeholder ]
-          </Box>
-        </Container>
-
-        <Divider sx={{ my: 6, opacity: 0.2 }} />
-
-        {/* ==================== RENDER PASS BREAKDOWN ==================== */}
-        <Container maxWidth="lg" sx={{ mb: 10 }}>
-          <Typography variant="h3" align="center" gutterBottom>
-            Render Pass Breakdown
-          </Typography>
-
-          <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-            {size => (
-              <ImageMultiCompareCmp
-                size={size}
-                images={getMediaItemsFromManifest(manifest, [
-                  'depth.webp',
-                  'GBuffer_Albedo.webp',
-                  'GBuffer_MetallicRoughness.webp',
-                  'GBuffer_WorldNormal.webp',
-                ]).filter((item): item is ImageCompareItem => item.type === 'image')}
-              />
-            )}
-          </ParentSizeObserver>
-
-          <Typography variant="body1" align="center" sx={{ mt: 3, color: 'text.secondary' }}>
-            Multiple G-buffer render targets capture position, normal, albedo, and material properties,
-            which are later combined in the lighting pass.
-          </Typography>
-        </Container>
-
-        <Divider sx={{ my: 6, opacity: 0.2 }} />
-
-        {/* ==================== MAIN FEATURES ==================== */}
-        <Container maxWidth="md" sx={{ mb: 10 }}>
-          <Typography variant="h3" align="center" gutterBottom>
-            Main Features
-          </Typography>
-
-          <Grid container spacing={3} sx={{ mt: 2 }}>
-            {[
-              'Deferred shading pipeline with HDR lighting',
-              'Physically-based materials (PBR)',
-              'SSAO and Bloom post-processing',
-              'Dynamic GPU descriptor management',
-              'Frame graph and synchronization system',
-            ].map((feature, index) => (
-              <Grid size={{ xs: 12, sm: 6 }} key={index}>
-                <Box
+            <Accordion
+              disableGutters
+              sx={{
+                backgroundColor: 'transparent',
+                '&:before': { display: 'none' },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<span style={{ color: '#7b72f0', fontSize: '1.2rem' }}>▸</span>}
+                sx={{
+                  '& .MuiAccordionSummary-content': { margin: 0 },
+                  '&.Mui-expanded': { backgroundColor: 'rgba(255,255,255,0.04)' },
+                  transition: 'background 0.2s',
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
                   sx={{
-                    p: 2,
-                    bgcolor: 'rgba(255,255,255,0.05)',
-                    borderRadius: 2,
-                    textAlign: 'center',
+                    color: 'text.primary',
+                    fontWeight: 500,
+                    fontSize: '0.9rem',
                   }}
                 >
-                  <Typography variant="body1">{feature}</Typography>
+                  {snippet.title}
+                </Typography>
+              </AccordionSummary>
+
+              <AccordionDetails sx={{ p: 0 }}>
+                {/* --- Description Text --- */}
+                <Box sx={{ px: 2, pt: 1, pb: 2 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
+                  >
+                    {snippet.description}
+                  </Typography>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
 
-          <Box sx={{ mt: 6 }}>
-            <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-              <CodeBlockCmp file="/projects/VulkanDeferredRenderer/Code/Render.cpp" />
-            </ParentSizeObserver>
+                {/* --- Code Block --- */}
+                <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
+                  <CodeBlockCmp file={snippet.file} />
+                </ParentSizeObserver>
+              </AccordionDetails>
+            </Accordion>
           </Box>
-        </Container>
+        ))}
+      </Container>
 
-        <Divider sx={{ my: 6, opacity: 0.2 }} />
+      <Divider sx={{ my: 3, opacity: 0.2 }} />
 
-        {/* ==================== TECHNICAL CHALLENGES ==================== */}
-        <Container maxWidth="md" sx={{ mb: 10 }}>
-          <Typography variant="h3" align="center" gutterBottom>
-            Technical Challenges & Learnings
-          </Typography>
+      {/* ==================== TECHNICAL CHALLENGES ==================== */}
+      <Container maxWidth="md" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Technical Challenges & Learnings
+        </Typography>
 
-          <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
-            One of the key challenges was efficiently managing synchronization across Vulkan’s multiple
-            subpasses. I implemented a lightweight dependency graph that tracks read/write hazards
-            between attachments, reducing unnecessary barriers.
-          </Typography>
-
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-            I also designed a descriptor set allocator to handle thousands of dynamic bindings per frame,
-            significantly improving performance when rendering large scenes.
-          </Typography>
-        </Container>
-
-        <Divider sx={{ my: 6, opacity: 0.2 }} />
-
-        {/* ==================== CLOSING / FUTURE WORK ==================== */}
-        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
-          <Typography variant="h4" gutterBottom>
-            Future Work
-          </Typography>
-
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-            Next steps include clustered deferred lighting, GPU-driven culling, and temporal
-            anti-aliasing to further improve performance and image quality.
-          </Typography>
-        </Container>
-      </Box>
-    );
-  }
+        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
+One of the main challenges I faced was properly managing synchronization between Vulkan’s different subpasses and stages. Making sure each resource was in the right state at the right moment required quite a bit of experimentation and debugging. Another challenge was handling the lifetime of resources, especially separating those that need to exist per frame from those that persist across frames. Setting up a clean deletion queue system helped a lot with that. I also had to carefully design the descriptor set layout, deciding how often each set should update and how to organize them to keep things efficient and maintainable.
+        </Typography>
+      </Container>
+    </Box>
+  );
+}

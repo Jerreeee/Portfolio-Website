@@ -9,6 +9,7 @@ import type {
   CodeBlockCmpSettings,
   CodeInlineCmpSettings,
 } from '@/Themes/Default/Components/Code';
+import type { IconCmpSettings } from '@/Themes/Default/Components/Icon';
 import type {
   ImageCompareCmpSettings,
   ImageMultiCompareCmpSettings,
@@ -24,10 +25,12 @@ import type { ProjectsOverviewCmpSettings } from '@/Themes/Default/Components/Pr
 import type { ScrollBarCmpSettings } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpSettings } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpSettings } from '@/Themes/Default/Components/SegmentSlider';
+import type { TimelineCmpSettings } from '@/Themes/Default/Components/Timeline';
 
 export interface ComponentNameToSettings {
   CodeBlockCmp: CodeBlockCmpSettings;
   CodeInlineCmp: CodeInlineCmpSettings;
+  IconCmp: IconCmpSettings;
   ImageCompareCmp: ImageCompareCmpSettings;
   ImageMultiCompareCmp: ImageMultiCompareCmpSettings;
   MarkdownRendererCmp: MarkdownRendererCmpSettings;
@@ -41,6 +44,7 @@ export interface ComponentNameToSettings {
   ScrollBarCmp: ScrollBarCmpSettings;
   ScrollableCmp: ScrollableCmpSettings;
   SegmentSliderCmp: SegmentSliderCmpSettings;
+  TimelineCmp: TimelineCmpSettings;
 }
 
 /**

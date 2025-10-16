@@ -4,18 +4,18 @@ export const getProjectBySlug = (slug: string) =>
   projects.find((project) => project.slug === slug);
 
 // AUTO-GENERATED PROJECT IMPORTS START
-import { data as BubbleBobbleData } from '@/data/projects/BubbleBobble/data';
-import BubbleBobbleCmp from '@/data/projects/BubbleBobble/ProjectCmp';
-import { projectManifest as BubbleBobbleManifest } from '@/data/projects/BubbleBobble/manifest';
+import { data as LuaCPPSnakeData } from '@/data/projects/LuaCPPSnake/data';
+import LuaCPPSnakeCmp from '@/data/projects/LuaCPPSnake/ProjectCmp';
+import { projectManifest as LuaCPPSnakeManifest } from '@/data/projects/LuaCPPSnake/manifest';
 
 import { data as VulkanDeferredRendererData } from '@/data/projects/VulkanDeferredRenderer/data';
 import VulkanDeferredRendererCmp from '@/data/projects/VulkanDeferredRenderer/ProjectCmp';
 import { projectManifest as VulkanDeferredRendererManifest } from '@/data/projects/VulkanDeferredRenderer/manifest';
 
-const BubbleBobbleProjectInfo: ProjectInfo = {
-  ...BubbleBobbleData,
-  component: BubbleBobbleCmp,
-  manifest: BubbleBobbleManifest,
+const LuaCPPSnakeProjectInfo: ProjectInfo = {
+  ...LuaCPPSnakeData,
+  component: LuaCPPSnakeCmp,
+  manifest: LuaCPPSnakeManifest,
 };
 
 const VulkanDeferredRendererProjectInfo: ProjectInfo = {
@@ -25,7 +25,21 @@ const VulkanDeferredRendererProjectInfo: ProjectInfo = {
 };
 
 export const projects: ProjectInfo[] = [
-  BubbleBobbleProjectInfo,
+  LuaCPPSnakeProjectInfo,
   VulkanDeferredRendererProjectInfo,
 ];
 // AUTO-GENERATED PROJECT IMPORTS END
+
+
+
+
+
+
+
+
+
+
+
+
+
+

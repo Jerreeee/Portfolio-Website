@@ -295,10 +295,6 @@ export const projectManifest: ProjectManifest = {
     "width": 2852,
     "height": 318,
     "aspectRatio": 8.968553459119496
-  },
-  "intro_video": {
-    "type": "embeddedVideo",
-    "src": "https://vimeo.com/123456"
   }
 }
 };
