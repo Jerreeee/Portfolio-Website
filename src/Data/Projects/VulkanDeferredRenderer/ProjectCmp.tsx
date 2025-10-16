@@ -18,6 +18,7 @@ import { data } from './data';
 import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 import TimelineCmp from '@/Themes/Default/Components/Timeline/TimelineCmp';
+import PATHS from '@/Config/paths';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
@@ -163,19 +164,19 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             title: 'Depth Prepass',
             description:
               'This function handles my Depth Pre-Pass stage. I first transition the depth image into the proper layout for depth writes, then begin a depth-only rendering pass using Vulkan’s dynamic rendering. I bind the depth pre-pass pipeline, set the viewport and scissor, and draw all meshes to fill the depth buffer. This ensures early depth testing works efficiently in later passes like the G-buffer and lighting stages.',
-            file: '/projects/VulkanDeferredRenderer/Code/DepthPrepass.cpp',
+            file: 'DepthPrepass.cpp',
           },
           {
             title: 'Lighting Pass — Fragment Shader',
             description:
               'This is my deferred lighting fragment shader. It reconstructs the world position from the depth buffer, samples the G-buffer textures (albedo, normal, metallic, roughness), and applies physically-based lighting (PBR). It supports both directional and point lights, using GGX microfacet BRDF for specular reflection, Schlick’s Fresnel approximation, and Smith’s geometry term. When no geometry is present (depth ≥ 1), it renders the skybox. It also includes image-based lighting (IBL) using a diffuse irradiance cubemap for ambient contribution. The final output is the combined diffuse + specular lighting written to outColor.',
-            file: '/projects/VulkanDeferredRenderer/Code/LightingFrag.glsl',
+            file: 'LightingFrag.glsl',
           },
           {
             title: 'Creating Descriptor Set Layouts',
             description:
               'This function creates all the descriptor set layouts used in my renderer. To make this process easier and less error-prone, I used a builder pattern for the Vulkan descriptor bindings and layouts. Instead of manually filling in big Vulkan structs every time, I can call methods like .SetDescriptorType(...).SetStageFlags(...).Build(). This makes it a lot cleaner and faster to set up all my descriptor sets — for the camera, materials, G-buffer, lights, and post-processing — without repeating tons of Vulkan boilerplate.',
-            file: '/projects/VulkanDeferredRenderer/Code/CreateDescriptorSetLayouts.cpp',
+            file: 'CreateDescriptorSetLayouts.cpp',
           },
         ].map((snippet, index) => (
           <Box
@@ -228,7 +229,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
 
                 {/* --- Code Block --- */}
                 <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-                  <CodeBlockCmp file={snippet.file} />
+                  <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file })} />
                 </ParentSizeObserver>
               </AccordionDetails>
             </Accordion>

@@ -3,8 +3,8 @@ import { ProjectRequiredInfo } from '@/Data/Projects/project';
 export const data: ProjectRequiredInfo = {
   slug: 'VulkanDeferredRenderer',
   title: 'Vulkan Deferred Renderer',
-  thumbnailImage: '/Projects/VulkanDeferredRenderer/Images/PostProcess_Final_Outdoor.webp',
-  heroImage: '/Projects/VulkanDeferredRenderer/PostProcess_Final_Outdoor.webp',
+  thumbnailImage: 'PostProcess_Final_Outdoor.webp',
+  heroImage: 'PostProcess_Final_Outdoor.webp',
   shortDescription: 'A physically-based rendering pipeline built in C++ and Vulkan.',
   mediumDescription: 'A Vulkan-based deferred rendering pipeline written in C++. Built to explore how modern rendering works and to learn Vulkan’s low-level API. It supports PBR materials, multiple light types, HDR tone mapping, and uses newer Vulkan features like Dynamic Rendering, Synchronization2, and Bindless Rendering.',
 

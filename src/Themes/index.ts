@@ -9,3 +9,5 @@ export const themeRegistry: Record<string, Record<string, ThemeOptions>> = {
     Dark: defaultDarkOptions,
   },
 };
+
+export type ThemeName = keyof typeof themeRegistry;

@@ -6,9 +6,10 @@
 
 import fs from "fs";
 import path from "path";
+import PATHS from '../src/Config/paths';
 
-const COMPONENTS_DIR = path.join(process.cwd(), "src", "Themes", "Default", "Components");
-const OUTPUT_FILE = path.join(process.cwd(), "src", "Types", "componentSettings.d.ts");
+const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
+const OUTPUT_FILE = path.join(process.cwd(), PATHS.COMPONENT_SETTINGS());
 
 // Recursively find all index.ts files
 function getAllIndexFiles(dir: string): string[] {
@@ -118,7 +119,7 @@ function run(): void {
   }
 
   const generated = generateImportsAndInterface(componentsByFolder);
-  const content = `// src/Types/componentSettings.d.ts
+  const content = `// ${PATHS.COMPONENT_SETTINGS}
 /**
  * Auto-generated mapping between component names and their Settings types.
  * Used to power theme configuration and typing.

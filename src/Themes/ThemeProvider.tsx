@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { createTheme, Theme, ThemeOptions } from '@mui/material/styles';
 import { StyledEngineProvider as MuiStyledEngineProvider, ThemeProvider as MuiThemeProvider, CssBaseline as MuiCssBaseline } from '@mui/material';
-import { themeRegistry } from 'Themes';
+import { themeRegistry } from './index';
 
 interface ThemeID {
   name: string;

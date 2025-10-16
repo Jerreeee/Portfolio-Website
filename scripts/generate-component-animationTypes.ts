@@ -9,20 +9,10 @@
 
 import fs from "fs";
 import path from "path";
+import PATHS from '../src/Config/paths';
 
-const COMPONENTS_DIR = path.join(
-  process.cwd(),
-  "src",
-  "Themes",
-  "Default",
-  "Components"
-);
-const OUTPUT_FILE = path.join(
-  process.cwd(),
-  "src",
-  "Types",
-  "componentAnimations.d.ts"
-);
+const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
+const OUTPUT_FILE = path.join(process.cwd(), PATHS.COMPONENT_ANIMATIONS());
 
 // Recursively find all index.ts files
 function getAllIndexFiles(dir: string): string[] {
@@ -100,7 +90,7 @@ ${interfaceEntries}
 }
 
 // Static header
-const staticHeader = `// src/Types/componentAnimations.d.ts
+const staticHeader = `// ${PATHS.COMPONENT_ANIMATIONS}
 import type { AnimationProps } from 'framer-motion';
 
 /**

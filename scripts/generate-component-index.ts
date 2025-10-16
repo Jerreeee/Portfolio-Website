@@ -6,8 +6,9 @@
 
 import fs from "fs";
 import path from "path";
+import PATHS from '../src/Config/paths';
 
-const BASE_DIR = path.join(process.cwd(), "src", "Themes", "Default", "Components");
+const BASE_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
 
 // Helpers
 const firstLetterToLower = (str: string): string =>

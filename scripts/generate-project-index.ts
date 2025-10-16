@@ -4,8 +4,9 @@
 
 import fs from "fs";
 import path from "path";
+import PATHS from '../src/Config/paths';
 
-const dataProjectsDir = path.join(process.cwd(), "src", "Data", "Projects");
+const dataProjectsDir = path.join(process.cwd(), PATHS.SRC_PROJECTS());
 const indexFile = path.join(dataProjectsDir, "index.ts");
 
 // Get list of subfolders (each project)
@@ -39,9 +40,9 @@ const validProjects: string[] = projectFolders.filter((name) => {
 // Generate import statements
 const imports = validProjects
   .map(
-    (name) => `import { data as ${name}Data } from '@/Data/Projects/${name}/data';
-import ${name}Cmp from '@/Data/Projects/${name}/ProjectCmp';
-import { projectManifest as ${name}Manifest } from '@/Data/Projects/${name}/manifest';`
+    name => `import { data as ${name}Data } from '${PATHS.PROJECT_DATA({ projectName: name })}';
+import ${name}Cmp from '${PATHS.PROJECT_COMPONENT({ projectName: name })}';
+import { projectManifest as ${name}Manifest } from '${PATHS.PROJECT_MANIFEST({ projectName: name })}';`
   )
   .join("\n\n");
 

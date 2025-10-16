@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
+import PATHS from '../src/Config/paths';
 
-const COMPONENTS_DIR = path.join(process.cwd(), "src", "Themes", "Default", "Components");
-const AUGMENTATION_FILE = path.join(process.cwd(), "src", "Types", "Overrides", "mui-theme-augmentation.d.ts");
+const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
+const AUGMENTATION_FILE = path.join(process.cwd(), PATHS.MUI_THEME_AUGMENTATION());
 
 // Regex matchers for auto-generated blocks
 const blockRegex = (name: string) =>

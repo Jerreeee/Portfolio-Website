@@ -17,6 +17,7 @@ import type { ProjectCmpProps } from '../project';
 import { data } from './data';
 import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
+import PATHS from '@/Config/paths';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
@@ -53,12 +54,12 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             title: 'snake_game.lua',
             description:
               'This is the main lua file that initializes the game, sets up the window, and contains the main game loop. The game loop handles input, updates the game state, and renders the game each frame.',
-            file: '/projects/LuaCPPSnake/Code/snake_game.lua',
+            file: 'snake_game.lua',
           },
           {
             title: 'Lua C++ Bindings',
             description: 'In this part of the code, I set up all Lua bindings for my engine using Sol2. It exposes key C++ classes like ColorRGB, Bitmap, and GameEngine to Lua, allowing scripts to create objects, call engine functions, and interact with the rendering and game logic directly. To keep it organized, I grouped everything inside Game::CreateLuaBindings(), which handles all the registrations in one place.',
-            file: '/projects/LuaCPPSnake/Code/CreateLuaBindings.cpp',
+            file: 'CreateLuaBindings.cpp',
           },
         ].map((snippet, index) => (
           <Box
@@ -111,7 +112,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
 
                 {/* --- Code Block --- */}
                 <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-                  <CodeBlockCmp file={snippet.file} />
+                  <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file })} />
                 </ParentSizeObserver>
               </AccordionDetails>
             </Accordion>
