@@ -1,5 +1,5 @@
 // ----------------------------------------------------
-// Generates src/types/componentAnimations.d.ts
+// Generates src/Types/componentAnimations.d.ts
 // by scanning each index.ts for exported components
 // (and/or re-exports from *Classes.ts), then importing
 // `${Name}ClassKey` from that folder's index.
@@ -100,7 +100,7 @@ ${interfaceEntries}
 }
 
 // Static header
-const staticHeader = `// src/types/componentAnimations.d.ts
+const staticHeader = `// src/Types/componentAnimations.d.ts
 import type { AnimationProps } from 'framer-motion';
 
 /**

@@ -1,6 +1,7 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import pluginImport from "eslint-plugin-import"; // ✅ add this
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -19,12 +20,17 @@ export default [
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    plugins: {
+      import: pluginImport, // ✅ register the plugin
+    },
     rules: {
-      // Optional: relax noisy rules so builds don’t fail
+      // enforce case-sensitive imports
+      "import/no-unresolved": ["error", { caseSensitive: true }],
+
+      // Optional: relax noisy TypeScript rules
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-empty-object-type": "warn",
-      // "@typescript-eslint/no-empty-object-type": "off",
     },
   },
 ];

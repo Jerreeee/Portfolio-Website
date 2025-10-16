@@ -1,9 +1,14 @@
   /** @type {import('next').NextConfig} */
+
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+
   const nextConfig = {
     output: 'export',
     images: { unoptimized: true },
     trailingSlash: false,
     webpack(config) {
+      config.plugins.push(new CaseSensitivePathsPlugin());
+
       // Find the existing file-loader rule that handles SVGs
       const fileLoaderRule = config.module.rules.find(
         (rule) =>
@@ -30,15 +35,6 @@
       });
 
       return config;
-    },
-    // This will rewrite all internal hrefs like /page -> /page.html
-    async rewrites() {
-      return [
-        {
-          source: '/:path((?!.*\\.html$).*)', // match anything without .html
-          destination: '/:path.html',
-        },
-      ];
     },
   };
 

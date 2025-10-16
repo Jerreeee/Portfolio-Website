@@ -1,5 +1,5 @@
   import { notFound } from 'next/navigation';
-  import { projects, getProjectBySlug } from '@/data/projects';
+  import { projects, getProjectBySlug } from '@/Data/Projects';
   import ProjectDetailsClient from './ProjectDetailsClient';
 
   export async function generateStaticParams(): Promise<{ slug: string }[]> {
@@ -13,7 +13,7 @@
     if (!project)
       return notFound();
 
-    const mod = await import(`@/data/projects/${slug}/manifest`);
+    const mod = await import(`@/Data/Projects/${slug}/manifest`);
     project.manifest = mod.projectManifest;
 
     {/* Wrapping everything in a client side component. Otherwise generateStaticParams

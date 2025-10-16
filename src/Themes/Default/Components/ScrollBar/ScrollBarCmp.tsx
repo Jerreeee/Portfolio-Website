@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { scrollBarCmp } from './ScrollBarCmpClasses';
 
 // =====================================================================

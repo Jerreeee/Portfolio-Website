@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, ReactNode } from "react";
-import { Size } from "@/types/extra";
+import { Size } from "@/Types/extra";
 import { styled } from "@mui/material/styles";
 
 // =====================================================================

@@ -1,4 +1,4 @@
-// src/types/componentAnimations.d.ts
+// src/Types/componentAnimations.d.ts
 import type { AnimationProps } from 'framer-motion';
 
 /**

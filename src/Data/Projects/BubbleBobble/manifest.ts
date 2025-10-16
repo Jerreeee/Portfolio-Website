@@ -1,4 +1,4 @@
-import type { ProjectManifest } from "@/types/projectManifest";
+import type { ProjectManifest } from "@/Types/projectManifest";
 
 export const projectManifest: ProjectManifest = {
   media: {

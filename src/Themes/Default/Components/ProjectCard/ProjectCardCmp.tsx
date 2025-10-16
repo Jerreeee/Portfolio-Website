@@ -5,9 +5,9 @@
   import { motion } from 'framer-motion';
   import { Card, CardContent, Typography } from '@mui/material';
   import { useTheme } from '@/Themes/ThemeProvider'
-  import { ProjectInfo } from '@/data/projects/project';
+  import { ProjectInfo } from '@/Data/Projects/project';
   import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
-  import { makeSlotFactory } from '@/utils/makeSlotFactory';
+  import { makeSlotFactory } from '@/Utils/makeSlotFactory';
   import { projectCardCmp } from './ProjectCardCmpClasses';
 
   // =====================================================================

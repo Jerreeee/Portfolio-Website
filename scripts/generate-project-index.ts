@@ -1,11 +1,11 @@
 // ----------------------------------------------------
-// Update src/data/projects/index.ts
+// Update src/Data/Projects/index.ts
 // ----------------------------------------------------
 
 import fs from "fs";
 import path from "path";
 
-const dataProjectsDir = path.join(process.cwd(), "src", "data", "projects");
+const dataProjectsDir = path.join(process.cwd(), "src", "Data", "Projects");
 const indexFile = path.join(dataProjectsDir, "index.ts");
 
 // Get list of subfolders (each project)
@@ -39,9 +39,9 @@ const validProjects: string[] = projectFolders.filter((name) => {
 // Generate import statements
 const imports = validProjects
   .map(
-    (name) => `import { data as ${name}Data } from '@/data/projects/${name}/data';
-import ${name}Cmp from '@/data/projects/${name}/ProjectCmp';
-import { projectManifest as ${name}Manifest } from '@/data/projects/${name}/manifest';`
+    (name) => `import { data as ${name}Data } from '@/Data/Projects/${name}/data';
+import ${name}Cmp from '@/Data/Projects/${name}/ProjectCmp';
+import { projectManifest as ${name}Manifest } from '@/Data/Projects/${name}/manifest';`
   )
   .join("\n\n");
 

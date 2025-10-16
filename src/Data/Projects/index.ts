@@ -1,16 +1,16 @@
-import { ProjectInfo } from '@/data/projects/project'
+import { ProjectInfo } from '@/Data/Projects/project'
 
 export const getProjectBySlug = (slug: string) =>
   projects.find((project) => project.slug === slug);
 
 // AUTO-GENERATED PROJECT IMPORTS START
-import { data as LuaCPPSnakeData } from '@/data/projects/LuaCPPSnake/data';
-import LuaCPPSnakeCmp from '@/data/projects/LuaCPPSnake/ProjectCmp';
-import { projectManifest as LuaCPPSnakeManifest } from '@/data/projects/LuaCPPSnake/manifest';
+import { data as LuaCPPSnakeData } from '@/Data/Projects/LuaCPPSnake/data';
+import LuaCPPSnakeCmp from '@/Data/Projects/LuaCPPSnake/ProjectCmp';
+import { projectManifest as LuaCPPSnakeManifest } from '@/Data/Projects/LuaCPPSnake/manifest';
 
-import { data as VulkanDeferredRendererData } from '@/data/projects/VulkanDeferredRenderer/data';
-import VulkanDeferredRendererCmp from '@/data/projects/VulkanDeferredRenderer/ProjectCmp';
-import { projectManifest as VulkanDeferredRendererManifest } from '@/data/projects/VulkanDeferredRenderer/manifest';
+import { data as VulkanDeferredRendererData } from '@/Data/Projects/VulkanDeferredRenderer/data';
+import VulkanDeferredRendererCmp from '@/Data/Projects/VulkanDeferredRenderer/ProjectCmp';
+import { projectManifest as VulkanDeferredRendererManifest } from '@/Data/Projects/VulkanDeferredRenderer/manifest';
 
 const LuaCPPSnakeProjectInfo: ProjectInfo = {
   ...LuaCPPSnakeData,
@@ -29,6 +29,14 @@ export const projects: ProjectInfo[] = [
   VulkanDeferredRendererProjectInfo,
 ];
 // AUTO-GENERATED PROJECT IMPORTS END
+
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,6 @@
 import type { ReactNode, FC } from 'react';
-import { ProjectManifest } from "@/types/projectManifest";
-import type { IconKey } from '@/data/Icons';
+import { ProjectManifest } from "@/Types/projectManifest";
+import type { IconKey } from '@/Data/Icons';
 
   export interface TechInfo {
     name: IconKey | (string & {});

@@ -1,5 +1,5 @@
 // ----------------------------------------------------
-// Generates src/types/componentSettings.d.ts
+// Generates src/Types/componentSettings.d.ts
 // by scanning component index.ts files for exported *CmpSettings types
 // Groups components by folder and uses single-line or multi-line imports
 // ----------------------------------------------------
@@ -118,7 +118,7 @@ function run(): void {
   }
 
   const generated = generateImportsAndInterface(componentsByFolder);
-  const content = `// src/types/componentSettings.d.ts
+  const content = `// src/Types/componentSettings.d.ts
 /**
  * Auto-generated mapping between component names and their Settings types.
  * Used to power theme configuration and typing.

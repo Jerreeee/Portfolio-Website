@@ -1,15 +1,15 @@
 // ----------------------------------------------------
-// Generates data/projects/${projectName}/manifest.ts per project
+// Generates Data/Projects/${projectName}/manifest.ts per project
 // ----------------------------------------------------
 
 import fs from "fs";
 import path from "path";
 import { imageSize } from "image-size";
 
-import { ProjectManifest, MediaManifestEntry, Media } from "@/types/projectManifest";
+import { ProjectManifest, MediaManifestEntry, Media } from "@/Types/projectManifest";
 
-const projectsDir = path.join(process.cwd(), "public", "projects");
-const dataProjectsDir = path.join(process.cwd(), "src", "data", "projects");
+const projectsDir = path.join(process.cwd(), "public", "Projects");
+const dataProjectsDir = path.join(process.cwd(), "src", "Data", "Projects");
 
 // Get list of subfolders (each representing a project)
 const projectFolders = fs.readdirSync(projectsDir)
@@ -66,7 +66,7 @@ projectFolders.forEach((projectName) => {
     }
   }
 
-  // Create directory under src/data/projects/${projectName}/ if needed
+  // Create directory under src/Data/Projects/${projectName}/ if needed
   const projectDataDir = path.join(dataProjectsDir, projectName);
   if (!fs.existsSync(projectDataDir)) {
     fs.mkdirSync(projectDataDir, { recursive: true });
@@ -74,7 +74,7 @@ projectFolders.forEach((projectName) => {
 
   // Write manifest.ts
   const manifestFile = path.join(projectDataDir, "manifest.ts");
-  const fileContent = `import type { ProjectManifest } from "@/types/projectManifest";
+  const fileContent = `import type { ProjectManifest } from "@/Types/projectManifest";
 
 export const projectManifest: ProjectManifest = {
   media: ${JSON.stringify(media, null, 2)}

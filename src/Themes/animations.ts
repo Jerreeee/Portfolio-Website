@@ -1,5 +1,5 @@
 import { Variants, MotionProps } from "framer-motion";
-import { mergeVariants } from '@/utils/MergeObjects'
+import { mergeVariants } from '@/Utils/MergeObjects'
 
 
 export const anims = {

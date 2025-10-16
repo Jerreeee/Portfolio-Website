@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import ScrollBarCmp from '@/Themes/Default/Components/ScrollBar/ScrollBarCmp';
-import { Size } from '@/types/extra';
+import { Size } from '@/Types/extra';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { useCheckOverflow } from '@/hooks/useCheckOverflow';
-import { useSizeObserver } from '@/hooks/useSizeObserver';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { useCheckOverflow } from '@/Hooks/useCheckOverflow';
+import { useSizeObserver } from '@/Hooks/useSizeObserver';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { scrollableCmp } from './ScrollableCmpClasses';
 
 // =====================================================================

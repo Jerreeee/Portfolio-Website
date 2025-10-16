@@ -7,8 +7,8 @@ import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider'
 import { anims } from '@/Themes/animations';
-import { mergeAnims } from '@/utils/MergeObjects';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { mergeAnims } from '@/Utils/MergeObjects';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { navbarCmp } from './NavbarCmpClasses';
 
 // =====================================================================

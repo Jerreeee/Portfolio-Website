@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Size } from '@/types/extra';
+import { Size } from '@/Types/extra';
 
 
 export interface UserSizeObserverProps {

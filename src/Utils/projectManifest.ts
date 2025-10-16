@@ -1,5 +1,5 @@
 import type { MediaItem } from "@/Themes/Default/Components/Media/MediaCmp";
-import { MediaManifestEntry, ProjectManifest } from "@/types/projectManifest";
+import { MediaManifestEntry, ProjectManifest } from "@/Types/projectManifest";
 
 /**
  * Builds an array of MediaItems based on a list of filenames.
