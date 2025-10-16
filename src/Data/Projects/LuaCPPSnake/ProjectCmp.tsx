@@ -50,15 +50,16 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
 
       {[
           {
-            title: 'snake_game.lua',
-            description:
-              'This is the main lua file that initializes the game, sets up the window, and contains the main game loop. The game loop handles input, updates the game state, and renders the game each frame.',
-            file: '/projects/LuaCPPSnake/Code/snake_game.lua',
+            title: 'Snake Game Logic (Lua)',
+            description: 'Core game logic implemented in Lua script',
+            language: 'lua',
+            file: '/Projects/LuaCPPSnake/Code/snake_game.lua',
           },
           {
-            title: 'Lua C++ Bindings',
-            description: 'In this part of the code, I set up all Lua bindings for my engine using Sol2. It exposes key C++ classes like ColorRGB, Bitmap, and GameEngine to Lua, allowing scripts to create objects, call engine functions, and interact with the rendering and game logic directly. To keep it organized, I grouped everything inside Game::CreateLuaBindings(), which handles all the registrations in one place.',
-            file: '/projects/LuaCPPSnake/Code/CreateLuaBindings.cpp',
+            title: 'C++ Lua Bindings',
+            description: 'C++ code that creates bindings for Lua integration',
+            language: 'cpp',
+            file: '/Projects/LuaCPPSnake/Code/CreateLuaBindings.cpp',
           },
         ].map((snippet, index) => (
           <Box
