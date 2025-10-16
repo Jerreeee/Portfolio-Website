@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player';
 export type ReactPlayerProps = ComponentProps<typeof ReactPlayer>;
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { mediaCmp } from './MediaCmpClasses';
 
 // =====================================================================

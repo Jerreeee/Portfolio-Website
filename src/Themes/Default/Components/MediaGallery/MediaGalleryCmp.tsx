@@ -7,7 +7,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { useElementSize } from '@/hooks/useElementSize';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { mediaGalleryCmp } from './MediaGalleryCmpClasses';
 
 // =====================================================================

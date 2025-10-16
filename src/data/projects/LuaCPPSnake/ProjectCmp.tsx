@@ -7,7 +7,7 @@ AccordionSummary,
 AccordionDetails,
 } from '@mui/material';
 import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
-import { getMediaItemsFromManifest } from '@/utils/projectManifest';
+import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 import ParentSizeObserver from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
 import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
 import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';

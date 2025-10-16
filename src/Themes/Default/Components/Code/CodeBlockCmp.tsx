@@ -6,7 +6,7 @@ import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Size } from '@/types/extra';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { codeBlockCmp } from './CodeBlockCmpClasses';
 
 // =====================================================================

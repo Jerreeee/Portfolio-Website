@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider'
 import { ImageMediaItem } from '../Media/MediaCmp';
 import { Size } from '@/types/extra';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageCompareCmp } from './ImageCompareCmpClasses';
 
 // =====================================================================

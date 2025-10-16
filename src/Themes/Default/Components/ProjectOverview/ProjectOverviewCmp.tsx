@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import type { ProjectInfo } from '@/data/projects/project';
 import { projectOverviewCmp } from './ProjectOverviewCmpClasses';
 

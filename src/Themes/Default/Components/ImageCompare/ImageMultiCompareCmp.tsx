@@ -7,7 +7,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
 import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSliderCmp';
 import { Size } from '@/types/extra';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageMultiCompareCmp } from './ImageMultiCompareCmpClasses';
 
 // =====================================================================

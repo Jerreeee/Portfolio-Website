@@ -5,9 +5,9 @@ import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { icons, IconKey, IconData } from '@/data/Icons';
-import { useParsedSVG } from '@/utils/UseParsedSvg';
-import { toGrayScale, applyTint } from '@/utils/Color';
-import {makeSlotFactory} from "@/utils/makeSlotFactory";
+import { useParsedSVG } from '@/Utils/UseParsedSvg';
+import { toGrayScale, applyTint } from '@/Utils/Color';
+import {makeSlotFactory} from "@/Utils/makeSlotFactory";
 import { iconCmp } from './IconCmpClasses';
 
 // =====================================================================

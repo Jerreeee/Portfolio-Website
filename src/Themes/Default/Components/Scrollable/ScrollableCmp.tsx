@@ -7,7 +7,7 @@ import { Size } from '@/types/extra';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { useCheckOverflow } from '@/hooks/useCheckOverflow';
 import { useSizeObserver } from '@/hooks/useSizeObserver';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { scrollableCmp } from './ScrollableCmpClasses';
 
 // =====================================================================

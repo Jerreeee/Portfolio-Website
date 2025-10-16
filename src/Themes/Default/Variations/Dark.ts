@@ -2,7 +2,7 @@
 import { ThemeOptions } from '@mui/material/styles';
 
 //custom
-import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
+import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
 import { anims } from '@/Themes/animations';
 
 const h1Base = {

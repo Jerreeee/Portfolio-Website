@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { makeSlotFactory } from '@/utils/makeSlotFactory';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { codeInlineCmp } from './CodeInlineCmpClasses';
 
 // =====================================================================

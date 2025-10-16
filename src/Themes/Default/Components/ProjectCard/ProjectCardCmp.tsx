@@ -7,7 +7,7 @@
   import { useTheme } from '@/Themes/ThemeProvider'
   import { ProjectInfo } from '@/data/projects/project';
   import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
-  import { makeSlotFactory } from '@/utils/makeSlotFactory';
+  import { makeSlotFactory } from '@/Utils/makeSlotFactory';
   import { projectCardCmp } from './ProjectCardCmpClasses';
 
   // =====================================================================
