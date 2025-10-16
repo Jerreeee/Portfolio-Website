@@ -20,8 +20,8 @@ import type { ParentSizeObserverCmpProps, ParentSizeObserverCmpClassKey } from '
 import type { ProjectCardCmpProps, ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
 import type { ProjectOverviewCmpProps, ProjectOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
-import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
+import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
 import type { TimelineCmpProps, TimelineCmpClassKey } from '@/Themes/Default/Components/Timeline';
 // AUTO-GENERATED Component IMPORTS END
@@ -64,8 +64,8 @@ declare module '@mui/material/styles' {
     ProjectCardCmp?: ProjectCardCmpProps;
     ProjectOverviewCmp?: ProjectOverviewCmpProps;
     ProjectsOverviewCmp?: ProjectsOverviewCmpProps;
-    ScrollableCmp?: ScrollableCmpProps;
     ScrollBarCmp?: ScrollBarCmpProps;
+    ScrollableCmp?: ScrollableCmpProps;
     SegmentSliderCmp?: SegmentSliderCmpProps;
     TimelineCmp?: TimelineCmpProps;
 // AUTO-GENERATED ComponentsProps END
@@ -85,8 +85,8 @@ declare module '@mui/material/styles' {
     ProjectCardCmp: ProjectCardCmpClassKey;
     ProjectOverviewCmp: ProjectOverviewCmpClassKey;
     ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
-    ScrollableCmp: ScrollableCmpClassKey;
     ScrollBarCmp: ScrollBarCmpClassKey;
+    ScrollableCmp: ScrollableCmpClassKey;
     SegmentSliderCmp: SegmentSliderCmpClassKey;
     TimelineCmp: TimelineCmpClassKey;
 // AUTO-GENERATED ComponentNameToClassKey END
@@ -106,8 +106,8 @@ declare module '@mui/material/styles' {
     ProjectCardCmp?: ThemedComponent<'ProjectCardCmp'>;
     ProjectOverviewCmp?: ThemedComponent<'ProjectOverviewCmp'>;
     ProjectsOverviewCmp?: ThemedComponent<'ProjectsOverviewCmp'>;
-    ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
     ScrollBarCmp?: ThemedComponent<'ScrollBarCmp'>;
+    ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
     SegmentSliderCmp?: ThemedComponent<'SegmentSliderCmp'>;
     TimelineCmp?: ThemedComponent<'TimelineCmp'>;
 // AUTO-GENERATED Components END
