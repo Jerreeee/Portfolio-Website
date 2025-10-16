@@ -23,6 +23,7 @@ import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Th
 import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
+import type { TimelineCmpProps, TimelineCmpClassKey } from '@/Themes/Default/Components/Timeline';
 // AUTO-GENERATED Component IMPORTS END
 
 declare module '@mui/material/Typography' {
@@ -66,6 +67,7 @@ declare module '@mui/material/styles' {
     ScrollableCmp?: ScrollableCmpProps;
     ScrollBarCmp?: ScrollBarCmpProps;
     SegmentSliderCmp?: SegmentSliderCmpProps;
+    TimelineCmp?: TimelineCmpProps;
 // AUTO-GENERATED ComponentsProps END
   }
   interface ComponentNameToClassKey {
@@ -86,6 +88,7 @@ declare module '@mui/material/styles' {
     ScrollableCmp: ScrollableCmpClassKey;
     ScrollBarCmp: ScrollBarCmpClassKey;
     SegmentSliderCmp: SegmentSliderCmpClassKey;
+    TimelineCmp: TimelineCmpClassKey;
 // AUTO-GENERATED ComponentNameToClassKey END
   }
   interface Components {
@@ -106,6 +109,7 @@ declare module '@mui/material/styles' {
     ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
     ScrollBarCmp?: ThemedComponent<'ScrollBarCmp'>;
     SegmentSliderCmp?: ThemedComponent<'SegmentSliderCmp'>;
+    TimelineCmp?: ThemedComponent<'TimelineCmp'>;
 // AUTO-GENERATED Components END
   }
 }

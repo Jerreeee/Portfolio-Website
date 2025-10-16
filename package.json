@@ -5,7 +5,7 @@
   "scripts": {
     "ts": "ts-node -P scripts/tsconfig.scripts.json",
     "dev": "next dev",
-    "build": "npm run generate:projects && npm run generate:components && build",
+    "build": "npm run generate:projects && npm run generate:components && npm run generate:mui-theme-augmentation && next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",

@@ -8,7 +8,7 @@ import fs from "fs";
 import path from "path";
 
 const COMPONENTS_DIR = path.join(process.cwd(), "src", "Themes", "Default", "Components");
-const OUTPUT_FILE = path.join(process.cwd(), "src", "types", "componentSettings.d.ts");
+const OUTPUT_FILE = path.join(process.cwd(), "src", "Types", "componentSettings.d.ts");
 
 // Recursively find all index.ts files
 function getAllIndexFiles(dir: string): string[] {

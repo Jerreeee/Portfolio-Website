@@ -20,7 +20,7 @@ const COMPONENTS_DIR = path.join(
 const OUTPUT_FILE = path.join(
   process.cwd(),
   "src",
-  "types",
+  "Types",
   "componentAnimations.d.ts"
 );
 
