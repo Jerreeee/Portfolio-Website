@@ -6,17 +6,17 @@ import { Box, Typography, Container, Grid, Divider,
 AccordionSummary,
 AccordionDetails,
 } from '@mui/material';
-import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
+import MediaCmp from '@/themes/Default/Components/Media/MediaCmp';
 import { getMediaItemsFromManifest } from '@/utils/projectManifest';
-import ParentSizeObserver from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
-import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
-import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
-import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
+import ParentSizeObserver from '@/themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
+import ImageMultiCompareCmp from '@/themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
+import { ImageCompareItem } from '@/themes/Default/Components/ImageCompare/ImageCompareCmp';
+import CodeBlockCmp from '@/themes/Default/Components/Code/CodeBlockCmp';
 import type { ProjectManifest } from "@/types/projectManifest";
 import type { ProjectCmpProps } from '../project';
 import { data } from './data';
-import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
-import { IconCmp } from '@/Themes/Default/Components/Icon';
+import { ProjectOverviewCmp } from '@/themes/Default/Components/ProjectOverview';
+import { IconCmp } from '@/themes/Default/Components/Icon';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;

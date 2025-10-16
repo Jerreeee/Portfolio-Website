@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
-import { useTheme } from '@/Themes/ThemeProvider'
-import { anims } from '@/Themes/animations';
+import { useTheme } from '@/themes/ThemeProvider'
+import { anims } from '@/themes/animations';
 import { mergeAnims } from '@/utils/MergeObjects';
 import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import { navbarCmp } from './NavbarCmpClasses';

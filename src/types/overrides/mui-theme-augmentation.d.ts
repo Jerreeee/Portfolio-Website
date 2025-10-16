@@ -7,22 +7,22 @@ import { TypographyPropsVariantOverrides } from '@mui/material/Typography';
 import { ThemedComponent } from '../componentDefinition';
 
 // AUTO-GENERATED Component IMPORTS START
-import type { CodeBlockCmpProps, CodeBlockCmpClassKey } from '@/Themes/Default/Components/Code';
-import type { CodeInlineCmpProps, CodeInlineCmpClassKey } from '@/Themes/Default/Components/Code';
-import type { IconCmpProps, IconCmpClassKey } from '@/Themes/Default/Components/Icon';
-import type { ImageCompareCmpProps, ImageCompareCmpClassKey } from '@/Themes/Default/Components/ImageCompare';
-import type { ImageMultiCompareCmpProps, ImageMultiCompareCmpClassKey } from '@/Themes/Default/Components/ImageCompare';
-import type { MarkdownRendererCmpProps, MarkdownRendererCmpClassKey } from '@/Themes/Default/Components/Markdown';
-import type { MediaCmpProps, MediaCmpClassKey } from '@/Themes/Default/Components/Media';
-import type { MediaGalleryCmpProps, MediaGalleryCmpClassKey } from '@/Themes/Default/Components/MediaGallery';
-import type { NavbarCmpProps, NavbarCmpClassKey } from '@/Themes/Default/Components/Navbar';
-import type { ParentSizeObserverCmpProps, ParentSizeObserverCmpClassKey } from '@/Themes/Default/Components/ParentSizeObserver';
-import type { ProjectCardCmpProps, ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
-import type { ProjectOverviewCmpProps, ProjectOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectOverview';
-import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
-import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
-import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
-import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
+import type { CodeBlockCmpProps, CodeBlockCmpClassKey } from '@/themes/Default/Components/Code';
+import type { CodeInlineCmpProps, CodeInlineCmpClassKey } from '@/themes/Default/Components/Code';
+import type { IconCmpProps, IconCmpClassKey } from '@/themes/Default/Components/Icon';
+import type { ImageCompareCmpProps, ImageCompareCmpClassKey } from '@/themes/Default/Components/ImageCompare';
+import type { ImageMultiCompareCmpProps, ImageMultiCompareCmpClassKey } from '@/themes/Default/Components/ImageCompare';
+import type { MarkdownRendererCmpProps, MarkdownRendererCmpClassKey } from '@/themes/Default/Components/Markdown';
+import type { MediaCmpProps, MediaCmpClassKey } from '@/themes/Default/Components/Media';
+import type { MediaGalleryCmpProps, MediaGalleryCmpClassKey } from '@/themes/Default/Components/MediaGallery';
+import type { NavbarCmpProps, NavbarCmpClassKey } from '@/themes/Default/Components/Navbar';
+import type { ParentSizeObserverCmpProps, ParentSizeObserverCmpClassKey } from '@/themes/Default/Components/ParentSizeObserver';
+import type { ProjectCardCmpProps, ProjectCardCmpClassKey } from '@/themes/Default/Components/ProjectCard';
+import type { ProjectOverviewCmpProps, ProjectOverviewCmpClassKey } from '@/themes/Default/Components/ProjectOverview';
+import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/themes/Default/Components/ProjectsOverview';
+import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/themes/Default/Components/Scrollable';
+import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/themes/Default/Components/ScrollBar';
+import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/themes/Default/Components/SegmentSlider';
 // AUTO-GENERATED Component IMPORTS END
 
 declare module '@mui/material/Typography' {

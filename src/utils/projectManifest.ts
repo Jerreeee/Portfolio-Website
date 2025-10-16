@@ -1,4 +1,4 @@
-import type { MediaItem } from "@/Themes/Default/Components/Media/MediaCmp";
+import type { MediaItem } from "@/themes/Default/Components/Media/MediaCmp";
 import { MediaManifestEntry, ProjectManifest } from "@/types/projectManifest";
 
 /**

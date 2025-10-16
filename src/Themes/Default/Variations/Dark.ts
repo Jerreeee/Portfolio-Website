@@ -3,7 +3,7 @@ import { ThemeOptions } from '@mui/material/styles';
 
 //custom
 import { mergeVariants, mergeAnims } from '@/utils/MergeObjects';
-import { anims } from '@/Themes/animations';
+import { anims } from '@/themes/animations';
 
 const h1Base = {
   fontWeight: 600,

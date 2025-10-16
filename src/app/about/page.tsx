@@ -13,7 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { GitHub, LinkedIn, Email, Brush } from '@mui/icons-material';
-import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
+import IconCmp from '@/themes/Default/Components/Icon/IconCmp';
 
 export default function About() {
   const theme = useTheme();

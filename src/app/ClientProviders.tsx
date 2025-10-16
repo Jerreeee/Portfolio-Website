@@ -1,9 +1,9 @@
 'use client';
 
-import { ThemeProvider } from '@/Themes/ThemeProvider';
+import { ThemeProvider } from '@/themes/ThemeProvider';
 import { PageWrapper } from '@/Components/PageWrapper';
 import { CacheProvider } from '@emotion/react';
-import createEmotionCache from '@/Themes/createEmotionCache';
+import createEmotionCache from '@/themes/createEmotionCache';
 
 const clientSideEmotionCache = createEmotionCache();
 

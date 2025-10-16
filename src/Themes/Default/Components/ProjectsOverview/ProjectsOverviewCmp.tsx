@@ -3,8 +3,8 @@
 import { Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { projects } from '@/data/projects';
-import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCardCmp';
-import { useTheme } from '@/Themes/ThemeProvider'
+import ProjectCardCmp from '@/themes/Default/Components/ProjectCard/ProjectCardCmp';
+import { useTheme } from '@/themes/ThemeProvider'
 import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import { projectsOverviewCmp } from './ProjectsOverviewCmpClasses';
 

@@ -44,13 +44,6 @@ export const projectManifest: ProjectManifest = {
     "height": 192,
     "aspectRatio": 1.3333333333333333
   },
-  "depth.webp": {
-    "type": "image",
-    "src": "/projects/VulkanDeferredRenderer/Images/depth.webp",
-    "width": 1920,
-    "height": 1080,
-    "aspectRatio": 1.7777777777777777
-  },
   "Feature_DirectionalLights.webp": {
     "type": "image",
     "src": "/projects/VulkanDeferredRenderer/Images/Feature_DirectionalLights.webp",
@@ -247,19 +240,19 @@ export const projectManifest: ProjectManifest = {
     "height": 3072,
     "aspectRatio": 1.3333333333333333
   },
-  "Outdoor_IBL.webp": {
-    "type": "image",
-    "src": "/projects/VulkanDeferredRenderer/Images/Outdoor_IBL.webp",
-    "width": 64,
-    "height": 384,
-    "aspectRatio": 0.16666666666666666
-  },
   "OutDoor_IBL_Cross.webp": {
     "type": "image",
     "src": "/projects/VulkanDeferredRenderer/Images/OutDoor_IBL_Cross.webp",
     "width": 256,
     "height": 192,
     "aspectRatio": 1.3333333333333333
+  },
+  "Outdoor_IBL.webp": {
+    "type": "image",
+    "src": "/projects/VulkanDeferredRenderer/Images/Outdoor_IBL.webp",
+    "width": 64,
+    "height": 384,
+    "aspectRatio": 0.16666666666666666
   },
   "PostProcess_Final_Circus.webp": {
     "type": "image",
@@ -295,6 +288,13 @@ export const projectManifest: ProjectManifest = {
     "width": 2852,
     "height": 318,
     "aspectRatio": 8.968553459119496
+  },
+  "depth.webp": {
+    "type": "image",
+    "src": "/projects/VulkanDeferredRenderer/Images/depth.webp",
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": 1.7777777777777777
   }
 }
 };

@@ -4,9 +4,9 @@
   import Image from 'next/image';
   import { motion } from 'framer-motion';
   import { Card, CardContent, Typography } from '@mui/material';
-  import { useTheme } from '@/Themes/ThemeProvider'
+  import { useTheme } from '@/themes/ThemeProvider'
   import { ProjectInfo } from '@/data/projects/project';
-  import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
+  import IconCmp from '@/themes/Default/Components/Icon/IconCmp'
   import { makeSlotFactory } from '@/utils/makeSlotFactory';
   import { projectCardCmp } from './ProjectCardCmpClasses';
 

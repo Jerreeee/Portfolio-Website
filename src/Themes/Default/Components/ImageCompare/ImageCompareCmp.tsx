@@ -3,7 +3,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/Themes/ThemeProvider'
+import { useTheme } from '@/themes/ThemeProvider'
 import { ImageMediaItem } from '../Media/MediaCmp';
 import { Size } from '@/types/extra';
 import { makeSlotFactory } from '@/utils/makeSlotFactory';

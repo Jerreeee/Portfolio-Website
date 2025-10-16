@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@/Themes/ThemeProvider';
-import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
-import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSliderCmp';
+import { useTheme } from '@/themes/ThemeProvider';
+import ImageCompareCmp, { ImageCompareItem } from '@/themes/Default/Components/ImageCompare/ImageCompareCmp';
+import SegmentSliderCmp, { SegmentSliderState } from '@/themes/Default/Components/SegmentSlider/SegmentSliderCmp';
 import { Size } from '@/types/extra';
 import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import { imageMultiCompareCmp } from './ImageMultiCompareCmpClasses';

@@ -3,7 +3,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useTheme } from '@/themes/ThemeProvider';
 import { icons, IconKey, IconData } from '@/data/Icons';
 import { useParsedSVG } from '@/utils/UseParsedSvg';
 import { toGrayScale, applyTint } from '@/utils/Color';

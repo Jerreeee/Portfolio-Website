@@ -3,8 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { useTheme } from '@/Themes/ThemeProvider';
-import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
+import { useTheme } from '@/themes/ThemeProvider';
+import IconCmp from '@/themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import type { ProjectInfo } from '@/data/projects/project';
 import { projectOverviewCmp } from './ProjectOverviewCmpClasses';

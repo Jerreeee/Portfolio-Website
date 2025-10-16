@@ -3,8 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '@/Themes/ThemeProvider';
-import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
+import { useTheme } from '@/themes/ThemeProvider';
+import MediaCmp, { MediaItem } from '@/themes/Default/Components/Media/MediaCmp';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { useElementSize } from '@/hooks/useElementSize';
 import { makeSlotFactory } from '@/utils/makeSlotFactory';

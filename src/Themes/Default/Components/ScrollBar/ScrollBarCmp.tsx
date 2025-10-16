@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useTheme } from '@/themes/ThemeProvider';
 import { makeSlotFactory } from '@/utils/makeSlotFactory';
 import { scrollBarCmp } from './ScrollBarCmpClasses';
 
