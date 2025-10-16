@@ -2,6 +2,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+cd out
+python3 -m http.server 8000
+
+
 First, run the development server:
 
 ```bash
