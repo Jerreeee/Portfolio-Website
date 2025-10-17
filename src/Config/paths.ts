@@ -17,6 +17,9 @@ const BASE_PATHS = Object.fromEntries(
 ) as BasePaths;
 
 const EXTRA_PATHS = {
+    APP_LINK: ({ path }: { path: string }) => `/${path}.html`,
+    APP_PROJECT_PAGE: ({ slug }: { slug: string }) =>
+      `/projects/${slug}.html`,
     PROJECT_DATA: ({ projectName }: { projectName: string }) =>
     `${BASE.SRC_PROJECTS}/${projectName}/data`,
     PROJECT_MANIFEST: ({ projectName }: { projectName: string }) =>
