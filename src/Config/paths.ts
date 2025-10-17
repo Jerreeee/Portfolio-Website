@@ -31,9 +31,11 @@ const BASE = {
   SRC_PAGE: 'src/app',
   SRC_PROJECT_PAGE: 'src/app/projects',
   SRC_PROJECTS: "src/Data/Projects",
-  PUBLIC_PROJECTS: "public/ProjectsData",
+  PUBLIC_PROJECTS: "public/projects",
   SRC_THEMES: "src/Themes",
   TYPES: "src/Types",
+  SRC_ICONS: 'src/Data/Icons',
+  PUBLIC_ICONS: 'public/Icons',
 } as const;
 
 const BASE_PATHS = Object.fromEntries(

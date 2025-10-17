@@ -1,12 +1,12 @@
 import type { ReactNode, FC } from 'react';
 import { ProjectManifest } from "@/Types/projectManifest";
-import type { IconKey } from '@/Data/Icons';
+import type { IconKey } from '@/Data/Icons/icons-manifest';
 
-  export interface TechInfo {
-    name: IconKey | (string & {});
-    usage?: string;
-    version?: string;
-  }
+export interface TechInfo {
+  name: IconKey | (string & {});
+  usage?: string;
+  version?: string;
+}
 
 export type TechCategory = 'Core' | 'Libraries' | 'Tools' | 'Art';
 export type Technologies = Partial<Record<TechCategory, TechInfo[]>>;

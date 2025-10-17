@@ -5,8 +5,6 @@ import {
   Box,
   Container,
   Typography,
-  Card,
-  CardContent,
   Grid,
   IconButton,
   Tooltip,
@@ -14,41 +12,13 @@ import {
 } from '@mui/material';
 import { GitHub, LinkedIn, Email, Brush } from '@mui/icons-material';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
+import { iconManifest } from '@/Data/Icons/icons-manifest'; // ✅ import manifest
 
 export default function About() {
   const theme = useTheme();
 
-  const renderDenseIcons = (items: string[]) => (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-        gap: 1.5,
-        justifyItems: 'center',
-        alignItems: 'center',
-      }}
-    >
-      {items.map((item) => (
-        <Box
-          key={item}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            gap: 0.5,
-          }}
-        >
-          <Box sx={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <IconCmp techName={item} />
-          </Box>
-          <Typography variant="caption" sx={{ color: theme.palette.text.secondary, fontSize: '0.75rem' }}>
-            {item}
-          </Typography>
-        </Box>
-      ))}
-    </Box>
-  );
+  const getDisplayName = (key: string) =>
+    iconManifest[key as keyof typeof iconManifest]?.displayName ?? key;
 
   return (
     <Box
@@ -69,7 +39,7 @@ export default function About() {
           >
             <Box
               component="img"
-              src="other/profilepic.jpg"
+              src="/Images/profilepic.jpg"
               alt="Profile"
               sx={{
                 width: { xs: 200, md: 240 },
@@ -84,16 +54,16 @@ export default function About() {
             {/* Contact Icons */}
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Tooltip title="Copy Email">
-                  <IconButton
-                    color="primary"
-                    size="large"
-                    onClick={() => {
-                      navigator.clipboard.writeText("jeroen@denayer.com");
-                    }}
-                  >
-                    <Email />
-                  </IconButton>
-                </Tooltip>
+                <IconButton
+                  color="primary"
+                  size="large"
+                  onClick={() => {
+                    navigator.clipboard.writeText("jeroen@denayer.com");
+                  }}
+                >
+                  <Email />
+                </IconButton>
+              </Tooltip>
 
               <Tooltip title="GitHub">
                 <IconButton
@@ -148,246 +118,223 @@ export default function About() {
                 maxWidth: 700,
               }}
             >
-I’m Jeroen Denayer, a technical artist and C++ programmer who became fascinated by how much of creative work can be automated and improved. During my Game Graphics Production studies at DAE, I discovered procedural workflows through Houdini and grew passionate about optimizing processes through smart tools. This interest eventually led me to pursue a second bachelor in Game Development, where I focused on C++ and low-level GPU programming. Now, I’m driven to build tools and pipelines that make complex work simpler, faster, and far less repetitive.
+              I’m Jeroen Denayer, a technical artist and C++ programmer who became fascinated by how much of creative work can be automated and improved. During my Game Graphics Production studies at DAE, I discovered procedural workflows through Houdini and grew passionate about optimizing processes through smart tools. This interest eventually led me to pursue a second bachelor in Game Development, where I focused on C++ and low-level GPU programming. Now, I’m driven to build tools and pipelines that make complex work simpler, faster, and far less repetitive.
             </Typography>
           </Grid>
         </Grid>
 
-{/* ================= SKILLS SECTION ================= */}
-<Box sx={{ mb: 6 }}>
-  <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
-    <Typography
-      variant="h4"
-      sx={{
-        fontWeight: 600,
-        background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        display: 'inline-block',
-      }}
-    >
-      Skills & Technologies
-    </Typography>
-  </Box>
+        {/* ================= SKILLS SECTION ================= */}
+        <Box sx={{ mb: 6 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 600,
+                background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: 'inline-block',
+              }}
+            >
+              Skills & Technologies
+            </Typography>
+          </Box>
 
-  {/* Divider */}
-  <Box
-    sx={{
-      height: 2,
-      width: '60%',
-      mx: 'auto',
-      mb: 3,
-      background: 'linear-gradient(90deg, #3fa0ff, #7b72f0, #ec38bc)',
-      borderRadius: 1,
-      opacity: 0.5,
-    }}
-  />
-
-  {/* ===== Languages (Centered, Compact) ===== */}
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      mb: 2,
-    }}
-  >
-    <Typography
-      variant="subtitle1"
-      sx={{
-        color: theme.palette.text.primary,
-        fontSize: '0.9rem',
-        mb: 0.5,
-      }}
-    >
-      Languages
-    </Typography>
-
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25, alignItems: 'center' }}>
-      <Typography
-        variant="caption"
-        sx={{
-          color: theme.palette.text.secondary,
-          fontSize: '0.75rem',
-        }}
-      >
-        Dutch — Native
-      </Typography>
-      <Typography
-        variant="caption"
-        sx={{
-          color: theme.palette.text.secondary,
-          fontSize: '0.75rem',
-        }}
-      >
-        English — Fluent
-      </Typography>
-    </Box>
-  </Box>
-
-
-  {/* ===== Two Columns of Skill Groups ===== */}
-  <Grid
-    container
-    spacing={2}
-    justifyContent="center"
-    sx={{
-      px: { xs: 1, md: 2 },
-    }}
-  >
-    {/* Left Column */}
-    <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-      {[ 
-        { title: 'Programming Languages', items: ['C++', 'Python', 'HLSL/GLSL', 'C#', 'TypeScript', 'Lua'] },
-        { title: 'APIs & Libraries', items: ['Vulkan', 'OpenGL', 'ImGui', 'SDL', 'GLM', 'Assimp'] },
-        { title: 'Game Engines', items: ['Unreal Engine', 'Unity'] },
-      ].map((section) => (
-        <Box
-          key={section.title}
-          sx={{
-            backgroundColor: 'rgba(255,255,255,0.03)',
-            border: `1px solid rgba(255,255,255,0.06)`,
-            borderRadius: 2,
-            p: 1.25,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 0.5,
-          }}
-        >
-          <Typography
-            variant="subtitle1"
+          {/* Divider */}
+          <Box
             sx={{
-              color: theme.palette.text.primary,
-              fontSize: '0.85rem',
-              mb: 0.25,
+              height: 2,
+              width: '60%',
+              mx: 'auto',
+              mb: 3,
+              background: 'linear-gradient(90deg, #3fa0ff, #7b72f0, #ec38bc)',
+              borderRadius: 1,
+              opacity: 0.5,
             }}
-          >
-            {section.title}
-          </Typography>
+          />
 
+          {/* Languages */}
           <Box
             sx={{
               display: 'flex',
-              flexWrap: 'wrap',
-              gap: 1,
+              flexDirection: 'column',
               alignItems: 'center',
+              mb: 2,
             }}
           >
-            {section.items.map((item) => (
-              <Box
-                key={item}
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: theme.palette.text.primary,
+                fontSize: '0.9rem',
+                mb: 0.5,
+              }}
+            >
+              Languages
+            </Typography>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25, alignItems: 'center' }}>
+              <Typography
+                variant="caption"
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5,
-                  minWidth: 'fit-content',
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
                 }}
               >
-                <Box
-                  sx={{
-                    width: 22,
-                    height: 22,
-                    opacity: 0.9,
-                    transition: 'transform 0.15s ease',
-                    '&:hover': { transform: 'scale(1.1)' },
-                  }}
-                >
-                  <IconCmp techName={item} />
-                </Box>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: theme.palette.text.secondary,
-                    fontSize: '0.7rem',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {item}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      ))}
-    </Grid>
-
-    {/* Right Column */}
-    <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-      {[
-        { title: 'Tools & Pipeline', items: ['Houdini', 'Visual Studio', 'Visual Studio Code', 'RenderDoc', 'CMake', 'Substance Designer', 'Substance Painter', 'Blender', '3DS Max', 'Maya'] },
-        { title: 'Art & Design', items: ['Photoshop', 'Premiere Pro', 'Marmoset Toolbag'] },
-      ].map((section) => (
-        <Box
-          key={section.title}
-          sx={{
-            backgroundColor: 'rgba(255,255,255,0.03)',
-            border: `1px solid rgba(255,255,255,0.06)`,
-            borderRadius: 2,
-            p: 1.25,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 0.5,
-          }}
-        >
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: theme.palette.text.primary,
-              fontSize: '0.85rem',
-              mb: 0.25,
-            }}
-          >
-            {section.title}
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 1,
-              alignItems: 'center',
-            }}
-          >
-            {section.items.map((item) => (
-              <Box
-                key={item}
+                Dutch — Native
+              </Typography>
+              <Typography
+                variant="caption"
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5,
-                  minWidth: 'fit-content',
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
                 }}
               >
-                <Box
-                  sx={{
-                    width: 22,
-                    height: 22,
-                    opacity: 0.9,
-                    transition: 'transform 0.15s ease',
-                    '&:hover': { transform: 'scale(1.1)' },
-                  }}
-                >
-                  <IconCmp techName={item} />
-                </Box>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: theme.palette.text.secondary,
-                    fontSize: '0.7rem',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {item}
-                </Typography>
-              </Box>
-            ))}
+                English — Fluent
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-      ))}
-    </Grid>
-  </Grid>
-</Box>
 
+          {/* ===== Two Columns of Skill Groups ===== */}
+          <Grid container spacing={2} justifyContent="center" sx={{ px: { xs: 1, md: 2 } }}>
+            {/* Left Column */}
+            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+              {[
+                { title: 'Programming Languages', items: ['cplusplus', 'Python', 'csharp', 'Typescript', 'Lua'] },
+                { title: 'APIs & Libraries', items: ['Vulkan', 'OpenGL', 'SDL', 'GLM'] },
+                { title: 'Game Engines', items: ['Unreal', 'Unity'] },
+              ].map((section) => (
+                <Box
+                  key={section.title}
+                  sx={{
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    border: `1px solid rgba(255,255,255,0.06)`,
+                    borderRadius: 2,
+                    p: 1.25,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 0.5,
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      color: theme.palette.text.primary,
+                      fontSize: '0.85rem',
+                      mb: 0.25,
+                    }}
+                  >
+                    {section.title}
+                  </Typography>
+
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+                    {section.items.map((item) => (
+                      <Box
+                        key={item}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          minWidth: 'fit-content',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 22,
+                            height: 22,
+                            opacity: 0.9,
+                            transition: 'transform 0.15s ease',
+                            '&:hover': { transform: 'scale(1.1)' },
+                          }}
+                        >
+                          <IconCmp techName={item} />
+                        </Box>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: theme.palette.text.secondary,
+                            fontSize: '0.7rem',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {getDisplayName(item)} {/* ✅ now using displayName */}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              ))}
+            </Grid>
+
+            {/* Right Column */}
+            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+              {[
+                { title: 'Tools & Pipeline', items: ['Houdini', 'Visual_Studio', 'Visual_Studio_Code', 'RenderDoc', 'CMake', 'Substance_Designer', 'Substance_Painter', 'Blender', '3DS_Max', 'Maya'] },
+                { title: 'Art & Design', items: ['Photoshop', 'Premiere_Pro'] },
+              ].map((section) => (
+                <Box
+                  key={section.title}
+                  sx={{
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    border: `1px solid rgba(255,255,255,0.06)`,
+                    borderRadius: 2,
+                    p: 1.25,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 0.5,
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      color: theme.palette.text.primary,
+                      fontSize: '0.85rem',
+                      mb: 0.25,
+                    }}
+                  >
+                    {section.title}
+                  </Typography>
+
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+                    {section.items.map((item) => (
+                      <Box
+                        key={item}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          minWidth: 'fit-content',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 22,
+                            height: 22,
+                            opacity: 0.9,
+                            transition: 'transform 0.15s ease',
+                            '&:hover': { transform: 'scale(1.1)' },
+                          }}
+                        >
+                          <IconCmp techName={item} />
+                        </Box>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: theme.palette.text.secondary,
+                            fontSize: '0.7rem',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {getDisplayName(item)} {/* ✅ now using displayName */}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              ))}
+            </Grid>
+          </Grid>
+        </Box>
       </Container>
     </Box>
   );

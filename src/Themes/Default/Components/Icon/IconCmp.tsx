@@ -1,74 +1,56 @@
 'use client';
 
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/Themes/ThemeProvider';
-import { icons, IconKey, IconData } from '@/Data/Icons';
-import { useParsedSVG } from '@/Utils/UseParsedSvg';
-import { toGrayScale, applyTint } from '@/Utils/Color';
-import {makeSlotFactory} from "@/Utils/makeSlotFactory";
+import { styled } from '@mui/material/styles';
 import { iconCmp } from './IconCmpClasses';
+import { makeSlotFactory } from '@/Utils/makeSlotFactory';
+import { iconManifest, type IconKey } from '@/Data/Icons/icons-manifest';
 
-// =====================================================================
-// ========================= Slot Definitions ==========================
+// ================================================================
+// ========================= Slot Definitions ======================
 
 const makeSlot = makeSlotFactory('IconCmp', iconCmp);
 
-const IconRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
-  display: 'inline-block',
+const IconImage = styled(motion.img)({
+  display: 'block',
   width: '100%',
-  height: '100%',
-  maxWidth: '100%',
-  maxHeight: '100%',
-}));
+  height: 'auto',
+});
 
-// =====================================================================
-// ============================= Component =============================
-
-export interface IconCmpSettings {}
+// ================================================================
+// ========================== Component ============================
 
 export interface IconCmpProps {
+  /** Loosely typed so any label or tech name can be passed */
   techName: string;
-  convertToGrayScale?: boolean;
-  tintColor?: string;
-  tintStrength?: number;
-  grayScaleIconColor?: string;
 }
 
-export default function IconCmp(props: IconCmpProps) {
-  const { theme } = useTheme();
+/**
+ * Renders an icon from the pre-generated manifest.
+ * Falls back to the "error" icon if missing; logs a warning if even that is missing.
+ */
+export default function IconCmp({ techName }: IconCmpProps) {
+  const key = techName as IconKey;
+  let icon = iconManifest[key];
 
-  const iconEntry: IconData | undefined = icons[props.techName as IconKey] ?? icons.Error;
-  const processedSvg = useParsedSVG(props.techName, iconEntry.rawSvg ?? '');
-  if (!processedSvg) return null;
+  // Fallback to "error" icon
+  if (!icon) {
+    console.warn(`⚠️ Icon "${techName}" not found in iconManifest — using fallback.`);
+    icon = iconManifest['error'] ?? iconManifest['error'];
 
-  // compute final colors based on theme logic
-  const colorVars: Record<string, string> = {};
-  (processedSvg.originalColors ?? []).forEach((c, i) => {
-    let finalColor = c;
-
-    if (iconEntry.isGrayScale) {
-      finalColor = props?.grayScaleIconColor ?? c;
-    } else {
-      if (props?.convertToGrayScale) {
-        finalColor = toGrayScale(finalColor);
-      }
-      if (props?.tintColor) {
-        finalColor = applyTint(finalColor, props.tintColor, props.tintStrength);
-      }
+    // If even the fallback doesn't exist, log a critical warning
+    if (!icon) {
+      console.error('❌ Error icon not found in iconManifest.');
+      return null;
     }
-
-    colorVars[`--color${i}`] = finalColor;
-  });
+  }
 
   return (
-    <IconRoot
-        sx={{
-            aspectRatio: processedSvg.aspectRatio || undefined,
-            ...colorVars,
-        }}
-        dangerouslySetInnerHTML={{ __html: processedSvg.svgHTML }}
+    <IconImage
+      src={icon.src}
+      alt={techName}
+      style={{ aspectRatio: icon.aspectRatio }}
     />
   );
 }
