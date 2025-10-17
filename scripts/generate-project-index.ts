@@ -4,7 +4,7 @@
 
 import fs from "fs";
 import path from "path";
-import PATHS, { importPath } from '../src/Config/paths';
+import PATHS from '../src/Config/paths';
 
 const dataProjectsDir = path.join(process.cwd(), PATHS.SRC_PROJECTS().value);
 const indexFile = path.join(dataProjectsDir, "index.ts");

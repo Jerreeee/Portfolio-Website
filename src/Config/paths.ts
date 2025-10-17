@@ -12,7 +12,13 @@ export type PathObject = {
 const makePath = (value: string): PathObject => ({
   value,
   fs: () => makePath(path.join(process.cwd(), value.replace(/^\//, ""))),
-  url: () => makePath("/" + value.replace(/^public\//, "").replace(/^src\//, "")),
+  // Convert to browser-usable URL path
+  url: () => makePath("/" + value
+    .replace(/^\/?public\//, "") //remove leading public
+    .replace(/^\/?src\/app\//, "") //remove leading src/app
+    .replace(/^\/?src\//, "") //remove extra leading src
+    .replace(/^\/+/, "") // remove extra leading slashes
+  ),
   import: () => makePath("@/" + value.replace(/^src\//, "")),
   append: (segment: string) => {
     const separator = value.endsWith("/") ? "" : "/";
@@ -22,8 +28,10 @@ const makePath = (value: string): PathObject => ({
 
 const BASE = {
   SRC_DATA: "src/Data",
+  SRC_PAGE: 'src/app',
+  SRC_PROJECT_PAGE: 'src/app/projects',
   SRC_PROJECTS: "src/Data/Projects",
-  PUBLIC_PROJECTS: "public/projects",
+  PUBLIC_PROJECTS: "public/ProjectsData",
   SRC_THEMES: "src/Themes",
   TYPES: "src/Types",
 } as const;
@@ -34,30 +42,14 @@ const BASE_PATHS = Object.fromEntries(
   [K in keyof typeof BASE]: () => PathObject;
 };
 
-// const PATHS = {
-//     ...BASE_PATHS,
-//     // APP_LINK: ({ path }: { path: string }) => `/${path}.html`,
-//     // APP_PROJECT_PAGE: ({ slug }: { slug: string }) =>
-//     //   `${BASE.PUBLIC_PROJECTS_REL}/${slug}.html`,
-//     PROJECT_DATA: ({ projectName }: { projectName: string }) =>
-//     `${BASE.SRC_PROJECTS}/${projectName}/data`,
-//     PROJECT_MANIFEST: ({ projectName }: { projectName: string }) =>
-//     `${BASE.SRC_PROJECTS}/${projectName}/manifest`,
-//     PROJECT_COMPONENT: ({ projectName }: { projectName: string }) =>
-//     `${BASE.SRC_PROJECTS}/${projectName}/ProjectCmp`,
-//     PROJECT_IMAGE: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
-//     `${BASE.PUBLIC_PROJECTS}/${projectName}/Images${fileName ? `/${fileName}` : ''}`,
-//     PROJECT_CODE: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
-//     `${BASE.PUBLIC_PROJECTS}/${projectName}/Code${fileName ? `/${fileName}` : ''}`,
-//     COMPONENTS: (theme: ThemeName = "Default" as ThemeName) =>
-//     `${BASE.SRC_THEMES}/${theme}/Components`,
-//     COMPONENT_ANIMATIONS: () => `${BASE.TYPES}/componentAnimations.d.ts`,
-//     COMPONENT_SETTINGS: () => `${BASE.TYPES}/componentSettings.d.ts`,
-//     MUI_THEME_AUGMENTATION: () => `${BASE.TYPES}/Overrides/mui-theme-augmentation.d.ts`,
-// } as const;
-
 const PATHS = {
   ...BASE_PATHS,
+
+  PAGE: ({ page}: { page: string }) =>
+    makePath(`${BASE.SRC_PAGE}/${page}/`),
+
+  PROJECT_PAGE: ({ slug }: { slug: string }) =>
+      makePath(`${BASE.SRC_PROJECT_PAGE}/${slug}/`),
 
   PROJECT_DATA: ({ projectName }: { projectName: string }) =>
     makePath(`${BASE.SRC_PROJECTS}/${projectName}/data`),
@@ -87,24 +79,5 @@ const PATHS = {
     makePath(`${BASE.TYPES}/Overrides/mui-theme-augmentation.d.ts`),
 } as const;
 
-// const PATHS: BasePaths & typeof EXTRA_PATHS = {
-//   ...BASE_PATHS,
-//   ...EXTRA_PATHS,
-// };
-
 export default PATHS;
-
-//######################
-//Helpers
-//######################
-
-// Convert to a filesystem path (for Node scripts)
-export const fsPath = (rel: string) => path.join(process.cwd(), rel);
-
-// Convert to an import alias path (for TS/Next)
-export const importPath = (rel: string) =>
-  `@/${rel.replace(/^\/?src\//, "")}`;
-
-// Convert to a public URL (for browser / HTML)
-export const urlPath = (rel: string) => `/${rel.replace(/^public\//, "")}`;
 

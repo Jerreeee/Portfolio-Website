@@ -9,7 +9,7 @@ import { ProjectInfo } from '@/Data/Projects/project';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { projectCardCmp } from './ProjectCardCmpClasses';
-import PATHS, { urlPath } from '@/Config/paths';
+import PATHS from '@/Config/paths';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -69,7 +69,7 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
     <ProjectCardRoot
       viewport={{ once: true, amount: 0.3 }}
     >
-      <Link href={`/projects/${project.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link href={PATHS.PROJECT_PAGE({slug: project.slug}).url().value} style={{ textDecoration: 'none', color: 'inherit' }}>
         <ProjectCardImage>
           <Image
             src={PATHS.PROJECT_IMAGE({ projectName: project.slug, fileName: project.thumbnailImage }).url().value}

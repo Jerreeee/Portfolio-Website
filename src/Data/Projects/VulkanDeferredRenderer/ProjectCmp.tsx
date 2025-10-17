@@ -18,7 +18,7 @@ import { data } from './data';
 import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 import TimelineCmp from '@/Themes/Default/Components/Timeline/TimelineCmp';
-import PATHS, { urlPath } from '@/Config/paths';
+import PATHS from '@/Config/paths';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;

@@ -5,7 +5,7 @@
 import fs from "fs";
 import path from "path";
 import { imageSize } from "image-size";
-import PATHS, { urlPath } from '../src/Config/paths';
+import PATHS from '../src/Config/paths';
 
 import { ProjectManifest, MediaManifestEntry, Media } from "@/Types/projectManifest";
 
