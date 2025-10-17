@@ -5,12 +5,12 @@
 import fs from "fs";
 import path from "path";
 import { imageSize } from "image-size";
-import PATHS from '../src/Config/paths';
+import PATHS, { urlPath } from '../src/Config/paths';
 
 import { ProjectManifest, MediaManifestEntry, Media } from "@/Types/projectManifest";
 
-const projectsDir = path.join(process.cwd(), PATHS.PUBLIC_PROJECTS());
-const dataProjectsDir = path.join(process.cwd(), PATHS.SRC_PROJECTS());
+const projectsDir = path.join(process.cwd(), PATHS.PUBLIC_PROJECTS().value);
+const dataProjectsDir = path.join(process.cwd(), PATHS.SRC_PROJECTS().value);
 
 // Get list of subfolders (each representing a project)
 const projectFolders = fs.readdirSync(projectsDir)
@@ -36,7 +36,7 @@ projectFolders.forEach((projectName) => {
         const aspectRatio = width / height;
         media[file] = {
           type: "image",
-          src: `${PATHS.PROJECT_IMAGE({projectName: projectName})}/${file}`,
+          src: `${PATHS.PROJECT_IMAGE({projectName: projectName, fileName: file}).url().value}`,
           width,
           height,
           aspectRatio,

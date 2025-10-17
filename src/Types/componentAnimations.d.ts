@@ -1,4 +1,4 @@
-// src/Types/componentAnimations.d.ts
+// () => makePath(`${BASE.TYPES}/componentAnimations.d.ts`)
 import type { AnimationProps } from 'framer-motion';
 
 /**

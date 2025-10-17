@@ -8,8 +8,8 @@ import fs from "fs";
 import path from "path";
 import PATHS from '../src/Config/paths';
 
-const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
-const OUTPUT_FILE = path.join(process.cwd(), PATHS.COMPONENT_SETTINGS());
+const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS().value);
+const OUTPUT_FILE = path.join(process.cwd(), PATHS.COMPONENT_SETTINGS().value);
 
 // Recursively find all index.ts files
 function getAllIndexFiles(dir: string): string[] {

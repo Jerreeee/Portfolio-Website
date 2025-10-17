@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import PATHS from '../src/Config/paths';
 
-const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
-const AUGMENTATION_FILE = path.join(process.cwd(), PATHS.MUI_THEME_AUGMENTATION());
+const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS().value);
+const AUGMENTATION_FILE = path.join(process.cwd(), PATHS.MUI_THEME_AUGMENTATION().value);
 
 // Regex matchers for auto-generated blocks
 const blockRegex = (name: string) =>

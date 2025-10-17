@@ -18,7 +18,7 @@ import { data } from './data';
 import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 import TimelineCmp from '@/Themes/Default/Components/Timeline/TimelineCmp';
-import PATHS from '@/Config/paths';
+import PATHS, { urlPath } from '@/Config/paths';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
@@ -229,7 +229,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
 
                 {/* --- Code Block --- */}
                 <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-                  <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file })} />
+                  <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file }).url().value} />
                 </ParentSizeObserver>
               </AccordionDetails>
             </Accordion>

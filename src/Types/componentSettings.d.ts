@@ -1,4 +1,4 @@
-// src/Types/componentSettings.d.ts
+// () => makePath(`${BASE.TYPES}/componentSettings.d.ts`)
 /**
  * Auto-generated mapping between component names and their Settings types.
  * Used to power theme configuration and typing.

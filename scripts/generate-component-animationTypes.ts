@@ -11,8 +11,8 @@ import fs from "fs";
 import path from "path";
 import PATHS from '../src/Config/paths';
 
-const COMPONENTS_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
-const OUTPUT_FILE = path.join(process.cwd(), PATHS.COMPONENT_ANIMATIONS());
+const COMPONENTS_DIR = PATHS.COMPONENTS().fs().value;
+const OUTPUT_FILE = PATHS.COMPONENT_ANIMATIONS().fs().value;
 
 // Recursively find all index.ts files
 function getAllIndexFiles(dir: string): string[] {

@@ -7,7 +7,7 @@ import fs from "fs";
 import path from "path";
 import PATHS from '../src/Config/paths';
 
-const BASE_DIR = path.join(process.cwd(), PATHS.COMPONENTS());
+const BASE_DIR = path.join(process.cwd(), PATHS.COMPONENTS().value);
 
 // Helper
 const firstLetterToLower = (str: string): string =>
