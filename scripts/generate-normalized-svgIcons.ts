@@ -333,7 +333,23 @@ function transformSvgString(svgSource: string) {
 
   // aspect ratio
   let aspectRatio: number | undefined;
-  const viewBox = svg.getAttribute("viewBox");
+  let viewBox = svg.getAttribute("viewBox");
+
+  // Ensure there is always a viewBox
+ if (!viewBox) {
+    const w = svg.getAttribute("width");
+    const h = svg.getAttribute("height");
+    if (w && h) {
+      svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+      viewBox = `0 0 ${w} ${h}`;
+    } else {
+      // fallback if even width/height are missing
+      svg.setAttribute("viewBox", "0 0 1024 1024");
+      viewBox = "0 0 1024 1024";
+    }
+  }
+
+  // derive aspect ratio
   if (viewBox) {
     const p = viewBox.trim().split(/[\s,]+/);
     if (p.length >= 4) {

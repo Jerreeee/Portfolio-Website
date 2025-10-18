@@ -118,7 +118,7 @@ export default function About() {
                 maxWidth: 700,
               }}
             >
-              I’m Jeroen Denayer, a technical artist and C++ programmer who became fascinated by how much of creative work can be automated and improved. During my Game Graphics Production studies at DAE, I discovered procedural workflows through Houdini and grew passionate about optimizing processes through smart tools. This interest eventually led me to pursue a second bachelor in Game Development, where I focused on C++ and low-level GPU programming. Now, I’m driven to build tools and pipelines that make complex work simpler, faster, and far less repetitive.
+              I’m Jeroen Denayer, a C++ programmer and technical artist who became fascinated by how much of both creative and technical work can be automated and improved. During my Game Graphics Production studies at DAE, I discovered procedural workflows through Houdini and grew passionate about optimizing processes through smart tools. This curiosity led me to pursue a second bachelor in Game Development, where I focused on C++ and low-level GPU programming. Now, I’m driven to build efficient tools and pipelines that make complex artistic and technical work simpler, faster, and far less repetitive.
             </Typography>
           </Grid>
         </Grid>
