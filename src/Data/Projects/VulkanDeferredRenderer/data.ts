@@ -11,17 +11,17 @@ export const data: ProjectRequiredInfo = {
   technologies: {
     Core: [
       { name: 'cplusplus', version: 'C++20', usage: 'Core language used for the renderer implementation.' },
-      { name: 'vulkan', version: '1.3', usage: 'Low-level graphics API for deferred shading, synchronization, and GPU memory management.' },
+      { name: 'Vulkan', version: '1.3', usage: 'Low-level graphics API for deferred shading, synchronization, and GPU memory management.' },
     ],
     Libraries: [
       { name: 'GLFW', version: '3.3', usage: 'Handles window creation, input, and Vulkan surface setup.' },
-      { name: 'glm', version: '0.9.9', usage: 'Mathematics library for vectors, matrices, and transformations.' },
+      { name: 'GLM', version: '0.9.9', usage: 'Mathematics library for vectors, matrices, and transformations.' },
       { name: 'stb_image', version: '2.28', usage: 'Header-only image loader used for textures and HDR environment maps.' },
       { name: 'tinyobjloader', version: '2.0', usage: 'Lightweight OBJ loader for importing meshes.' },
     ],
     Tools: [
-      { name: 'renderdoc', version: '1.32', usage: 'Frame capture, GPU debugging, and visualizing G-buffer outputs.' },
-      { name: 'nsight_graphics', version: '2025.1', usage: 'Frame capture, GPU debugging, and visualizing G-buffer outputs.' },
+      { name: 'RenderDoc', version: '1.32', usage: 'Frame capture, GPU debugging, and visualizing G-buffer outputs.' },
+      { name: 'Nsight_Graphics', version: '2025.1', usage: 'Frame capture, GPU debugging, and visualizing G-buffer outputs.' },
     ],
   },
 };

@@ -10,6 +10,7 @@ import IconCmp from '@/Themes/Default/Components/Icon/IconCmp'
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { projectCardCmp } from './ProjectCardCmpClasses';
 import PATHS from '@/Config/paths';
+import { height } from '@mui/system';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -42,9 +43,12 @@ const ProjectCardTechList = makeSlot(motion.div, 'techList')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(1),
+  height: 20,
 }));
 
 const ProjectCardTechIcon = makeSlot(motion.div, 'techIcon')(({ theme }) => ({
+  display: 'flex',
+  height: '100%',
 }));
 
 const ProjectCardContentBox = makeSlot(motion(CardContent), 'content')(({ theme }) => ({

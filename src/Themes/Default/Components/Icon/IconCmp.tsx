@@ -3,6 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
+import { Typography, Box } from '@mui/material';
+import { useTheme } from '@/Themes/ThemeProvider';
 import { iconCmp } from './IconCmpClasses';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { iconManifest, type IconKey } from '@/Data/Icons/icons-manifest';
@@ -12,45 +14,84 @@ import { iconManifest, type IconKey } from '@/Data/Icons/icons-manifest';
 
 const makeSlot = makeSlotFactory('IconCmp', iconCmp);
 
+const IconWrapper = styled(motion.div)({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 6,
+  overflow: 'visible',
+});
+
 const IconImage = styled(motion.img)({
   display: 'block',
-  width: '100%',
-  height: 'auto',
+  maxWidth: '100%',
+  maxHeight: '100%',
+  width: 'auto',
+  height: '100%',
+  objectFit: 'contain',
 });
+
+const IconLabel = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  fontSize: '0.7rem',
+  whiteSpace: 'nowrap',
+}));
 
 // ================================================================
 // ========================== Component ============================
 
 export interface IconCmpProps {
-  /** Loosely typed so any label or tech name can be passed */
-  techName: string;
+  techName: string; // Key name used to look up the icon from manifest
+
+  /** optional visual filters */
+  convertToGrayScale?: boolean;
+  tintColor?: string;
+  tintStrength?: number;
+  grayScaleIconColor?: string;
+
+  showDisplayName?: boolean;
+  height?: number | string;
 }
 
 /**
- * Renders an icon from the pre-generated manifest.
- * Falls back to the "error" icon if missing; logs a warning if even that is missing.
+ * Renders an icon (and optional display label) from the pre-generated manifest.
+ * Automatically scales to parent constraints while maintaining aspect ratio.
  */
-export default function IconCmp({ techName }: IconCmpProps) {
-  const key = techName as IconKey;
+export default function IconCmp(inProps: IconCmpProps) {
+  const { theme } = useTheme(); 
+  const defaultProps = theme.components?.IconCmp?.defaultProps ?? {};
+  const props = { ...defaultProps, ...inProps };
+
+  const key = props.techName as IconKey;
   let icon = iconManifest[key];
 
-  // Fallback to "error" icon
+
+
+  // Fallback to "error" icon if missing
   if (!icon) {
-    console.warn(`⚠️ Icon "${techName}" not found in iconManifest — using fallback.`);
+    console.warn(`⚠️ Icon "${props.techName}" not found in iconManifest — using fallback.`);
     icon = iconManifest['error'] ?? iconManifest['error'];
 
-    // If even the fallback doesn't exist, log a critical warning
     if (!icon) {
       console.error('❌ Error icon not found in iconManifest.');
       return null;
     }
   }
 
+  const displayName = icon.displayName ?? props.techName;
+
   return (
-    <IconImage
-      src={icon.src}
-      alt={techName}
-      style={{ aspectRatio: icon.aspectRatio }}
-    />
+    <IconWrapper
+      style={{
+        height: props.height ?? '100%',
+      }}
+    >
+      <IconImage
+        src={icon.src}
+        alt={displayName}
+        sx={{ aspectRatio: icon.aspectRatio }}
+      />
+      {props.showDisplayName && <IconLabel variant="caption">{displayName}</IconLabel>}
+    </IconWrapper>
   );
 }

@@ -17,9 +17,6 @@ import { iconManifest } from '@/Data/Icons/icons-manifest'; // ✅ import manife
 export default function About() {
   const theme = useTheme();
 
-  const getDisplayName = (key: string) =>
-    iconManifest[key as keyof typeof iconManifest]?.displayName ?? key;
-
   return (
     <Box
       sx={{
@@ -35,7 +32,12 @@ export default function About() {
           {/* Profile + Contact */}
           <Grid
             size={{ xs: 12, md: 5 }}
-            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 3,
+            }}
           >
             <Box
               component="img"
@@ -58,7 +60,7 @@ export default function About() {
                   color="primary"
                   size="large"
                   onClick={() => {
-                    navigator.clipboard.writeText("jeroen@denayer.com");
+                    navigator.clipboard.writeText('jeroen@denayer.com');
                   }}
                 >
                   <Email />
@@ -130,7 +132,8 @@ export default function About() {
               variant="h4"
               sx={{
                 fontWeight: 600,
-                background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+                background:
+                  'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'inline-block',
@@ -173,7 +176,14 @@ export default function About() {
               Languages
             </Typography>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25, alignItems: 'center' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 0.25,
+                alignItems: 'center',
+              }}
+            >
               <Typography
                 variant="caption"
                 sx={{
@@ -196,143 +206,78 @@ export default function About() {
           </Box>
 
           {/* ===== Two Columns of Skill Groups ===== */}
-          <Grid container spacing={2} justifyContent="center" sx={{ px: { xs: 1, md: 2 } }}>
-            {/* Left Column */}
-            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {[
+          <Grid
+            container
+            spacing={2}
+            justifyContent="center"
+            sx={{ px: { xs: 1, md: 2 } }}
+          >
+            {[
+              [
                 { title: 'Programming Languages', items: ['cplusplus', 'Python', 'csharp', 'Typescript', 'Lua'] },
                 { title: 'APIs & Libraries', items: ['Vulkan', 'OpenGL', 'SDL', 'GLM'] },
                 { title: 'Game Engines', items: ['Unreal', 'Unity'] },
-              ].map((section) => (
-                <Box
-                  key={section.title}
-                  sx={{
-                    backgroundColor: 'rgba(255,255,255,0.03)',
-                    border: `1px solid rgba(255,255,255,0.06)`,
-                    borderRadius: 2,
-                    p: 1.25,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      color: theme.palette.text.primary,
-                      fontSize: '0.85rem',
-                      mb: 0.25,
-                    }}
-                  >
-                    {section.title}
-                  </Typography>
-
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
-                    {section.items.map((item) => (
-                      <Box
-                        key={item}
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 0.5,
-                          minWidth: 'fit-content',
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            width: 22,
-                            height: 22,
-                            opacity: 0.9,
-                            transition: 'transform 0.15s ease',
-                            '&:hover': { transform: 'scale(1.1)' },
-                          }}
-                        >
-                          <IconCmp techName={item} />
-                        </Box>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            color: theme.palette.text.secondary,
-                            fontSize: '0.7rem',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          {getDisplayName(item)} {/* ✅ now using displayName */}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-              ))}
-            </Grid>
-
-            {/* Right Column */}
-            <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {[
+              ],
+              [
                 { title: 'Tools & Pipeline', items: ['Houdini', 'Visual_Studio', 'Visual_Studio_Code', 'RenderDoc', 'CMake', 'Substance_Designer', 'Substance_Painter', 'Blender', '3DS_Max', 'Maya'] },
                 { title: 'Art & Design', items: ['Photoshop', 'Premiere_Pro'] },
-              ].map((section) => (
-                <Box
-                  key={section.title}
-                  sx={{
-                    backgroundColor: 'rgba(255,255,255,0.03)',
-                    border: `1px solid rgba(255,255,255,0.06)`,
-                    borderRadius: 2,
-                    p: 1.25,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant="subtitle1"
+              ],
+            ].map((column, i) => (
+              <Grid
+                key={i}
+                size={{ xs: 12, md: 6 }}
+                sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
+              >
+                {column.map((section) => (
+                  <Box
+                    key={section.title}
                     sx={{
-                      color: theme.palette.text.primary,
-                      fontSize: '0.85rem',
-                      mb: 0.25,
+                      backgroundColor: 'rgba(255,255,255,0.03)',
+                      border: `1px solid rgba(255,255,255,0.06)`,
+                      borderRadius: 2,
+                      p: 1.25,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 0.5,
                     }}
                   >
-                    {section.title}
-                  </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        color: theme.palette.text.primary,
+                        fontSize: '0.85rem',
+                        mb: 0.25,
+                      }}
+                    >
+                      {section.title}
+                    </Typography>
 
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
-                    {section.items.map((item) => (
-                      <Box
-                        key={item}
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 0.5,
-                          minWidth: 'fit-content',
-                        }}
-                      >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 1,
+                        alignItems: 'center',
+                      }}
+                    >
+                      {section.items.map((item) => (
                         <Box
+                          key={item}
                           sx={{
-                            width: 22,
                             height: 22,
                             opacity: 0.9,
                             transition: 'transform 0.15s ease',
                             '&:hover': { transform: 'scale(1.1)' },
                           }}
                         >
-                          <IconCmp techName={item} />
+                          <IconCmp techName={item} showDisplayName />
                         </Box>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            color: theme.palette.text.secondary,
-                            fontSize: '0.7rem',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          {getDisplayName(item)} {/* ✅ now using displayName */}
-                        </Typography>
-                      </Box>
-                    ))}
+                      ))}
+                    </Box>
                   </Box>
-                </Box>
-              ))}
-            </Grid>
+                ))}
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>

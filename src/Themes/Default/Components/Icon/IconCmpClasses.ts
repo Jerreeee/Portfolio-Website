@@ -4,7 +4,7 @@
 import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
 export const iconCmp = createUtilityClasses('IconCmp', [
-  'root'
+  
 ] as const);
 
 export type IconCmpClassKey = typeof iconCmp.slots[number];

@@ -64,6 +64,111 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
       />
     </div> */}
 
+ <div style={{ width: '100%', background: '#111', color: '#eee', padding: 16 }}>
+      <h3 style={{ marginBottom: 16 }}>Timeline Example</h3>
+
+      <TimelineCmp range={[0, 10]} showLabels leftColumnWidth={140}>
+        {/* Top bar for global ticks */}
+        <TimelineCmp.TopBar tickCount={10} formatter={(v) => `${v.toFixed(1)}s`} />
+
+        {/* GPU Load track */}
+        <TimelineCmp.Group name="GPU Load">
+          <TimelineCmp.GraphLayer
+            data={[
+              { time: 0, value: 0.2 },
+              { time: 2, value: 0.8 },
+              { time: 4, value: 0.3 },
+              { time: 6, value: 0.6 },
+              { time: 8, value: 0.9 },
+              { time: 10, value: 0.4 },
+            ]}
+            color="#42a5f5"
+            filled
+          />
+        </TimelineCmp.Group>
+
+        {/* CPU Load track */}
+        <TimelineCmp.Group name="CPU Load">
+          <TimelineCmp.GraphLayer
+            data={[
+              { time: 0, value: 0.4 },
+              { time: 2, value: 0.2 },
+              { time: 4, value: 0.7 },
+              { time: 6, value: 0.5 },
+              { time: 8, value: 0.3 },
+              { time: 10, value: 0.8 },
+            ]}
+            color="#66bb6a"
+            filled
+          />
+        </TimelineCmp.Group>
+
+        {/* Image comparison segments */}
+        <TimelineCmp.Group name="Image Segments">
+          <TimelineCmp.BarLayer
+            bars={[
+              { start: 0, end: 3, label: 'Image A', color: '#8e24aa' },
+              { start: 3, end: 6, label: 'Image B', color: '#43a047' },
+              { start: 6, end: 10, label: 'Image C', color: '#fdd835' },
+            ]}
+          />
+        </TimelineCmp.Group>
+      </TimelineCmp>
+    </div>
+
+<div
+  style={{
+    width: '100%',
+    height: '400px', // fixed viewport height -> enables vertical scroll
+    background: '#111',
+    color: '#eee',
+    padding: 16,
+    boxSizing: 'border-box',
+    overflow: 'hidden', // hide native overflow, handled by ScrollableCmp
+  }}
+>
+  <h3 style={{ marginBottom: 16 }}>Timeline Overflow Example</h3>
+
+  {/* Force a contained viewport */}
+  <div style={{ width: '100%', height: 'calc(100% - 40px)' }}>
+    <TimelineCmp range={[0, 200]} showLabels leftColumnWidth={140}>
+      {/* Top bar */}
+      <TimelineCmp.TopBar
+        tickCount={20}
+        formatter={(v) => `${v.toFixed(0)}s`}
+      />
+
+      {/* Many groups for vertical scroll */}
+      {Array.from({ length: 40 }).map((_, i) => (
+        <TimelineCmp.Group key={i} name={`Track ${i + 1}`}>
+          {i % 2 === 0 ? (
+            <TimelineCmp.GraphLayer
+              data={Array.from({ length: 40 }).map((_, j) => ({
+                time: j * 5,
+                value: Math.abs(Math.sin((i + j) * 0.3)),
+              }))}
+              color={`hsl(${(i * 25) % 360}, 70%, 60%)`}
+              filled
+            />
+          ) : (
+            <TimelineCmp.BarLayer
+              bars={[
+                { start: 0, end: 20, label: 'Phase A', color: '#8e24aa' },
+                { start: 30, end: 80, label: 'Phase B', color: '#43a047' },
+                { start: 90, end: 140, label: 'Phase C', color: '#fdd835' },
+                { start: 160, end: 200, label: 'Phase D', color: '#ef5350' },
+              ]}
+            />
+          )}
+        </TimelineCmp.Group>
+      ))}
+    </TimelineCmp>
+  </div>
+</div>
+
+
+
+
 
       <Divider sx={{ my: 3, opacity: 0.2 }} />
 

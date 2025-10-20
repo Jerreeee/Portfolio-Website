@@ -1,190 +1,205 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { styled } from '@mui/material/styles';
-import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { timelineCmp } from './TimelineCmpClasses';
+import { TimelineContext, TimelineGroupInfo } from './Context';
 
-// =====================================================================
-// ============================= Slot Definitions ======================
+// Modular scrollable system
+import ScrollableCmp from '../Scrollable/ScrollableCmp';
+
+import TimelineCmpTopBar from './TimelineTopBarCmp';
+import TimelineCmpGroup from './TimelineGroupCmp';
+import TimelineCmpBarLayer from './TimelineBarLayerCmp';
+import TimelineCmpGraphLayer from './TimelineGraphLayerCmp';
 
 const makeSlot = makeSlotFactory('TimelineCmp', timelineCmp);
 
 const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
+  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+  height: '100%',
+  userSelect: 'none',
   overflow: 'hidden',
-}));
-
-const TimelineTopBar = makeSlot('div', 'topBar')(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
-  height: theme.spacing(3),
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  fontSize: theme.typography.caption.fontSize,
-  color: theme.palette.text.secondary,
-  boxSizing: 'border-box',
-}));
-
-const TimelineTopTick = makeSlot('div', 'topTick')(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  width: 1,
-  backgroundColor: theme.palette.grey[500],
-  opacity: 0.5,
-  transform: 'translateX(-50%)',
-}));
-
-const TimelineLayersRoot = makeSlot('div', 'layersRoot')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  gap: theme.spacing(0.5),
-  paddingTop: theme.spacing(0.5),
-  position: 'relative',
-}));
-
-const TimelineLayer = makeSlot('div', 'layer')(({ theme }) => ({
-  position: 'relative',
-  height: theme.spacing(3),
-  width: '100%',
-  borderRadius: theme.shape.borderRadius,
-}));
-
-const TimelineBarSlot = makeSlot('div', 'bar')(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  borderRadius: theme.shape.borderRadius,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: theme.palette.getContrastText(theme.palette.background.paper),
-  fontSize: theme.typography.caption.fontSize,
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
 }));
 
 // =====================================================================
-// ============================= Types ==================================
-
-export interface TimelineCmpSettings {}
-
-export interface TimelineBar {
-  layerIndex: number;
-  start: number;
-  end: number;
-  label: string;
-  color?: string;
-}
+// =========================== COMPONENT ===============================
+// =====================================================================
 
 export interface TimelineCmpProps {
   range: [number, number];
-  interval?: number;
-  showTopBar?: boolean;
-  bars: TimelineBar[];
-  layerCount?: number;
+  currentTime?: number;
+  onChange?: (t: number) => void;
+  children?: React.ReactNode;
+  leftColumnWidth?: number;
+  showLabels?: boolean;
 }
 
-// =====================================================================
-// ============================= Component ==============================
+export default function TimelineCmp({
+  range,
+  currentTime,
+  onChange,
+  children,
+  leftColumnWidth = 100,
+  showLabels = false,
+}: TimelineCmpProps) {
+  const [internalTime, setInternalTime] = useState(currentTime ?? range[0]);
+  const [groups, setGroups] = useState<TimelineGroupInfo[]>([]);
 
-export default function TimelineCmp(props: TimelineCmpProps) {
-  const { theme } = useTheme();
+  // --- Context logic ---
+  const scale = (v: number) => (v - range[0]) / (range[1] - range[0]);
+  const unscale = (r: number) => range[0] + r * (range[1] - range[0]);
 
-  const normalize = (v: number) => {
-    const [min, max] = props.range;
-    if (max === min) return 0;
-    return (v - min) / (max - min);
-  };
+  const registerGroup = useCallback((group: TimelineGroupInfo) => {
+    setGroups((prev) => {
+      if (prev.find((g) => g.id === group.id)) return prev;
+      return [...prev, group];
+    });
+  }, []);
 
-  const ticks: number[] = [];
-  if (props.showTopBar && props.interval !== undefined) {
-    for (let t = props.range[0]; t <= props.range[1] + 1e-9; t += props.interval) {
-      ticks.push(Number(t.toFixed(6)));
-    }
-  }
+  const unregisterGroup = useCallback((id: string) => {
+    setGroups((prev) => prev.filter((g) => g.id !== id));
+  }, []);
 
-  const layerCount =
-    props.layerCount ?? Math.max(0, ...props.bars.map((b) => b.layerIndex + 1));
+  const ctxValue = useMemo(
+    () => ({
+      range,
+      scale,
+      unscale,
+      currentTime: internalTime,
+      setCurrentTime: (t: number) => {
+        setInternalTime(t);
+        onChange?.(t);
+      },
+      registerGroup,
+      unregisterGroup,
+      groups,
+    }),
+    [range, internalTime, onChange, registerGroup, unregisterGroup, groups]
+  );
+
+  // --- Extract topbars + groups ---
+  const topBars: React.ReactNode[] = [];
+  const groupChildren: React.ReactNode[] = [];
+
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) return;
+    if (child.type === TimelineCmp.TopBar) topBars.push(child);
+    else if (child.type === TimelineCmp.Group) groupChildren.push(child);
+  });
+
+  const trackHeight = groups.reduce((sum, g) => sum + (g.height ?? 32), 0);
+  const topBarHeight = topBars.length > 0 ? 24 : 0;
+  const contentWidth = 2000;
+  const contentHeight = trackHeight;
+
+  // -------------------------------------------------------------------
+  // Layout
+  // -------------------------------------------------------------------
 
   return (
-    <TimelineRoot>
-      {props.showTopBar && (
-        <TimelineTopBar>
-          {ticks.map((t, i) => {
-            const pos = normalize(t) * 100;
-            const isFirst = i === 0;
-            const isLast = i === ticks.length - 1;
+    <TimelineContext.Provider value={ctxValue}>
+      <TimelineRoot>
+        <ScrollableCmp>
+          {/* ================= Top Bar ================= */}
+          {topBars.length > 0 && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: topBarHeight,
+                display: 'grid',
+                gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr`,
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(20,20,20,0.9)',
+                zIndex: 10,
+              }}
+            >
+              {/* Left spacer */}
+              <div
+                style={{
+                  width: showLabels ? leftColumnWidth : 0,
+                  background: showLabels ? 'rgba(0,0,0,0.1)' : 'transparent',
+                }}
+              />
+              {/* Scrollable top bar (linked horizontally with id=1) */}
+              <ScrollableCmp.Group id="1" direction="horizontal">
+                <div style={{ width: contentWidth }}>{topBars}</div>
+              </ScrollableCmp.Group>
+            </div>
+          )}
 
-            let labelLeft = `${pos}%`;
-            let translate = 'translate(-50%, -50%)';
-            let textAlign: 'left' | 'right' | 'center' = 'center';
-
-            if (isFirst) {
-              // move label slightly right of tick
-              labelLeft = `calc(${pos}% + 0.25rem)`;
-              translate = 'translateY(-50%)';
-              textAlign = 'left';
-            } else if (isLast) {
-              // move label slightly left of tick
-              labelLeft = `calc(${pos}% - 0.25rem)`;
-              translate = 'translate(-100%, -50%)';
-              textAlign = 'right';
-            }
-
-            return (
-              <React.Fragment key={i}>
-                <TimelineTopTick sx={{ left: `${pos}%` }} />
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: labelLeft,
-                    transform: translate,
-                    textAlign,
-                    whiteSpace: 'nowrap',
-                    pointerEvents: 'none',
-                  }}
-                >
-                  {t}
+          {/* ================= Main grid layout ================= */}
+          <div
+            style={{
+              position: 'absolute',
+              top: topBarHeight,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'grid',
+              gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
+              gridTemplateRows: `1fr auto`,
+            }}
+          >
+            {/* === Shared vertical scroll group for labels + data === */}
+            <ScrollableCmp.Group id="0" direction="vertical" style={{ gridColumn: '1 / span 2', gridRow: 1, display: 'grid', gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr` }}>
+              {/* Left label column */}
+              <div
+                style={{
+                  borderRight: showLabels ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                  background: showLabels ? 'rgba(0,0,0,0.1)' : 'transparent',
+                }}
+              >
+                <div style={{ height: contentHeight }}>
+                  {groups.map((g) => (
+                    <div
+                      key={g.id}
+                      style={{
+                        height: g.height ?? 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        paddingLeft: 8,
+                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                        fontSize: '0.75rem',
+                      }}
+                    >
+                      {g.name}
+                    </div>
+                  ))}
                 </div>
-              </React.Fragment>
-            );
-          })}
-        </TimelineTopBar>
-      )}
+              </div>
 
-      <TimelineLayersRoot>
-        {Array.from({ length: layerCount }).map((_, layerIdx) => (
-          <TimelineLayer key={layerIdx}>
-            {props.bars
-              .filter((b) => b.layerIndex === layerIdx)
-              .map((b, i) => {
-                const left = normalize(b.start) * 100;
-                const right = normalize(b.end) * 100;
-                const width = Math.max(right - left, 0);
-                return (
-                  <TimelineBarSlot
-                    key={i}
-                    sx={{
-                      left: `${left}%`,
-                      width: `${width}%`,
-                      backgroundColor: b.color || theme.palette.primary.main,
-                    }}
-                  >
-                    {b.label}
-                  </TimelineBarSlot>
-                );
-              })}
-          </TimelineLayer>
-        ))}
-      </TimelineLayersRoot>
-    </TimelineRoot>
+              {/* Main scrollable content area (only horizontal) */}
+              <ScrollableCmp.Group id="1" direction="horizontal">
+                <div style={{ width: contentWidth, height: contentHeight }}>{groupChildren}</div>
+              </ScrollableCmp.Group>
+            </ScrollableCmp.Group>
+
+            {/* === Vertical scrollbar === */}
+            <div style={{ gridColumn: 3, gridRow: 1, height: '100%' }}>
+              <ScrollableCmp.Vertical id="0" />
+            </div>
+
+            {/* === Horizontal scrollbar === */}
+            <div style={{ gridColumn: 2, gridRow: 2, width: '100%' }}>
+              <ScrollableCmp.Horizontal id="1" />
+            </div>
+          </div>
+        </ScrollableCmp>
+      </TimelineRoot>
+    </TimelineContext.Provider>
   );
 }
+
+// Attach child components
+TimelineCmp.TopBar = TimelineCmpTopBar;
+TimelineCmp.Group = TimelineCmpGroup;
+TimelineCmp.BarLayer = TimelineCmpBarLayer;
+TimelineCmp.GraphLayer = TimelineCmpGraphLayer;

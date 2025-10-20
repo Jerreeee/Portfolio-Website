@@ -150,7 +150,7 @@ function run() {
 
   const header =
     headerComment +
-    `import type { IconManifestEntry } from "@/Types/iconManifest";\n\n` +
+    // `import type { IconManifestEntry } from "@/Types/iconManifest";\n\n` +
     `export const iconManifest = ${JSON.stringify(manifest, null, 2)} as const;\n\n` +
     `export type IconManifest = typeof iconManifest;\n` +
     `export type IconKey = keyof typeof iconManifest;\n`;

@@ -7,7 +7,6 @@
  * preserved when the manifest is regenerated.
  * ---------------------------------------------------------------------
  */
-import type { IconManifestEntry } from "@/Types/iconManifest";
 
 export const iconManifest = {
   "3DS_Max": {

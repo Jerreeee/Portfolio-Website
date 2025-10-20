@@ -86,18 +86,17 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                           <Box
                             key={`${category}-${item.name}-${i}`}
                             sx={{
+                              width: 'auto',
+                              height: 24,
                               display: 'flex',
                               alignItems: 'center',
-                              gap: 1,
+                              justifyContent: 'center',
                               flexWrap: 'wrap',
+                              transition: 'transform 0.15s ease',
+                              '&:hover': { transform: 'scale(1.1)' },
                             }}
                           >
-                            <Box sx={{ width: 24, height: 24 }}>
-                              <IconCmp techName={item.name} />
-                            </Box>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                              {item.name}
-                            </Typography>
+                            <IconCmp techName={item.name} showDisplayName />
                           </Box>
                         ))}
                       </TechIconList>

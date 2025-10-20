@@ -3,9 +3,9 @@
 // ----------------------------------------------------
 import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
-export const timelineCmp = createUtilityClasses('TimelineCmp', [
+export const timelineTopBarCmp = createUtilityClasses('TimelineTopBarCmp', [
   'root'
 ] as const);
 
-export type TimelineCmpClassKey = typeof timelineCmp.slots[number];
-export type TimelineCmpClasses = typeof timelineCmp.classes;
+export type TimelineTopBarCmpClassKey = typeof timelineTopBarCmp.slots[number];
+export type TimelineTopBarCmpClasses = typeof timelineTopBarCmp.classes;
