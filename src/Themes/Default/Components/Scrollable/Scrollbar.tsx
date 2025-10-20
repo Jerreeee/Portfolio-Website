@@ -13,11 +13,8 @@ interface ScrollbarProps {
 function Scrollbar({ id, direction, style }: ScrollbarProps) {
   const ctx = useScrollableContext();
   const [ratio, setRatio] = useState(0);
-
-  // All linked containers for this ID
   const containers = ctx.getContainers(id);
 
-  // Compute average scroll ratio across all linked containers
   useEffect(() => {
     if (!containers.length) return;
 
@@ -26,41 +23,36 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
       let count = 0;
       for (const el of containers) {
         if (!el) continue;
-        const scrollRange =
+        const range =
           direction === 'vertical'
             ? el.scrollHeight - el.clientHeight
             : el.scrollWidth - el.clientWidth;
-        if (scrollRange <= 0) continue;
-        const currentRatio =
+        if (range <= 0) continue;
+        const current =
           direction === 'vertical'
-            ? el.scrollTop / scrollRange
-            : el.scrollLeft / scrollRange;
-        sum += currentRatio;
+            ? el.scrollTop / range
+            : el.scrollLeft / range;
+        sum += current;
         count++;
       }
       if (count > 0) setRatio(sum / count);
     };
 
-    // Initialize and listen
     updateRatio();
     containers.forEach((el) => el.addEventListener('scroll', updateRatio));
     window.addEventListener('resize', updateRatio);
-
     return () => {
       containers.forEach((el) => el.removeEventListener('scroll', updateRatio));
       window.removeEventListener('resize', updateRatio);
     };
   }, [containers, direction]);
 
-  const handleChange = (newRatio: number) => {
-    setRatio(newRatio);
-    ctx.updateScroll(id, direction, newRatio);
+  const handleChange = (r: number) => {
+    setRatio(r);
+    ctx.updateScroll(id, direction, r);
   };
 
-  const containerRefs = useMemo(
-    () => containers.map((el) => ({ current: el })),
-    [containers]
-  );
+  const refs = useMemo(() => containers.map((el) => ({ current: el })), [containers]);
 
   const defaultStyle: CSSProperties =
     direction === 'vertical'
@@ -69,12 +61,7 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
 
   return (
     <div style={{ ...defaultStyle, ...style }}>
-      <ScrollBarCmp
-        scrollContainer={containerRefs}
-        direction={direction}
-        value={ratio}
-        onChange={handleChange}
-      />
+      <ScrollBarCmp scrollContainer={refs} direction={direction} value={ratio} onChange={handleChange} />
     </div>
   );
 }

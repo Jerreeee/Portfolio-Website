@@ -34,6 +34,8 @@ export function useScrollableRegistry(): ScrollableContextType {
     scrollbars: new Map(),
   });
 
+  const syncLock = useRef<Set<HTMLDivElement>>(new Set());
+
   const registerContainer = useCallback((id: string, el: HTMLDivElement) => {
     const r = registry.current;
     if (!r.containers.has(id)) r.containers.set(id, []);
@@ -61,22 +63,26 @@ export function useScrollableRegistry(): ScrollableContextType {
     entry[dir] = entry[dir]!.filter((e) => e !== el);
   }, []);
 
-  // Multi-group sync
   const updateScroll = useCallback(
     (id: string, dir: 'horizontal' | 'vertical', ratio: number, source?: HTMLDivElement) => {
       const containers = registry.current.containers.get(id);
       if (!containers) return;
 
       for (const el of containers) {
-        if (!el || el === source) continue; // skip source to prevent feedback loops
+        if (!el || el === source) continue;
+        if (syncLock.current.has(el)) continue;
+
+        syncLock.current.add(el);
+        requestAnimationFrame(() => syncLock.current.delete(el));
+
         if (dir === 'horizontal') {
           const max = el.scrollWidth - el.clientWidth;
           const target = ratio * max;
-          if (Math.abs(el.scrollLeft - target) > 1) el.scrollLeft = target;
+          if (Math.abs(el.scrollLeft - target) > 0.5) el.scrollLeft = target;
         } else {
           const max = el.scrollHeight - el.clientHeight;
           const target = ratio * max;
-          if (Math.abs(el.scrollTop - target) > 1) el.scrollTop = target;
+          if (Math.abs(el.scrollTop - target) > 0.5) el.scrollTop = target;
         }
       }
     },

@@ -5,44 +5,56 @@ import { hideNativeScrollbarsStyles } from './ScrollableCmp';
 import { useScrollableContext } from './Context';
 
 export interface GroupProps {
-  id: string;
+  id?: string;
+  horizontalId?: string;
+  verticalId?: string;
   direction?: 'horizontal' | 'vertical' | 'both';
   children?: React.ReactNode;
   style?: React.CSSProperties;
 }
 
-export function Group({ id, direction = 'both', children, style }: GroupProps) {
+export function Group({
+  id,
+  horizontalId,
+  verticalId,
+  direction = 'both',
+  children,
+  style,
+}: GroupProps) {
   const ctx = useScrollableContext();
   const ref = useRef<HTMLDivElement>(null);
 
-  // Register/unregister scroll container
-  useEffect(() => {
-    if (!ctx || !ref.current) return;
-    ctx.registerContainer(id, ref.current);
-    return () => ctx.unregisterContainer(id, ref.current!);
-  }, [ctx, id]);
+  const hId = horizontalId ?? (direction !== 'vertical' ? id : undefined);
+  const vId = verticalId ?? (direction !== 'horizontal' ? id : undefined);
 
-  // Scroll synchronization
+  // Register the element for one or both ids
+  useEffect(() => {
+    const el = ref.current;
+    if (!ctx || !el) return;
+    if (hId) ctx.registerContainer(hId, el);
+    if (vId && vId !== hId) ctx.registerContainer(vId, el);
+    return () => {
+      if (hId) ctx.unregisterContainer(hId, el);
+      if (vId && vId !== hId) ctx.unregisterContainer(vId, el);
+    };
+  }, [ctx, hId, vId]);
+
+  // Sync scroll events
   useEffect(() => {
     const el = ref.current;
     if (!el || !ctx) return;
 
-    function onScroll() {
-      const source = el as HTMLDivElement;
-
-      const hRatio = source.scrollLeft / ((source.scrollWidth - source.clientWidth) || 1);
-      const vRatio = source.scrollTop / ((source.scrollHeight - source.clientHeight) || 1);
-
-      // Pass element as "source" (non-null) to avoid feedback loops
-      if (direction === 'horizontal' || direction === 'both')
-        ctx.updateScroll(id, 'horizontal', hRatio, source);
-      if (direction === 'vertical' || direction === 'both')
-        ctx.updateScroll(id, 'vertical', vRatio, source);
-    }
+    const onScroll = () => {
+      const element = el as HTMLDivElement; // ✅ non-null narrowing
+      const hRatio = element.scrollLeft / ((element.scrollWidth - element.clientWidth) || 1);
+      const vRatio = element.scrollTop / ((element.scrollHeight - element.clientHeight) || 1);
+      if (hId) ctx.updateScroll(hId, 'horizontal', hRatio, element);
+      if (vId) ctx.updateScroll(vId, 'vertical', vRatio, element);
+    };
 
     el.addEventListener('scroll', onScroll);
     return () => el.removeEventListener('scroll', onScroll);
-  }, [ctx, id, direction]);
+  }, [ctx, hId, vId]);
 
   return (
     <div
