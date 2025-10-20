@@ -15,21 +15,29 @@ export function Group({ id, direction = 'both', children, style }: GroupProps) {
   const ctx = useScrollableContext();
   const ref = useRef<HTMLDivElement>(null);
 
+  // Register/unregister scroll container
   useEffect(() => {
     if (!ctx || !ref.current) return;
     ctx.registerContainer(id, ref.current);
     return () => ctx.unregisterContainer(id, ref.current!);
   }, [ctx, id]);
 
+  // Scroll synchronization
   useEffect(() => {
     const el = ref.current;
     if (!el || !ctx) return;
 
     function onScroll() {
-      const hRatio = el!.scrollLeft / ((el!.scrollWidth - el!.clientWidth) || 1);
-      const vRatio = el!.scrollTop / ((el!.scrollHeight - el!.clientHeight) || 1);
-      if (direction === 'horizontal' || direction === 'both') ctx.updateScroll(id, 'horizontal', hRatio);
-      if (direction === 'vertical' || direction === 'both') ctx.updateScroll(id, 'vertical', vRatio);
+      const source = el as HTMLDivElement;
+
+      const hRatio = source.scrollLeft / ((source.scrollWidth - source.clientWidth) || 1);
+      const vRatio = source.scrollTop / ((source.scrollHeight - source.clientHeight) || 1);
+
+      // Pass element as "source" (non-null) to avoid feedback loops
+      if (direction === 'horizontal' || direction === 'both')
+        ctx.updateScroll(id, 'horizontal', hRatio, source);
+      if (direction === 'vertical' || direction === 'both')
+        ctx.updateScroll(id, 'vertical', vRatio, source);
     }
 
     el.addEventListener('scroll', onScroll);

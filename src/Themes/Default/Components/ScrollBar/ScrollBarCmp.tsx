@@ -73,37 +73,60 @@ export default function ScrollBarCmp({
   const userDragging = useRef(false);
 
   // Update thumb from scroll events
-  useEffect(() => {
-    const els = containers.map((r) => r?.current).filter(Boolean) as HTMLDivElement[];
-    if (els.length === 0) return;
+useEffect(() => {
+  const els = containers.map((r) => r?.current).filter(Boolean) as HTMLDivElement[];
+  if (els.length === 0) return;
 
-    function updateFromEl(el: HTMLDivElement) {
-      if (direction === 'horizontal') {
-        const visibleRatio = el.clientWidth / el.scrollWidth;
-        const size = Math.max(visibleRatio * el.clientWidth, 20);
-        const ratio = el.scrollLeft / (el.scrollWidth - el.clientWidth || 1);
-        setThumbSize(size);
-        setThumbOffset(ratio * (el.clientWidth - size));
-      } else {
-        const visibleRatio = el.clientHeight / el.scrollHeight;
-        const size = Math.max(visibleRatio * el.clientHeight, 20);
-        const ratio = el.scrollTop / (el.scrollHeight - el.clientHeight || 1);
-        setThumbSize(size);
-        setThumbOffset(ratio * (el.clientHeight - size));
-      }
+  function updateThumb() {
+    let maxScrollable = 0;
+    let maxVisible = 0;
+    let avgRatio = 0;
+    let count = 0;
+
+    for (const el of els) {
+      const scrollRange =
+        direction === 'horizontal'
+          ? el.scrollWidth - el.clientWidth
+          : el.scrollHeight - el.clientHeight;
+      const visible = direction === 'horizontal' ? el.clientWidth : el.clientHeight;
+
+      // compute ratio for this container
+      const ratio =
+        direction === 'horizontal'
+          ? el.scrollLeft / (scrollRange || 1)
+          : el.scrollTop / (scrollRange || 1);
+
+      if (scrollRange > maxScrollable) maxScrollable = scrollRange;
+      if (visible > maxVisible) maxVisible = visible;
+
+      avgRatio += ratio;
+      count++;
     }
 
-    els.forEach((el) => {
-      updateFromEl(el);
-      el.addEventListener('scroll', () => updateFromEl(el));
-    });
+    if (count === 0) return;
 
-    window.addEventListener('resize', () => els.forEach(updateFromEl));
-    return () => {
-      els.forEach((el) => el.removeEventListener('scroll', () => updateFromEl(el)));
-      window.removeEventListener('resize', () => els.forEach(updateFromEl));
-    };
-  }, [containers, direction]);
+    // average scroll position, largest scrollable range
+    const meanRatio = avgRatio / count;
+    const sizeRatio = maxVisible / (maxScrollable + maxVisible);
+    const baseSize = direction === 'horizontal' ? maxVisible : maxVisible;
+
+    const size = Math.max(sizeRatio * baseSize, 20);
+    const offset = meanRatio * ((baseSize - size) || 1);
+
+    setThumbSize(size);
+    setThumbOffset(offset);
+  }
+
+  updateThumb();
+
+  els.forEach((el) => el.addEventListener('scroll', updateThumb));
+  window.addEventListener('resize', updateThumb);
+
+  return () => {
+    els.forEach((el) => el.removeEventListener('scroll', updateThumb));
+    window.removeEventListener('resize', updateThumb);
+  };
+}, [containers, direction]);
 
   // Controlled value
   useEffect(() => {

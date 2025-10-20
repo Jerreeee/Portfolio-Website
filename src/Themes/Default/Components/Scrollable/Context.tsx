@@ -13,7 +13,7 @@ export interface ScrollableContextType {
   unregisterContainer: (id: string, el: HTMLDivElement) => void;
   registerScrollbar: (id: string, el: HTMLDivElement, dir: 'horizontal' | 'vertical') => void;
   unregisterScrollbar: (id: string, el: HTMLDivElement, dir: 'horizontal' | 'vertical') => void;
-  updateScroll: (id: string, dir: 'horizontal' | 'vertical', ratio: number) => void;
+  updateScroll: (id: string, dir: 'horizontal' | 'vertical', ratio: number, source?: HTMLDivElement) => void;
   getContainers: (id: string) => HTMLDivElement[];
 }
 
@@ -61,19 +61,27 @@ export function useScrollableRegistry(): ScrollableContextType {
     entry[dir] = entry[dir]!.filter((e) => e !== el);
   }, []);
 
-  const updateScroll = useCallback((id: string, dir: 'horizontal' | 'vertical', ratio: number) => {
-    const containers = registry.current.containers.get(id);
-    if (!containers) return;
-    containers.forEach((el) => {
-      if (dir === 'horizontal') {
-        const max = el.scrollWidth - el.clientWidth;
-        el.scrollLeft = ratio * max;
-      } else {
-        const max = el.scrollHeight - el.clientHeight;
-        el.scrollTop = ratio * max;
+  // Multi-group sync
+  const updateScroll = useCallback(
+    (id: string, dir: 'horizontal' | 'vertical', ratio: number, source?: HTMLDivElement) => {
+      const containers = registry.current.containers.get(id);
+      if (!containers) return;
+
+      for (const el of containers) {
+        if (!el || el === source) continue; // skip source to prevent feedback loops
+        if (dir === 'horizontal') {
+          const max = el.scrollWidth - el.clientWidth;
+          const target = ratio * max;
+          if (Math.abs(el.scrollLeft - target) > 1) el.scrollLeft = target;
+        } else {
+          const max = el.scrollHeight - el.clientHeight;
+          const target = ratio * max;
+          if (Math.abs(el.scrollTop - target) > 1) el.scrollTop = target;
+        }
       }
-    });
-  }, []);
+    },
+    []
+  );
 
   const getContainers = useCallback(
     (id: string) => registry.current.containers.get(id) ?? [],
