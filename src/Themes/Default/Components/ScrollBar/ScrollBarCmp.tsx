@@ -4,13 +4,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { scrollBarCmp } from './ScrollBarCmpClasses';
+import { getScrollRange } from '../Scrollable/ScrollableCmp';
+
+export type Direction = 'horizontal' | 'vertical';
+export type MultiDirection = Direction | 'both';
 
 const makeSlot = makeSlotFactory('ScrollBarCmp', scrollBarCmp);
 
 const ScrollBarRoot = makeSlot('div', 'root', {
   shouldForwardProp: (p) => p !== 'direction' && p !== 'dragging',
 })<{
-  direction: 'horizontal' | 'vertical';
+  direction: Direction;
   dragging?: boolean;
 }>(({ theme, direction, dragging }) => ({
   position: 'relative',
@@ -28,7 +32,7 @@ const ScrollBarRoot = makeSlot('div', 'root', {
 const ScrollBarThumb = makeSlot('div', 'thumb', {
   shouldForwardProp: (p) => p !== 'direction' && p !== 'dragging',
 })<{
-  direction: 'horizontal' | 'vertical';
+  direction: Direction;
   dragging?: boolean;
 }>(({ theme, direction, dragging }) => ({
   position: 'absolute',
@@ -44,99 +48,80 @@ const ScrollBarThumb = makeSlot('div', 'thumb', {
 
 // ===========================================================================
 
+export interface ScrollBarCmpSettings {
+  thickness: number;
+}
+
 export interface ScrollBarCmpProps {
-  /** One or more linked scrollable containers */
-  scrollContainer?: React.RefObject<HTMLDivElement | null> | React.RefObject<HTMLDivElement | null>[];
-  direction?: 'horizontal' | 'vertical';
+  /** Optional single linked scrollable container */
+  scrollContainer?: React.RefObject<HTMLDivElement | null>;
+
+  /** Optional external track size when not bound to a real container */
+  trackSize?: number;
+
+  /** Scroll direction */
+  direction?: Direction;
+
+  /** Controlled position ratio [0..1] */
   value?: number;
+
+  /** Change callback */
   onChange?: (ratio: number) => void;
 }
 
 export default function ScrollBarCmp({
   scrollContainer,
+  trackSize: externalTrackSize,
   direction = 'horizontal',
   value,
   onChange,
 }: ScrollBarCmpProps) {
-  const { theme } = useTheme();
-  const containers = Array.isArray(scrollContainer)
-    ? scrollContainer
-    : scrollContainer
-    ? [scrollContainer]
-    : [];
-
-  const [thumbSize, setThumbSize] = useState(0);
+  const [thumbSize, setThumbSize] = useState(20);
   const [thumbOffset, setThumbOffset] = useState(0);
+  const [trackSize, setTrackSize] = useState(externalTrackSize ?? 0);
   const [isDragging, setIsDragging] = useState(false);
   const startPos = useRef(0);
   const startOffset = useRef(0);
   const userDragging = useRef(false);
 
-  // Update thumb from scroll events
-useEffect(() => {
-  const els = containers.map((r) => r?.current).filter(Boolean) as HTMLDivElement[];
-  if (els.length === 0) return;
+  // --- Track container metrics ---
+  useEffect(() => {
+    const el = scrollContainer?.current;
+    if (!el) return;
 
-  function updateThumb() {
-    let maxScrollable = 0;
-    let maxVisible = 0;
-    let avgRatio = 0;
-    let count = 0;
-
-    for (const el of els) {
-      const scrollRange =
-        direction === 'horizontal'
-          ? el.scrollWidth - el.clientWidth
-          : el.scrollHeight - el.clientHeight;
-      const visible = direction === 'horizontal' ? el.clientWidth : el.clientHeight;
-
-      // compute ratio for this container
+    function updateThumb() {
+      const scrollRange = getScrollRange(el!, direction);
+      const visible = direction === 'horizontal' ? el!.clientWidth : el!.clientHeight;
       const ratio =
         direction === 'horizontal'
-          ? el.scrollLeft / (scrollRange || 1)
-          : el.scrollTop / (scrollRange || 1);
+          ? el!.scrollLeft / (scrollRange || 1)
+          : el!.scrollTop / (scrollRange || 1);
 
-      if (scrollRange > maxScrollable) maxScrollable = scrollRange;
-      if (visible > maxVisible) maxVisible = visible;
+      const size = Math.max((visible / (visible + scrollRange)) * visible, 20);
+      const track = Math.max(visible - size, 0);
+      const offset = ratio * (track || 1);
 
-      avgRatio += ratio;
-      count++;
+      setThumbSize(size);
+      setTrackSize(track);
+      setThumbOffset(offset);
     }
 
-    if (count === 0) return;
+    updateThumb();
+    el.addEventListener('scroll', updateThumb);
+    window.addEventListener('resize', updateThumb);
+    return () => {
+      el.removeEventListener('scroll', updateThumb);
+      window.removeEventListener('resize', updateThumb);
+    };
+  }, [scrollContainer, direction]);
 
-    // average scroll position, largest scrollable range
-    const meanRatio = avgRatio / count;
-    const sizeRatio = maxVisible / (maxScrollable + maxVisible);
-    const baseSize = direction === 'horizontal' ? maxVisible : maxVisible;
-
-    const size = Math.max(sizeRatio * baseSize, 20);
-    const offset = meanRatio * ((baseSize - size) || 1);
-
-    setThumbSize(size);
-    setThumbOffset(offset);
-  }
-
-  updateThumb();
-
-  els.forEach((el) => el.addEventListener('scroll', updateThumb));
-  window.addEventListener('resize', updateThumb);
-
-  return () => {
-    els.forEach((el) => el.removeEventListener('scroll', updateThumb));
-    window.removeEventListener('resize', updateThumb);
-  };
-}, [containers, direction]);
-
-  // Controlled value
+  // Controlled mode: external value
   useEffect(() => {
     if (value == null) return;
-    const first = containers[0]?.current;
-    if (!first) return;
-    const max = direction === 'horizontal' ? first.clientWidth - thumbSize : first.clientHeight - thumbSize;
-    setThumbOffset(value * (max || 1));
-  }, [value, direction, thumbSize]);
+    setThumbOffset(value * (trackSize || 1));
+  }, [value, trackSize]);
 
+  // --- Dragging ---
   function onMouseDown(e: React.MouseEvent) {
     userDragging.current = true;
     setIsDragging(true);
@@ -147,23 +132,24 @@ useEffect(() => {
 
   function onMouseMove(e: MouseEvent) {
     if (!userDragging.current) return;
-    const first = containers[0]?.current;
-    if (!first) return;
-
-    const containerSize = direction === 'horizontal' ? first.clientWidth : first.clientHeight;
     const delta = (direction === 'horizontal' ? e.clientX : e.clientY) - startPos.current;
-    const maxOffset = containerSize - thumbSize;
+    const maxOffset = trackSize;
     const newOffset = Math.min(Math.max(startOffset.current + delta, 0), maxOffset);
     const ratio = newOffset / (maxOffset || 1);
+
     setThumbOffset(newOffset);
     onChange?.(ratio);
 
-    containers.forEach((ref) => {
-      const el = ref.current;
-      if (!el) return;
-      if (direction === 'horizontal') el.scrollLeft = ratio * (el.scrollWidth - el.clientWidth);
-      else el.scrollTop = ratio * (el.scrollHeight - el.clientHeight);
-    });
+    const el = scrollContainer?.current;
+    if (el) {
+      if (direction === 'horizontal') {
+        const range = el.scrollWidth - el.clientWidth;
+        el.scrollLeft = ratio * range;
+      } else {
+        const range = el.scrollHeight - el.clientHeight;
+        el.scrollTop = ratio * range;
+      }
+    }
   }
 
   function onMouseUp() {
@@ -195,3 +181,4 @@ useEffect(() => {
     </ScrollBarRoot>
   );
 }
+

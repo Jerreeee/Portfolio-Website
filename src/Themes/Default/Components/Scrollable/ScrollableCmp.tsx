@@ -5,8 +5,10 @@ import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { ScrollableContext, useScrollableRegistry } from './Context';
 import { scrollableCmp } from './ScrollableCmpClasses';
 
+import { Direction } from '../ScrollBar/ScrollBarCmp';
 import { Group } from './Group';
 import { VerticalScrollbar, HorizontalScrollbar } from './Scrollbar';
+
 
 const makeSlot = makeSlotFactory('ScrollableCmp', scrollableCmp);
 
@@ -46,6 +48,21 @@ const ScrollableContainer = makeSlot('div', 'container')({
 // ---------------------------------------------------------------------------
 // Root ScrollableCmp
 // ---------------------------------------------------------------------------
+
+export function getScrollRange(el: HTMLDivElement, dir: Direction): number {
+  return dir === 'horizontal'
+    ? el.scrollWidth - el.clientWidth
+    : el.scrollHeight - el.clientHeight;
+}
+
+export function getScrollOffset(el: HTMLDivElement, dir: Direction): number {
+  return dir === 'horizontal' ? el.scrollLeft : el.scrollTop;
+}
+
+export function getScrollRatio(el: HTMLDivElement, dir: Direction): number {
+  const range = getScrollRange(el, dir);
+  return range === 0 ? 0 : getScrollOffset(el, dir) / range;
+}
 
 export interface ScrollableCmpSettings {}
 
