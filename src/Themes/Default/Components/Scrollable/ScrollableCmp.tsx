@@ -55,6 +55,14 @@ export function getScrollRange(el: HTMLDivElement, dir: Direction): number {
     : el.scrollHeight - el.clientHeight;
 }
 
+export function getScrollVisibleArea(el: HTMLDivElement, dir: Direction): number {
+  return dir === 'horizontal' ? el.clientWidth : el.clientHeight;
+}
+
+export function getScrollArea(el: HTMLDivElement, dir: Direction): number {
+  return dir === 'horizontal' ? el.scrollWidth : el.scrollHeight;
+}
+
 export function getScrollOffset(el: HTMLDivElement, dir: Direction): number {
   return dir === 'horizontal' ? el.scrollLeft : el.scrollTop;
 }
@@ -62,6 +70,12 @@ export function getScrollOffset(el: HTMLDivElement, dir: Direction): number {
 export function getScrollRatio(el: HTMLDivElement, dir: Direction): number {
   const range = getScrollRange(el, dir);
   return range === 0 ? 0 : getScrollOffset(el, dir) / range;
+}
+
+export function getVisibleRatio(el: HTMLDivElement, dir: Direction): number {
+  const visible = getScrollVisibleArea(el, dir);
+  const area = getScrollArea(el, dir);
+  return area === 0 ? 1 : visible / area;
 }
 
 export interface ScrollableCmpSettings {}

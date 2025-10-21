@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, CSSProperties } from 'react';
+import React, { useEffect, useState, CSSProperties, useRef } from 'react';
 import { useScrollableContext } from './Context';
 import ScrollBarCmp from '../ScrollBar/ScrollBarCmp';
-import { Direction } from '../ScrollBar/ScrollBarCmp'
-import { getScrollRange, getScrollRatio } from './ScrollableCmp';
+import { Direction } from '../ScrollBar/ScrollBarCmp';
+import { getScrollRange, getVisibleRatio } from './ScrollableCmp';
 
 interface ScrollbarProps {
   id: string;
@@ -15,32 +15,52 @@ interface ScrollbarProps {
 function Scrollbar({ id, direction, style }: ScrollbarProps) {
   const ctx = useScrollableContext();
   const [ratio, setRatio] = useState(0);
+  const [thumbRatio, setThumbRatio] = useState(0);
+  const [scrollRange, setScrollRange] = useState(0);
+  const draggingRef = useRef(false);
 
-  const authority = ctx.getAuthority(id);
+  useEffect(() => {
+    // Helper to recompute local state
+    const updateFromAuthority = () => {
+      const authority = ctx.getAuthority(id);
+      if (!authority) return;
 
-useEffect(() => {
-  const el = authority?.current;
-  if (!el) return;
+      const biggest = authority.current.biggestRangeEl.current;
+      const smallest = authority.current.smallestRatioEl.current;
+      const biggestDir = authority.current.biggestRangeElDir;
+      const smallestDir = authority.current.smallestRatioElDir;
 
-  const updateRatio = () => {
-    const r = getScrollRatio(el, direction);
-    setRatio(r);
+      if (!biggest || !smallest) return;
+
+      setScrollRange(getScrollRange(biggest, biggestDir));
+      setThumbRatio(getVisibleRatio(smallest, smallestDir));
+    };
+
+    // Run once immediately (handles mount)
+    updateFromAuthority();
+
+    // Subscribe for live updates
+    const unsubscribe = ctx.subscribeAuthorityListener(id, updateFromAuthority);
+
+    return unsubscribe;
+  }, [ctx, id]);
+
+  // --- Subscribe to ratio + range updates from context ---
+  useEffect(() => {
+    const unsubscribe = ctx.subscribeScrollbar(id, (_ratio, _scrollRange) => {
+      if (draggingRef.current) return; // ignore self-updates
+      setRatio(_ratio);
+    });
+    return unsubscribe;
+  }, [ctx, id]);
+
+  const handleChange = (ratio: number, scrollRange: number) => {
+    draggingRef.current = true;
+    ctx.updateScroll(id, ratio, scrollRange);
   };
 
-  updateRatio();
-  el.addEventListener('scroll', updateRatio);
-  window.addEventListener('resize', updateRatio);
-
-  return () => {
-    el.removeEventListener('scroll', updateRatio);
-    window.removeEventListener('resize', updateRatio);
-  };
-}, [authority?.current, direction]);
-
-
-  const handleChange = (r: number) => {
-    setRatio(r);
-    ctx.updateScroll(id, r);
+  const handleOnDragEnded = () => {
+    draggingRef.current = false;
   };
 
   const baseStyle: CSSProperties =
@@ -50,7 +70,13 @@ useEffect(() => {
 
   return (
     <div style={{ ...baseStyle, ...style }}>
-      <ScrollBarCmp scrollContainer={authority ?? undefined} direction={direction} value={ratio} onChange={handleChange} />
+      <ScrollBarCmp
+        direction={direction}
+        value={ratio}
+        manualControl={{ thumbRatio, scrollRange }}
+        onChange={handleChange}
+        onDragEnded={handleOnDragEnded}
+      />
     </div>
   );
 }

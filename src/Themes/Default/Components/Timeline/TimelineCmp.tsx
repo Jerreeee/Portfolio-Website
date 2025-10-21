@@ -129,7 +129,7 @@ export default function TimelineCmp({
                 }}
               />
               {/* Scrollable top bar (linked horizontally with id=1) */}
-              <ScrollableCmp.Group id="1" direction="horizontal">
+              <ScrollableCmp.Group horizontalId="1" >
                 <div style={{ width: contentWidth }}>{topBars}</div>
               </ScrollableCmp.Group>
             </div>
@@ -150,9 +150,7 @@ export default function TimelineCmp({
           >
             {/* === Left label column (vertically scrolls with id=0) === */}
             <ScrollableCmp.Group
-              id="0"
-              direction="vertical"
-              blockSource
+              verticalId="1"
               style={{
                 gridColumn: 1,
                 gridRow: 1,
@@ -183,7 +181,6 @@ export default function TimelineCmp({
             <ScrollableCmp.Group
               horizontalId="1"
               verticalId="0"
-              direction="both"
               style={{
                 gridColumn: 2,
                 gridRow: 1,

@@ -2,14 +2,16 @@
 
 import React, { createContext, useContext, useRef, useCallback, useMemo } from 'react';
 import type { Direction } from '../ScrollBar/ScrollBarCmp';
-import { getScrollOffset, getScrollRange } from './ScrollableCmp';
+import { getScrollOffset, getScrollRange, getVisibleRatio } from './ScrollableCmp';
 
 export interface ScrollableContextType {
   registerContainer: (id: string, dir: Direction, el: HTMLDivElement) => void;
   unregisterContainer: (id: string, el: HTMLDivElement) => void;
-  updateScroll: (id: string, ratio: number, source?: HTMLDivElement) => void;
+  updateScroll: (id: string, ratio: number, scrollRange: number, source?: HTMLDivElement) => void;
   getContainers: (id: string) => HTMLDivElement[];
-  getAuthority: (id: string) => React.RefObject<HTMLDivElement> | null;
+  getAuthority: (id: string) => React.RefObject<Authority> | null;
+  subscribeScrollbar: (id: string, callback: (ratio: number, scrollRange: number) => void) => () => void;
+  subscribeAuthorityListener: (id: string, callback: () => void) => () => void;
 }
 
 const ScrollableContext = createContext<ScrollableContextType | null>(null);
@@ -29,13 +31,18 @@ export interface ContainersInfo {
 }
 
 export interface Authority {
-  el: HTMLDivElement;
-  dir: Direction;
+  biggestRangeEl: React.RefObject<HTMLDivElement>;
+  biggestRangeElDir: Direction;
+  smallestRatioEl: React.RefObject<HTMLDivElement>;
+  smallestRatioElDir: Direction;
 }
 
 export function useScrollableRegistry(): ScrollableContextType {
   const containers = useRef(new Map<string, ContainersInfo>());
-  const authority = useRef(new Map<string, Authority>());
+  const authorities = useRef(new Map<string, Authority>());
+  const scrollbars = useRef(new Map<string, Set<(ratio: number, scrollRange: number) => void>>());
+  const authorityListeners = useRef(new Map<string, Set<() => void>>());
+  const pendingAuthorityUpdates = new Set<string>();
   const lock = useRef<Set<HTMLDivElement>>(new Set());
 
   const getContainers = useCallback((id: string): HTMLDivElement[] => {
@@ -45,58 +52,179 @@ export function useScrollableRegistry(): ScrollableContextType {
     []
   );
 
-  const chooseAuthority = useCallback((id: string) => {
-    const entry = containers.current.get(id);
-    if (!entry || !entry.arr.length) return null;
+  const subscribeScrollbar = useCallback((id: string, cb: (ratio: number, scrollRange: number) => void) => {
+    let set = scrollbars.current.get(id);
+    if (!set) {
+      set = new Set();
+      scrollbars.current.set(id, set);
+    }
+    set.add(cb);
 
-    let best: HTMLDivElement | null = null;
+    return () => {
+      set!.delete(cb);
+      if (set!.size === 0) scrollbars.current.delete(id);
+    };
+  }, []);
+
+  const subscribeAuthorityListener = useCallback((id: string, callback: () => void) => {
+    let subs = authorityListeners.current.get(id);
+    if (!subs) {
+      subs = new Set();
+      authorityListeners.current.set(id, subs);
+    }
+    subs.add(callback);
+    return () => subs!.delete(callback);
+  }, []);
+
+  const notifyAuthorityChange = useCallback((id: string) => {
+    // If an update for this id is already scheduled this frame, skip
+    if (pendingAuthorityUpdates.has(id)) return;
+    pendingAuthorityUpdates.add(id);
+
+    // Schedule notifications at next animation frame
+    // this ensure that if many updates happen in the same frame, we only notify once
+    requestAnimationFrame(() => {
+      const subs = authorityListeners.current.get(id);
+      if (subs) {
+        subs.forEach((cb) => cb());
+      }
+      pendingAuthorityUpdates.delete(id);
+    });
+  }, []);
+
+  // --- Compare one element to the current authority ---
+  // Returns which metrics (range/ratio) are better.
+  const compareWithAuthority = (id: string, el: HTMLDivElement, dir: Direction): { betterRange: boolean; betterRatio: boolean } => {
+    const authority = authorities.current.get(id);
+    if (!authority) {
+      // No authority yet — this element is automatically better for both metrics
+      return { betterRange: true, betterRatio: true };
+    }
+
+    const newRange = getScrollRange(el, dir);
+    const newVisibleRatio = getVisibleRatio(el, dir);
+
+    const currentRange = getScrollRange(authority.biggestRangeEl.current, authority.biggestRangeElDir);
+    const currentVisibleRatio = getVisibleRatio(authority.smallestRatioEl.current, authority.smallestRatioElDir);
+
+    return {
+      betterRange: newRange > currentRange,
+      betterRatio: newVisibleRatio < currentVisibleRatio,
+    };
+  };
+
+  // --- Replace authority for given id if the element is better ---
+  const replaceAuthorityIfBetter = (id: string, el: HTMLDivElement, dir: Direction) => {
+    let authority = authorities.current.get(id);
+    const { betterRange, betterRatio } = compareWithAuthority(id, el, dir);
+
+    // Initialize authority if it doesn't exist yet
+    if (!authority) {
+      authority = {
+        biggestRangeEl: { current: el },
+        biggestRangeElDir: dir,
+        smallestRatioEl: { current: el },
+        smallestRatioElDir: dir,
+      };
+      authorities.current.set(id, authority);
+      notifyAuthorityChange(id);
+      return;
+    }
+
+    if (betterRange) {
+      authority.biggestRangeEl = { current: el };
+      authority.biggestRangeElDir = dir;
+    }
+
+    if (betterRatio) {
+      authority.smallestRatioEl = { current: el };
+      authority.smallestRatioElDir = dir;
+    }
+
+    authorities.current.set(id, authority);
+  };
+
+  // --- Set authority by rescanning all containers for a given id ---
+  // (used when an authority element is removed)
+  const setAuthorityForId = (id: string) => {
+    const entry = containers.current.get(id);
+    if (!entry || !entry.arr.length) {
+      authorities.current.delete(id);
+      return;
+    }
+
     let bestRange = -1;
-    let bestDir: Direction = 'vertical'; // default
+    let bestRatio = Number.MAX_VALUE;
+    let bestRangeEl: HTMLDivElement | null = null;
+    let bestRatioEl: HTMLDivElement | null = null;
+    let bestRangeDir: Direction = 'horizontal';
+    let bestRatioDir: Direction = 'horizontal';
 
     for (let i = 0; i < entry.arr.length; i++) {
       const el = entry.arr[i];
       const { dir } = entry.info[i];
       const range = getScrollRange(el, dir);
+      const visibleRatio = getVisibleRatio(el, dir);
 
       if (range > bestRange) {
         bestRange = range;
-        best = el;
-        bestDir = dir;
+        bestRangeEl = el;
+        bestRangeDir = dir;
+      }
+      if (visibleRatio < bestRatio) {
+        bestRatio = visibleRatio;
+        bestRatioEl = el;
+        bestRatioDir = dir;
       }
     }
 
-    if (best) authority.current.set(id, { el: best, dir: bestDir });
-    return best;
-  }, []);
+    if (bestRangeEl && bestRatioEl) {
+      authorities.current.set(id, {
+        biggestRangeEl: { current: bestRangeEl },
+        biggestRangeElDir: bestRangeDir,
+        smallestRatioEl: { current: bestRatioEl },
+        smallestRatioElDir: bestRatioDir,
+      });
+      notifyAuthorityChange(id);
+    }
+  };
 
   const getAuthority = useCallback((id: string) => {
-    const entry = authority.current.get(id)?.el ?? chooseAuthority(id);
-    if (!entry) return null;
-    return { current: entry };
-  }, [chooseAuthority]);
+    // Try to get the current authority
+    let authority = authorities.current.get(id);
+
+    if (!authority) {
+      // No authority yet, set it
+      setAuthorityForId(id);
+      authority = authorities.current.get(id);
+    }
+
+    if (!authority) return null;
+    return { current: authority };
+  }, []);
 
   const registerContainer = useCallback(
     (id: string, dir: Direction, el: HTMLDivElement) => {
+      // --- Ensure container entry exists ---
       let existing = containers.current.get(id);
-
       if (!existing) {
-        // first registration for this id
-        existing = { arr: [el], info: [{ dir }] };
+        existing = { arr: [], info: [] };
         containers.current.set(id, existing);
       }
 
+      // --- Add or update container info ---
       const index = existing.arr.indexOf(el);
       if (index === -1) {
         existing.arr.push(el);
         existing.info.push({ dir });
-      } else { // override existing
+      } else {
         existing.info[index].dir = dir;
       }
 
-      // re-evaluate authority
-      chooseAuthority(id);
+      // incremental authority update for each registered container
+      replaceAuthorityIfBetter(id, el, dir);
     },
-    [chooseAuthority]
+    []
   );
 
   const unregisterContainer = useCallback(
@@ -104,108 +232,73 @@ export function useScrollableRegistry(): ScrollableContextType {
       const entry = containers.current.get(id);
       if (!entry) return;
 
-      const idx = entry.arr.findIndex(
-        (e, i) => e === el
-      );
+      const idx = entry.arr.indexOf(el);
       if (idx === -1) return;
 
-      // remove the element + its info in place
+      // --- Remove the element and its info ---
       entry.arr.splice(idx, 1);
       entry.info.splice(idx, 1);
 
+      // --- If no containers remain, clear everything ---
       if (entry.arr.length === 0) {
         containers.current.delete(id);
-        authority.current.delete(id);
-      } else {
-        // re-evaluate authority
-        chooseAuthority(id);
+        authorities.current.delete(id);
+        return;
+      }
+
+      // --- If the element was an authority, re-evaluate once ---
+      const authority = authorities.current.get(id);
+      const isAuthorityRemoved =
+        authority &&
+        (authority.biggestRangeEl.current === el ||
+          authority.smallestRatioEl.current === el);
+
+      if (isAuthorityRemoved) {
+        setAuthorityForId(id);
       }
     },
-    [chooseAuthority]
+    []
   );
 
   const updateScroll = useCallback(
-    (id: string, ratio: number, source?: HTMLDivElement) => {
+    (id: string, ratio: number, scrollRange: number, source?: HTMLDivElement) => {
       const entry = containers.current.get(id);
-      if (!entry || entry.arr.length === 0) {
-        console.warn(`[updateScroll:${id}] No containers registered`);
-        return;
-      }
+      if (!entry || entry.arr.length === 0) return;
 
-      const auth = authority.current.get(id);
-      if (!auth) {
-        console.warn(`[updateScroll:${id}] No authority found`);
-        return;
-      }
+      const authority = authorities.current.get(id);
+      if (!authority) return;
 
-      const { el: authEl, dir: authDir } = auth;
+      const authRange = getScrollRange(authority.biggestRangeEl.current, authority.biggestRangeElDir);
+      const globalOffset = ratio * authRange;
 
-      // --- DEBUG: print all scroll ranges ---
-      console.groupCollapsed(`[updateScroll:${id}] (${authDir.toUpperCase()})`);
-      entry.arr.forEach((el, i) => {
-        const d = entry.info[i].dir;
-        const scrollRange =
-          d === 'horizontal'
-            ? el.scrollWidth - el.clientWidth
-            : el.scrollHeight - el.clientHeight;
-        const currentOffset =
-          d === 'horizontal' ? el.scrollLeft : el.scrollTop;
-        console.log(`Container #${i}`, {
-          element: el,
-          scrollRange,
-          currentOffset,
-          isAuthority: el === authEl,
-          isSource: el === source,
-          dir: d,
+      for (let i = 0; i < entry.arr.length; i++) {
+        const el = entry.arr[i];
+        const dir = entry.info[i].dir;
+
+        if (!el || el === source || lock.current.has(el)) continue;
+
+        lock.current.add(el);
+        (el as any).dataset.__scrollSync = '1';
+
+        const targetRange = getScrollRange(el, dir);
+        // const scaledOffset = globalOffset * (targetRange / authRange); // relative sync
+        // const target = Math.min(scaledOffset, targetRange);
+        const target = Math.min(globalOffset, targetRange); // absoulte sync
+
+        if (dir === 'horizontal') el.scrollLeft = target;
+        else el.scrollTop = target;
+
+        requestAnimationFrame(() => {
+          delete (el as any).dataset.__scrollSync;
+          lock.current.delete(el);
         });
-      });
-
-      // --- Determine globalOffset from source or ratio ---
-      let globalOffset: number;
-      const authRange = getScrollRange(authEl, authDir);
-
-      if (source) { // Triggered from a Group
-        const sourceIdx = entry.arr.indexOf(source);
-        if (sourceIdx === -1) return;
-
-        const srcDir = entry.info[sourceIdx].dir;
-        const srcRange = getScrollRange(source, srcDir);
-        const srcOffset = getScrollOffset(source, srcDir);
-
-        globalOffset = (srcOffset / (srcRange || 1)) * authRange;
-
-        console.log('→ Using SOURCE offset', { globalOffset, srcDir, srcOffset });
-      } else {
-        globalOffset = ratio * authRange;
-        console.log('→ Using RATIO offset', { globalOffset });
       }
 
-// --- Apply absolute scroll ---
-for (let i = 0; i < entry.arr.length; i++) {
-  const el = entry.arr[i];
-  const d = entry.info[i].dir;
-
-  if (!el || el === source) continue;
-  if (lock.current.has(el)) continue;
-
-  lock.current.add(el);
-  // ✅ mark this as programmatic so Group.onScroll can ignore it
-  (el as any).dataset.__scrollSync = '1';
-
-  const range = getScrollRange(el, d);
-  const target = Math.min(globalOffset, range);
-
-  if (d === 'horizontal') el.scrollLeft = target;
-  else el.scrollTop = target;
-
-  requestAnimationFrame(() => {
-    delete (el as any).dataset.__scrollSync;
-    lock.current.delete(el);
-  });
-}
-
-      console.log('Final globalOffset:', globalOffset);
-      console.groupEnd();
+      // --- Notify any subscribed scrollbars ---
+      const subs = scrollbars.current.get(id);
+      if (subs && subs.size > 0) {
+        subs.forEach((cb) => cb(ratio, scrollRange ?? authRange));
+      }
     },
     []
   );
@@ -217,6 +310,8 @@ for (let i = 0; i < entry.arr.length; i++) {
       updateScroll,
       getContainers,
       getAuthority,
+      subscribeScrollbar,
+      subscribeAuthorityListener,
     }),
     [registerContainer, unregisterContainer, updateScroll, getContainers, getAuthority]
   );

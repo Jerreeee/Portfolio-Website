@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { scrollBarCmp } from './ScrollBarCmpClasses';
-import { getScrollRange } from '../Scrollable/ScrollableCmp';
+import { getScrollRange, getScrollRatio, getScrollVisibleArea } from '../Scrollable/ScrollableCmp';
+import { useSizeObserver } from '@/Hooks/useSizeObserver';
 
 export type Direction = 'horizontal' | 'vertical';
 export type MultiDirection = Direction | 'both';
@@ -52,109 +53,157 @@ export interface ScrollBarCmpSettings {
   thickness: number;
 }
 
+interface ManualControl {
+  thumbRatio: number;
+  scrollRange: number;
+}
+
 export interface ScrollBarCmpProps {
-  /** Optional single linked scrollable container */
+  /** Optional scrollable container to sync with */
   scrollContainer?: React.RefObject<HTMLDivElement | null>;
-
-  /** Optional external track size when not bound to a real container */
-  trackSize?: number;
-
-  /** Scroll direction */
   direction?: Direction;
-
-  /** Controlled position ratio [0..1] */
+  /** Optional externally controlled thumbSize ratio [0;1] and scrollRange. Used only if scrollContainer is undefined */
+  manualControl?: ManualControl;
+  /** Optional externally controlled position ratio [0..1] */
   value?: number;
-
   /** Change callback */
-  onChange?: (ratio: number) => void;
+  onChange?: (ratio: number, scrollRange: number) => void;
+  onDragEnded?: () => void;
 }
 
 export default function ScrollBarCmp({
   scrollContainer,
-  trackSize: externalTrackSize,
   direction = 'horizontal',
   value,
+  manualControl: externalControl,
   onChange,
+  onDragEnded,
 }: ScrollBarCmpProps) {
-  const [thumbSize, setThumbSize] = useState(20);
+  const { ref: sizeRef, size: scrollbarSize } = useSizeObserver({ mode: direction });
+  const [thumbSize, setThumbSize] = useState(0);
   const [thumbOffset, setThumbOffset] = useState(0);
-  const [trackSize, setTrackSize] = useState(externalTrackSize ?? 0);
   const [isDragging, setIsDragging] = useState(false);
+  const [scrollRange, setScrollRange] = useState(0);
+
+
+  const trackSize =
+    direction === 'horizontal'
+      ? scrollbarSize?.width ?? 0
+      : scrollbarSize?.height ?? 0;
+
   const startPos = useRef(0);
   const startOffset = useRef(0);
   const userDragging = useRef(false);
+  const minThumbSize = 20;
 
-  // --- Track container metrics ---
+  // --- Sync thumb with scroll container (if provided)
   useEffect(() => {
     const el = scrollContainer?.current;
     if (!el) return;
 
-    function updateThumb() {
-      const scrollRange = getScrollRange(el!, direction);
-      const visible = direction === 'horizontal' ? el!.clientWidth : el!.clientHeight;
-      const ratio =
-        direction === 'horizontal'
-          ? el!.scrollLeft / (scrollRange || 1)
-          : el!.scrollTop / (scrollRange || 1);
-
-      const size = Math.max((visible / (visible + scrollRange)) * visible, 20);
-      const track = Math.max(visible - size, 0);
-      const offset = ratio * (track || 1);
-
-      setThumbSize(size);
-      setTrackSize(track);
-      setThumbOffset(offset);
+    function updateThumbSize() {
+      if (!el) return;
+      const _scrollRange = getScrollRange(el, direction);
+      setScrollRange(_scrollRange);
+      const visible = getScrollVisibleArea(el, direction);
+      const _thumbSize = Math.max((visible / (visible + _scrollRange)) * trackSize, minThumbSize);
+      setThumbSize(_thumbSize);
     }
 
-    updateThumb();
-    el.addEventListener('scroll', updateThumb);
-    window.addEventListener('resize', updateThumb);
-    return () => {
-      el.removeEventListener('scroll', updateThumb);
-      window.removeEventListener('resize', updateThumb);
-    };
-  }, [scrollContainer, direction]);
+    function updateThumbOffset() {
+      // Scroll position to thumb offset mapping
+      if (!el) return;
+      const ratio = getScrollRatio(el, direction);
+      const travel = Math.max(trackSize - thumbSize, 0);
+      const _thumbOffset = ratio * (travel || 1);
+      setThumbOffset(_thumbOffset);
+    }
 
-  // Controlled mode: external value
+    // Initial setup
+    updateThumbSize();
+    updateThumbOffset();
+
+    // Resize => re-measure geometry
+    window.addEventListener('resize', updateThumbSize);
+
+    // Scroll => update only position
+    el.addEventListener('scroll', updateThumbOffset);
+
+    return () => {
+      el.removeEventListener('scroll', updateThumbOffset);
+      window.removeEventListener('resize', updateThumbSize);
+    };
+  }, [scrollContainer, direction, trackSize, thumbSize]);
+
+  // --- Controlled value (external ratio position)
   useEffect(() => {
     if (value == null) return;
-    setThumbOffset(value * (trackSize || 1));
-  }, [value, trackSize]);
+    const travel = Math.max(trackSize - thumbSize, 0);
+    setThumbOffset(value * (travel || 1));
+  }, [value, trackSize, thumbSize]);
 
-  // --- Dragging ---
+  // --- Controlled thumb size (external thumb ratio)
+  useEffect(() => {
+    if (scrollContainer || externalControl == null) return;
+    const _thumbSize = Math.max(trackSize * externalControl.thumbRatio, minThumbSize);
+    setScrollRange(externalControl.scrollRange);
+    setThumbSize(_thumbSize);
+  }, [externalControl, trackSize, scrollContainer]);
+
+  // --- Dragging logic ---
   function onMouseDown(e: React.MouseEvent) {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const clickPos =
+      direction === 'horizontal' ? e.clientX - rect.left : e.clientY - rect.top;
+    const maxOffset = Math.max(trackSize - thumbSize, 0);
+
+    const inThumb =
+      clickPos >= thumbOffset && clickPos <= thumbOffset + thumbSize;
+
+    let newOffset = thumbOffset;
+    if (!inThumb) {
+      // Center thumb where clicked
+      newOffset = Math.min(Math.max(clickPos - thumbSize / 2, 0), maxOffset);
+      const ratio = newOffset / (maxOffset || 1);
+      setThumbOffset(newOffset);
+      onChange?.(ratio, scrollRange);
+    }
+
     userDragging.current = true;
     setIsDragging(true);
     startPos.current = direction === 'horizontal' ? e.clientX : e.clientY;
-    startOffset.current = thumbOffset;
+    startOffset.current = newOffset;
+
     e.preventDefault();
   }
 
   function onMouseMove(e: MouseEvent) {
     if (!userDragging.current) return;
-    const delta = (direction === 'horizontal' ? e.clientX : e.clientY) - startPos.current;
-    const maxOffset = trackSize;
+    const delta =
+      (direction === 'horizontal' ? e.clientX : e.clientY) - startPos.current;
+    const maxOffset = Math.max(trackSize - thumbSize, 0);
     const newOffset = Math.min(Math.max(startOffset.current + delta, 0), maxOffset);
     const ratio = newOffset / (maxOffset || 1);
 
     setThumbOffset(newOffset);
-    onChange?.(ratio);
+    onChange?.(ratio, scrollRange);
 
     const el = scrollContainer?.current;
     if (el) {
-      if (direction === 'horizontal') {
-        const range = el.scrollWidth - el.clientWidth;
-        el.scrollLeft = ratio * range;
-      } else {
-        const range = el.scrollHeight - el.clientHeight;
-        el.scrollTop = ratio * range;
-      }
+      const range =
+        direction === 'horizontal'
+          ? el.scrollWidth - el.clientWidth
+          : el.scrollHeight - el.clientHeight;
+
+      if (direction === 'horizontal') el.scrollLeft = ratio * range;
+      else el.scrollTop = ratio * range;
     }
   }
 
   function onMouseUp() {
     userDragging.current = false;
     setIsDragging(false);
+    onDragEnded?.();
   }
 
   useEffect(() => {
@@ -167,11 +216,15 @@ export default function ScrollBarCmp({
   });
 
   return (
-    <ScrollBarRoot direction={direction} dragging={isDragging}>
+    <ScrollBarRoot
+      ref={sizeRef}
+      direction={direction}
+      dragging={isDragging}
+      onMouseDown={onMouseDown}
+    >
       <ScrollBarThumb
         direction={direction}
         dragging={isDragging}
-        onMouseDown={onMouseDown}
         style={
           direction === 'horizontal'
             ? { width: thumbSize, left: thumbOffset }
@@ -181,4 +234,3 @@ export default function ScrollBarCmp({
     </ScrollBarRoot>
   );
 }
-

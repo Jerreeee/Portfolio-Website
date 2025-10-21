@@ -1,19 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Size } from '@/Types/extra';
-
+import { MultiDirection } from '@/Themes/Default/Components/ScrollBar/ScrollBarCmp';
 
 export interface UserSizeObserverProps {
   /** Optional aspect ratio (width / height) */
   aspectRatio?: number;
-
   /** Maximum width constraint (overrides aspect ratio if mode allows) */
   maxWidth?: number;
-
   /** Maximum height constraint (overrides aspect ratio if mode allows) */
   maxHeight?: number;
-
   /** Which dimension drives scaling or constraints */
-  mode?: 'width' | 'height' | 'both';
+  mode?: MultiDirection;
 }
 
 /**
@@ -31,6 +28,9 @@ export function useSizeObserver<T extends HTMLElement>(props: UserSizeObserverPr
   const [size, setSize] = useState<Size>();
 
   useEffect(() => {
+    const target = ref.current;
+    if (!target) return;
+
     const measure = () => {
       const target = ref.current;
       if (!target) return;
@@ -40,16 +40,16 @@ export function useSizeObserver<T extends HTMLElement>(props: UserSizeObserverPr
 
       // Aspect Ratio Logic
       if (aspectRatio && !maxWidth && !maxHeight) {
-        if (mode === 'width') height = width / aspectRatio;
-        else if (mode === 'height') width = height * aspectRatio;
+        if (mode === 'horizontal') height = width / aspectRatio;
+        else if (mode === 'vertical') width = height * aspectRatio;
       }
 
       // Max Dimension Logic (Overrides Aspect Ratio)
-      if ((mode === 'width' || mode === 'both') && maxHeight && height > maxHeight) {
+      if ((mode === 'horizontal' || mode === 'both') && maxHeight && height > maxHeight) {
         height = maxHeight;
       }
 
-      if ((mode === 'height' || mode === 'both') && maxWidth && width > maxWidth) {
+      if ((mode === 'vertical' || mode === 'both') && maxWidth && width > maxWidth) {
         width = maxWidth;
       }
 
@@ -57,12 +57,8 @@ export function useSizeObserver<T extends HTMLElement>(props: UserSizeObserverPr
     };
 
     measure();
-
-    const target = ref.current;
-    if (!target) return;
-
     const observer = new ResizeObserver(measure);
-    observer.observe(target); // ✅ observe itself
+    observer.observe(target); // observe itself
     window.addEventListener('resize', measure);
 
     return () => {
