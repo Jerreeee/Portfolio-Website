@@ -98,62 +98,49 @@ export default function TimelineCmp({
   const contentHeight = trackHeight;
 
   // -------------------------------------------------------------------
-  // Layout
+  // Layout (Grid-based)
   // -------------------------------------------------------------------
 
   return (
     <TimelineContext.Provider value={ctxValue}>
       <TimelineRoot>
         <ScrollableCmp>
-          {/* ================= Top Bar ================= */}
-          {topBars.length > 0 && (
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: topBarHeight,
-                display: 'grid',
-                gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr`,
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
-                background: 'rgba(20,20,20,0.9)',
-                zIndex: 10,
-              }}
-            >
-              {/* Left spacer */}
-              <div
-                style={{
-                  width: showLabels ? leftColumnWidth : 0,
-                  background: showLabels ? 'rgba(0,0,0,0.1)' : 'transparent',
-                }}
-              />
-              {/* Scrollable top bar (linked horizontally with id=1) */}
-              <ScrollableCmp.Group horizontalId="1" >
-                <div style={{ width: contentWidth }}>{topBars}</div>
-              </ScrollableCmp.Group>
-            </div>
-          )}
-
-          {/* ================= Main grid layout ================= */}
           <div
             style={{
-              position: 'absolute',
-              top: topBarHeight,
-              left: 0,
-              right: 0,
-              bottom: 0,
               display: 'grid',
+              width: '100%',
+              height: '100%',
+              gridTemplateRows: `${topBarHeight}px 1fr auto`,
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
-              gridTemplateRows: `1fr auto`,
             }}
           >
-            {/* === Left label column (vertically scrolls with id=0) === */}
+            {/* === Top bar row === */}
+            {topBars.length > 0 && (
+              <>
+                {/* Left spacer under top bar */}
+                <div
+                  style={{ gridRow: 1, gridColumn: 1,
+                    background: showLabels ? 'rgba(0,0,0,0.1)' : 'transparent',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  }}
+                />
+                {/* Scrollable top bar */}
+                <ScrollableCmp.Group
+                  horizontalId="1"
+                  style={{ gridRow: 1, gridColumn: 2,
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    background: 'rgba(20,20,20,0.9)',
+                  }}
+                >
+                  <div style={{ width: contentWidth }}>{topBars}</div>
+                </ScrollableCmp.Group>
+              </>
+            )}
+
+            {/* === Left label column (scrolls vertically, id=0) === */}
             <ScrollableCmp.Group
-              verticalId="1"
-              style={{
-                gridColumn: 1,
-                gridRow: 1,
+              verticalId="0"
+              style={{ gridRow: 2, gridColumn: 1,
                 borderRight: showLabels ? '1px solid rgba(255,255,255,0.1)' : 'none',
                 background: showLabels ? 'rgba(0,0,0,0.1)' : 'transparent',
               }}
@@ -177,13 +164,11 @@ export default function TimelineCmp({
               </div>
             </ScrollableCmp.Group>
 
-            {/* === Right data area scrolls both === */}
+            {/* === Main scrollable content area (both axes) === */}
             <ScrollableCmp.Group
               horizontalId="1"
               verticalId="0"
-              style={{
-                gridColumn: 2,
-                gridRow: 1,
+              style={{ gridRow: 2, gridColumn: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: 0,
@@ -196,17 +181,17 @@ export default function TimelineCmp({
             </ScrollableCmp.Group>
 
             {/* === Vertical scrollbar (controls id=0) === */}
-            <div style={{ gridColumn: 3, gridRow: 1, height: '100%' }}>
+            <div style={{ gridRow: 2, gridColumn: 3 }}>
               <ScrollableCmp.Vertical id="0" />
             </div>
 
             {/* === Horizontal scrollbar (controls id=1) === */}
-            <div style={{ gridColumn: 2, gridRow: 2, width: '100%' }}>
+            <div style={{ gridRow: 3, gridColumn: 2 }}>
               <ScrollableCmp.Horizontal id="1" />
             </div>
           </div>
         </ScrollableCmp>
-</TimelineRoot>
+      </TimelineRoot>
     </TimelineContext.Provider>
   );
 }

@@ -5,11 +5,10 @@ import { getScrollRange, hideNativeScrollbarsStyles } from './ScrollableCmp';
 import { useScrollableContext } from './Context';
 
 export interface GroupProps {
-  id?: string; // used for both axes if no specific ids provided
+  id?: string;
   horizontalId?: string;
   verticalId?: string;
   blockSource?: boolean;
-
   children?: React.ReactNode;
   style?: React.CSSProperties;
 }
@@ -28,7 +27,9 @@ export function Group({
   const hId = horizontalId ?? id;
   const vId = verticalId ?? id;
 
-  // Register containers for both axes if they exist
+  // ──────────────────────────────────────────────
+  // Register / unregister once on mount/unmount
+  // ──────────────────────────────────────────────
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -42,6 +43,52 @@ export function Group({
     };
   }, [ctx, hId, vId]);
 
+  // ──────────────────────────────────────────────
+  // 2️Detect container or content resize/zoom changes
+  // ──────────────────────────────────────────────
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    let raf: number | null = null;
+    let lastDevicePixelRatio = window.devicePixelRatio;
+
+    const handleResize = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (hId) ctx.containerChanged(hId, 'horizontal', el);
+        if (vId) ctx.containerChanged(vId, 'vertical', el);
+        raf = null;
+      });
+    };
+
+    // --- ResizeObserver for container + child ---
+    const ro = new ResizeObserver(handleResize);
+    ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
+
+    // --- Window resize fallback ---
+    window.addEventListener('resize', handleResize);
+
+    // --- Detect browser zoom / DPI changes ---
+    const zoomCheck = setInterval(() => {
+      if (window.devicePixelRatio !== lastDevicePixelRatio) {
+        lastDevicePixelRatio = window.devicePixelRatio;
+        handleResize();
+      }
+    }, 500);
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      ro.disconnect();
+      window.removeEventListener('resize', handleResize);
+      clearInterval(zoomCheck);
+    };
+  }, [ctx, hId, vId]);
+
+  // ──────────────────────────────────────────────
+  // 3️Scroll event sync or block
+  // ──────────────────────────────────────────────
   const lastX = useRef(0);
   const lastY = useRef(0);
 
@@ -50,7 +97,6 @@ export function Group({
     if (!el) return;
 
     if (!blockSource) {
-      // Normal interactive group: listen to scroll updates
       const onScroll = () => {
         if ((el as any).dataset.__scrollSync === '1') return;
 
@@ -75,22 +121,28 @@ export function Group({
 
       el.addEventListener('scroll', onScroll);
       return () => el.removeEventListener('scroll', onScroll);
-    } else {
-      // Blocked source group: prevent user interaction
-      const preventUserScroll = (e: Event) => e.preventDefault();
-
-      el.addEventListener('wheel', preventUserScroll, { passive: false });
-      el.addEventListener('mousedown', preventUserScroll, { passive: false });
-      el.addEventListener('keydown', preventUserScroll, { passive: false });
-
-      return () => {
-        el.removeEventListener('wheel', preventUserScroll);
-        el.removeEventListener('mousedown', preventUserScroll);
-        el.removeEventListener('keydown', preventUserScroll);
-      };
     }
+
+    // When blockSource is true, prevent user-driven scrolling (but allow MMB)
+    const preventUserScroll = (e: MouseEvent | WheelEvent | KeyboardEvent) => {
+      if (e instanceof MouseEvent && e.button === 1) return; // allow MMB drag
+      e.preventDefault();
+    };
+
+    el.addEventListener('wheel', preventUserScroll, { passive: false });
+    el.addEventListener('mousedown', preventUserScroll as EventListener, { passive: false });
+    el.addEventListener('keydown', preventUserScroll as EventListener, { passive: false });
+
+    return () => {
+      el.removeEventListener('wheel', preventUserScroll as EventListener);
+      el.removeEventListener('mousedown', preventUserScroll as EventListener);
+      el.removeEventListener('keydown', preventUserScroll as EventListener);
+    };
   }, [ctx, hId, vId, blockSource]);
 
+  // ──────────────────────────────────────────────
+  // 4️Render container
+  // ──────────────────────────────────────────────
   return (
     <div
       ref={ref}
@@ -98,11 +150,12 @@ export function Group({
         position: 'relative',
         width: '100%',
         height: '100%',
-        overflow: 'auto',
         minHeight: 0,
         minWidth: 0,
         ...hideNativeScrollbarsStyles,
         ...style,
+        overflowX: hId ? 'auto' : 'hidden',
+        overflowY: vId ? 'auto' : 'hidden',
       }}
     >
       {children}

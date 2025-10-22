@@ -2,11 +2,12 @@
 
 import React, { createContext, useContext, useRef, useCallback, useMemo } from 'react';
 import type { Direction } from '../ScrollBar/ScrollBarCmp';
-import { getScrollOffset, getScrollRange, getVisibleRatio } from './ScrollableCmp';
+import { getScrollOffset, getScrollRange, getScrollRatio, getScrollVisibleArea, getVisibleRatio } from './ScrollableCmp';
 
 export interface ScrollableContextType {
   registerContainer: (id: string, dir: Direction, el: HTMLDivElement) => void;
   unregisterContainer: (id: string, el: HTMLDivElement) => void;
+  containerChanged: (id: string,  dir: Direction, el: HTMLDivElement) => void;
   updateScroll: (id: string, ratio: number, scrollRange: number, source?: HTMLDivElement) => void;
   getContainers: (id: string) => HTMLDivElement[];
   getAuthority: (id: string) => React.RefObject<Authority> | null;
@@ -25,16 +26,27 @@ export interface ContainerInfo {
   dir: Direction;
 }
 
+export interface Container extends ContainerInfo  {
+  el: HTMLDivElement;
+}
+
+
 export interface ContainersInfo {
   arr: HTMLDivElement[];
   info: ContainerInfo[];
 }
 
 export interface Authority {
-  biggestRangeEl: React.RefObject<HTMLDivElement>;
-  biggestRangeElDir: Direction;
-  smallestRatioEl: React.RefObject<HTMLDivElement>;
-  smallestRatioElDir: Direction;
+  biggestScrollRange: {
+    el: React.RefObject<HTMLDivElement>,
+    dir: Direction,
+    range: number,
+  };
+  smallestVisibleRatio: {
+    el: React.RefObject<HTMLDivElement>,
+    dir: Direction,
+    ratio: number,
+  }
 }
 
 export function useScrollableRegistry(): ScrollableContextType {
@@ -104,8 +116,8 @@ export function useScrollableRegistry(): ScrollableContextType {
     const newRange = getScrollRange(el, dir);
     const newVisibleRatio = getVisibleRatio(el, dir);
 
-    const currentRange = getScrollRange(authority.biggestRangeEl.current, authority.biggestRangeElDir);
-    const currentVisibleRatio = getVisibleRatio(authority.smallestRatioEl.current, authority.smallestRatioElDir);
+    const currentRange = getScrollRange(authority.biggestScrollRange.el.current, authority.biggestScrollRange.dir);
+    const currentVisibleRatio = getVisibleRatio(authority.smallestVisibleRatio.el.current, authority.smallestVisibleRatio.dir);
 
     return {
       betterRange: newRange > currentRange,
@@ -113,45 +125,64 @@ export function useScrollableRegistry(): ScrollableContextType {
     };
   };
 
-  // --- Replace authority for given id if the element is better ---
-  const replaceAuthorityIfBetter = (id: string, el: HTMLDivElement, dir: Direction) => {
+  // --- Replace authority for given id if the element is better or if the current authority got worse ---
+  const replaceAuthorityIfBetter = (id: string, el: HTMLDivElement, dir: Direction): boolean => {
     let authority = authorities.current.get(id);
-    const { betterRange, betterRatio } = compareWithAuthority(id, el, dir);
-
-    // Initialize authority if it doesn't exist yet
+    
+    // If no authority exists el becomes authority for all metrics
     if (!authority) {
       authority = {
-        biggestRangeEl: { current: el },
-        biggestRangeElDir: dir,
-        smallestRatioEl: { current: el },
-        smallestRatioElDir: dir,
+        biggestScrollRange: {
+          el: { current: el },
+          dir: dir,
+          range: getScrollRange(el, dir),
+        },
+        smallestVisibleRatio: {
+          el: { current: el },
+          dir: dir,
+          ratio: getVisibleRatio(el, dir),
+        }
       };
       authorities.current.set(id, authority);
       notifyAuthorityChange(id);
-      return;
+      return true;
     }
+    
+    if (isAuthority(id, el)) return false;
 
+    let authorityChanged = false;
+    
+    const { betterRange, betterRatio } = compareWithAuthority(id, el, dir);
     if (betterRange) {
-      authority.biggestRangeEl = { current: el };
-      authority.biggestRangeElDir = dir;
+      authority.biggestScrollRange.el = { current: el };
+      authority.biggestScrollRange.dir = dir;
+      authorityChanged = true;
     }
 
     if (betterRatio) {
-      authority.smallestRatioEl = { current: el };
-      authority.smallestRatioElDir = dir;
+      authority.smallestVisibleRatio.el = { current: el };
+      authority.smallestVisibleRatio.dir = dir;
+      authorityChanged = true;
     }
 
-    authorities.current.set(id, authority);
+    if (authorityChanged) {
+      authorities.current.set(id, authority);
+      notifyAuthorityChange(id);
+    }
+
+    return authorityChanged;
   };
 
   // --- Set authority by rescanning all containers for a given id ---
-  // (used when an authority element is removed)
-  const setAuthorityForId = (id: string) => {
+  // (used when an authority element changes or degrades)
+  const setAuthorityForId = (id: string): boolean => {
     const entry = containers.current.get(id);
     if (!entry || !entry.arr.length) {
       authorities.current.delete(id);
-      return;
+      return false;
     }
+
+    const oldAuthority = authorities.current.get(id);
 
     let bestRange = -1;
     let bestRatio = Number.MAX_VALUE;
@@ -160,14 +191,15 @@ export function useScrollableRegistry(): ScrollableContextType {
     let bestRangeDir: Direction = 'horizontal';
     let bestRatioDir: Direction = 'horizontal';
 
+    // Find best candidates for both metrics
     for (let i = 0; i < entry.arr.length; i++) {
       const el = entry.arr[i];
       const { dir } = entry.info[i];
-      const range = getScrollRange(el, dir);
+      const scrollRange = getScrollRange(el, dir);
       const visibleRatio = getVisibleRatio(el, dir);
 
-      if (range > bestRange) {
-        bestRange = range;
+      if (scrollRange > bestRange) {
+        bestRange = scrollRange;
         bestRangeEl = el;
         bestRangeDir = dir;
       }
@@ -178,15 +210,39 @@ export function useScrollableRegistry(): ScrollableContextType {
       }
     }
 
-    if (bestRangeEl && bestRatioEl) {
-      authorities.current.set(id, {
-        biggestRangeEl: { current: bestRangeEl },
-        biggestRangeElDir: bestRangeDir,
-        smallestRatioEl: { current: bestRatioEl },
-        smallestRatioElDir: bestRatioDir,
-      });
+    if (!bestRangeEl || !bestRatioEl) return false;
+
+    // Check if anything actually changed
+    const authorityChanged =
+      !oldAuthority ||
+      bestRangeEl !== oldAuthority.biggestScrollRange.el.current ||
+      bestRatioEl !== oldAuthority.smallestVisibleRatio.el.current;
+
+    const geometryChanged =
+      Math.abs(bestRange - (oldAuthority?.biggestScrollRange.range ?? 0)) > 1 ||
+      Math.abs(bestRatio - (oldAuthority?.smallestVisibleRatio.ratio ?? 0.000001)) > 0.001;
+
+    // Update authority data
+    authorities.current.set(id, {
+      biggestScrollRange: {
+        el: { current: bestRangeEl },
+        dir: bestRangeDir,
+        range: bestRange,
+      },
+      smallestVisibleRatio: {
+        el: { current: bestRatioEl },
+        dir: bestRatioDir,
+        ratio: bestRatio,
+      },
+    });
+
+    // Notify scrollbars if something changed
+    if (authorityChanged || geometryChanged) {
       notifyAuthorityChange(id);
+      return true;
     }
+
+    return false;
   };
 
   const getAuthority = useCallback((id: string) => {
@@ -194,7 +250,6 @@ export function useScrollableRegistry(): ScrollableContextType {
     let authority = authorities.current.get(id);
 
     if (!authority) {
-      // No authority yet, set it
       setAuthorityForId(id);
       authority = authorities.current.get(id);
     }
@@ -202,6 +257,13 @@ export function useScrollableRegistry(): ScrollableContextType {
     if (!authority) return null;
     return { current: authority };
   }, []);
+
+  const isAuthority = (id: string, el: HTMLDivElement): boolean => {
+    const authority = authorities.current.get(id);
+    if (!authority) return false;
+    return el === authority.biggestScrollRange.el.current
+        || el === authority.smallestVisibleRatio.el.current;
+  }
 
   const registerContainer = useCallback(
     (id: string, dir: Direction, el: HTMLDivElement) => {
@@ -216,12 +278,11 @@ export function useScrollableRegistry(): ScrollableContextType {
       const index = existing.arr.indexOf(el);
       if (index === -1) {
         existing.arr.push(el);
-        existing.info.push({ dir });
+        existing.info.push({ dir: dir});
       } else {
         existing.info[index].dir = dir;
       }
 
-      // incremental authority update for each registered container
       replaceAuthorityIfBetter(id, el, dir);
     },
     []
@@ -250,8 +311,8 @@ export function useScrollableRegistry(): ScrollableContextType {
       const authority = authorities.current.get(id);
       const isAuthorityRemoved =
         authority &&
-        (authority.biggestRangeEl.current === el ||
-          authority.smallestRatioEl.current === el);
+        (authority.biggestScrollRange.el.current === el ||
+          authority.smallestVisibleRatio.el.current === el);
 
       if (isAuthorityRemoved) {
         setAuthorityForId(id);
@@ -259,6 +320,20 @@ export function useScrollableRegistry(): ScrollableContextType {
     },
     []
   );
+
+  const containerChanged = useCallback((id: string,  dir: Direction, el: HTMLDivElement) => {
+    const entry = containers.current.get(id);
+    if (!entry) return;
+
+    const authority = authorities.current.get(id);
+    if (!authority) return;
+
+    if (isAuthority(id, el)) {
+      setAuthorityForId(id);
+    } else {
+      replaceAuthorityIfBetter(id, el, dir);
+    }
+  }, []);
 
   const updateScroll = useCallback(
     (id: string, ratio: number, scrollRange: number, source?: HTMLDivElement) => {
@@ -268,8 +343,9 @@ export function useScrollableRegistry(): ScrollableContextType {
       const authority = authorities.current.get(id);
       if (!authority) return;
 
-      const authRange = getScrollRange(authority.biggestRangeEl.current, authority.biggestRangeElDir);
-      const globalOffset = ratio * authRange;
+      const authRange = getScrollRange(authority.biggestScrollRange.el.current, authority.biggestScrollRange.dir);
+      // const globalOffset = ratio * authRange;
+      const globalOffset = Math.min(ratio * scrollRange, authRange);
 
       for (let i = 0; i < entry.arr.length; i++) {
         const el = entry.arr[i];
@@ -297,7 +373,7 @@ export function useScrollableRegistry(): ScrollableContextType {
       // --- Notify any subscribed scrollbars ---
       const subs = scrollbars.current.get(id);
       if (subs && subs.size > 0) {
-        subs.forEach((cb) => cb(ratio, scrollRange ?? authRange));
+        subs.forEach((cb) => cb(ratio, scrollRange));
       }
     },
     []
@@ -307,6 +383,7 @@ export function useScrollableRegistry(): ScrollableContextType {
     () => ({
       registerContainer,
       unregisterContainer,
+      containerChanged,
       updateScroll,
       getContainers,
       getAuthority,

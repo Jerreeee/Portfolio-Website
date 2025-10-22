@@ -25,14 +25,17 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
       const authority = ctx.getAuthority(id);
       if (!authority) return;
 
-      const biggest = authority.current.biggestRangeEl.current;
-      const smallest = authority.current.smallestRatioEl.current;
-      const biggestDir = authority.current.biggestRangeElDir;
-      const smallestDir = authority.current.smallestRatioElDir;
+
+      console.log("Updating scrollbar from authority:");
+      const biggest = authority.current.biggestScrollRange.el.current;
+      const smallest = authority.current.smallestVisibleRatio.el.current;
+      const biggestDir = authority.current.biggestScrollRange.dir;
+      const smallestDir = authority.current.smallestVisibleRatio.dir;
 
       if (!biggest || !smallest) return;
 
       setScrollRange(getScrollRange(biggest, biggestDir));
+      console.log("New ScrollRange:", getScrollRange(biggest, biggestDir));
       setThumbRatio(getVisibleRatio(smallest, smallestDir));
     };
 
@@ -48,11 +51,17 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
   // --- Subscribe to ratio + range updates from context ---
   useEffect(() => {
     const unsubscribe = ctx.subscribeScrollbar(id, (_ratio, _scrollRange) => {
-      if (draggingRef.current) return; // ignore self-updates
-      setRatio(_ratio);
+      if (draggingRef.current) return;
+
+      // Convert sender's ratio to an absolute offset (in px)
+      const absoluteOffset = _ratio * _scrollRange;
+      // Normalize that offset to this scrollbar's own range
+      const localRatio = scrollRange > 0 ? Math.min(absoluteOffset / scrollRange, 1) : 0;
+      setRatio(localRatio);
     });
+
     return unsubscribe;
-  }, [ctx, id]);
+  }, [ctx, id, scrollRange]);
 
   const handleChange = (ratio: number, scrollRange: number) => {
     draggingRef.current = true;
