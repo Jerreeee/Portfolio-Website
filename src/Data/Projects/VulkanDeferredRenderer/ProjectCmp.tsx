@@ -19,6 +19,7 @@ import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview'
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 import TimelineCmp from '@/Themes/Default/Components/Timeline/TimelineCmp';
 import PATHS from '@/Config/paths';
+import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
@@ -41,56 +42,6 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         Overview
       </Typography>
       <ProjectOverviewCmp project={project} />
-
-      <div
-        style={{
-          width: '100%',
-          height: '400px', // fixed viewport height -> enables vertical scroll
-          background: '#111',
-          color: '#eee',
-          padding: 16,
-          boxSizing: 'border-box',
-          // overflow: 'hidden', // hide native overflow, handled by ScrollableCmp
-        }}
-      >
-        <h3 style={{ marginBottom: 16 }}>Timeline Overflow Example</h3>
-
-        {/* Force a contained viewport */}
-        <div style={{ width: '100%', height: 'calc(100% - 40px)' }}>
-          <TimelineCmp range={[0, 200]} showLabels leftColumnWidth={140}>
-            {/* Top bar */}
-            <TimelineCmp.TopBar
-              tickCount={20}
-              formatter={(v) => `${v.toFixed(0)}s`}
-            />
-
-            {/* Many groups for vertical scroll */}
-            {Array.from({ length: 40 }).map((_, i) => (
-              <TimelineCmp.Group key={i} name={`Track ${i + 1}`}>
-                {i % 2 === 0 ? (
-                  <TimelineCmp.GraphLayer
-                    data={Array.from({ length: 40 }).map((_, j) => ({
-                      time: j * 5,
-                      value: Math.abs(Math.sin((i + j) * 0.3)),
-                    }))}
-                    color={`hsl(${(i * 25) % 360}, 70%, 60%)`}
-                    filled
-                  />
-                ) : (
-                  <TimelineCmp.BarLayer
-                    bars={[
-                      { start: 0, end: 20, label: 'Phase A', color: '#8e24aa' },
-                      { start: 30, end: 80, label: 'Phase B', color: '#43a047' },
-                      { start: 90, end: 140, label: 'Phase C', color: '#fdd835' },
-                      { start: 160, end: 200, label: 'Phase D', color: '#ef5350' },
-                    ]}
-                  />
-                )}
-              </TimelineCmp.Group>
-            ))}
-          </TimelineCmp>
-        </div>
-      </div>
 
       <Divider sx={{ my: 3, opacity: 0.2 }} />
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect, useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { timelineCmp } from './TimelineCmpClasses';
@@ -13,6 +13,7 @@ import TimelineCmpTopBar from './TimelineTopBarCmp';
 import TimelineCmpGroup from './TimelineGroupCmp';
 import TimelineCmpBarLayer from './TimelineBarLayerCmp';
 import TimelineCmpGraphLayer from './TimelineGraphLayerCmp';
+import { makeDefaultRangeProvider, RangeProvider } from '@/Utils/RangeProvider';
 
 const makeSlot = makeSlotFactory('TimelineCmp', timelineCmp);
 
@@ -31,28 +32,40 @@ const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
 // =====================================================================
 
 export interface TimelineCmpProps {
-  range: [number, number];
-  currentTime?: number;
-  onChange?: (t: number) => void;
+  rangeProvider: RangeProvider;
+    /** Controlled current position within range */
+  value?: number;
+  /** Notifies parent when user moves playhead etc. */
+  onValueChange?: (v: number) => void;
   children?: React.ReactNode;
   leftColumnWidth?: number;
   showLabels?: boolean;
+  showTopBar?: boolean
 }
 
 export default function TimelineCmp({
-  range,
-  currentTime,
-  onChange,
+  rangeProvider,
+  value,
+  onValueChange,
   children,
   leftColumnWidth = 100,
   showLabels = false,
+  showTopBar = true,
 }: TimelineCmpProps) {
-  const [internalTime, setInternalTime] = useState(currentTime ?? range[0]);
   const [groups, setGroups] = useState<TimelineGroupInfo[]>([]);
+  const [internalTime, setInternalTime] = useState(value ?? rangeProvider.start);
 
-  // --- Context logic ---
-  const scale = (v: number) => (v - range[0]) / (range[1] - range[0]);
-  const unscale = (r: number) => range[0] + r * (range[1] - range[0]);
+  // whenever parent changes value -> sync internal
+  useLayoutEffect(() => {
+    if (value !== undefined)
+      setInternalTime(value);
+  }, [value]);
+
+  // whenever local changes -> notify parent
+  const handleInternalChange = useCallback((t: number) => {
+    setInternalTime(t);
+    onValueChange?.(t);
+  }, [onValueChange]);
 
   const registerGroup = useCallback((group: TimelineGroupInfo) => {
     setGroups((prev) => {
@@ -67,19 +80,12 @@ export default function TimelineCmp({
 
   const ctxValue = useMemo(
     () => ({
-      range,
-      scale,
-      unscale,
-      currentTime: internalTime,
-      setCurrentTime: (t: number) => {
-        setInternalTime(t);
-        onChange?.(t);
-      },
+      rangeProvider,
       registerGroup,
       unregisterGroup,
       groups,
     }),
-    [range, internalTime, onChange, registerGroup, unregisterGroup, groups]
+    [rangeProvider, registerGroup, unregisterGroup, groups]
   );
 
   // --- Extract topbars + groups ---
@@ -93,8 +99,13 @@ export default function TimelineCmp({
   });
 
   const trackHeight = groups.reduce((sum, g) => sum + (g.height ?? 32), 0);
-  const topBarHeight = topBars.length > 0 ? 24 : 0;
-  const contentWidth = 2000;
+  const topBarHeight = showTopBar && topBars.length > 0 ? 24 : 0;
+  // Determine total domain span in units
+  const domainSpan = rangeProvider.end - rangeProvider.start;
+  // Compute width in pixels based on provider settings
+  const contentWidth = rangeProvider.fitToRange
+    ? '100%' // stretch to full container width
+    : rangeProvider.pixelsPerUnit * domainSpan;
   const contentHeight = trackHeight;
 
   // -------------------------------------------------------------------
@@ -132,7 +143,9 @@ export default function TimelineCmp({
                     background: 'rgba(20,20,20,0.9)',
                   }}
                 >
-                  <div style={{ width: contentWidth }}>{topBars}</div>
+                  <div style={{ width: contentWidth }}>
+                    {topBars}
+                  </div>
                 </ScrollableCmp.Group>
               </>
             )}

@@ -1,5 +1,6 @@
 'use client';
 
+import { RangeProvider } from '@/Utils/RangeProvider';
 import React from 'react';
 
 export interface TimelineGroupInfo {
@@ -9,12 +10,7 @@ export interface TimelineGroupInfo {
 }
 
 export interface TimelineContextValue {
-  range: [number, number];
-  scale: (v: number) => number;
-  unscale: (r: number) => number;
-  currentTime: number;
-  setCurrentTime: (t: number) => void;
-
+  rangeProvider: RangeProvider;
   registerGroup: (group: TimelineGroupInfo) => void;
   unregisterGroup: (id: string) => void;
   groups: TimelineGroupInfo[];

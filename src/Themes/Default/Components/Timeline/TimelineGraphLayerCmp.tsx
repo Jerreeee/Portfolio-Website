@@ -42,7 +42,8 @@ export default function TimelineCmpGraphLayer({
   filled = false,
   fillOpacity = 0.15,
 }: TimelineCmpGraphLayerProps) {
-  const { scale, range } = useTimeline();
+  const { rangeProvider: provider } = useTimeline();
+  const { scale, start, end, fitToRange, pixelsPerUnit } = provider;
   const { theme } = useTheme();
 
   if (!data || data.length === 0) return null;

@@ -1,6 +1,7 @@
 export type ImageManifestItem = {
   type: "image";
   src: string;
+  alt: string;
   width: number;
   height: number;
   aspectRatio: number;

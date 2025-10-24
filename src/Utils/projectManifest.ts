@@ -28,7 +28,7 @@ export function getMediaItemsFromManifest(
         return {
           type: "image",
           src: entry.src,
-          alt: fileName,
+          alt: entry.alt,
           width: entry.width,
           height: entry.height,
           imageProps: {},
