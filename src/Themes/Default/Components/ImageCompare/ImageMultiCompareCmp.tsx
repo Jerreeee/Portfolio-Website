@@ -11,6 +11,7 @@ import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageMultiCompareCmp } from './ImageMultiCompareCmpClasses';
 import { TimelineCmp } from '../Timeline';
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
+import ParentSizeObserver from '../ParentSizeObserver/ParentSizeObserverCmp';
 
 // =====================================================================
 // ============================= Slot Definitions ======================
@@ -57,47 +58,6 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
 
   return (
     <ImageMultiCompareRoot>
-      {/* --- Top bar: left and right image labels --- */}
-      <Box
-        sx={{
-          position: 'relative',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          background: `rgba(${theme.palette.background.default
-            .replace(/[^\d,]/g, '')}, 0.7)`, // subtle overlay
-          backdropFilter: 'blur(6px)',
-          borderTopLeftRadius: theme.shape.borderRadius,
-          borderTopRightRadius: theme.shape.borderRadius,
-          padding: '0.35rem 1rem',
-          fontSize: theme.typography.body2.fontSize,
-          color: theme.palette.text.primary,
-          fontWeight: 500,
-          userSelect: 'none',
-          zIndex: 2,
-        }}
-      >
-        <Box
-          component="span"
-          sx={{
-            textShadow: '0 0 4px rgba(0,0,0,0.4)',
-            opacity: 0.9,
-          }}
-        >
-          {topAlt}
-        </Box>
-        <Box
-          component="span"
-          sx={{
-            textShadow: '0 0 4px rgba(0,0,0,0.4)',
-            opacity: 0.9,
-          }}
-        >
-          {bottomAlt}
-        </Box>
-      </Box>
-
       {/* --- Comparison image --- */}
       <ImageCompareCmp
         size={props.size}
@@ -117,38 +77,37 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
           });
         }}
       />
+      
+        {/* --- Segment Slider --- */}
+        {imageCount > 2 && (
+          <SegmentSliderCmp
+            tickCount={imageCount}
+            percentage={sliderState.percentage}
+            onChange={setSliderState}
+          />
+        )}
 
-      {/* --- Segment Slider --- */}
-      {imageCount > 2 && (
-        <SegmentSliderCmp
-          tickCount={imageCount}
-          percentage={sliderState.percentage}
-          onChange={setSliderState}
-        />
-      )}
-
-      {/* --- Timeline --- */}
-      {imageCount > 2 && (
-        <TimelineCmp
-          showTopBar={false}
-          rangeProvider={makeDefaultRangeProvider([0, imageCount], {
-            pixelsPerUnit: 10,
-            fitToRange: true,
-          })}
-        >
-          <TimelineCmp.TopBar tickCount={20} formatter={(v) => `${v.toFixed(0)}s`} />
-          <TimelineCmp.Group>
-            <TimelineCmp.BarLayer
-              bars={[
-                { start: 0, end: 20, label: 'Phase A', color: '#8e24aa' },
-                { start: 30, end: 80, label: 'Phase B', color: '#43a047' },
-                { start: 90, end: 140, label: 'Phase C', color: '#fdd835' },
-                { start: 160, end: 200, label: 'Phase D', color: '#ef5350' },
-              ]}
-            />
-          </TimelineCmp.Group>
-        </TimelineCmp>
-      )}
+        {/* --- Timeline --- */}
+        {imageCount > 2 && (
+          <TimelineCmp
+            showTopBar={false}
+            rangeProvider={makeDefaultRangeProvider([0, imageCount], {
+              fitToRange: true,
+            })}
+          >
+            <TimelineCmp.TopBar tickCount={20} formatter={(v) => `${v.toFixed(0)}s`} />
+            <TimelineCmp.Group>
+              <TimelineCmp.BarLayer
+                bars={[
+                  { start: 0, end: 20, label: 'Phase A', color: '#8e24aa' },
+                  { start: 30, end: 80, label: 'Phase B', color: '#43a047' },
+                  { start: 90, end: 140, label: 'Phase C', color: '#fdd835' },
+                  { start: 160, end: 200, label: 'Phase D', color: '#ef5350' },
+                ]}
+              />
+            </TimelineCmp.Group>
+          </TimelineCmp>
+        )}
     </ImageMultiCompareRoot>
   );
 }

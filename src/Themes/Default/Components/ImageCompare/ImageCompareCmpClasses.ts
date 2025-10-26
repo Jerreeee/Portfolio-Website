@@ -5,7 +5,8 @@ import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
 export const imageCompareCmp = createUtilityClasses('ImageCompareCmp', [
   'root',
-  'handle'
+  'handle',
+  'altLabel',
 ] as const);
 
 export type ImageCompareCmpClassKey = typeof imageCompareCmp.slots[number];
