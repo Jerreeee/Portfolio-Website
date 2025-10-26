@@ -57,46 +57,46 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
 
   return (
     <ImageMultiCompareRoot>
-{/* --- Top bar: left and right image labels --- */}
-<Box
-  sx={{
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    background: `rgba(${theme.palette.background.default
-      .replace(/[^\d,]/g, '')}, 0.7)`, // subtle overlay
-    backdropFilter: 'blur(6px)',
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-    padding: '0.35rem 1rem',
-    fontSize: theme.typography.body2.fontSize,
-    color: theme.palette.text.primary,
-    fontWeight: 500,
-    userSelect: 'none',
-    zIndex: 2,
-  }}
->
-  <Box
-    component="span"
-    sx={{
-      textShadow: '0 0 4px rgba(0,0,0,0.4)',
-      opacity: 0.9,
-    }}
-  >
-    {bottomAlt}
-  </Box>
-  <Box
-    component="span"
-    sx={{
-      textShadow: '0 0 4px rgba(0,0,0,0.4)',
-      opacity: 0.9,
-    }}
-  >
-    {topAlt}
-  </Box>
-</Box>
+      {/* --- Top bar: left and right image labels --- */}
+      <Box
+        sx={{
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          background: `rgba(${theme.palette.background.default
+            .replace(/[^\d,]/g, '')}, 0.7)`, // subtle overlay
+          backdropFilter: 'blur(6px)',
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
+          padding: '0.35rem 1rem',
+          fontSize: theme.typography.body2.fontSize,
+          color: theme.palette.text.primary,
+          fontWeight: 500,
+          userSelect: 'none',
+          zIndex: 2,
+        }}
+      >
+        <Box
+          component="span"
+          sx={{
+            textShadow: '0 0 4px rgba(0,0,0,0.4)',
+            opacity: 0.9,
+          }}
+        >
+          {topAlt}
+        </Box>
+        <Box
+          component="span"
+          sx={{
+            textShadow: '0 0 4px rgba(0,0,0,0.4)',
+            opacity: 0.9,
+          }}
+        >
+          {bottomAlt}
+        </Box>
+      </Box>
 
       {/* --- Comparison image --- */}
       <ImageCompareCmp

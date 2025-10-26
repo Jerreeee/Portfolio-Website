@@ -8,6 +8,8 @@ import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import type { ProjectInfo } from '@/Data/Projects/project';
 import { projectOverviewCmp } from './ProjectOverviewCmpClasses';
+import { MediaCmp } from '../Media';
+import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -59,55 +61,88 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
   const tech = project.technologies;
 
   return (
-    <OverviewRoot>
-      <Container maxWidth="lg">
-        <Grid container spacing={6} alignItems="flex-start">
-          {/* --- Left: Overview Text --- */}
-          <Grid size={{ xs: 12, md: 7 }}>
-            <OverviewTextBox>
-              <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
-                {project.mediumDescription}
-              </Typography>
-            </OverviewTextBox>
-          </Grid>
+<OverviewRoot>
+  <Container maxWidth="lg">
+    <Grid container spacing={2} alignItems="flex-start">
+      {/* --- LEFT COLUMN: IMAGE --- */}
+      <Grid size={{ xs: 12, md: 7 }}>
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <MediaCmp
+            item={getMediaItemsFromManifest(project.manifest, ['PostProcess_Final_Outdoor.webp'])[0]}
+            // style={{
+            //   width: '100%',
+            //   borderRadius: 2,
+            //   overflow: 'hidden',
+            // }}
+          />
+        </Box>
+      </Grid>
 
-          {/* --- Right: Technologies --- */}
-          {tech && (
-            <Grid size={{ xs: 12, md: 5 }}>
-              <TechCategoryBox>
-                {Object.entries(tech).map(([category, items]) =>
-                  items && items.length > 0 ? (
-                    <TechCategory key={category}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }} gutterBottom>
-                        {category}
-                      </Typography>
-                      <TechIconList>
-                        {items.map((item, i) => (
-                          <Box
-                            key={`${category}-${item.name}-${i}`}
-                            sx={{
-                              width: 'auto',
-                              height: 24,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              flexWrap: 'wrap',
-                              transition: 'transform 0.15s ease',
-                              '&:hover': { transform: 'scale(1.1)' },
-                            }}
-                          >
-                            <IconCmp techName={item.name} showDisplayName />
-                          </Box>
-                        ))}
-                      </TechIconList>
-                    </TechCategory>
-                  ) : null
-                )}
-              </TechCategoryBox>
-            </Grid>
+      {/* --- RIGHT COLUMN: TEXT + ICONS --- */}
+      <Grid size={{ xs: 12, md: 5 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {/* Description */}
+          <OverviewTextBox
+            sx={{
+              background: 'rgba(255,255,255,0.05)',
+              borderRadius: '10px',
+              padding: 2,
+            }}
+          >
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              {project.mediumDescription}
+            </Typography>
+          </OverviewTextBox>
+
+          {/* Tech Stack */}
+          {project.technologies && (
+            <TechCategoryBox>
+              {Object.entries(project.technologies).map(([category, items]) =>
+                items && items.length > 0 ? (
+                  <TechCategory key={category}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: 600 }}
+                      gutterBottom
+                    >
+                      {category}
+                    </Typography>
+                    <TechIconList>
+                      {items.map((item, i) => (
+                        <Box
+                          key={`${category}-${item.name}-${i}`}
+                          sx={{
+                            width: 'auto',
+                            height: 24,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexWrap: 'wrap',
+                            transition: 'transform 0.15s ease',
+                            '&:hover': { transform: 'scale(1.1)' },
+                          }}
+                        >
+                          <IconCmp techName={item.name} showDisplayName={true} />
+                        </Box>
+                      ))}
+                    </TechIconList>
+                  </TechCategory>
+                ) : null
+              )}
+            </TechCategoryBox>
           )}
-        </Grid>
-      </Container>
-    </OverviewRoot>
+        </Box>
+      </Grid>
+    </Grid>
+  </Container>
+</OverviewRoot>
   );
 }
