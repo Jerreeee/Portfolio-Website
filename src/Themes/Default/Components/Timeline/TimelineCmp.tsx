@@ -24,7 +24,7 @@ const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
   width: '100%',
   height: '100%',
   userSelect: 'none',
-  overflow: 'hidden',
+  // overflow: 'hidden',
 }));
 
 // =====================================================================
@@ -33,6 +33,8 @@ const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
 
 export interface TimelineCmpProps {
   rangeProvider: RangeProvider;
+  scaleToFit?: boolean;
+  pixelsPerUnit?: number;
     /** Controlled current position within range */
   value?: number;
   /** Notifies parent when user moves playhead etc. */
@@ -45,6 +47,8 @@ export interface TimelineCmpProps {
 
 export default function TimelineCmp({
   rangeProvider,
+  scaleToFit,
+  pixelsPerUnit = 100,
   value,
   onValueChange,
   children,
@@ -103,11 +107,12 @@ export default function TimelineCmp({
   // Determine total domain span in units
   const domainSpan = rangeProvider.end - rangeProvider.start;
   // Compute width in pixels based on provider settings
-  const contentWidth = rangeProvider.fitToRange
+  const contentWidth = scaleToFit
     ? '100%' // stretch to full container width
-    : rangeProvider.pixelsPerUnit * domainSpan;
-  const contentHeight = trackHeight;
+    : pixelsPerUnit * domainSpan;
+  const  contentHeight = trackHeight;
 
+  console.log("contentWidth: ", contentWidth);
   // -------------------------------------------------------------------
   // Layout (Grid-based)
   // -------------------------------------------------------------------
@@ -120,7 +125,7 @@ export default function TimelineCmp({
             style={{
               display: 'grid',
               width: '100%',
-              height: '100%',
+              // height: '100%',
               gridTemplateRows: `${topBarHeight}px 1fr auto`,
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
             }}
@@ -214,3 +219,11 @@ TimelineCmp.TopBar = TimelineCmpTopBar;
 TimelineCmp.Group = TimelineCmpGroup;
 TimelineCmp.BarLayer = TimelineCmpBarLayer;
 TimelineCmp.GraphLayer = TimelineCmpGraphLayer;
+
+{/**
+  
+<ScrollableCmp>
+  <Content /> 
+</ScrollableCmp>
+  
+*/}

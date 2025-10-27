@@ -101,28 +101,31 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         <Typography variant="h3" align="center" gutterBottom>
           Frame Breakdown
         </Typography>
-
-        <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-          {size => (
-            <ImageMultiCompareCmp
-              size={size}
-              images={getMediaItemsFromManifest(manifest, [
-                'depth.webp',
-                'GBuffer_Albedo.webp',
-                'GBuffer_MetallicRoughness.webp',
-                'LightingPass_InWorldNormal.webp',
-                'GBuffer_WorldNormal.webp',
-                'LightingPass_Ambient_Albedo.webp',
-                'LightingPass_DirLight_Albedo.webp',
-                'LightingPass_DirLight_AlbedoNormal.webp',
-                'LightingPass_DirLight_PBR.webp',
-                'LightingPass_DirAndPointLight_PBR.webp',
-                'LightingPass_DirAndPointLight_PBR_Skybox.webp',
-                'LightingPass_DirAndPointLight_PBR_Skybox_IBL.webp',
-              ]).filter((item): item is ImageCompareItem => item.type === 'image')}
-            />
-          )}
-        </ParentSizeObserver>
+        
+        <ImageMultiCompareCmp
+          images={getMediaItemsFromManifest(manifest, [
+            'depth.webp',
+            'GBuffer_Albedo.webp',
+            'GBuffer_MetallicRoughness.webp',
+            'LightingPass_InWorldNormal.webp',
+            'GBuffer_WorldNormal.webp',
+            'LightingPass_Ambient_Albedo.webp',
+            'LightingPass_DirLight_Albedo.webp',
+            'LightingPass_DirLight_AlbedoNormal.webp',
+            'LightingPass_DirLight_PBR.webp',
+            'LightingPass_DirAndPointLight_PBR.webp',
+            'LightingPass_DirAndPointLight_PBR_Skybox.webp',
+            'LightingPass_DirAndPointLight_PBR_Skybox_IBL.webp',
+          ]).filter((item): item is ImageCompareItem => item.type === 'image')}
+          bars={[
+              {
+                bars: [
+                  { start: 0, end: 4, label: 'G-Buffer', color: '#8e24aa' },
+                  { start: 4, end: 11, label: 'Lighting & Postprocess Buildup', color: '#43a047' },
+                ],
+              },
+          ]}
+        />
       </Container>
 
       <Divider sx={{ my: 3, opacity: 0.2 }} />

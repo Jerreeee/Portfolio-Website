@@ -25,7 +25,7 @@ export interface TimelineCmpTopBarProps {
 
 export default function TimelineCmpTopBar({ tickCount = 5, formatter }: TimelineCmpTopBarProps) {
   const { rangeProvider: provider } = useTimeline();
-  const { start, end, unscale } = provider;
+  const { start, end, denormalize: unscale } = provider;
   const { theme } = useTheme();
 
   const ticks = Array.from({ length: tickCount + 1 }).map((_, i) => i / tickCount);

@@ -42,14 +42,17 @@ export interface TimelineCmpBarLayerProps {
 
 export default function TimelineCmpBarLayer({ bars }: TimelineCmpBarLayerProps) {
   const { rangeProvider: provider } = useTimeline();
-  const { scale, start, end, fitToRange, pixelsPerUnit } = provider;
+  const { normalize } = provider;
   const { theme } = useTheme();
 
   return (
     <BarLayerRoot>
       {bars.map((bar, i) => {
-        const left  = scale(bar.start) * 100;
-        const width = (scale(bar.end) - scale(bar.start)) * 100;
+        const left  = normalize(bar.start) * 100;
+        const width = (normalize(bar.end) - normalize(bar.start)) * 100;
+
+        if (left >= 100 || width <= 0) return null;
+
         return (
           <Bar
             key={i}

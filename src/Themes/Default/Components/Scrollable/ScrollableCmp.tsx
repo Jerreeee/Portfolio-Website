@@ -50,9 +50,10 @@ const ScrollableContainer = makeSlot('div', 'container')({
 // ---------------------------------------------------------------------------
 
 export function getScrollRange(el: HTMLDivElement, dir: Direction): number {
-  return dir === 'horizontal'
+  const diff = dir === 'horizontal'
     ? el.scrollWidth - el.clientWidth
     : el.scrollHeight - el.clientHeight;
+  return Math.max(0, diff < 1 ? 0 : diff);
 }
 
 export function getScrollVisibleArea(el: HTMLDivElement, dir: Direction): number {
@@ -124,7 +125,17 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
   }
 
   // ADVANCED MODE (provides shared context)
-  return <ScrollableContext.Provider value={registry}>{children}</ScrollableContext.Provider>;
+  if (hasAdvancedChildren) {
+    return (
+      <ScrollableRoot>
+        <ViewportWrapper>
+          <ScrollableContext.Provider value={registry}>
+            {children}
+          </ScrollableContext.Provider>
+        </ViewportWrapper>
+      </ScrollableRoot>
+    );
+  }
 }
 
 // Attach subcomponents for declarative use

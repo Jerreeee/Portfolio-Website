@@ -4,23 +4,18 @@ import React, { useLayoutEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { ImageMediaItem } from '../Media/MediaCmp';
-import { Size } from '@/Types/extra';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageCompareCmp } from './ImageCompareCmpClasses';
-
-// =====================================================================
-// ========================= Slot Definitions ==========================
 
 const makeSlot = makeSlotFactory('ImageCompareCmp', imageCompareCmp);
 
 const ImageCompareRoot = makeSlot('div', 'root', {
-  shouldForwardProp: (prop) => prop !== 'size',
-})<{ size?: Size }>(({ theme, size }) => ({
+  shouldForwardProp: (prop) => prop !== 'aspectRatio',
+})<{ aspectRatio?: number }>(({ theme, aspectRatio }) => ({
   position: 'relative',
-  width: size?.width ? `${size.width}px` : '100%',
-  height: size?.height ? `${size.height}px` : '100%',
+  width: '100%',
+  ...(aspectRatio ? { aspectRatio } : {}),
   overflow: 'hidden',
-  userSelect: 'none',
   borderRadius: theme.shape.borderRadius,
 }));
 
@@ -35,7 +30,6 @@ const ImageCompareHandle = makeSlot('div', 'handle')(({ theme }) => ({
   transform: 'translateX(-50%)',
 }));
 
-// 🔹 Reusable styled component for alt text
 const AltTextLabel = makeSlot('div', 'altLabel')(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(1),
@@ -49,15 +43,11 @@ const AltTextLabel = makeSlot('div', 'altLabel')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-// =====================================================================
-// ============================= Component =============================
-
 export type ImageCompareItem = Omit<ImageMediaItem, 'imageProps'>;
 
 export interface ImageCompareCmpProps {
   bottom: ImageCompareItem;
   top: ImageCompareItem;
-  size?: Size;
   imageProps?: ImageProps;
   progress: number;
   hideHandle?: boolean;
@@ -83,8 +73,14 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
   const handlePos = _progress * 100;
   const topClip = `inset(0 ${100 - handlePos}% 0 0)`;
 
+  // Compute aspect ratio from bottom image metadata
+  const aspectRatio =
+    props.bottom?.width && props.bottom?.height
+      ? props.bottom.width / props.bottom.height
+      : undefined;
+
   return (
-    <ImageCompareRoot size={props.size}>
+    <ImageCompareRoot aspectRatio={aspectRatio}>
       {/* --- Bottom image --- */}
       <div style={{ position: 'absolute', inset: 0 }}>
         <Image
@@ -99,7 +95,7 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
         {!props.hideAlt && props.bottom.alt && (
           <AltTextLabel
             sx={{
-              left: `calc(${handlePos}% + 8px)`, // follows handle
+              left: `calc(${handlePos}% + 8px)`,
               zIndex: 2,
             }}
           >

@@ -44,7 +44,7 @@ export function Group({
   }, [ctx, hId, vId]);
 
   // ──────────────────────────────────────────────
-  // 2️Detect container or content resize/zoom changes
+  // Detect container or content resize/zoom changes
   // ──────────────────────────────────────────────
   useEffect(() => {
     const el = ref.current;
@@ -87,7 +87,7 @@ export function Group({
   }, [ctx, hId, vId]);
 
   // ──────────────────────────────────────────────
-  // 3️Scroll event sync or block
+  // 3Scroll event sync or block
   // ──────────────────────────────────────────────
   const lastX = useRef(0);
   const lastY = useRef(0);

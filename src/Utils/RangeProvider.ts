@@ -2,26 +2,28 @@ export interface RangeProvider {
   start: number;
   end: number;
   step?: number;
-  scale: (v: number) => number;
-  unscale: (r: number) => number;
-  pixelsPerUnit: number;
-  fitToRange?: boolean;
+  normalize: (v: number) => number;
+  denormalize: (r: number) => number;
+  clampToRange?: boolean;
 }
 
 export function makeDefaultRangeProvider(
   range: [number, number],
-  options?: { pixelsPerUnit?: number; fitToRange?: boolean }
+  options?: { clampToRange?: boolean }
 ): RangeProvider {
   const [start, end] = range;
-  const pixelsPerUnit = options?.pixelsPerUnit ?? 100;
-  const fitToRange = options?.fitToRange ?? false;
+  const clampToRange = options?.clampToRange ?? true;
+  const span = end - start;
 
-  return {
-    start,
-    end,
-    scale: (v) => (v - start) / (end - start),
-    unscale: (r) => start + r * (end - start),
-    pixelsPerUnit,
-    fitToRange,
+  const normalize = (v: number): number => {
+    const normalized = (v - start) / span;
+    return clampToRange ? Math.min(Math.max(normalized, 0), 1): normalized;
   };
+
+  const denormalize = (v: number): number => {
+    const value = clampToRange ? Math.min(Math.max(v, 0), 1) : v;
+    return start + value * span;
+  };
+
+  return { start, end, clampToRange, normalize: normalize, denormalize: denormalize };
 }

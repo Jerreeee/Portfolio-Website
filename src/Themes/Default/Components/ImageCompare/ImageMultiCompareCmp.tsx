@@ -12,6 +12,7 @@ import { imageMultiCompareCmp } from './ImageMultiCompareCmpClasses';
 import { TimelineCmp } from '../Timeline';
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
 import ParentSizeObserver from '../ParentSizeObserver/ParentSizeObserverCmp';
+import { TimelineCmpBarLayerProps } from '../Timeline/TimelineBarLayerCmp';
 
 // =====================================================================
 // ============================= Slot Definitions ======================
@@ -25,8 +26,7 @@ const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
   flexDirection: 'column',
   gap: '0.5rem',
   width: '100%',
-  height: '100%',
-  overflow: 'hidden',
+  // overflow: 'hidden',
 }));
 
 // =====================================================================
@@ -34,7 +34,7 @@ const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
 
 export interface ImageMultiCompareCmpProps {
   images: ImageCompareItem[];
-  size?: Size;
+  bars?: TimelineCmpBarLayerProps[];
 }
 
 export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
@@ -53,14 +53,10 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
   const bottomImage = props.images[segmentIndex];
   const topImage = props.images[nextTickIdx];
 
-  const bottomAlt = bottomImage?.alt || bottomImage?.src || bottomImage?.src;
-  const topAlt = topImage?.alt || topImage?.src || topImage?.src;
-
   return (
     <ImageMultiCompareRoot>
       {/* --- Comparison image --- */}
       <ImageCompareCmp
-        size={props.size}
         bottom={bottomImage}
         top={topImage}
         progress={segmentPercentage}
@@ -77,37 +73,32 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
           });
         }}
       />
-      
-        {/* --- Segment Slider --- */}
-        {imageCount > 2 && (
+
+      {/* --- Segment Slider --- */}
+      {imageCount > 2 && (
+        <>
           <SegmentSliderCmp
             tickCount={imageCount}
             percentage={sliderState.percentage}
             onChange={setSliderState}
           />
-        )}
 
-        {/* --- Timeline --- */}
-        {imageCount > 2 && (
-          <TimelineCmp
-            showTopBar={false}
-            rangeProvider={makeDefaultRangeProvider([0, imageCount], {
-              fitToRange: true,
-            })}
-          >
-            <TimelineCmp.TopBar tickCount={20} formatter={(v) => `${v.toFixed(0)}s`} />
-            <TimelineCmp.Group>
-              <TimelineCmp.BarLayer
-                bars={[
-                  { start: 0, end: 20, label: 'Phase A', color: '#8e24aa' },
-                  { start: 30, end: 80, label: 'Phase B', color: '#43a047' },
-                  { start: 90, end: 140, label: 'Phase C', color: '#fdd835' },
-                  { start: 160, end: 200, label: 'Phase D', color: '#ef5350' },
-                ]}
-              />
-            </TimelineCmp.Group>
-          </TimelineCmp>
-        )}
+          {/* --- Timeline --- */}
+          {props.bars && props.bars.length > 0 && (
+            <TimelineCmp
+              showTopBar={false}
+              scaleToFit
+              rangeProvider={makeDefaultRangeProvider([0, imageCount - 1])}
+            >
+              {props.bars.map((layer, i) => (
+                <TimelineCmp.Group>
+                  <TimelineCmp.BarLayer key={i} {...layer} />
+                </TimelineCmp.Group>
+              ))}
+            </TimelineCmp>
+          )}
+        </>
+      )}
     </ImageMultiCompareRoot>
   );
 }

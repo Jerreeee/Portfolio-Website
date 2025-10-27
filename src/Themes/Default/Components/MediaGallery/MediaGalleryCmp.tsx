@@ -92,7 +92,6 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
           <MediaCmp
             item={activeItem}
             fit='contain'
-            override={{ width: mainSize?.width, height: mainSize?.height }}
           />
         </AnimatePresence>
       </GalleryMain>
@@ -107,13 +106,12 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                 ? { ...item, playerProps: { ...item.playerProps, light: true } }
                 : item.type === 'image'
                 ? item
-                : { ...item, src: item.thumbnail || item.src };
+                : { ...item, src: item.src }; // TODO: item.thumbnail missing
 
             return (
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
                 <MediaCmp
                   item={thumbItem}
-                  override={{ height: 100, aspectRatio: 16/9 }}
                 />
                 {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
               </ThumbButton>
