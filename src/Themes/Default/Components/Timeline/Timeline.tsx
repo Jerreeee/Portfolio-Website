@@ -80,7 +80,6 @@ function flatten(
         element: el,
       });
 
-      // only include children if expanded
       if (!isCollapsed && inner) {
         list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
       }
@@ -173,12 +172,15 @@ export default function Timeline({
     return React.Children.count(el.props.children) > 0;
   }
 
-  // Helper for alternating background tint on left column only
+  // Background shading color by depth
   function getDepthBackground(depth: number): string {
     const alpha = 0.03 + depth * 0.02;
     const base = depth % 2 === 0 ? 255 : 240;
     return `rgba(${base}, ${base}, ${base}, ${alpha})`;
   }
+
+  // Subtle vertical line color
+  const lineColor = 'rgba(255,255,255,0.18)';
 
   return (
     <TimelineContext.Provider value={ProviderValue}>
@@ -192,7 +194,7 @@ export default function Timeline({
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
             }}
           >
-            {/* --- Top Bar (empty when hidden) --- */}
+            {/* --- Top Bar (optional) --- */}
             <div
               style={{
                 gridRow: 1,
@@ -213,7 +215,7 @@ export default function Timeline({
               <div style={{ width: contentWidth, height: topBarHeight }} />
             </ScrollableCmp.Group>
 
-            {/* --- Left column (labels with background shading) --- */}
+            {/* --- Left column with vertical guides --- */}
             <ScrollableCmp.Group
               verticalId="timeline-v"
               style={{
@@ -221,9 +223,10 @@ export default function Timeline({
                 gridColumn: 1,
                 borderRight: showLabels ? '1px solid rgba(255,255,255,0.12)' : 'none',
                 background: showLabels ? 'rgba(0,0,0,0.03)' : 'transparent',
+                position: 'relative',
               }}
             >
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
                 {flattened.map((row) => {
                   const isGroup = row.type === 'group';
                   const height = getRowHeight(row);
@@ -236,6 +239,7 @@ export default function Timeline({
                     <div
                       key={row.id}
                       style={{
+                        position: 'relative',
                         display: 'flex',
                         alignItems: 'center',
                         height,
@@ -254,6 +258,21 @@ export default function Timeline({
                       onClick={() => isGroup && toggleCollapse(row.id)}
                       title={row.name}
                     >
+                      {/* vertical depth guide lines */}
+                      {Array.from({ length: row.depth }).map((_, d) => (
+                        <div
+                          key={d}
+                          style={{
+                            position: 'absolute',
+                            left: 8 + d * 14 + 6,
+                            top: 0,
+                            bottom: 0,
+                            width: 1.5,
+                            background: lineColor,
+                          }}
+                        />
+                      ))}
+
                       {icon && (
                         <span style={{ display: 'inline-block', width: 14, marginRight: 2 }}>
                           {icon}
@@ -266,7 +285,7 @@ export default function Timeline({
               </div>
             </ScrollableCmp.Group>
 
-            {/* --- Right column (content, clean background) --- */}
+            {/* --- Right column with full-width shading --- */}
             <ScrollableCmp.Group
               horizontalId="timeline-h"
               verticalId="timeline-v"
@@ -282,6 +301,7 @@ export default function Timeline({
               <div style={{ width: contentWidth, display: 'flex', flexDirection: 'column' }}>
                 {flattened.map((row) => {
                   const height = getRowHeight(row);
+                  const background = getDepthBackground(row.depth);
 
                   if (row.type === 'group') {
                     return (
@@ -289,8 +309,8 @@ export default function Timeline({
                         key={row.id}
                         style={{
                           height,
+                          background,
                           borderBottom: '1px solid rgba(255,255,255,0.12)',
-                          background: 'transparent',
                         }}
                       />
                     );
@@ -304,10 +324,10 @@ export default function Timeline({
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        marginLeft: row.depth * 12,
                         height,
                         borderBottom: '1px solid rgba(255,255,255,0.06)',
-                        background: 'transparent',
+                        background,
+                        transition: 'background 0.2s ease',
                       }}
                     >
                       {el}

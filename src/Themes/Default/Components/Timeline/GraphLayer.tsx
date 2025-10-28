@@ -16,8 +16,7 @@ const Root = makeSlot('div', 'root')(({ theme }) => ({
   position: 'relative',
   width: '100%',
   overflow: 'hidden',
-  background: theme.palette.background.default,
-  borderBottom: `1px solid ${theme.palette.divider}`,
+  background: 'transparent',
 }));
 
 export interface GraphPoint {
