@@ -127,7 +127,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           ]}
         />
 
-        <div style={{display: 'flex', width: '100%', height: '200px'}}>
+        <div style={{display: 'flex', width: '100%', height: '300px'}}>
           <Timeline
             rangeProvider={makeDefaultRangeProvider([0, 100])}
             leftColumnWidth={200}

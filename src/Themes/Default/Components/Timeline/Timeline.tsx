@@ -143,7 +143,6 @@ export default function Timeline({
     [rangeProvider, pixelsPerUnit, scaleToFit]
   );
 
-  // Measure heights of layer rows
   React.useLayoutEffect(() => {
     const elements = document.querySelectorAll('[data-layer-id]');
     const newHeights: Record<string, number> = {};
@@ -168,12 +167,17 @@ export default function Timeline({
     return rowHeights.current[row.id] ?? getDefaultLayerHeight(row.element);
   }
 
-  // IMPORTANT: compute hasChildren from the original element's children,
-  // not from `flattened` (which hides them when collapsed).
   function rowHasOriginalChildren(row: FlattenedRow): boolean {
     if (row.type !== 'group') return false;
     const el = row.element as React.ReactElement<GroupProps>;
     return React.Children.count(el.props.children) > 0;
+  }
+
+  // Helper for alternating background tint on left column only
+  function getDepthBackground(depth: number): string {
+    const alpha = 0.03 + depth * 0.02;
+    const base = depth % 2 === 0 ? 255 : 240;
+    return `rgba(${base}, ${base}, ${base}, ${alpha})`;
   }
 
   return (
@@ -209,7 +213,7 @@ export default function Timeline({
               <div style={{ width: contentWidth, height: topBarHeight }} />
             </ScrollableCmp.Group>
 
-            {/* --- Left column (labels) --- */}
+            {/* --- Left column (labels with background shading) --- */}
             <ScrollableCmp.Group
               verticalId="timeline-v"
               style={{
@@ -226,6 +230,7 @@ export default function Timeline({
                   const collapsed = row.collapsed ?? collapsedState[row.id];
                   const hasChildren = rowHasOriginalChildren(row);
                   const icon = isGroup && hasChildren ? (collapsed ? '▶' : '▼') : '';
+                  const background = getDepthBackground(row.depth);
 
                   return (
                     <div
@@ -239,10 +244,12 @@ export default function Timeline({
                           row.type === 'group'
                             ? '1px solid rgba(255,255,255,0.12)'
                             : '1px solid rgba(255,255,255,0.06)',
+                        background,
                         fontSize: '0.78rem',
                         fontWeight: row.type === 'group' ? 700 : row.depth === 0 ? 600 : 500,
                         cursor: isGroup ? 'pointer' : 'default',
                         userSelect: 'none',
+                        transition: 'background 0.2s ease',
                       }}
                       onClick={() => isGroup && toggleCollapse(row.id)}
                       title={row.name}
@@ -259,7 +266,7 @@ export default function Timeline({
               </div>
             </ScrollableCmp.Group>
 
-            {/* --- Right column (content) --- */}
+            {/* --- Right column (content, clean background) --- */}
             <ScrollableCmp.Group
               horizontalId="timeline-h"
               verticalId="timeline-v"
@@ -283,6 +290,7 @@ export default function Timeline({
                         style={{
                           height,
                           borderBottom: '1px solid rgba(255,255,255,0.12)',
+                          background: 'transparent',
                         }}
                       />
                     );
@@ -299,6 +307,7 @@ export default function Timeline({
                         marginLeft: row.depth * 12,
                         height,
                         borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        background: 'transparent',
                       }}
                     >
                       {el}
