@@ -22,9 +22,13 @@ const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
   width: '100%',
   height: '100%',
   userSelect: 'none',
+  background: '#121212',
+  color: '#ddd',
 }));
 
 const GROUP_ROW_HEIGHT = 24;
+
+export interface TimelineSettings {} // ✅ placeholder for future settings
 
 interface FlattenedRow {
   id: string;
@@ -32,11 +36,9 @@ interface FlattenedRow {
   depth: number;
   collapsed?: boolean;
   parentId?: string;
-  type: 'group' | 'layer';
-  element: React.ReactElement;
+  type: 'group' | 'layer' | 'layer-group';
+  element: React.ReactElement<any>;
 }
-
-export interface TimelineSettings {}
 
 export interface TimelineProps {
   rangeProvider: RangeProvider;
@@ -48,6 +50,7 @@ export interface TimelineProps {
   showTopBar?: boolean;
 }
 
+// --- flatten tree structure ---
 function flatten(
   children: React.ReactNode,
   depth = 0,
@@ -59,50 +62,32 @@ function flatten(
 
   React.Children.forEach(children, (child, index) => {
     if (!React.isValidElement(child)) return;
-
     const el = child as React.ReactElement<LayerProps | GroupProps>;
     const type: any = el.type;
     const props = el.props;
 
-    // --- Group ---
+    // group
     if (type && type[GROUP_FLAG]) {
       const { name, collapsed = false, children: inner } = props as GroupProps;
       const id = `${parentId}${indexPrefix}${index}-${name ?? 'group'}`;
       const isCollapsed = collapsedState[id] ?? collapsed;
-
-      list.push({
-        id,
-        name: name ?? '',
-        depth,
-        collapsed: isCollapsed,
-        parentId,
-        type: 'group',
-        element: el,
-      });
-
-      if (!isCollapsed && inner) {
-        list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
-      }
+      list.push({ id, name: name ?? '', depth, collapsed: isCollapsed, parentId, type: 'group', element: el });
+      if (!isCollapsed && inner) list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
       return;
     }
 
-    // --- Visual layer ---
+    // layer
     const isVisual = (type as any)?.[BAR_FLAG] || (type as any)?.[GRAPH_FLAG];
     if (isVisual) {
       const id = `${parentId}${indexPrefix}${index}-layer`;
       const { name, children: inner } = props as LayerProps;
-
-      list.push({
-        id,
-        name: name ?? '',
-        depth,
-        parentId,
-        type: 'layer',
-        element: el,
-      });
-
-      if (inner) {
-        list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
+      const hasChildren = !!inner && React.Children.count(inner) > 0;
+      if (hasChildren) {
+        const isCollapsed = collapsedState[id] ?? false;
+        list.push({ id, name: name ?? '', depth, collapsed: isCollapsed, parentId, type: 'layer-group', element: el });
+        if (!isCollapsed && inner) list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
+      } else {
+        list.push({ id, name: name ?? '', depth, parentId, type: 'layer', element: el });
       }
     }
   });
@@ -115,7 +100,7 @@ export default function Timeline({
   pixelsPerUnit = 100,
   scaleToFit = false,
   children,
-  leftColumnWidth = 120,
+  leftColumnWidth = 160,
   showLabels = true,
   showTopBar = true,
 }: TimelineProps) {
@@ -123,24 +108,18 @@ export default function Timeline({
   const rowHeights = React.useRef<Record<string, number>>({});
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
-  const flattened = React.useMemo(
-    () => flatten(children, 0, '', collapsedState),
-    [children, collapsedState]
-  );
-
-  const toggleCollapse = React.useCallback(
-    (id: string) => setCollapsedState((prev) => ({ ...prev, [id]: !prev[id] })),
-    []
-  );
+  const flattened = React.useMemo(() => flatten(children, 0, '', collapsedState), [children, collapsedState]);
+  const toggleCollapse = React.useCallback((id: string) => setCollapsedState((p) => ({ ...p, [id]: !p[id] })), []);
 
   const domainSpan = rangeProvider.end - rangeProvider.start;
   const contentWidth = scaleToFit ? '100%' : Math.max(0, pixelsPerUnit * domainSpan);
   const topBarHeight = showTopBar ? 24 : 0;
 
-  const ProviderValue = React.useMemo(
-    () => ({ rangeProvider, pixelsPerUnit, scaleToFit }),
-    [rangeProvider, pixelsPerUnit, scaleToFit]
-  );
+  const ProviderValue = React.useMemo(() => ({ rangeProvider, pixelsPerUnit, scaleToFit }), [
+    rangeProvider,
+    pixelsPerUnit,
+    scaleToFit,
+  ]);
 
   React.useLayoutEffect(() => {
     const elements = document.querySelectorAll('[data-layer-id]');
@@ -153,34 +132,21 @@ export default function Timeline({
     forceUpdate();
   }, [flattened]);
 
-  function getDefaultLayerHeight(el: React.ReactElement): number {
+  const getDefaultLayerHeight = (el: React.ReactElement): number => {
     const type: any = el.type;
     const explicit = (el.props as LayerProps)?.height;
     if (typeof explicit === 'number') return explicit;
     if (type?.[GRAPH_FLAG]) return 60;
     return 20;
-  }
+  };
 
-  function getRowHeight(row: FlattenedRow): number {
+  const getRowHeight = (row: FlattenedRow): number => {
     if (row.type === 'group') return GROUP_ROW_HEIGHT;
     return rowHeights.current[row.id] ?? getDefaultLayerHeight(row.element);
-  }
+  };
 
-  function rowHasOriginalChildren(row: FlattenedRow): boolean {
-    if (row.type !== 'group') return false;
-    const el = row.element as React.ReactElement<GroupProps>;
-    return React.Children.count(el.props.children) > 0;
-  }
-
-  // Background shading color by depth
-  function getDepthBackground(depth: number): string {
-    const alpha = 0.03 + depth * 0.02;
-    const base = depth % 2 === 0 ? 255 : 240;
-    return `rgba(${base}, ${base}, ${base}, ${alpha})`;
-  }
-
-  // Subtle vertical line color
-  const lineColor = 'rgba(255,255,255,0.18)';
+  const depthColors = ['#4fc3f7', '#ba68c8', '#81c784', '#ffb74d', '#64b5f6', '#f06292', '#aed581'];
+  const getDepthColor = (d: number) => depthColors[d % depthColors.length];
 
   return (
     <TimelineContext.Provider value={ProviderValue}>
@@ -192,87 +158,81 @@ export default function Timeline({
               width: '100%',
               gridTemplateRows: `${topBarHeight}px 1fr auto`,
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
+              background: '#121212',
             }}
           >
-            {/* --- Top Bar (optional) --- */}
+            {/* Top Bar */}
             <div
               style={{
                 gridRow: 1,
-                gridColumn: 1,
-                background: showTopBar ? 'rgba(0,0,0,0.07)' : 'transparent',
-                borderBottom: showTopBar ? '1px solid rgba(255,255,255,0.12)' : 'none',
+                gridColumn: '1 / span 2',
+                background: showTopBar ? '#1e1e1e' : 'transparent',
+                borderBottom: showTopBar ? '1px solid rgba(255,255,255,0.1)' : 'none',
               }}
             />
-            <ScrollableCmp.Group
-              horizontalId="timeline-h"
-              style={{
-                gridRow: 1,
-                gridColumn: 2,
-                borderBottom: showTopBar ? '1px solid rgba(255,255,255,0.12)' : 'none',
-                background: showTopBar ? 'rgba(20,20,20,0.85)' : 'transparent',
-              }}
-            >
-              <div style={{ width: contentWidth, height: topBarHeight }} />
-            </ScrollableCmp.Group>
 
-            {/* --- Left column with vertical guides --- */}
+            {/* Left Column */}
             <ScrollableCmp.Group
               verticalId="timeline-v"
               style={{
                 gridRow: 2,
                 gridColumn: 1,
-                borderRight: showLabels ? '1px solid rgba(255,255,255,0.12)' : 'none',
-                background: showLabels ? 'rgba(0,0,0,0.03)' : 'transparent',
+                borderRight: showLabels ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                background: '#181818',
                 position: 'relative',
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                {flattened.map((row) => {
+                {flattened.map((row, idx) => {
                   const isGroup = row.type === 'group';
+                  const isLayerGroup = row.type === 'layer-group';
                   const height = getRowHeight(row);
                   const collapsed = row.collapsed ?? collapsedState[row.id];
-                  const hasChildren = rowHasOriginalChildren(row);
-                  const icon = isGroup && hasChildren ? (collapsed ? '▶' : '▼') : '';
-                  const background = getDepthBackground(row.depth);
+                  const next = flattened[idx + 1];
+                  const icon =
+                    (isGroup || isLayerGroup) && (row.element as React.ReactElement<any>).props.children
+                      ? collapsed
+                        ? '▶'
+                        : '▼'
+                      : '';
 
                   return (
                     <div
                       key={row.id}
                       style={{
-                        position: 'relative',
                         display: 'flex',
                         alignItems: 'center',
                         height,
                         paddingLeft: 8 + row.depth * 14,
-                        borderBottom:
-                          row.type === 'group'
-                            ? '1px solid rgba(255,255,255,0.12)'
-                            : '1px solid rgba(255,255,255,0.06)',
-                        background,
+                        borderBottom: '1px solid rgba(255,255,255,0.08)',
                         fontSize: '0.78rem',
-                        fontWeight: row.type === 'group' ? 700 : row.depth === 0 ? 600 : 500,
-                        cursor: isGroup ? 'pointer' : 'default',
+                        fontWeight: isGroup || isLayerGroup ? 700 : 500,
+                        color: '#eee',
+                        cursor: isGroup || isLayerGroup ? 'pointer' : 'default',
                         userSelect: 'none',
-                        transition: 'background 0.2s ease',
+                        position: 'relative',
                       }}
-                      onClick={() => isGroup && toggleCollapse(row.id)}
+                      onClick={() => (isGroup || isLayerGroup) && toggleCollapse(row.id)}
                       title={row.name}
                     >
-                      {/* vertical depth guide lines */}
-                      {Array.from({ length: row.depth }).map((_, d) => (
-                        <div
-                          key={d}
-                          style={{
-                            position: 'absolute',
-                            left: 8 + d * 14 + 6,
-                            top: 0,
-                            bottom: 0,
-                            width: 1.5,
-                            background: lineColor,
-                          }}
-                        />
-                      ))}
-
+                      {/* dynamic vertical lines */}
+{/* vertical lines per depth — no look-ahead */}
+{Array.from({ length: row.depth }).map((_, d) => (
+  <div
+    key={d}
+    style={{
+      position: 'absolute',
+      left: 8 + d * 14 + 5,
+      top: 6,          // gap so lines don't cross the triangle
+      bottom: 0,
+      width: 2,
+      background: getDepthColor(d),
+      opacity: 0.85,
+      borderRadius: 1,
+      pointerEvents: 'none',
+    }}
+  />
+))}
                       {icon && (
                         <span style={{ display: 'inline-block', width: 14, marginRight: 2 }}>
                           {icon}
@@ -285,7 +245,7 @@ export default function Timeline({
               </div>
             </ScrollableCmp.Group>
 
-            {/* --- Right column with full-width shading --- */}
+            {/* Right Column */}
             <ScrollableCmp.Group
               horizontalId="timeline-h"
               verticalId="timeline-v"
@@ -294,26 +254,16 @@ export default function Timeline({
                 gridColumn: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                minHeight: 0,
-                minWidth: 0,
+                background: '#181818',
               }}
             >
               <div style={{ width: contentWidth, display: 'flex', flexDirection: 'column' }}>
                 {flattened.map((row) => {
                   const height = getRowHeight(row);
-                  const background = getDepthBackground(row.depth);
+                  const background = `rgba(255,255,255,${0.01 * (row.depth + 1)})`;
 
                   if (row.type === 'group') {
-                    return (
-                      <div
-                        key={row.id}
-                        style={{
-                          height,
-                          background,
-                          borderBottom: '1px solid rgba(255,255,255,0.12)',
-                        }}
-                      />
-                    );
+                    return <div key={row.id} style={{ height, borderBottom: '1px solid rgba(255,255,255,0.1)', background }} />;
                   }
 
                   const el = row.element as React.ReactElement<LayerProps>;
@@ -325,9 +275,8 @@ export default function Timeline({
                         display: 'flex',
                         flexDirection: 'column',
                         height,
-                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        borderBottom: '1px solid rgba(255,255,255,0.05)',
                         background,
-                        transition: 'background 0.2s ease',
                       }}
                     >
                       {el}
@@ -337,7 +286,7 @@ export default function Timeline({
               </div>
             </ScrollableCmp.Group>
 
-            {/* --- Scrollbars --- */}
+            {/* Scrollbars */}
             <div style={{ gridRow: 2, gridColumn: 3 }}>
               <ScrollableCmp.Vertical id="timeline-v" />
             </div>

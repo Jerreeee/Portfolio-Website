@@ -127,7 +127,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           ]}
         />
 
-        <div style={{display: 'flex', width: '100%', height: '300px'}}>
+        <div style={{display: 'flex', width: '100%', height: '600px'}}>
           <Timeline
             rangeProvider={makeDefaultRangeProvider([0, 100])}
             leftColumnWidth={200}
@@ -212,6 +212,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             {/* Additional root groups */}
             <Timeline.Group name="Async Compute">
               <Timeline.BarLayer
+                name='test'
                 bars={[
                   { start: 0, end: 50, label: 'Particle Simulation', color: '#66bb6a' },
                   { start: 60, end: 90, label: 'AI Occlusion', color: '#ffb74d' },
