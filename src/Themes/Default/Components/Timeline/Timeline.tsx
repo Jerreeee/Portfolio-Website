@@ -183,23 +183,97 @@ export default function Timeline({
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                {/* --- CONTINUOUS TREE LINES (segment-based) --- */}
+                {(() => {
+                  // Precompute row tops/heights
+                  const tops: number[] = [];
+                  const heights: number[] = [];
+                  let y = 0;
+                  for (let i = 0; i < flattened.length; i++) {
+                    tops.push(y);
+                    const h = getRowHeight(flattened[i]);
+                    heights.push(h);
+                    y += h;
+                  }
+
+                  // Helper: does a row show a triangle?
+                  const hasTriangle = (row: FlattenedRow) => {
+                    if (row.type !== 'group' && row.type !== 'layer-group') return false;
+                    const el = row.element as React.ReactElement<any>;
+                    return !!el.props?.children && React.Children.count(el.props.children) > 0;
+                  };
+
+                  // Build segments: for each row i and each depth d < row.depth,
+                  // start a segment if previous row isn't deep enough; extend
+                  // until the first row with depth < d + 1.
+                  type Seg = { left: number; top: number; height: number; depth: number };
+                  const segs: Seg[] = [];
+
+                  for (let i = 0; i < flattened.length; i++) {
+                    const row = flattened[i];
+                    for (let d = 0; d < row.depth; d++) {
+                      const prev = flattened[i - 1];
+                      const startsHere = i === 0 || (prev && prev.depth < d + 1);
+                      if (!startsHere) continue;
+
+                      // find end index j (inclusive) where branch at depth d+1 ends
+                      let j = i;
+                      while (j + 1 < flattened.length && flattened[j + 1].depth >= d + 1) j++;
+
+                      const left = 8 + d * 14 + 5;
+                      const topGap = hasTriangle(row) ? 6 : 0; // skip triangle only where segment starts
+                      const top = tops[i] + topGap;
+                      const bottom = tops[j] + heights[j];
+                      const height = Math.max(0, bottom - top);
+                      if (height > 0) segs.push({ left, top, height, depth: d });
+                    }
+                  }
+
+                  return (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                      }}
+                    >
+                      {segs.map((s, idx) => (
+                        <div
+                          key={`seg-${idx}`}
+                          style={{
+                            position: 'absolute',
+                            left: s.left,
+                            top: s.top,
+                            height: s.height,
+                            width: 2,
+                            background: getDepthColor(s.depth),
+                            opacity: 0.9,
+                            borderRadius: 1,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  );
+                })()}
+
+                {/* --- ROWS (unchanged) --- */}
                 {flattened.map((row, idx) => {
                   const isGroup = row.type === 'group';
                   const isLayerGroup = row.type === 'layer-group';
                   const height = getRowHeight(row);
                   const collapsed = row.collapsed ?? collapsedState[row.id];
-                  const next = flattened[idx + 1];
-                  const icon =
-                    (isGroup || isLayerGroup) && (row.element as React.ReactElement<any>).props.children
-                      ? collapsed
-                        ? '▶'
-                        : '▼'
-                      : '';
+
+                  const el = row.element as React.ReactElement<any>;
+                  const showTriangle =
+                    (isGroup || isLayerGroup) && !!el.props?.children && React.Children.count(el.props.children) > 0;
+                  const icon = showTriangle ? (collapsed ? '▶' : '▼') : '';
 
                   return (
                     <div
                       key={row.id}
                       style={{
+                        position: 'relative',
                         display: 'flex',
                         alignItems: 'center',
                         height,
@@ -210,34 +284,13 @@ export default function Timeline({
                         color: '#eee',
                         cursor: isGroup || isLayerGroup ? 'pointer' : 'default',
                         userSelect: 'none',
-                        position: 'relative',
+                        zIndex: 1, // above the lines
+                        background: 'transparent',
                       }}
                       onClick={() => (isGroup || isLayerGroup) && toggleCollapse(row.id)}
                       title={row.name}
                     >
-                      {/* dynamic vertical lines */}
-{/* vertical lines per depth — no look-ahead */}
-{Array.from({ length: row.depth }).map((_, d) => (
-  <div
-    key={d}
-    style={{
-      position: 'absolute',
-      left: 8 + d * 14 + 5,
-      top: 6,          // gap so lines don't cross the triangle
-      bottom: 0,
-      width: 2,
-      background: getDepthColor(d),
-      opacity: 0.85,
-      borderRadius: 1,
-      pointerEvents: 'none',
-    }}
-  />
-))}
-                      {icon && (
-                        <span style={{ display: 'inline-block', width: 14, marginRight: 2 }}>
-                          {icon}
-                        </span>
-                      )}
+                      {icon && <span style={{ display: 'inline-block', width: 14, marginRight: 2 }}>{icon}</span>}
                       {row.name}
                     </div>
                   );
