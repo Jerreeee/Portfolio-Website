@@ -3,9 +3,9 @@
 // ----------------------------------------------------
 import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
-export const timelineGroupCmp = createUtilityClasses('TimelineGroupCmp', [
-  'groupRoot'
+export const timeline = createUtilityClasses('Timeline', [
+  'root'
 ] as const);
 
-export type TimelineGroupCmpClassKey = typeof timelineGroupCmp.slots[number];
-export type TimelineGroupCmpClasses = typeof timelineGroupCmp.classes;
+export type TimelineClassKey = typeof timeline.slots[number];
+export type TimelineClasses = typeof timeline.classes;

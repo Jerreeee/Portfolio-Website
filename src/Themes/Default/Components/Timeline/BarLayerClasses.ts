@@ -3,10 +3,10 @@
 // ----------------------------------------------------
 import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
-export const timelineBarLayerCmp = createUtilityClasses('TimelineBarLayerCmp', [
+export const barLayer = createUtilityClasses('TimelineBarLayer', [
   'root',
   'bar'
 ] as const);
 
-export type TimelineBarLayerCmpClassKey = typeof timelineBarLayerCmp.slots[number];
-export type TimelineBarLayerCmpClasses = typeof timelineBarLayerCmp.classes;
+export type TimelineBarLayerClassKey = typeof barLayer.slots[number];
+export type TimelineBarLayerClasses = typeof barLayer.classes;

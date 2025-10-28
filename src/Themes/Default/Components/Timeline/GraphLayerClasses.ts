@@ -3,9 +3,9 @@
 // ----------------------------------------------------
 import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
-export const timelineCmp = createUtilityClasses('TimelineCmp', [
+export const graphLayer = createUtilityClasses('TimelineGraphLayer', [
   'root'
 ] as const);
 
-export type TimelineCmpClassKey = typeof timelineCmp.slots[number];
-export type TimelineCmpClasses = typeof timelineCmp.classes;
+export type TimelineGraphLayerClassKey = typeof graphLayer.slots[number];
+export type TimelineGraphLayerClasses = typeof graphLayer.classes;

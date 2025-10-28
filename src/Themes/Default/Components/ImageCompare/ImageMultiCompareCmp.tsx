@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Box } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider';
@@ -9,10 +9,10 @@ import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Component
 import { Size } from '@/Types/extra';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageMultiCompareCmp } from './ImageMultiCompareCmpClasses';
-import { TimelineCmp } from '../Timeline';
+import Timeline from '../Timeline/Timeline'; // ✅ import directly
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
 import ParentSizeObserver from '../ParentSizeObserver/ParentSizeObserverCmp';
-import { TimelineCmpBarLayerProps } from '../Timeline/TimelineBarLayerCmp';
+import { BarLayerProps } from '../Timeline/BarLayer';
 
 // =====================================================================
 // ============================= Slot Definitions ======================
@@ -26,7 +26,6 @@ const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
   flexDirection: 'column',
   gap: '0.5rem',
   width: '100%',
-  // overflow: 'hidden',
 }));
 
 // =====================================================================
@@ -34,24 +33,21 @@ const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
 
 export interface ImageMultiCompareCmpProps {
   images: ImageCompareItem[];
-  bars?: TimelineCmpBarLayerProps[];
+  bars?: BarLayerProps[];
 }
 
-export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
+export default function ImageMultiCompareCmp({ images, bars = [] }: ImageMultiCompareCmpProps) {
   const { theme } = useTheme();
-  const imageCount = props.images.length;
+  const imageCount = images.length;
 
   const initialProgress = 0;
-
-  // Unified state logic for all cases (even 2 images)
   const [sliderState, setSliderState] = useState<SegmentSliderState>(
     SegmentSliderCmp.computeState(initialProgress, imageCount)
   );
 
   const { segmentIndex, nextTickIdx, segmentPercentage } = sliderState;
-
-  const bottomImage = props.images[segmentIndex];
-  const topImage = props.images[nextTickIdx];
+  const bottomImage = images[segmentIndex];
+  const topImage = images[nextTickIdx];
 
   return (
     <ImageMultiCompareRoot>
@@ -64,8 +60,7 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
         onDrag={(newSegmentProgress) => {
           const segmentCount = imageCount - 1;
           const newGlobalPercentage =
-            (segmentIndex + Math.min(newSegmentProgress, 0.9999)) /
-            segmentCount;
+            (segmentIndex + Math.min(newSegmentProgress, 0.9999)) / segmentCount;
           setSliderState({
             ...sliderState,
             percentage: newGlobalPercentage,
@@ -84,18 +79,14 @@ export default function ImageMultiCompareCmp(props: ImageMultiCompareCmpProps) {
           />
 
           {/* --- Timeline --- */}
-          {props.bars && props.bars.length > 0 && (
-            <TimelineCmp
-              showTopBar={false}
-              scaleToFit
-              rangeProvider={makeDefaultRangeProvider([0, imageCount - 1])}
-            >
-              {props.bars.map((layer, i) => (
-                <TimelineCmp.Group>
-                  <TimelineCmp.BarLayer key={i} {...layer} />
-                </TimelineCmp.Group>
+          {bars.length > 0 && (
+            <Timeline rangeProvider={makeDefaultRangeProvider([0, imageCount - 1])} showLabels={false} scaleToFit showTopBar={false}>
+              {bars.map((barProps, i) => (
+                <Timeline.Layer key={i}>
+                  <Timeline.BarLayer {...barProps} />
+                </Timeline.Layer>
               ))}
-            </TimelineCmp>
+            </Timeline>
           )}
         </>
       )}

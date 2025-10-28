@@ -1,25 +1,18 @@
 'use client';
 
-import { RangeProvider } from '@/Utils/RangeProvider';
-import React from 'react';
+import React, { createContext, useContext } from 'react';
+import type { RangeProvider } from '@/Utils/RangeProvider';
 
-export interface TimelineGroupInfo {
-  id: string;
-  name?: string;
-  height?: number;
-}
-
-export interface TimelineContextValue {
+export interface TimelineContextType {
   rangeProvider: RangeProvider;
-  registerGroup: (group: TimelineGroupInfo) => void;
-  unregisterGroup: (id: string) => void;
-  groups: TimelineGroupInfo[];
+  pixelsPerUnit: number;
+  scaleToFit: boolean;
 }
 
-export const TimelineContext = React.createContext<TimelineContextValue | null>(null);
+export const TimelineContext = createContext<TimelineContextType | null>(null);
 
 export function useTimeline() {
-  const ctx = React.useContext(TimelineContext);
-  if (!ctx) throw new Error('TimelineCmp components must be used within <TimelineCmp>');
+  const ctx = useContext(TimelineContext);
+  if (!ctx) throw new Error('Timeline components must be used within <TimelineCmp>.');
   return ctx;
 }
