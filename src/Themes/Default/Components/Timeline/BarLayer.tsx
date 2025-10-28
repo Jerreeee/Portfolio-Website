@@ -6,6 +6,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { barLayer } from './BarLayerClasses';
 import { useTimeline } from './Context';
+import type { LayerProps } from './Layer';
 
 export const BAR_FLAG = '__isTimelineBarLayer';
 
@@ -14,7 +15,6 @@ const makeSlot = makeSlotFactory('TimelineBarLayer', barLayer);
 const Root = makeSlot('div', 'root')(() => ({
   position: 'relative',
   width: '100%',
-  height: '100%',
 }));
 
 const Bar = makeSlot('div', 'bar')(({ theme }) => ({
@@ -40,19 +40,17 @@ export interface Bar {
   color?: string;
 }
 
-export interface BarLayerProps {
+export interface BarLayerProps extends LayerProps {
   bars: Bar[];
-  /** Optional height override for this visual layer (default 28px) */
-  height?: number;
 }
 
-export default function BarLayer({ bars, height = 20 }: BarLayerProps) {
+export default function BarLayer({ name, bars, height = 20, children }: BarLayerProps) {
   const { theme } = useTheme();
   const { rangeProvider } = useTimeline();
   const { normalize } = rangeProvider;
 
   return (
-    <Root style={{ height }}>
+    <Root sx={{ height: height }}>
       {bars.map((b, i) => {
         const left = normalize(b.start) * 100;
         const width = (normalize(b.end) - normalize(b.start)) * 100;

@@ -82,9 +82,9 @@ export default function ImageMultiCompareCmp({ images, bars = [] }: ImageMultiCo
           {bars.length > 0 && (
             <Timeline rangeProvider={makeDefaultRangeProvider([0, imageCount - 1])} showLabels={false} scaleToFit showTopBar={false}>
               {bars.map((barProps, i) => (
-                <Timeline.Layer key={i}>
+                <Timeline.Group key={i}>
                   <Timeline.BarLayer {...barProps} />
-                </Timeline.Layer>
+                </Timeline.Group>
               ))}
             </Timeline>
           )}

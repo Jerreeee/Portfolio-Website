@@ -8,9 +8,10 @@ import { timeline } from './TimelineClasses';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { TimelineContext } from './Context';
 import type { RangeProvider } from '@/Utils/RangeProvider';
-import Layer, { LAYER_FLAG } from './Layer';
-import BarLayer from './BarLayer';
-import GraphLayer from './GraphLayer';
+import BarLayer, { BAR_FLAG } from './BarLayer';
+import GraphLayer, { GRAPH_FLAG } from './GraphLayer';
+import Group, { GroupProps, GROUP_FLAG } from './Group';
+import { LayerProps } from './Layer';
 
 const makeSlot = makeSlotFactory('Timeline', timeline);
 
@@ -22,6 +23,18 @@ const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
   height: '100%',
   userSelect: 'none',
 }));
+
+const GROUP_ROW_HEIGHT = 24;
+
+interface FlattenedRow {
+  id: string;
+  name: string;
+  depth: number;
+  collapsed?: boolean;
+  parentId?: string;
+  type: 'group' | 'layer';
+  element: React.ReactElement;
+}
 
 export interface TimelineSettings {}
 
@@ -35,54 +48,27 @@ export interface TimelineProps {
   showTopBar?: boolean;
 }
 
-interface FlattenedLayer {
-  id: string;
-  name: string;
-  depth: number;
-  collapsed?: boolean;
-  parentId?: string;
-  hasChildren?: boolean;
-  element: React.ReactElement<any>;
-}
-
-interface LayerElementProps {
-  name?: string;
-  collapsed?: boolean;
-  children?: React.ReactNode;
-}
-
-/**
- * Recursively flattens <Layer> hierarchy into a visible list.
- * No height calculation — layout is fully intrinsic.
- * IDs are deterministic (based on tree position).
- */
 function flatten(
   children: React.ReactNode,
   depth = 0,
   parentId = '',
-  collapsedState?: Record<string, boolean>,
+  collapsedState: Record<string, boolean> = {},
   indexPrefix = ''
-): FlattenedLayer[] {
-  const list: FlattenedLayer[] = [];
+): FlattenedRow[] {
+  const list: FlattenedRow[] = [];
 
   React.Children.forEach(children, (child, index) => {
     if (!React.isValidElement(child)) return;
-    const type: any = child.type;
 
-    if (type && type[LAYER_FLAG]) {
-      const props = child.props as LayerElementProps;
-      const { name, collapsed = false, children: inner } = props;
+    const el = child as React.ReactElement<LayerProps | GroupProps>;
+    const type: any = el.type;
+    const props = el.props;
 
-      // Determine if this layer actually has child <Layer> elements
-      const hasChildren =
-        !!inner &&
-        React.Children.toArray(inner).some(
-          (c) => React.isValidElement(c) && (c.type as any)[LAYER_FLAG]
-        );
-
-      // deterministic id
-      const id = `${parentId}${indexPrefix}${index}-${name ?? 'layer'}`;
-      const isCollapsed = collapsedState?.[id] ?? collapsed;
+    // --- Group ---
+    if (type && type[GROUP_FLAG]) {
+      const { name, collapsed = false, children: inner } = props as GroupProps;
+      const id = `${parentId}${indexPrefix}${index}-${name ?? 'group'}`;
+      const isCollapsed = collapsedState[id] ?? collapsed;
 
       list.push({
         id,
@@ -90,11 +76,33 @@ function flatten(
         depth,
         collapsed: isCollapsed,
         parentId,
-        hasChildren,
-        element: child,
+        type: 'group',
+        element: el,
       });
 
+      // only include children if expanded
       if (!isCollapsed && inner) {
+        list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
+      }
+      return;
+    }
+
+    // --- Visual layer ---
+    const isVisual = (type as any)?.[BAR_FLAG] || (type as any)?.[GRAPH_FLAG];
+    if (isVisual) {
+      const id = `${parentId}${indexPrefix}${index}-layer`;
+      const { name, children: inner } = props as LayerProps;
+
+      list.push({
+        id,
+        name: name ?? '',
+        depth,
+        parentId,
+        type: 'layer',
+        element: el,
+      });
+
+      if (inner) {
         list.push(...flatten(inner, depth + 1, id, collapsedState, `${index}-`));
       }
     }
@@ -135,17 +143,38 @@ export default function Timeline({
     [rangeProvider, pixelsPerUnit, scaleToFit]
   );
 
-  // Measure actual heights of right column rows
+  // Measure heights of layer rows
   React.useLayoutEffect(() => {
     const elements = document.querySelectorAll('[data-layer-id]');
     const newHeights: Record<string, number> = {};
     elements.forEach((el) => {
       const id = el.getAttribute('data-layer-id');
-      if (id) newHeights[id] = el.getBoundingClientRect().height;
+      if (id) newHeights[id] = el.getBoundingClientRect().height || 1;
     });
     rowHeights.current = newHeights;
     forceUpdate();
   }, [flattened]);
+
+  function getDefaultLayerHeight(el: React.ReactElement): number {
+    const type: any = el.type;
+    const explicit = (el.props as LayerProps)?.height;
+    if (typeof explicit === 'number') return explicit;
+    if (type?.[GRAPH_FLAG]) return 60;
+    return 20;
+  }
+
+  function getRowHeight(row: FlattenedRow): number {
+    if (row.type === 'group') return GROUP_ROW_HEIGHT;
+    return rowHeights.current[row.id] ?? getDefaultLayerHeight(row.element);
+  }
+
+  // IMPORTANT: compute hasChildren from the original element's children,
+  // not from `flattened` (which hides them when collapsed).
+  function rowHasOriginalChildren(row: FlattenedRow): boolean {
+    if (row.type !== 'group') return false;
+    const el = row.element as React.ReactElement<GroupProps>;
+    return React.Children.count(el.props.children) > 0;
+  }
 
   return (
     <TimelineContext.Provider value={ProviderValue}>
@@ -155,78 +184,87 @@ export default function Timeline({
             style={{
               display: 'grid',
               width: '100%',
-              gridTemplateRows: showTopBar ? `${topBarHeight}px 1fr auto` : `1fr auto`,
+              gridTemplateRows: `${topBarHeight}px 1fr auto`,
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
             }}
           >
-            {/* --- Top Bar --- */}
-            {showTopBar && (
-              <>
-                <div
-                  style={{
-                    gridRow: 1,
-                    gridColumn: 1,
-                    background: showLabels ? 'rgba(0,0,0,0.07)' : 'transparent',
-                    borderBottom: '1px solid rgba(255,255,255,0.12)',
-                  }}
-                />
-                <ScrollableCmp.Group
-                  horizontalId="timeline-h"
-                  style={{
-                    gridRow: 1,
-                    gridColumn: 2,
-                    borderBottom: '1px solid rgba(255,255,255,0.12)',
-                    background: 'rgba(20,20,20,0.85)',
-                  }}
-                >
-                  <div style={{ width: contentWidth, height: topBarHeight }} />
-                </ScrollableCmp.Group>
-              </>
-            )}
+            {/* --- Top Bar (empty when hidden) --- */}
+            <div
+              style={{
+                gridRow: 1,
+                gridColumn: 1,
+                background: showTopBar ? 'rgba(0,0,0,0.07)' : 'transparent',
+                borderBottom: showTopBar ? '1px solid rgba(255,255,255,0.12)' : 'none',
+              }}
+            />
+            <ScrollableCmp.Group
+              horizontalId="timeline-h"
+              style={{
+                gridRow: 1,
+                gridColumn: 2,
+                borderBottom: showTopBar ? '1px solid rgba(255,255,255,0.12)' : 'none',
+                background: showTopBar ? 'rgba(20,20,20,0.85)' : 'transparent',
+              }}
+            >
+              <div style={{ width: contentWidth, height: topBarHeight }} />
+            </ScrollableCmp.Group>
 
-            {/* --- Left column (names) --- */}
+            {/* --- Left column (labels) --- */}
             <ScrollableCmp.Group
               verticalId="timeline-v"
               style={{
-                gridRow: showTopBar ? 2 : 1,
+                gridRow: 2,
                 gridColumn: 1,
                 borderRight: showLabels ? '1px solid rgba(255,255,255,0.12)' : 'none',
                 background: showLabels ? 'rgba(0,0,0,0.03)' : 'transparent',
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {flattened.map((layer) => {
-                  const height = rowHeights.current[layer.id] ?? 'auto';
+                {flattened.map((row) => {
+                  const isGroup = row.type === 'group';
+                  const height = getRowHeight(row);
+                  const collapsed = row.collapsed ?? collapsedState[row.id];
+                  const hasChildren = rowHasOriginalChildren(row);
+                  const icon = isGroup && hasChildren ? (collapsed ? '▶' : '▼') : '';
+
                   return (
                     <div
-                      key={layer.id}
+                      key={row.id}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
                         height,
-                        paddingLeft: 8 + layer.depth * 14,
-                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        paddingLeft: 8 + row.depth * 14,
+                        borderBottom:
+                          row.type === 'group'
+                            ? '1px solid rgba(255,255,255,0.12)'
+                            : '1px solid rgba(255,255,255,0.06)',
                         fontSize: '0.78rem',
-                        fontWeight: layer.depth === 0 ? 600 : 500,
-                        cursor: layer.hasChildren ? 'pointer' : 'default',
+                        fontWeight: row.type === 'group' ? 700 : row.depth === 0 ? 600 : 500,
+                        cursor: isGroup ? 'pointer' : 'default',
                         userSelect: 'none',
                       }}
-                      onClick={() => layer.hasChildren && toggleCollapse(layer.id)}
+                      onClick={() => isGroup && toggleCollapse(row.id)}
+                      title={row.name}
                     >
-                      {layer.hasChildren ? (layer.collapsed ? '▶ ' : '▼ ') : ''}
-                      {layer.name}
+                      {icon && (
+                        <span style={{ display: 'inline-block', width: 14, marginRight: 2 }}>
+                          {icon}
+                        </span>
+                      )}
+                      {row.name}
                     </div>
                   );
                 })}
               </div>
             </ScrollableCmp.Group>
 
-            {/* --- Right side content --- */}
+            {/* --- Right column (content) --- */}
             <ScrollableCmp.Group
               horizontalId="timeline-h"
               verticalId="timeline-v"
               style={{
-                gridRow: showTopBar ? 2 : 1,
+                gridRow: 2,
                 gridColumn: 2,
                 display: 'flex',
                 flexDirection: 'column',
@@ -235,33 +273,35 @@ export default function Timeline({
               }}
             >
               <div style={{ width: contentWidth, display: 'flex', flexDirection: 'column' }}>
-                {flattened.map((layer) => {
-                  // hide rows if any ancestor is collapsed
-                  let hidden = false;
-                  let pid = layer.parentId;
-                  while (pid) {
-                    if (collapsedState[pid]) { hidden = true; break; }
-                    const parent = flattened.find((l) => l.id === pid);
-                    pid = parent?.parentId;
+                {flattened.map((row) => {
+                  const height = getRowHeight(row);
+
+                  if (row.type === 'group') {
+                    return (
+                      <div
+                        key={row.id}
+                        style={{
+                          height,
+                          borderBottom: '1px solid rgba(255,255,255,0.12)',
+                        }}
+                      />
+                    );
                   }
-                  if (hidden) return null;
 
-                  const el = layer.element;
-
-                  // Only render the non-layer children in this row
-                  const rowChildren = React.Children.toArray(el.props.children).filter((c) => {
-                    if (!React.isValidElement(c)) return true;
-                    const t: any = c.type;
-                    return !t || !t[LAYER_FLAG];
-                  });
-
+                  const el = row.element as React.ReactElement<LayerProps>;
                   return (
                     <div
-                      key={layer.id}
-                      data-layer-id={layer.id}
-                      style={{ display: 'block' }}
+                      key={row.id}
+                      data-layer-id={row.id}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginLeft: row.depth * 12,
+                        height,
+                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                      }}
                     >
-                      {rowChildren}
+                      {el}
                     </div>
                   );
                 })}
@@ -269,7 +309,7 @@ export default function Timeline({
             </ScrollableCmp.Group>
 
             {/* --- Scrollbars --- */}
-            <div style={{ gridRow: showTopBar ? 2 : 1, gridColumn: 3 }}>
+            <div style={{ gridRow: 2, gridColumn: 3 }}>
               <ScrollableCmp.Vertical id="timeline-v" />
             </div>
             <div style={{ gridRow: 3, gridColumn: 2 }}>
@@ -282,6 +322,6 @@ export default function Timeline({
   );
 }
 
-Timeline.Layer = Layer;
+Timeline.Group = Group;
 Timeline.BarLayer = BarLayer;
 Timeline.GraphLayer = GraphLayer;

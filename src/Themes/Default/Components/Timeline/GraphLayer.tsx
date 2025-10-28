@@ -6,6 +6,7 @@ import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { graphLayer } from './GraphLayerClasses';
 import { useTimeline } from './Context';
+import type { LayerProps } from './Layer';
 
 export const GRAPH_FLAG = '__isTimelineGraphLayer';
 
@@ -14,7 +15,6 @@ const makeSlot = makeSlotFactory('TimelineGraphLayer', graphLayer);
 const Root = makeSlot('div', 'root')(({ theme }) => ({
   position: 'relative',
   width: '100%',
-  height: '100%',
   overflow: 'hidden',
   background: theme.palette.background.default,
   borderBottom: `1px solid ${theme.palette.divider}`,
@@ -25,19 +25,20 @@ export interface GraphPoint {
   y: number; // normalized [0..1]
 }
 
-export interface GraphLayerProps {
+export interface GraphLayerProps extends LayerProps {
   data: GraphPoint[];
   strokeWidth?: number;
   /** Optional height override for this visual layer (default 60px) */
-  height?: number;
   color?: string;
 }
 
 export default function GraphLayer({
+  name,
   data,
   strokeWidth = 2,
   height = 60,
   color,
+  children,
 }: GraphLayerProps) {
   const { theme } = useTheme();
   const { rangeProvider } = useTimeline();
@@ -55,7 +56,7 @@ export default function GraphLayer({
     .join(' ');
 
   return (
-    <Root style={{ height }}>
+    <Root sx={{ height: height }}>
       <svg
         width="100%"
         height="100%"

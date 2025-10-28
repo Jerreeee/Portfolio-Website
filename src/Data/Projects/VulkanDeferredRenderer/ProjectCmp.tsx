@@ -127,120 +127,117 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           ]}
         />
 
-        <Timeline
-  rangeProvider={makeDefaultRangeProvider([0, 100])}
-  leftColumnWidth={200}
-  showLabels
-  showTopBar
-  scaleToFit={true}
->
-  {/* Root Layer */}
-  <Timeline.Layer name="Render Pipeline">
-    <Timeline.BarLayer
-      bars={[
-        { start: 0, end: 15, label: 'Setup', color: '#2196f3' },
-        { start: 15, end: 45, label: 'Core Build', color: '#43a047' },
-        { start: 45, end: 55, label: 'Integration', color: '#fbc02d' },
-        { start: 55, end: 70, label: 'Polish', color: '#9c27b0' },
-      ]}
-    />
+        <div style={{display: 'flex', width: '100%', height: '200px'}}>
+          <Timeline
+            rangeProvider={makeDefaultRangeProvider([0, 100])}
+            leftColumnWidth={200}
+            showLabels
+            showTopBar
+            scaleToFit
+          >
+            {/* Root Group */}
+            <Timeline.Group name="Render Pipeline">
+              <Timeline.BarLayer
+                name="Main Build"
+                bars={[
+                  { start: 0, end: 15, label: 'Setup', color: '#2196f3' },
+                  { start: 15, end: 45, label: 'Core Build', color: '#43a047' },
+                  { start: 45, end: 55, label: 'Integration', color: '#fbc02d' },
+                  { start: 55, end: 70, label: 'Polish', color: '#9c27b0' },
+                ]}
+              >
+                {/* Nested visual layers */}
+                <Timeline.BarLayer
+                  name="GBuffer Stage"
+                  bars={[
+                    { start: 0, end: 20, label: 'Geometry', color: '#42a5f5' },
+                    { start: 20, end: 30, label: 'Normals', color: '#26a69a' },
+                  ]}
+                />
 
-    {/* Nested Layers */}
-    <Timeline.Layer name="GBuffer Stage">
-      <Timeline.BarLayer
-        bars={[
-          { start: 0, end: 20, label: 'Geometry', color: '#42a5f5' },
-          { start: 20, end: 30, label: 'Normals', color: '#26a69a' },
-        ]}
-      />
-    </Timeline.Layer>
+                <Timeline.BarLayer
+                  name="Lighting Stage"
+                  bars={[
+                    { start: 10, end: 40, label: 'Lighting', color: '#ff7043' },
+                    { start: 40, end: 60, label: 'Shadows', color: '#26c6da' },
+                    { start: 60, end: 90, label: 'Reflections', color: '#8bc34a' },
+                  ]}
+                >
+                  <Timeline.BarLayer
+                    name="Shadow Subsystem"
+                    bars={[
+                      { start: 15, end: 35, label: 'Cascades', color: '#ef5350' },
+                      { start: 40, end: 65, label: 'Softening', color: '#ab47bc' },
+                    ]}
+                  />
+                  <Timeline.BarLayer
+                    name="Reflections Subsystem"
+                    bars={[
+                      { start: 55, end: 75, label: 'SSR', color: '#26c6da' },
+                      { start: 75, end: 90, label: 'Cubemaps', color: '#7e57c2' },
+                    ]}
+                  />
+                </Timeline.BarLayer>
 
-    <Timeline.Layer name="Lighting Stage">
-      <Timeline.BarLayer
-        bars={[
-          { start: 10, end: 40, label: 'Lighting', color: '#ff7043' },
-          { start: 40, end: 60, label: 'Shadows', color: '#26c6da' },
-          { start: 60, end: 90, label: 'Reflections', color: '#8bc34a' },
-        ]}
-      />
+                <Timeline.BarLayer
+                  name="Postprocess"
+                  bars={[
+                    { start: 30, end: 50, label: 'Bloom', color: '#f06292' },
+                    { start: 50, end: 70, label: 'Tone Mapping', color: '#64b5f6' },
+                    { start: 70, end: 85, label: 'FXAA', color: '#ffd54f' },
+                    { start: 85, end: 95, label: 'Final Output', color: '#81c784' },
+                  ]}
+                >
+                  <Timeline.GraphLayer
+                    name="Performance Graph"
+                    data={Array.from({ length: 50 }).map((_, i) => ({
+                      x: i * 2,
+                      y: Math.abs(Math.sin(i / 6)) * 0.8 + 0.1,
+                    }))}
+                    height={60}
+                  />
 
-      <Timeline.Layer name="Shadow Subsystem">
-        <Timeline.BarLayer
-          bars={[
-            { start: 15, end: 35, label: 'Cascades', color: '#ef5350' },
-            { start: 40, end: 65, label: 'Softening', color: '#ab47bc' },
-          ]}
-        />
-      </Timeline.Layer>
+                  <Timeline.GraphLayer
+                    name="CPU Usage Graph"
+                    data={Array.from({ length: 30 }).map((_, i) => ({
+                      x: i * 3,
+                      y: Math.abs(Math.sin(i / 5)) * 0.6 + 0.2,
+                    }))}
+                    height={60}
+                  />
+                </Timeline.BarLayer>
+              </Timeline.BarLayer>
+            </Timeline.Group>
 
-      <Timeline.Layer name="Reflections Subsystem">
-        <Timeline.BarLayer
-          bars={[
-            { start: 55, end: 75, label: 'SSR', color: '#26c6da' },
-            { start: 75, end: 90, label: 'Cubemaps', color: '#7e57c2' },
-          ]}
-        />
-      </Timeline.Layer>
-    </Timeline.Layer>
+            {/* Additional root groups */}
+            <Timeline.Group name="Async Compute">
+              <Timeline.BarLayer
+                bars={[
+                  { start: 0, end: 50, label: 'Particle Simulation', color: '#66bb6a' },
+                  { start: 60, end: 90, label: 'AI Occlusion', color: '#ffb74d' },
+                ]}
+              />
+            </Timeline.Group>
 
-    <Timeline.Layer name="Postprocess">
-      <Timeline.BarLayer
-        bars={[
-          { start: 30, end: 50, label: 'Bloom', color: '#f06292' },
-          { start: 50, end: 70, label: 'Tone Mapping', color: '#64b5f6' },
-          { start: 70, end: 85, label: 'FXAA', color: '#ffd54f' },
-          { start: 85, end: 95, label: 'Final Output', color: '#81c784' },
-        ]}
-      />
+            <Timeline.Group name="UI Rendering" collapsed>
+              <Timeline.BarLayer
+                name="Yeet"
+                bars={[
+                  { start: 10, end: 80, label: 'UI Layout Pass', color: '#8d6e63' },
+                ]}
+              >
+                <Timeline.BarLayer
+                  name="Widgets"
+                  bars={[
+                    { start: 15, end: 35, label: 'Minimap', color: '#26a69a' },
+                    { start: 35, end: 70, label: 'HUD', color: '#7cb342' },
+                  ]}
+                />
+              </Timeline.BarLayer>
+            </Timeline.Group>
+          </Timeline>
+        </div>
 
-      <Timeline.Layer name="Performance Graph">
-        <Timeline.GraphLayer
-          data={Array.from({ length: 50 }).map((_, i) => ({
-            x: i * 2,
-            y: Math.abs(Math.sin(i / 6)) * 0.8 + 0.1,
-          }))}
-          height={60}
-        />
-      </Timeline.Layer>
-
-      <Timeline.Layer name="CPU Usage Graph">
-        <Timeline.GraphLayer
-          data={Array.from({ length: 30 }).map((_, i) => ({
-            x: i * 3,
-            y: Math.abs(Math.sin(i / 5)) * 0.6 + 0.2,
-          }))}
-          height={60}
-        />
-      </Timeline.Layer>
-    </Timeline.Layer>
-  </Timeline.Layer>
-
-  {/* Additional root layers */}
-  <Timeline.Layer name="Async Compute">
-    <Timeline.BarLayer
-      bars={[
-        { start: 0, end: 50, label: 'Particle Simulation', color: '#66bb6a' },
-        { start: 60, end: 90, label: 'AI Occlusion', color: '#ffb74d' },
-      ]}
-    />
-  </Timeline.Layer>
-
-  <Timeline.Layer name="UI Rendering" collapsed>
-    <Timeline.BarLayer
-      bars={[
-        { start: 10, end: 80, label: 'UI Layout Pass', color: '#8d6e63' },
-      ]}
-    />
-    <Timeline.Layer name="Widgets">
-      <Timeline.BarLayer
-        bars={[
-          { start: 15, end: 35, label: 'Minimap', color: '#26a69a' },
-          { start: 35, end: 70, label: 'HUD', color: '#7cb342' },
-        ]}
-      />
-    </Timeline.Layer>
-  </Timeline.Layer>
-        </Timeline>
 
       </Container>
 
