@@ -12,7 +12,7 @@ const makeSlot = makeSlotFactory('MediaCmp', mediaCmp);
 const MediaRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   position: 'relative',
   width: '100%',
-  height: '100%',
+  // height: '100%',
   overflow: 'hidden',
   borderRadius: theme.shape.borderRadius,
   display: 'flex',
@@ -60,7 +60,9 @@ export default function MediaCmp({ item, fit = 'cover' }: MediaCmpProps) {
         <Image
           src={item.src}
           alt={item.alt || ''}
-          fill
+          // fill
+          width={item.width}
+          height={item.height}
           style={{ objectFit }}
           {...item.imageProps}
         />

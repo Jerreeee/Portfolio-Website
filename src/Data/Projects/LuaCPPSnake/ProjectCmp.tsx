@@ -29,16 +29,9 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         <Typography variant="gradientH1">
           {data.title}
         </Typography>
-
-        <MediaCmp
-          item={getMediaItemsFromManifest(manifest, ['gameplay_01.png'])[0]}
-        />
       </Container>
 
       {/* ==================== OVERVIEW ==================== */}
-      <Typography variant="h3" align="center">
-        Overview
-      </Typography>
       <ProjectOverviewCmp project={project} />
 
       <Divider sx={{ my: 3, opacity: 0.2 }} />
