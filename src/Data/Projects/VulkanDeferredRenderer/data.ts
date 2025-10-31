@@ -5,9 +5,11 @@ export const data: ProjectRequiredInfo = {
   title: 'Vulkan Deferred Renderer',
   thumbnailImage: 'PostProcess_Final_Outdoor.webp',
   heroImage: 'PostProcess_Final_Outdoor.webp',
+  overviewMedia: [
+
+  ],
   shortDescription: 'A physically-based rendering pipeline built in C++ and Vulkan.',
   mediumDescription: 'A Vulkan-based deferred rendering pipeline written in C++. Built to explore how modern rendering works and to learn Vulkan’s low-level API. It supports PBR materials, multiple light types, HDR tone mapping, and uses newer Vulkan features like Dynamic Rendering, Synchronization2, and Bindless Rendering.',
-
   technologies: {
     Core: [
       { name: 'cplusplus', version: 'C++20', usage: 'Core language used for the renderer implementation.' },
@@ -24,4 +26,6 @@ export const data: ProjectRequiredInfo = {
       { name: 'Nsight_Graphics', version: '2025.1', usage: 'Frame capture, GPU debugging, and visualizing G-buffer outputs.' },
     ],
   },
+
+  githubURL: 'https://github.com/Jerreeee/DAE_GD_S4_GP2',
 };

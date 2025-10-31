@@ -16,9 +16,12 @@ export type ProjectRequiredInfo = {
   title: string;
   thumbnailImage: string;
   heroImage: string;
+  overviewMedia: string[];
   technologies: Technologies;
   shortDescription: string;
   mediumDescription: string;
+  githubURL?: string;
+  steamURL?: string;
 }
 
 export type ProjectInfo = ProjectRequiredInfo & {

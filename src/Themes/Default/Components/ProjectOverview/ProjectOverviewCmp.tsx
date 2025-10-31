@@ -10,6 +10,7 @@ import type { ProjectInfo } from '@/Data/Projects/project';
 import { projectOverviewCmp } from './ProjectOverviewCmpClasses';
 import { MediaCmp } from '../Media';
 import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
+import { MediaGalleryCmp } from '../MediaGallery';
 
 const makeSlot = makeSlotFactory('ProjectOverviewCmp', projectOverviewCmp);
 
@@ -63,10 +64,8 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
                 overflow: 'hidden',
               }}
             >
-              <MediaCmp
-                item={getMediaItemsFromManifest(project.manifest, [
-                  heroFile
-                ])[0]}
+              <MediaGalleryCmp
+                media={getMediaItemsFromManifest(project.manifest, project.overviewMedia)}
               />
             </Box>
           </Grid>
@@ -97,11 +96,68 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
                     borderRadius: 2,
                     padding: 3,
                     height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
                   }}
                 >
+                  {/* --- Description text --- */}
                   <Typography variant="body1" sx={{ color: 'text.secondary' }}>
                     {project.mediumDescription}
                   </Typography>
+
+                  {/* --- Project links --- */}
+                  <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+                    {project.githubURL && (
+                      <Box
+                        component="a"
+                        href={project.githubURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 36,
+                          height: 36,
+                          borderRadius: '50%',
+                          transition: 'all 0.2s ease',
+                          backgroundColor: 'rgba(255,255,255)',
+                          '&:hover': {
+                            backgroundColor: 'rgba(255,255,255,0.12)',
+                            transform: 'scale(1.1)',
+                          },
+                        }}
+                      >
+                        <IconCmp techName="Github" height={22} showDisplayName={false} />
+                      </Box>
+                    )}
+
+                    {project.steamURL && (
+                      <Box
+                        component="a"
+                        href={project.steamURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 36,
+                          height: 36,
+                          borderRadius: '50%',
+                          transition: 'all 0.2s ease',
+                          backgroundColor: 'rgba(255,255,255,0.05)',
+                          '&:hover': {
+                            backgroundColor: 'rgba(255,255,255,0.12)',
+                            transform: 'scale(1.1)',
+                          },
+                        }}
+                      >
+                        <IconCmp techName="Steam" height={22} showDisplayName={false} />
+                      </Box>
+                    )}
+                  </Box>
                 </OverviewTextBox>
               </Box>
 

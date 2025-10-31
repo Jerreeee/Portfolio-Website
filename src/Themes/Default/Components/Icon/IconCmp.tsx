@@ -67,15 +67,14 @@ export default function IconCmp(inProps: IconCmpProps) {
 
 
 
-  // Fallback to "error" icon if missing
+  // Handle missing icons gracefully
   if (!icon) {
-    console.warn(`⚠️ Icon "${props.techName}" not found in iconManifest — using fallback.`);
-    icon = iconManifest['error'] ?? iconManifest['error'];
-
-    if (!icon) {
-      console.error('❌ Error icon not found in iconManifest.');
-      return null;
-    }
+    console.warn(`⚠️ Icon "${props.techName}" not found in iconManifest — showing name only.`);
+    return (
+      <IconWrapper style={{ height: props.height ?? '100%' }}>
+        <IconLabel variant="caption">{props.techName}</IconLabel>
+      </IconWrapper>
+    );
   }
 
   const displayName = icon.displayName ?? props.techName;

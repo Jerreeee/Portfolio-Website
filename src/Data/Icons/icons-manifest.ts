@@ -7,7 +7,6 @@
  * preserved when the manifest is regenerated.
  * ---------------------------------------------------------------------
  */
-
 export const iconManifest = {
   "3DS_Max": {
     "type": "svg",
@@ -64,6 +63,14 @@ export const iconManifest = {
     "height": 16,
     "aspectRatio": 1,
     "displayName": "error"
+  },
+  "Github": {
+    "type": "svg",
+    "src": "/Icons/Github.svg",
+    "width": 25,
+    "height": 25,
+    "aspectRatio": 1,
+    "displayName": "Github"
   },
   "GLM": {
     "type": "image",
@@ -188,8 +195,8 @@ export const iconManifest = {
   "RenderDoc": {
     "type": "svg",
     "src": "/Icons/RenderDoc.svg",
-    "width": 100,
-    "height": 100,
+    "width": 1024,
+    "height": 1024,
     "aspectRatio": 1,
     "displayName": "RenderDoc"
   },
@@ -200,6 +207,14 @@ export const iconManifest = {
     "height": 128,
     "aspectRatio": 1,
     "displayName": "SDL"
+  },
+  "Steam": {
+    "type": "svg",
+    "src": "/Icons/Steam.svg",
+    "width": 32,
+    "height": 32,
+    "aspectRatio": 1,
+    "displayName": "Steam"
   },
   "Substance_Designer": {
     "type": "svg",

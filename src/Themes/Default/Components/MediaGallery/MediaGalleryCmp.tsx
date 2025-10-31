@@ -105,8 +105,8 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
               item.type === 'embeddedVideo'
                 ? { ...item, playerProps: { ...item.playerProps, light: true } }
                 : item.type === 'image'
-                ? item
-                : { ...item, src: item.src }; // TODO: item.thumbnail missing
+                ? item :
+                item;
 
             return (
               <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>

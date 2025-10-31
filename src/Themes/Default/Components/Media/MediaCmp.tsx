@@ -34,6 +34,7 @@ export interface ImageMediaItem {
 export interface FileVideoMediaItem {
   type: 'fileVideo';
   src: string;
+  thumbnail: string;
   videoProps?: Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src'>;
 }
 
@@ -53,6 +54,10 @@ export interface MediaCmpProps {
 export default function MediaCmp({ item, fit = 'cover' }: MediaCmpProps) {
   const { theme } = useTheme();
   const objectFit = fit;
+
+  console.group("Item ", item.src);
+  console.log("Item: ", item);
+  console.groupEnd();
 
   return (
     <MediaRoot>
