@@ -152,7 +152,6 @@ export function Group({
         height: '100%',
         minHeight: 0,
         minWidth: 0,
-        ...hideNativeScrollbarsStyles,
         ...style,
         overflowX: hId ? 'auto' : 'hidden',
         overflowY: vId ? 'auto' : 'hidden',

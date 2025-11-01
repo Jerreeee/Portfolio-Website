@@ -8,6 +8,10 @@ import { data as BubbleBobbleData } from '@/Data/Projects/BubbleBobble/data';
 import BubbleBobbleCmp from '@/Data/Projects/BubbleBobble/ProjectCmp';
 import { projectManifest as BubbleBobbleManifest } from '@/Data/Projects/BubbleBobble/manifest';
 
+import { data as DualRasterizerData } from '@/Data/Projects/DualRasterizer/data';
+import DualRasterizerCmp from '@/Data/Projects/DualRasterizer/ProjectCmp';
+import { projectManifest as DualRasterizerManifest } from '@/Data/Projects/DualRasterizer/manifest';
+
 import { data as LuaCPPSnakeData } from '@/Data/Projects/LuaCPPSnake/data';
 import LuaCPPSnakeCmp from '@/Data/Projects/LuaCPPSnake/ProjectCmp';
 import { projectManifest as LuaCPPSnakeManifest } from '@/Data/Projects/LuaCPPSnake/manifest';
@@ -20,6 +24,12 @@ const BubbleBobbleProjectInfo: ProjectInfo = {
   ...BubbleBobbleData,
   component: BubbleBobbleCmp,
   manifest: BubbleBobbleManifest,
+};
+
+const DualRasterizerProjectInfo: ProjectInfo = {
+  ...DualRasterizerData,
+  component: DualRasterizerCmp,
+  manifest: DualRasterizerManifest,
 };
 
 const LuaCPPSnakeProjectInfo: ProjectInfo = {
@@ -36,10 +46,12 @@ const VulkanDeferredRendererProjectInfo: ProjectInfo = {
 
 export const projects: ProjectInfo[] = [
   BubbleBobbleProjectInfo,
+  DualRasterizerProjectInfo,
   LuaCPPSnakeProjectInfo,
   VulkanDeferredRendererProjectInfo,
 ];
 // AUTO-GENERATED PROJECT IMPORTS END
+
 
 
 

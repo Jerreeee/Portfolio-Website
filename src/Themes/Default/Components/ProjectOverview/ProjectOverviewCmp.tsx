@@ -55,7 +55,7 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
       : [project.heroImage];
 
   const mediaItems = getMediaItemsFromManifest(project.manifest, mediaItemStrings);
-
+  console.log("MediaItems: ", mediaItems);
   return (
     <OverviewRoot>
       <Container maxWidth="lg">

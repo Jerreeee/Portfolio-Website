@@ -121,7 +121,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                         active={isActive}
                         onClick={() => setActiveIndex(index)}
                       >
-                        <MediaCmp item={thumbItem} />
+                        <MediaCmp item={thumbItem} priority={index === 0}/>
                         {item.type !== "image" && <VideoOverlay>▶</VideoOverlay>}
                       </ThumbButton>
                     );

@@ -63,7 +63,7 @@ export const projectManifest: ProjectManifest = {
     "type": "fileVideo",
     "src": "/projects/BubbleBobble/Video/Gameplay.mkv",
     "width": 768,
-    "height": 672,
-    },
+    "height": 672
+  }
 }
 };

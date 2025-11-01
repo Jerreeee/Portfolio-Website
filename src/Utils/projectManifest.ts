@@ -11,16 +11,12 @@ export function getMediaItemsFromManifest(
   manifest: ProjectManifest,
   fileNames: string[]
 ): MediaItem[] {
-  return fileNames.map((fileName) => {
+  return fileNames.flatMap((fileName) => {
     const entry: MediaManifestEntry = manifest.media[fileName];
     
     if (!entry) {
       console.warn(`⚠️ Media file "${fileName}" not found in manifest`);
-      return {
-        type: "image",
-        src: fileName,
-        alt: fileName,
-      } as MediaItem;
+      return [];
     }
 
     switch (entry.type) {

@@ -38,7 +38,7 @@ export interface ImageMediaItem {
 export interface FileVideoMediaItem {
   type: 'fileVideo';
   src: string;
-  thumbnail: string;
+  thumbnail?: string;
   videoProps?: Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src'>;
 }
 
@@ -53,16 +53,17 @@ export type MediaItem = ImageMediaItem | FileVideoMediaItem | EmbeddedVideoMedia
 export interface MediaCmpProps {
   item: MediaItem;
   fit?: FitMode; // default = contain
+  priority?: boolean;
 }
 
 /**
- * ✅ UNIVERSAL MEDIA COMPONENT
+ * UNIVERSAL MEDIA COMPONENT
  * - Always keeps aspect ratio
  * - Scales until it hits parent constraint (width OR height)
  * - Works for images, file videos, embedded videos
  * - Default objectFit = "contain"
  */
-export default function MediaCmp({ item, fit = 'contain' }: MediaCmpProps) {
+export default function MediaCmp({ item, fit = 'contain', priority }: MediaCmpProps) {
   const { theme } = useTheme();
   const objectFit = fit;
 
@@ -71,8 +72,8 @@ export default function MediaCmp({ item, fit = 'contain' }: MediaCmpProps) {
     display: 'block',
   	maxWidth: '100%',
     maxHeight: '100%',
-    width: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '100%',
     objectFit,
   };
 
@@ -84,6 +85,7 @@ export default function MediaCmp({ item, fit = 'contain' }: MediaCmpProps) {
           alt={item.alt || ''}
           width={item.width}
           height={item.height}
+          priority={priority}
           style={responsiveStyle}
           {...item.imageProps}
         />
