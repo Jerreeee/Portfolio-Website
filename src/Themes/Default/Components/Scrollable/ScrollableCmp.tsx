@@ -14,11 +14,8 @@ const makeSlot = makeSlotFactory('ScrollableCmp', scrollableCmp);
 
 const ScrollableRoot = makeSlot('div', 'root')({
   position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
   width: '100%',
   height: '100%',
-  overflow: 'hidden',
 });
 
 const ViewportWrapper = makeSlot('div', 'viewportWrapper')({
@@ -127,13 +124,9 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
   // ADVANCED MODE (provides shared context)
   if (hasAdvancedChildren) {
     return (
-      <ScrollableRoot>
-        <ViewportWrapper>
-          <ScrollableContext.Provider value={registry}>
-            {children}
-          </ScrollableContext.Provider>
-        </ViewportWrapper>
-      </ScrollableRoot>
+        <ScrollableContext.Provider value={registry}>
+          {children}
+        </ScrollableContext.Provider>
     );
   }
 }

@@ -17,8 +17,6 @@ const makeSlot = makeSlotFactory('Timeline', timeline);
 
 const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
   position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
   width: '100%',
   height: '100%',
   userSelect: 'none',
@@ -48,6 +46,7 @@ export interface TimelineProps {
   leftColumnWidth?: number;
   showLabels?: boolean;
   showTopBar?: boolean;
+  maxHeight?: number;
 }
 
 // --- flatten tree structure ---
@@ -103,6 +102,7 @@ export default function Timeline({
   leftColumnWidth = 160,
   showLabels = true,
   showTopBar = true,
+  maxHeight,
 }: TimelineProps) {
   const [collapsedState, setCollapsedState] = React.useState<Record<string, boolean>>({});
   const rowHeights = React.useRef<Record<string, number>>({});
@@ -148,17 +148,23 @@ export default function Timeline({
   const depthColors = ['#4fc3f7', '#ba68c8', '#81c784', '#ffb74d', '#64b5f6', '#f06292', '#aed581'];
   const getDepthColor = (d: number) => depthColors[d % depthColors.length];
 
+  const middleRow = maxHeight
+      ? `minmax(0, ${maxHeight}px)` // cap middle row height
+      : `1fr`;                      // let row expand freely
+
   return (
-    <TimelineContext.Provider value={ProviderValue}>
-      <TimelineRoot>
+    <TimelineRoot>
+      <TimelineContext.Provider value={ProviderValue}>
         <ScrollableCmp>
           <div
             style={{
               display: 'grid',
               width: '100%',
-              gridTemplateRows: `${topBarHeight}px 1fr auto`,
+              gridTemplateRows: `${topBarHeight}px ${middleRow} auto`,
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
               background: '#121212',
+              gap: '1px',
+              backgroundColor: '#FF0000',
             }}
           >
             {/* Top Bar */}
@@ -348,8 +354,8 @@ export default function Timeline({
             </div>
           </div>
         </ScrollableCmp>
-      </TimelineRoot>
-    </TimelineContext.Provider>
+      </TimelineContext.Provider>
+    </TimelineRoot>
   );
 }
 

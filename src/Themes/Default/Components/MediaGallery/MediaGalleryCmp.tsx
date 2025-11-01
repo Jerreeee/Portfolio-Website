@@ -9,6 +9,7 @@ import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { useElementSize } from '@/Hooks/useElementSize';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { mediaGalleryCmp } from './MediaGalleryCmpClasses';
+import { alignItems, border, display, flexDirection } from '@mui/system';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -17,7 +18,9 @@ const makeSlot = makeSlotFactory('MediaGalleryCmp', mediaGalleryCmp);
 
 const GalleryRoot = makeSlot('div', 'root')({
   display: 'flex',
+  width: '100%',
   flexDirection: 'column',
+  alignItems: 'center',
   gap: '0.5rem',
 });
 
@@ -32,20 +35,21 @@ const GalleryMain = makeSlot('div', 'main')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-const GalleryThumbs = makeSlot('div', 'thumbs')(({ theme }) => ({
+const GalleryThumbs = makeSlot('div', 'thumbs')({
   width: '100%',
-  height: '100px',
+  display: 'flex',
+  justifyContent: 'center', // centers children horizontally
   gap: '1rem',
-}));
+});
 
 const ThumbButton = makeSlot('button', 'thumbButton',
 {shouldForwardProp: (prop) => prop !== 'active',}
 )<{ active: boolean }>(({ theme, active }) => ({
   position: 'relative',
-  flexShrink: 0,
-  width: 'auto',
+  height: '100px',
   overflow: 'hidden',
   alignItems: 'center',
+  flexShrink: 0,
   background: 'transparent',
   border: `2px solid ${active ? theme.palette.common.white : 'transparent'}`,
   transition: 'border-color 0.2s',
@@ -97,28 +101,38 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
       </GalleryMain>
 
       {/* Thumbnails */}
-      <GalleryThumbs>
-        <ScrollableCmp direction='horizontal'>
-          {media.map((item, index) => {
-            const isActive = index === activeIndex;
-            const thumbItem =
-              item.type === 'embeddedVideo'
-                ? { ...item, playerProps: { ...item.playerProps, light: true } }
-                : item.type === 'image'
-                ? item :
-                item;
+      {media.length > 1 && (
+        <GalleryThumbs>
+          {/* ⬇ THIS must shrink to content size, not be 100% */}
+          <div style={{ maxWidth: "100%" }}>
+            <ScrollableCmp>
+              <ScrollableCmp.Group horizontalId="0">
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  {media.map((item, index) => {
+                    const isActive = index === activeIndex;
+                    const thumbItem =
+                      item.type === "embeddedVideo"
+                        ? { ...item, playerProps: { ...item.playerProps, light: true } }
+                        : item;
 
-            return (
-              <ThumbButton key={index} active={isActive} onClick={() => setActiveIndex(index)}>
-                <MediaCmp
-                  item={thumbItem}
-                />
-                {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
-              </ThumbButton>
-            );
-          })}
-        </ScrollableCmp>
-      </GalleryThumbs>
+                    return (
+                      <ThumbButton
+                        key={index}
+                        active={isActive}
+                        onClick={() => setActiveIndex(index)}
+                      >
+                        <MediaCmp item={thumbItem} />
+                        {item.type !== "image" && <VideoOverlay>▶</VideoOverlay>}
+                      </ThumbButton>
+                    );
+                  })}
+                </div>
+              </ScrollableCmp.Group>
+              <ScrollableCmp.Horizontal id="0" />
+            </ScrollableCmp>
+          </div>
+        </GalleryThumbs>
+      )}
     </GalleryRoot>
   );
 }

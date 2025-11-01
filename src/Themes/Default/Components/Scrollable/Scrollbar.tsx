@@ -77,6 +77,8 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
       ? { display: 'flex', flexDirection: 'column', height: '100%' }
       : { display: 'flex', flexDirection: 'row', width: '100%' };
 
+  if (thumbRatio >= 1) return null;
+
   return (
     <div style={{ ...baseStyle, ...style }}>
       <ScrollBarCmp

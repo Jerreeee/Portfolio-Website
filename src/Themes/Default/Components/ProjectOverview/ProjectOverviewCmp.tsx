@@ -49,6 +49,13 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
 
   const heroFile = project.heroImage || Object.keys(project.manifest.media)[0];
 
+  const mediaItemStrings: string[] =
+    project.overviewMedia && project.overviewMedia.length > 0
+      ? project.overviewMedia
+      : [project.heroImage];
+
+  const mediaItems = getMediaItemsFromManifest(project.manifest, mediaItemStrings);
+
   return (
     <OverviewRoot>
       <Container maxWidth="lg">
@@ -57,15 +64,12 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
           <Grid size={{ xs: 12 }}>
             <Box
               sx={{
-                width: '100%',
-                aspectRatio: '16/9',
                 position: 'relative',
-                borderRadius: 2,
-                overflow: 'hidden',
+                width: '100%',
               }}
             >
               <MediaGalleryCmp
-                media={getMediaItemsFromManifest(project.manifest, project.overviewMedia)}
+                media={mediaItems}
               />
             </Box>
           </Grid>

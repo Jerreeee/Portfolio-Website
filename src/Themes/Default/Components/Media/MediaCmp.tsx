@@ -9,15 +9,19 @@ import { mediaCmp } from './MediaCmpClasses';
 
 const makeSlot = makeSlotFactory('MediaCmp', mediaCmp);
 
+/**
+ * MediaRoot is ONLY a centering wrapper.
+ * It must NOT force width/height stretching, so media can size naturally.
+ */
 const MediaRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   position: 'relative',
-  width: '100%',
-  // height: '100%',
-  overflow: 'hidden',
-  borderRadius: theme.shape.borderRadius,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  overflow: 'hidden',
+  width: '100%',
+  height: '100%',
+  borderRadius: theme.shape.borderRadius,
 }));
 
 type FitMode = 'cover' | 'contain' | 'fill';
@@ -48,16 +52,29 @@ export type MediaItem = ImageMediaItem | FileVideoMediaItem | EmbeddedVideoMedia
 
 export interface MediaCmpProps {
   item: MediaItem;
-  fit?: FitMode;
+  fit?: FitMode; // default = contain
 }
 
-export default function MediaCmp({ item, fit = 'cover' }: MediaCmpProps) {
+/**
+ * ✅ UNIVERSAL MEDIA COMPONENT
+ * - Always keeps aspect ratio
+ * - Scales until it hits parent constraint (width OR height)
+ * - Works for images, file videos, embedded videos
+ * - Default objectFit = "contain"
+ */
+export default function MediaCmp({ item, fit = 'contain' }: MediaCmpProps) {
   const { theme } = useTheme();
   const objectFit = fit;
 
-  console.group("Item ", item.src);
-  console.log("Item: ", item);
-  console.groupEnd();
+  // Shared style for ALL media types
+  const responsiveStyle: React.CSSProperties = {
+    display: 'block',
+  	maxWidth: '100%',
+    maxHeight: '100%',
+    width: 'auto',
+    height: 'auto',
+    objectFit,
+  };
 
   return (
     <MediaRoot>
@@ -65,10 +82,9 @@ export default function MediaCmp({ item, fit = 'cover' }: MediaCmpProps) {
         <Image
           src={item.src}
           alt={item.alt || ''}
-          // fill
           width={item.width}
           height={item.height}
-          style={{ objectFit }}
+          style={responsiveStyle}
           {...item.imageProps}
         />
       )}
@@ -76,13 +92,8 @@ export default function MediaCmp({ item, fit = 'cover' }: MediaCmpProps) {
       {item.type === 'fileVideo' && (
         <video
           src={item.src}
-          style={{
-            objectFit,
-            width: '100%',
-            height: '100%',
-            display: 'block',
-          }}
           controls
+          style={responsiveStyle}
           {...item.videoProps}
         />
       )}
@@ -90,9 +101,9 @@ export default function MediaCmp({ item, fit = 'cover' }: MediaCmpProps) {
       {item.type === 'embeddedVideo' && (
         <ReactPlayer
           src={item.src}
-          width="100%"
-          height="100%"
-          style={{ objectFit }}
+          style={responsiveStyle}
+          width="auto"
+          height="auto"
           {...item.playerProps}
         />
       )}
