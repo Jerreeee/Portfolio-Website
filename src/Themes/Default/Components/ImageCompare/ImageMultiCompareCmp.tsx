@@ -40,7 +40,7 @@ export default function ImageMultiCompareCmp({ images, bars = [] }: ImageMultiCo
   const { theme } = useTheme();
   const imageCount = images.length;
 
-  const initialProgress = 0;
+  const initialProgress = 0.5 * (1 / (imageCount - 1));
   const [sliderState, setSliderState] = useState<SegmentSliderState>(
     SegmentSliderCmp.computeState(initialProgress, imageCount)
   );

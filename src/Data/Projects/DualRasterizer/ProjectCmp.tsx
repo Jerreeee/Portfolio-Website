@@ -37,6 +37,57 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
       <ProjectOverviewCmp project={project} />
 
       <Divider sx={{ my: 3, opacity: 0.2 }} />
+
+      {/* ==================== RENDER PASS BREAKDOWN ==================== */}
+      <Container maxWidth="lg" sx={{ mb: 10 }}>
+        <Typography variant="h3" align="center" gutterBottom>
+          CPU Frame Breakdown
+        </Typography>
+        
+        <ImageMultiCompareCmp
+          images={getMediaItemsFromManifest(manifest, [
+            'CPU_BoundingRects',
+            'CPU_Depth',
+            'CPU_Diffuse',
+            'CPU_ObservedView',
+            'CPU_Specular_NoNormalMap',
+            'CPU_Specular',
+            'CPU_Final_NoNormalMap',
+            'CPU_Final',
+          ])}
+        />
+
+<Grid container spacing={6}>
+
+  <Grid size={{ xs: 12, md: 6 }}>
+    <Typography variant="h3" align="center" gutterBottom>
+      CPU vs GPU Comparison
+    </Typography>
+
+    <ImageMultiCompareCmp
+      images={getMediaItemsFromManifest(manifest, [
+        "CPU_Final",
+        "GPU_AnisotropicSampling",
+      ])}
+    />
+  </Grid>
+
+  <Grid size={{ xs: 12, md: 6 }}>
+    <Typography variant="h3" align="center" gutterBottom>
+      GPU Samplers Comparison
+    </Typography>
+
+    <ImageMultiCompareCmp
+      images={getMediaItemsFromManifest(manifest, [
+        "GPU_PointSampling",
+        "GPU_LinearSampling",
+        "GPU_AnisotropicSampling_NoFire",
+      ])}
+    />
+  </Grid>
+
+</Grid>
+      </Container>
     </Box>
   );
 }

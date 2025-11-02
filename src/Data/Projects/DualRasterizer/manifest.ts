@@ -51,15 +51,15 @@ export const projectManifest: ProjectManifest = {
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Final"
   },
-  "CPU_FinaLNoNormalMap": {
-    "name": "CPU_FinaLNoNormalMap",
+  "CPU_Final_NoNormalMap": {
+    "name": "CPU_Final_NoNormalMap",
     "type": "image",
     "fileType": "png",
-    "src": "/projects/DualRasterizer/Images/CPU_FinaLNoNormalMap.png",
+    "src": "/projects/DualRasterizer/Images/CPU_Final_NoNormalMap.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
-    "alt": "CPU FinaLNoNormalMap"
+    "alt": "CPU Final NoNormalMap"
   },
   "CPU_ObservedView": {
     "name": "CPU_ObservedView",
