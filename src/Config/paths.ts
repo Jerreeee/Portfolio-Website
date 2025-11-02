@@ -62,8 +62,11 @@ const PATHS = {
   PROJECT_COMPONENT: ({ projectName }: { projectName: string }) =>
     makePath(`${BASE.SRC_PROJECTS}/${projectName}/ProjectCmp`),
 
-  PROJECT_IMAGE: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
-    makePath(`${BASE.PUBLIC_PROJECTS}/${projectName}/Images${fileName ? `/${fileName}` : ""}`),
+    PROJECT_IMAGE: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
+      makePath(`${BASE.PUBLIC_PROJECTS}/${projectName}/Images${fileName ? `/${fileName}` : ""}`),
+
+    PROJECT_VIDEO: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
+      makePath(`${BASE.PUBLIC_PROJECTS}/${projectName}/Videos${fileName ? `/${fileName}` : ""}`),
 
   PROJECT_CODE: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
     makePath(`${BASE.PUBLIC_PROJECTS}/${projectName}/Code${fileName ? `/${fileName}` : ""}`),

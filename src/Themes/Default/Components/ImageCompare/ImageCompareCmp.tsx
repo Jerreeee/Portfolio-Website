@@ -3,9 +3,10 @@
 import React, { useLayoutEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 import { useTheme } from '@/Themes/ThemeProvider';
-import { ImageMediaItem } from '../Media/MediaCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageCompareCmp } from './ImageCompareCmpClasses';
+import { MediaItem } from '@/Types/media';
+import MediaCmp, { getMediaLabel } from '../Media/MediaCmp';
 
 const makeSlot = makeSlotFactory('ImageCompareCmp', imageCompareCmp);
 
@@ -43,12 +44,11 @@ const AltTextLabel = makeSlot('div', 'altLabel')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-export type ImageCompareItem = Omit<ImageMediaItem, 'imageProps'>;
+export type ImageCompareItem = MediaItem;
 
 export interface ImageCompareCmpProps {
   bottom: ImageCompareItem;
   top: ImageCompareItem;
-  imageProps?: ImageProps;
   progress: number;
   hideHandle?: boolean;
   enableDrag?: boolean;
@@ -73,6 +73,9 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
   const handlePos = _progress * 100;
   const topClip = `inset(0 ${100 - handlePos}% 0 0)`;
 
+  const bottomLabel = props.hideAlt ? "" : getMediaLabel(props.bottom);
+  const topLabel = props.hideAlt ? "" : getMediaLabel(props.top);
+
   // Compute aspect ratio from bottom image metadata
   const aspectRatio =
     props.bottom?.width && props.bottom?.height
@@ -83,46 +86,32 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
     <ImageCompareRoot aspectRatio={aspectRatio}>
       {/* --- Bottom image --- */}
       <div style={{ position: 'absolute', inset: 0 }}>
-        <Image
-          src={props.bottom.src}
-          alt={props.bottom.alt || ''}
-          draggable={false}
-          fill
-          style={{ objectFit: 'contain' }}
-          {...props.imageProps}
-        />
+        <MediaCmp item={props.bottom} />
 
-        {!props.hideAlt && props.bottom.alt && (
+        {bottomLabel && (
           <AltTextLabel
             sx={{
               left: `calc(${handlePos}% + 8px)`,
               zIndex: 2,
             }}
           >
-            {props.bottom.alt}
+            {bottomLabel}
           </AltTextLabel>
         )}
       </div>
 
       {/* --- Top image (slides in from left→right) --- */}
       <div style={{ position: 'absolute', inset: 0, clipPath: topClip }}>
-        <Image
-          fill
-          src={props.top.src}
-          alt={props.top.alt || ''}
-          draggable={false}
-          style={{ objectFit: 'contain' }}
-          {...props.imageProps}
-        />
+        <MediaCmp item={props.top} />
 
-        {!props.hideAlt && props.top.alt && (
+        {topLabel && (
           <AltTextLabel
             sx={{
               left: 8,
               zIndex: 3,
             }}
           >
-            {props.top.alt}
+            {topLabel}
           </AltTextLabel>
         )}
       </div>

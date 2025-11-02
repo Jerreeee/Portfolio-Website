@@ -7,6 +7,7 @@ import path from "path";
 import { imageSize } from "image-size";
 import PATHS from '../src/Config/paths';
 import { ProjectManifest, Media } from "@/Types/projectManifest";
+import { getVideoDimensions } from "./ffprobe";
 
 // ---------------- Helpers ----------------
 function loadExistingManifest(manifestFile: string): Media {
@@ -30,7 +31,6 @@ function loadExistingManifest(manifestFile: string): Media {
 }
 
 // ---------------- Main ----------------
-import { fileURLToPath } from "url";
 const projectsDir = path.join(process.cwd(), PATHS.PUBLIC_PROJECTS().value);
 const dataProjectsDir = path.join(process.cwd(), PATHS.SRC_PROJECTS().value);
 
@@ -38,9 +38,10 @@ const projectFolders = fs
   .readdirSync(projectsDir)
   .filter((f) => fs.statSync(path.join(projectsDir, f)).isDirectory());
 
-projectFolders.forEach((projectName) => {
+projectFolders.forEach(async (projectName) => {
   const projectPath = path.join(projectsDir, projectName);
   const imagesPath = path.join(projectPath, "Images");
+  const videosPath = path.join(projectPath, "Videos");
 
   const media: Media = {};
 
@@ -49,7 +50,7 @@ projectFolders.forEach((projectName) => {
   const manifestFile = path.join(projectDataDir, "manifest.ts");
   const existingMedia = loadExistingManifest(manifestFile);
 
-  // Collect images inside this project's Images folder
+  // ---------------- IMAGES ----------------
   if (fs.existsSync(imagesPath)) {
     const files = fs
       .readdirSync(imagesPath)
@@ -61,22 +62,24 @@ projectFolders.forEach((projectName) => {
       const { width, height } = imageSize(buffer);
 
       if (width && height) {
-        const aspectRatio = width / height;
-        const previousAlt =
-          existingMedia[file]?.type === "image"
-            ? existingMedia[file].alt
-            : undefined;
+        const key = file.replace(/\.[^/.]+$/, ""); // remove extension
+        const fileType = file.split(".").pop() ?? "";
 
-        media[file] = {
+        const previousAlt =
+          existingMedia[key]?.type === "image" ? existingMedia[key].alt : undefined;
+
+        media[key] = {
+          name: key,
           type: "image",
+          fileType,
           src: `${PATHS.PROJECT_IMAGE({
             projectName,
             fileName: file,
           }).url().value}`,
           width,
           height,
-          aspectRatio,
-          alt: previousAlt ?? file.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " "),
+          aspectRatio: width / height,
+          alt: previousAlt ?? key.replace(/[_-]/g, " "),
         };
       } else {
         console.warn(`⚠️ Could not read dimensions for ${filepath}`);
@@ -84,7 +87,47 @@ projectFolders.forEach((projectName) => {
     });
   }
 
-  // Merge in extra.json if present
+  // ---------------- VIDEOS ----------------
+  if (fs.existsSync(videosPath)) {
+    const videoFiles = fs
+      .readdirSync(videosPath)
+      .filter((file) => /\.(mp4|webm|mov|m4v|avi|mkv)$/i.test(file));
+
+    for (const file of videoFiles) {
+      const filepath = path.join(videosPath, file);
+      const key = file.replace(/\.[^/.]+$/, ""); // remove extension
+      const fileType = file.split(".").pop() ?? "";
+
+      let width = 0;
+      let height = 0;
+
+      try {
+        const dims = await getVideoDimensions(filepath);
+        width = dims.width;
+        height = dims.height;
+      } catch {
+        console.warn(`⚠️ Failed to read video metadata: ${filepath}`);
+      }
+
+      const previousAlt =
+        existingMedia[key]?.type === "fileVideo" ? existingMedia[key].alt : undefined;
+
+      media[key] = {
+        name: key,
+        type: "fileVideo",
+        fileType,
+        src: `${PATHS.PROJECT_VIDEO({
+          projectName,
+          fileName: file,
+        }).url().value}`,
+        width,
+        height,
+        alt: previousAlt ?? key.replace(/[_-]/g, " "),
+      };
+    }
+  }
+
+  // ---------------- MERGE extra.json ----------------
   const extraFile = path.join(projectPath, "extra.json");
   if (fs.existsSync(extraFile)) {
     try {
@@ -107,7 +150,7 @@ projectFolders.forEach((projectName) => {
     fs.mkdirSync(projectDataDir, { recursive: true });
   }
 
-  // Write manifest.ts
+  // ---------------- WRITE manifest.ts ----------------
   const fileContent = `import type { ProjectManifest } from "@/Types/projectManifest";
 
 /**

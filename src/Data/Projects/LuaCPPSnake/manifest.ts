@@ -11,13 +11,15 @@ import type { ProjectManifest } from "@/Types/projectManifest";
  */
 export const projectManifest: ProjectManifest = {
   media: {
-  "gameplay_01.png": {
+  "gameplay_01": {
+    "name": "gameplay_01",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/LuaCPPSnake/Images/gameplay_01.png",
     "width": 644,
     "height": 641,
     "aspectRatio": 1.0046801872074882,
-    "alt": ""
+    "alt": "gameplay 01"
   }
 }
 };

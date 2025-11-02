@@ -97,19 +97,19 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         
         <ImageMultiCompareCmp
           images={getMediaItemsFromManifest(manifest, [
-            'depth.webp',
-            'GBuffer_Albedo.webp',
-            'GBuffer_MetallicRoughness.webp',
-            'LightingPass_InWorldNormal.webp',
-            'GBuffer_WorldNormal.webp',
-            'LightingPass_Ambient_Albedo.webp',
-            'LightingPass_DirLight_Albedo.webp',
-            'LightingPass_DirLight_AlbedoNormal.webp',
-            'LightingPass_DirLight_PBR.webp',
-            'LightingPass_DirAndPointLight_PBR.webp',
-            'LightingPass_DirAndPointLight_PBR_Skybox.webp',
-            'LightingPass_DirAndPointLight_PBR_Skybox_IBL.webp',
-          ]).filter((item): item is ImageCompareItem => item.type === 'image')}
+            'depth',
+            'GBuffer_Albedo',
+            'GBuffer_MetallicRoughness',
+            'LightingPass_InWorldNormal',
+            'GBuffer_WorldNormal',
+            'LightingPass_Ambient_Albedo',
+            'LightingPass_DirLight_Albedo',
+            'LightingPass_DirLight_AlbedoNormal',
+            'LightingPass_DirLight_PBR',
+            'LightingPass_DirAndPointLight_PBR',
+            'LightingPass_DirAndPointLight_PBR_Skybox',
+            'LightingPass_DirAndPointLight_PBR_Skybox_IBL',
+          ])}
         />
       </Container>
 

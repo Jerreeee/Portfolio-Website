@@ -11,6 +11,9 @@ import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { projectCardCmp } from './ProjectCardCmpClasses';
 import PATHS from '@/Config/paths';
 import { height } from '@mui/system';
+import { MediaCmp } from '../Media';
+import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
+import { MediaItem } from '@/Types/media';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -69,17 +72,17 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   const { theme } = useTheme();
   const anim = theme.components?.ProjectCardCmp?.slotAnimations ?? {};
 
+  const item: MediaItem = getMediaItemsFromManifest(project.manifest, [project.thumbnailImage])[0];
+
   return (
     <ProjectCardRoot
       viewport={{ once: true, amount: 0.3 }}
     >
       <Link href={PATHS.PROJECT_PAGE({slug: project.slug}).url().value} style={{ textDecoration: 'none', color: 'inherit' }}>
         <ProjectCardImage>
-          <Image
-            src={PATHS.PROJECT_IMAGE({ projectName: project.slug, fileName: project.thumbnailImage }).url().value}
-            alt={project.title}
-            fill
-            style={{ objectFit: 'cover' }}
+          <MediaCmp
+            item={item}
+            fit='cover'
             priority
           />
         </ProjectCardImage>

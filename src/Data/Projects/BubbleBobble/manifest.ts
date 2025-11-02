@@ -11,59 +11,74 @@ import type { ProjectManifest } from "@/Types/projectManifest";
  */
 export const projectManifest: ProjectManifest = {
   media: {
-  "Level01_001.png": {
+  "Level01_001": {
+    "name": "Level01_001",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/BubbleBobble/Images/Level01_001.png",
     "width": 764,
     "height": 669,
     "aspectRatio": 1.1420029895366217,
     "alt": "Level01 001"
   },
-  "Level01_002.png": {
+  "Level01_002": {
+    "name": "Level01_002",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/BubbleBobble/Images/Level01_002.png",
     "width": 764,
     "height": 667,
     "aspectRatio": 1.1454272863568216,
     "alt": "Level01 002"
   },
-  "Level02_001.png": {
+  "Level02_001": {
+    "name": "Level02_001",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/BubbleBobble/Images/Level02_001.png",
     "width": 762,
     "height": 671,
     "aspectRatio": 1.135618479880775,
     "alt": "Level02 001"
   },
-  "Level03_001.png": {
+  "Level03_001": {
+    "name": "Level03_001",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/BubbleBobble/Images/Level03_001.png",
     "width": 766,
     "height": 669,
     "aspectRatio": 1.1449925261584455,
     "alt": "Level03 001"
   },
-  "LoadingScreen.png": {
+  "LoadingScreen": {
+    "name": "LoadingScreen",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/BubbleBobble/Images/LoadingScreen.png",
     "width": 758,
     "height": 657,
     "aspectRatio": 1.1537290715372908,
     "alt": "LoadingScreen"
   },
-  "MainMenu.png": {
+  "MainMenu": {
+    "name": "MainMenu",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/BubbleBobble/Images/MainMenu.png",
     "width": 757,
     "height": 671,
     "aspectRatio": 1.128166915052161,
     "alt": "MainMenu"
   },
-  "Gameplay.mkv": {
+  "Gameplay": {
+    "name": "Gameplay",
     "type": "fileVideo",
-    "src": "/projects/BubbleBobble/Video/Gameplay.mkv",
+    "fileType": "mkv",
+    "src": "/projects/BubbleBobble/Videos/Gameplay.mkv",
     "width": 768,
-    "height": 672
+    "height": 672,
+    "alt": "Gameplay"
   }
 }
 };

@@ -11,336 +11,420 @@ import type { ProjectManifest } from "@/Types/projectManifest";
  */
 export const projectManifest: ProjectManifest = {
   media: {
-  "Chain_Depth.webp": {
+  "Chain_Depth": {
+    "name": "Chain_Depth",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Chain_Depth.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "Chain Depth"
   },
-  "Chain_Final.webp": {
+  "Chain_Final": {
+    "name": "Chain_Final",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Chain_Final.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "Chain Final"
   },
-  "Circus_Env.webp": {
+  "Circus_Env": {
+    "name": "Circus_Env",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Circus_Env.webp",
     "width": 1024,
     "height": 6144,
     "aspectRatio": 0.16666666666666666,
     "alt": "Circus Env"
   },
-  "Circus_Env_Cross.webp": {
+  "Circus_Env_Cross": {
+    "name": "Circus_Env_Cross",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Circus_Env_Cross.webp",
     "width": 4096,
     "height": 3072,
     "aspectRatio": 1.3333333333333333,
     "alt": "Circus Env Cross"
   },
-  "Circus_IBL.webp": {
+  "Circus_IBL": {
+    "name": "Circus_IBL",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Circus_IBL.webp",
     "width": 64,
     "height": 384,
     "aspectRatio": 0.16666666666666666,
     "alt": "Circus IBL"
   },
-  "Circus_IBL_Cross.webp": {
+  "Circus_IBL_Cross": {
+    "name": "Circus_IBL_Cross",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Circus_IBL_Cross.webp",
     "width": 256,
     "height": 192,
     "aspectRatio": 1.3333333333333333,
     "alt": "Circus IBL Cross"
   },
-  "depth.webp": {
+  "depth": {
+    "name": "depth",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/depth.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
-    "alt": "Depth"
+    "alt": "depth"
   },
-  "Feature_DirectionalLights.webp": {
+  "Feature_DirectionalLights": {
+    "name": "Feature_DirectionalLights",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Feature_DirectionalLights.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "Feature DirectionalLights"
   },
-  "Feature_PointLight.webp": {
+  "Feature_PointLight": {
+    "name": "Feature_PointLight",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Feature_PointLight.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "Feature PointLight"
   },
-  "Final.webp": {
+  "Final": {
+    "name": "Final",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Final.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "Final"
   },
-  "GBuffer_Albedo.webp": {
+  "GBuffer_Albedo": {
+    "name": "GBuffer_Albedo",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/GBuffer_Albedo.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "GBuffer Albedo"
   },
-  "GBuffer_MetallicRoughness.webp": {
+  "GBuffer_MetallicRoughness": {
+    "name": "GBuffer_MetallicRoughness",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/GBuffer_MetallicRoughness.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "GBuffer MetallicRoughness"
   },
-  "GBuffer_WorldNormal.webp": {
+  "GBuffer_WorldNormal": {
+    "name": "GBuffer_WorldNormal",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/GBuffer_WorldNormal.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "GBuffer WorldNormal"
   },
-  "GPU_Trace_Profiler_Timeline.webp": {
+  "GPU_Trace_Profiler_Timeline": {
+    "name": "GPU_Trace_Profiler_Timeline",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/GPU_Trace_Profiler_Timeline.webp",
     "width": 2778,
     "height": 660,
     "aspectRatio": 4.209090909090909,
     "alt": "GPU Trace Profiler Timeline"
   },
-  "GPU_Trace_Profiler_Timeline_2.webp": {
+  "GPU_Trace_Profiler_Timeline_2": {
+    "name": "GPU_Trace_Profiler_Timeline_2",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/GPU_Trace_Profiler_Timeline_2.webp",
     "width": 2546,
     "height": 674,
     "aspectRatio": 3.777448071216617,
     "alt": "GPU Trace Profiler Timeline 2"
   },
-  "GPU_Trace_Profiler_timeline_3.webp": {
+  "GPU_Trace_Profiler_timeline_3": {
+    "name": "GPU_Trace_Profiler_timeline_3",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/GPU_Trace_Profiler_timeline_3.webp",
     "width": 3710,
     "height": 706,
     "aspectRatio": 5.254957507082153,
     "alt": "GPU Trace Profiler timeline 3"
   },
-  "Image_NegX.webp": {
+  "Image_NegX": {
+    "name": "Image_NegX",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Image_NegX.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "Image NegX"
   },
-  "Image_NegY.webp": {
+  "Image_NegY": {
+    "name": "Image_NegY",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Image_NegY.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "Image NegY"
   },
-  "Image_NegZ.webp": {
+  "Image_NegZ": {
+    "name": "Image_NegZ",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Image_NegZ.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "Image NegZ"
   },
-  "Image_PosX.webp": {
+  "Image_PosX": {
+    "name": "Image_PosX",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Image_PosX.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "Image PosX"
   },
-  "Image_PosY.webp": {
+  "Image_PosY": {
+    "name": "Image_PosY",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Image_PosY.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "Image PosY"
   },
-  "Image_PosZ.webp": {
+  "Image_PosZ": {
+    "name": "Image_PosZ",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Image_PosZ.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "Image PosZ"
   },
-  "LightingPass_Ambient_Albedo.webp": {
+  "LightingPass_Ambient_Albedo": {
+    "name": "LightingPass_Ambient_Albedo",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_Ambient_Albedo.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass Ambient Albedo"
   },
-  "LightingPass_DirAndPointLight_PBR.webp": {
+  "LightingPass_DirAndPointLight_PBR": {
+    "name": "LightingPass_DirAndPointLight_PBR",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_DirAndPointLight_PBR.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass DirAndPointLight PBR"
   },
-  "LightingPass_DirAndPointLight_PBR_Skybox.webp": {
+  "LightingPass_DirAndPointLight_PBR_Skybox": {
+    "name": "LightingPass_DirAndPointLight_PBR_Skybox",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_DirAndPointLight_PBR_Skybox.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass DirAndPointLight PBR Skybox"
   },
-  "LightingPass_DirAndPointLight_PBR_Skybox_IBL.webp": {
+  "LightingPass_DirAndPointLight_PBR_Skybox_IBL": {
+    "name": "LightingPass_DirAndPointLight_PBR_Skybox_IBL",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_DirAndPointLight_PBR_Skybox_IBL.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass DirAndPointLight PBR Skybox IBL"
   },
-  "LightingPass_DirLight_Albedo.webp": {
+  "LightingPass_DirLight_Albedo": {
+    "name": "LightingPass_DirLight_Albedo",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_DirLight_Albedo.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass DirLight Albedo"
   },
-  "LightingPass_DirLight_AlbedoNormal.webp": {
+  "LightingPass_DirLight_AlbedoNormal": {
+    "name": "LightingPass_DirLight_AlbedoNormal",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_DirLight_AlbedoNormal.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass DirLight AlbedoNormal"
   },
-  "LightingPass_DirLight_PBR.webp": {
+  "LightingPass_DirLight_PBR": {
+    "name": "LightingPass_DirLight_PBR",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_DirLight_PBR.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass DirLight PBR"
   },
-  "LightingPass_InWorldNormal.webp": {
+  "LightingPass_InWorldNormal": {
+    "name": "LightingPass_InWorldNormal",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_InWorldNormal.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass InWorldNormal"
   },
-  "LightingPass_Out_HDR.webp": {
+  "LightingPass_Out_HDR": {
+    "name": "LightingPass_Out_HDR",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_Out_HDR.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass Out HDR"
   },
-  "LightingPass_WorldNormal.webp": {
+  "LightingPass_WorldNormal": {
+    "name": "LightingPass_WorldNormal",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/LightingPass_WorldNormal.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "LightingPass WorldNormal"
   },
-  "OutDoor_Env.webp": {
+  "OutDoor_Env": {
+    "name": "OutDoor_Env",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/OutDoor_Env.webp",
     "width": 1024,
     "height": 1024,
     "aspectRatio": 1,
     "alt": "OutDoor Env"
   },
-  "OutDoor_Env_Cross-min.webp": {
+  "OutDoor_Env_Cross-min": {
+    "name": "OutDoor_Env_Cross-min",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/OutDoor_Env_Cross-min.webp",
     "width": 4096,
     "height": 3072,
     "aspectRatio": 1.3333333333333333,
     "alt": "OutDoor Env Cross min"
   },
-  "OutDoor_Env_Cross.webp": {
+  "OutDoor_Env_Cross": {
+    "name": "OutDoor_Env_Cross",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/OutDoor_Env_Cross.webp",
     "width": 4096,
     "height": 3072,
     "aspectRatio": 1.3333333333333333,
     "alt": "OutDoor Env Cross"
   },
-  "Outdoor_IBL.webp": {
+  "Outdoor_IBL": {
+    "name": "Outdoor_IBL",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Outdoor_IBL.webp",
     "width": 64,
     "height": 384,
     "aspectRatio": 0.16666666666666666,
     "alt": "Outdoor IBL"
   },
-  "OutDoor_IBL_Cross.webp": {
+  "OutDoor_IBL_Cross": {
+    "name": "OutDoor_IBL_Cross",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/OutDoor_IBL_Cross.webp",
     "width": 256,
     "height": 192,
     "aspectRatio": 1.3333333333333333,
     "alt": "OutDoor IBL Cross"
   },
-  "PostProcess_Final_Circus.webp": {
+  "PostProcess_Final_Circus": {
+    "name": "PostProcess_Final_Circus",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/PostProcess_Final_Circus.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "PostProcess Final Circus"
   },
-  "PostProcess_Final_Outdoor.webp": {
+  "PostProcess_Final_Outdoor": {
+    "name": "PostProcess_Final_Outdoor",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/PostProcess_Final_Outdoor.webp",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "PostProcess Final Outdoor"
   },
-  "Scrubber_DurationScale.webp": {
+  "Scrubber_DurationScale": {
+    "name": "Scrubber_DurationScale",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Scrubber_DurationScale.webp",
     "width": 2860,
     "height": 188,
     "aspectRatio": 15.212765957446809,
     "alt": "Scrubber DurationScale"
   },
-  "Scrubber_Fill.webp": {
+  "Scrubber_Fill": {
+    "name": "Scrubber_Fill",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Scrubber_Fill.webp",
     "width": 1280,
     "height": 720,
     "aspectRatio": 1.7777777777777777,
     "alt": "Scrubber Fill"
   },
-  "Scrubber_Overview.webp": {
+  "Scrubber_Overview": {
+    "name": "Scrubber_Overview",
     "type": "image",
+    "fileType": "webp",
     "src": "/projects/VulkanDeferredRenderer/Images/Scrubber_Overview.webp",
     "width": 2852,
     "height": 318,

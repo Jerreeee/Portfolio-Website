@@ -11,96 +11,120 @@ import type { ProjectManifest } from "@/Types/projectManifest";
  */
 export const projectManifest: ProjectManifest = {
   media: {
-  "CPU_BoundingRects.png": {
+  "CPU_BoundingRects": {
+    "name": "CPU_BoundingRects",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_BoundingRects.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU BoundingRects"
   },
-  "CPU_Depth.png": {
+  "CPU_Depth": {
+    "name": "CPU_Depth",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_Depth.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Depth"
   },
-  "CPU_Diffuse.png": {
+  "CPU_Diffuse": {
+    "name": "CPU_Diffuse",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_Diffuse.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Diffuse"
   },
-  "CPU_Final.png": {
+  "CPU_Final": {
+    "name": "CPU_Final",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_Final.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Final"
   },
-  "CPU_FinaLNoNormalMap.png": {
+  "CPU_FinaLNoNormalMap": {
+    "name": "CPU_FinaLNoNormalMap",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_FinaLNoNormalMap.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU FinaLNoNormalMap"
   },
-  "CPU_ObservedView.png": {
+  "CPU_ObservedView": {
+    "name": "CPU_ObservedView",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_ObservedView.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU ObservedView"
   },
-  "CPU_Specular.png": {
+  "CPU_Specular": {
+    "name": "CPU_Specular",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_Specular.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Specular"
   },
-  "CPU_Specular_NoNormalMap.png": {
+  "CPU_Specular_NoNormalMap": {
+    "name": "CPU_Specular_NoNormalMap",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/CPU_Specular_NoNormalMap.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Specular NoNormalMap"
   },
-  "GPU_AnisotropicSampling.png": {
+  "GPU_AnisotropicSampling": {
+    "name": "GPU_AnisotropicSampling",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/GPU_AnisotropicSampling.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "GPU AnisotropicSampling"
   },
-  "GPU_AnisotropicSampling_NoFire.png": {
+  "GPU_AnisotropicSampling_NoFire": {
+    "name": "GPU_AnisotropicSampling_NoFire",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/GPU_AnisotropicSampling_NoFire.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "GPU AnisotropicSampling NoFire"
   },
-  "GPU_LinearSampling.png": {
+  "GPU_LinearSampling": {
+    "name": "GPU_LinearSampling",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/GPU_LinearSampling.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
     "alt": "GPU LinearSampling"
   },
-  "GPU_PointSampling.png": {
+  "GPU_PointSampling": {
+    "name": "GPU_PointSampling",
     "type": "image",
+    "fileType": "png",
     "src": "/projects/DualRasterizer/Images/GPU_PointSampling.png",
     "width": 1920,
     "height": 1080,

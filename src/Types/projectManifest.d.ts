@@ -1,35 +1,8 @@
-export type ImageManifestItem = {
-  type: "image";
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  aspectRatio: number;
-};
-
-export type FileVideoManifestItem = {
-  type: "fileVideo";
-  src: string;
-  width: number;
-  height: number;
-  thumbnail?: string;
-};
-
-export type EmbeddedVideoManifestItem = {
-  type: "embeddedVideo";
-  src: string;
-  width?: number;
-  height?: number;
-};
-
-export type MediaManifestEntry =
-  | ImageManifestItem
-  | FileVideoManifestItem
-  | EmbeddedVideoManifestItem;
+import { MediaItem } from "./media";
 
 export type ProjectManifest = {
   media: {
-    [fileName: string]: MediaManifestEntry;
+    [fileName: string]: MediaItem; 
   };
 };
 

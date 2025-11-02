@@ -49,6 +49,11 @@ export default function ImageMultiCompareCmp({ images, bars = [] }: ImageMultiCo
   const bottomImage = images[segmentIndex];
   const topImage = images[nextTickIdx];
 
+  if (imageCount < 2) {
+    console.error(`[ImageCompareCmp] Expected at least 2 media items, received ${imageCount}. Component will not render.`);
+    return null;
+  }
+  
   return (
     <ImageMultiCompareRoot>
       {/* --- Comparison image --- */}

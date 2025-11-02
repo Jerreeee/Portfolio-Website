@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { mediaCmp } from './MediaCmpClasses';
+import { MediaItem } from '@/Types/media';
 
 const makeSlot = makeSlotFactory('MediaCmp', mediaCmp);
 
@@ -24,31 +25,15 @@ const MediaRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
+export function getMediaLabel(item: MediaItem) {
+  if (item.type === "image" || item.type === "fileVideo") {
+    return item.alt ?? item.name ?? "";
+  }
+
+  return "";
+}
+
 type FitMode = 'cover' | 'contain' | 'fill';
-
-export interface ImageMediaItem {
-  type: 'image';
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  imageProps?: Omit<React.ComponentProps<typeof Image>, 'src' | 'alt'>;
-}
-
-export interface FileVideoMediaItem {
-  type: 'fileVideo';
-  src: string;
-  thumbnail?: string;
-  videoProps?: Omit<React.VideoHTMLAttributes<HTMLVideoElement>, 'src'>;
-}
-
-export interface EmbeddedVideoMediaItem {
-  type: 'embeddedVideo';
-  src: string;
-  playerProps?: Omit<React.ComponentProps<typeof ReactPlayer>, 'url'>;
-}
-
-export type MediaItem = ImageMediaItem | FileVideoMediaItem | EmbeddedVideoMediaItem;
 
 export interface MediaCmpProps {
   item: MediaItem;
@@ -60,7 +45,6 @@ export interface MediaCmpProps {
  * UNIVERSAL MEDIA COMPONENT
  * - Always keeps aspect ratio
  * - Scales until it hits parent constraint (width OR height)
- * - Works for images, file videos, embedded videos
  * - Default objectFit = "contain"
  */
 export default function MediaCmp({ item, fit = 'contain', priority }: MediaCmpProps) {
@@ -94,6 +78,8 @@ export default function MediaCmp({ item, fit = 'contain', priority }: MediaCmpPr
       {item.type === 'fileVideo' && (
         <video
           src={item.src}
+          width={item.width}
+          height={item.height}
           controls
           style={responsiveStyle}
           {...item.videoProps}
@@ -103,9 +89,9 @@ export default function MediaCmp({ item, fit = 'contain', priority }: MediaCmpPr
       {item.type === 'embeddedVideo' && (
         <ReactPlayer
           src={item.src}
-          style={responsiveStyle}
           width="auto"
           height="auto"
+          style={responsiveStyle}
           {...item.playerProps}
         />
       )}

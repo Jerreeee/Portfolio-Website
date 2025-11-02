@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/Themes/ThemeProvider';
-import MediaCmp, { MediaItem } from '@/Themes/Default/Components/Media/MediaCmp';
+import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
+import { MediaItem } from '@/Types/media';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
 import { useElementSize } from '@/Hooks/useElementSize';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
@@ -82,11 +83,13 @@ export interface MediaGalleryCmpProps {
 
 export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
   const { theme: activeTheme } = useTheme();
-
+  
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = media[activeIndex];
 
   const [mainRef, mainSize] = useElementSize<HTMLDivElement>();
+
+  if (media.length === 0) return null;
 
   return (
     <GalleryRoot>
@@ -107,7 +110,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
           <div style={{ maxWidth: "100%" }}>
             <ScrollableCmp>
               <ScrollableCmp.Group horizontalId="0">
-                <div style={{ display: "flex", flexDirection: "row" }}>
+                <div style={{ display: "flex", flexDirection: "row", gap: activeTheme.spacing(1) }}>
                   {media.map((item, index) => {
                     const isActive = index === activeIndex;
                     const thumbItem =
@@ -121,7 +124,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                         active={isActive}
                         onClick={() => setActiveIndex(index)}
                       >
-                        <MediaCmp item={thumbItem} priority={index === 0}/>
+                        <MediaCmp item={thumbItem} priority={index === 0}/>s
                         {item.type !== "image" && <VideoOverlay>▶</VideoOverlay>}
                       </ThumbButton>
                     );
