@@ -35,6 +35,8 @@ export function getMediaLabel(item: MediaItem) {
 
 type FitMode = 'cover' | 'contain' | 'fill';
 
+export interface MediaCmpSettings {}
+
 export interface MediaCmpProps {
   item: MediaItem;
   fit?: FitMode; // default = contain

@@ -27,7 +27,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
   return (
     <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
       {/* ==================== HERO SECTION ==================== */}
-      <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
+      <Container maxWidth="md" sx={{ textAlign: 'center' }}>
         <Typography variant="gradientH1">
           {data.title}
         </Typography>

@@ -1,5 +1,7 @@
 'use client';
 
+// import 'github-markdown-css/github-markdown.css';
+
 import React, { ReactElement } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -22,7 +24,21 @@ export interface MarkdownRendererCmpProps {
 
 export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpProps) {
   return (
-    <Box className="markdown-body">
+    <Box
+      className="markdown-body"
+      // sx={{
+        // }}
+        sx={{
+          backgroundColor: 'transparent',
+            color: 'inherit',
+    '& pre': { background: 'rgba(0,0,0,0.06)', p: 2, borderRadius: 1 },
+    '& code': { background: 'rgba(0,0,0,0.06)', px: .5, borderRadius: .5 },
+    '& table': { borderCollapse: 'collapse', width: '100%' },
+    '& th, td': { border: '1px solid #d0d7de', p: '6px 13px' },
+    '& ul': { listStyle: 'disc', pl: 3 },
+    '& ol': { listStyle: 'decimal', pl: 3 },
+  }}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -32,10 +48,10 @@ export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpPro
           h4: ({node, ...props}) => <Typography variant="h4" {...props} />,
           h5: ({node, ...props}) => <Typography variant="h5" {...props} />,
           h6: ({node, ...props}) => <Typography variant="h6" {...props} />,
-          p:  ({node, ...props}) => <Typography variant="body1" paragraph {...props} />,
+          p:  ({node, ...props}) => <Typography variant="body1" {...props} />,
           a:  ({node, ...props}) => <MuiLink {...props} target="_blank" rel="noopener noreferrer" />,
           li: ({node, ...props}) => (
-            <li>
+            <li style={{listStyleType: 'circle'}}>
               <Typography component="span" variant="body1" {...props} />
             </li>
           ),

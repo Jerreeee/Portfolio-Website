@@ -46,6 +46,8 @@ const AltTextLabel = makeSlot('div', 'altLabel')(({ theme }) => ({
 
 export type ImageCompareItem = MediaItem;
 
+export interface ImageCompareCmpSettings {}
+
 export interface ImageCompareCmpProps {
   bottom: ImageCompareItem;
   top: ImageCompareItem;

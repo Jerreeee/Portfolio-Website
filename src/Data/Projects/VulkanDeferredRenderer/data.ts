@@ -7,9 +7,17 @@ export const data: ProjectRequiredInfo = {
   heroImage: 'PostProcess_Final_Outdoor',
   overviewMedia: [
     'PostProcess_Final_Outdoor',
+    "Chain_Depth",
+    "OutDoor_Env_Cross",
+    "OutDoor_IBL_Cross",
   ],
   shortDescription: 'A physically-based rendering pipeline built in C++ and Vulkan.',
-  mediumDescription: 'A Vulkan-based deferred rendering pipeline written in C++. Built to explore how modern rendering works and to learn Vulkan’s low-level API. It supports PBR materials, multiple light types, HDR tone mapping, and uses newer Vulkan features like Dynamic Rendering, Synchronization2, and Bindless Rendering.',
+  mediumDescription: `A **Vulkan-based deferred rendering** pipeline written in **C++**.  
+Built to explore how modern rendering works and to learn Vulkan’s low-level API.
+
+It supports **PBR** materials, **multiple light types**, and **HDR tone mapping**,  
+and uses newer Vulkan features like **Dynamic Rendering**, **Synchronization2**, and **Bindless Rendering**.
+`,
   technologies: {
     Core: [
       { name: 'cplusplus', version: 'C++20', usage: 'Core language used for the renderer implementation.' },

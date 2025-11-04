@@ -89,7 +89,7 @@ export const defaultDarkOptions: ThemeOptions = {
   },
 
   shape: {
-    borderRadius: 10,
+    borderRadius: 20,
   },
 
   components: {

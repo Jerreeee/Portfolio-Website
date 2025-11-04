@@ -155,6 +155,7 @@ export function Group({
         ...style,
         overflowX: hId ? 'auto' : 'hidden',
         overflowY: vId ? 'auto' : 'hidden',
+        // ...hideNativeScrollbarsStyles,
       }}
     >
       {children}

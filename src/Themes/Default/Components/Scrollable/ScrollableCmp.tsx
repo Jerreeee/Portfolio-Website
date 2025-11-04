@@ -108,8 +108,6 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
     return containsAdvanced(children);
     })();
 
-    console.log("hasAdvancedChildren: ", hasAdvancedChildren);
-
   if (!hasAdvancedChildren) {
     // SIMPLE MODE (classic ScrollableCmp)
     return (

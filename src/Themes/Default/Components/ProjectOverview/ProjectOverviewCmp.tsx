@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, styled, Typography } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
@@ -11,22 +11,30 @@ import { projectOverviewCmp } from './ProjectOverviewCmpClasses';
 import { MediaCmp } from '../Media';
 import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 import { MediaGalleryCmp } from '../MediaGallery';
+import { MarkdownRendererCmp } from '../Markdown';
 
 const makeSlot = makeSlotFactory('ProjectOverviewCmp', projectOverviewCmp);
 
 const OverviewRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   background: 'linear-gradient(to bottom, #151a2c, #221730)',
-  padding: theme.spacing(6, 0),
+  borderRadius: `${theme.shape.borderRadius}px`,
 }));
 
 const OverviewTextBox = makeSlot(motion.div, 'textBox')(({ theme }) => ({
+  padding: 3,
+  background: 'rgba(255,255,255,0.05)',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
   color: theme.palette.text.secondary,
+  borderRadius: `${theme.shape.borderRadius}px`,
   lineHeight: 1.7,
 }));
 
 const TechCategoryBox = makeSlot(motion.div, 'techCategory')(({ theme }) => ({
   padding: theme.spacing(3),
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: `${theme.shape.borderRadius}px`,
   backgroundColor: 'rgba(255,255,255,0.05)',
   display: 'flex',
   flexDirection: 'column',
@@ -44,7 +52,13 @@ const TechIconList = makeSlot(motion.div, 'techIconList')(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }) {
+export interface ProjectOverviewCmpSettings {}
+
+export interface ProjectOverviewCmpProps {
+  project: ProjectInfo;
+}
+
+export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps) {
   const { theme } = useTheme();
 
   const heroFile = project.heroImage || Object.keys(project.manifest.media)[0];
@@ -55,11 +69,11 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
       : [project.heroImage];
 
   const mediaItems = getMediaItemsFromManifest(project.manifest, mediaItemStrings);
-  console.log("MediaItems: ", mediaItems);
+
   return (
     <OverviewRoot>
       <Container maxWidth="lg">
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           {/* ===================== ROW 1: MEDIA ===================== */}
           <Grid size={{ xs: 12 }}>
             <Box
@@ -80,10 +94,10 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
               sx={{
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },
-                gap: 3,
+                gap: 1,
                 background: 'rgba(255,255,255,0.03)',
-                borderRadius: 2,
-                padding: 3,
+                borderRadius: `${theme.shape.borderRadius}px`,
+                padding: 1,
                 border: '1px solid rgba(255,255,255,0.05)',
               }}
             >
@@ -95,71 +109,50 @@ export default function ProjectOverviewCmp({ project }: { project: ProjectInfo }
                 }}
               >
                 <OverviewTextBox
-                  sx={{
-                    background: 'rgba(255,255,255,0.05)',
-                    borderRadius: 2,
-                    padding: 3,
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}
+                  sx={{padding: 3}}
                 >
-                  {/* --- Description text --- */}
-                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                    {project.mediumDescription}
-                  </Typography>
+                  <MarkdownRendererCmp markdown={project.mediumDescription} />
 
                   {/* --- Project links --- */}
-                  <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
                     {project.githubURL && (
-                      <Box
+                      <Button
                         component="a"
                         href={project.githubURL}
                         target="_blank"
                         rel="noopener noreferrer"
+                        variant="outlined"
+                        size="small"
+                        startIcon={<IconCmp techName="Github" height={18} showDisplayName={false} />}
                         sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: 36,
-                          height: 36,
-                          borderRadius: '50%',
-                          transition: 'all 0.2s ease',
-                          backgroundColor: 'rgba(255,255,255)',
-                          '&:hover': {
-                            backgroundColor: 'rgba(255,255,255,0.12)',
-                            transform: 'scale(1.1)',
-                          },
+                          textTransform: 'none',
+                          borderColor: 'rgba(255,255,255,0.2)',
+                          color: 'white',
+                          '&:hover': { borderColor: 'rgba(255,255,255,0.35)' },
                         }}
                       >
-                        <IconCmp techName="Github" height={22} showDisplayName={false} />
-                      </Box>
+                        View on GitHub
+                      </Button>
                     )}
 
                     {project.steamURL && (
-                      <Box
+                      <Button
                         component="a"
                         href={project.steamURL}
                         target="_blank"
                         rel="noopener noreferrer"
+                        variant="outlined"
+                        size="small"
+                        startIcon={<IconCmp techName="Steam" height={18} showDisplayName={false} />}
                         sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: 36,
-                          height: 36,
-                          borderRadius: '50%',
-                          transition: 'all 0.2s ease',
-                          backgroundColor: 'rgba(255,255,255,0.05)',
-                          '&:hover': {
-                            backgroundColor: 'rgba(255,255,255,0.12)',
-                            transform: 'scale(1.1)',
-                          },
+                          textTransform: 'none',
+                          borderColor: 'rgba(255,255,255,0.2)',
+                          color: 'white',
+                          '&:hover': { borderColor: 'rgba(255,255,255,0.35)' },
                         }}
                       >
-                        <IconCmp techName="Steam" height={22} showDisplayName={false} />
-                      </Box>
+                        View on Steam
+                      </Button>
                     )}
                   </Box>
                 </OverviewTextBox>

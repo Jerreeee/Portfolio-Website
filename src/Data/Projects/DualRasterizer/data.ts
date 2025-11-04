@@ -10,8 +10,16 @@ export const data: ProjectRequiredInfo = {
     "GPU_AnisotropicSampling_NoFire",
   ],
   shortDescription: 'A Dual Rasterizer build with c++ and DirectX 11',
-  mediumDescription: 'A Dual Rasterizer built in C++ and DirectX 11, created to learn low-level 3D rendering by first implementing a full software rasterizer on the CPU (handling transformations, projection, rasterization, depth buffering, and basic lighting) and then adding a DirectX 11 GPU version to compare how the same pipeline behaves on graphics hardware, with a button to switch between CPU and GPU modes in real time to see both performance and implementation differences, focusing on understanding the graphics pipeline and underlying math rather than using a game engine.',
-  technologies: {
+  mediumDescription: `**The Dual Rasterizer** was built around three goals.
+
+**1) Understand the fundamentals.**
+I started with a CPU software rasterizer: vertex transforms, perspective projection, triangle rasterization, depth testing, and basic shading.
+
+**2) Map the same pipeline to the GPU (DirectX 11).**
+With the CPU version as a reference, I rebuilt it using shaders, buffers, and sampler states.
+
+**3) Compare them side-by-side.**
+You can switch between CPU and GPU paths at runtime to see differences in performance and behavior.`,  technologies: {
     Core: [
       { name: 'cplusplus', version: 'C++20', usage: 'Core language used for the renderer implementation.' },
       { name: 'D3D11', usage: 'Used for GPU rendering and running the graphics pipeline.' },

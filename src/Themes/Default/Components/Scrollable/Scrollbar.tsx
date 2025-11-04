@@ -26,7 +26,6 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
       if (!authority) return;
 
 
-      console.log("Updating scrollbar from authority:");
       const biggest = authority.current.biggestScrollRange.el.current;
       const smallest = authority.current.smallestVisibleRatio.el.current;
       const biggestDir = authority.current.biggestScrollRange.dir;
@@ -35,7 +34,6 @@ function Scrollbar({ id, direction, style }: ScrollbarProps) {
       if (!biggest || !smallest) return;
 
       setScrollRange(getScrollRange(biggest, biggestDir));
-      console.log("New ScrollRange:", getScrollRange(biggest, biggestDir));
       setThumbRatio(getVisibleRatio(smallest, smallestDir));
     };
 

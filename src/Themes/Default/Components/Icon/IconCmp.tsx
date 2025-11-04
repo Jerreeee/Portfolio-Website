@@ -40,6 +40,8 @@ const IconLabel = styled(Typography)(({ theme }) => ({
 // ================================================================
 // ========================== Component ============================
 
+export interface IconCmpSettings {}
+
 export interface IconCmpProps {
   techName: string; // Key name used to look up the icon from manifest
 
@@ -63,9 +65,7 @@ export default function IconCmp(inProps: IconCmpProps) {
   const props = { ...defaultProps, ...inProps };
 
   const key = props.techName as IconKey;
-  let icon = iconManifest[key];
-
-
+  const icon = iconManifest[key];
 
   // Handle missing icons gracefully
   if (!icon) {

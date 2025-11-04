@@ -27,7 +27,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
   return (
     <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
       {/* ==================== HERO SECTION ==================== */}
-      <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
+      <Container maxWidth="md" sx={{ textAlign: 'center', mb: 6 }}>
         <Typography variant="gradientH1">
           {data.title}
         </Typography>
@@ -38,7 +38,56 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
 
       <Divider sx={{ my: 3, opacity: 0.2 }} />
 
-      {/* ==================== RENDER PASS BREAKDOWN ==================== */}
+      {/* ==================== MAIN FEATURES ==================== */}
+      <Container maxWidth="md">
+        <Typography
+          variant="h3"
+          align="center"
+          gutterBottom
+          sx={{ mb: 2, fontSize: '1.75rem' }}
+        >
+          Main Features
+        </Typography>
+
+        <Grid container spacing={1.5}>
+          {[
+            'Dual Backend',
+            'Normal Mapping',
+            'Cull Mode Toggle',
+            'Depth, Normal & Bounding Box Visualizations (CPU)',
+            'Sampler State Toggle (GPU)',
+          ].map((feature, index) => (
+            <Grid size={{ xs: 12, sm: 6 }} key={index}>
+              <Box
+                sx={{
+                  p: 1,
+                  bgcolor: 'rgba(255,255,255,0.04)',
+                  borderRadius: 1.5,
+                  textAlign: 'center',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  transition: 'background 0.2s ease',
+                  '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'text.secondary',
+                    fontSize: '0.9rem',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {feature}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      <Divider sx={{ my: 3, opacity: 0.2 }} />
+
+      {/* ==================== CPU Frame Breakdown BREAKDOWN ==================== */}
       <Container maxWidth="lg" sx={{ mb: 10 }}>
         <Typography variant="h3" align="center" gutterBottom>
           CPU Frame Breakdown
@@ -57,36 +106,36 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           ])}
         />
 
-<Grid container spacing={6}>
+      <Grid container spacing={6}>
 
-  <Grid size={{ xs: 12, md: 6 }}>
-    <Typography variant="h3" align="center" gutterBottom>
-      CPU vs GPU Comparison
-    </Typography>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Typography variant="h3" align="center" gutterBottom>
+            CPU vs GPU Comparison
+          </Typography>
 
-    <ImageMultiCompareCmp
-      images={getMediaItemsFromManifest(manifest, [
-        "CPU_Final",
-        "GPU_AnisotropicSampling",
-      ])}
-    />
-  </Grid>
+          <ImageMultiCompareCmp
+            images={getMediaItemsFromManifest(manifest, [
+              "CPU_Final",
+              "GPU_AnisotropicSampling",
+            ])}
+          />
+        </Grid>
 
-  <Grid size={{ xs: 12, md: 6 }}>
-    <Typography variant="h3" align="center" gutterBottom>
-      GPU Samplers Comparison
-    </Typography>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Typography variant="h3" align="center" gutterBottom>
+            GPU Samplers Comparison
+          </Typography>
 
-    <ImageMultiCompareCmp
-      images={getMediaItemsFromManifest(manifest, [
-        "GPU_PointSampling",
-        "GPU_LinearSampling",
-        "GPU_AnisotropicSampling_NoFire",
-      ])}
-    />
-  </Grid>
+          <ImageMultiCompareCmp
+            images={getMediaItemsFromManifest(manifest, [
+              "GPU_PointSampling",
+              "GPU_LinearSampling",
+              "GPU_AnisotropicSampling_NoFire",
+            ])}
+          />
+        </Grid>
 
-</Grid>
+      </Grid>
       </Container>
     </Box>
   );

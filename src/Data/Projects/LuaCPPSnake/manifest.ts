@@ -16,10 +16,39 @@ export const projectManifest: ProjectManifest = {
     "type": "image",
     "fileType": "png",
     "src": "/projects/LuaCPPSnake/Images/gameplay_01.png",
-    "width": 644,
-    "height": 641,
-    "aspectRatio": 1.0046801872074882,
+    "width": 642,
+    "height": 642,
+    "aspectRatio": 1,
     "alt": "gameplay 01"
+  },
+  "gameplay_02": {
+    "name": "gameplay_02",
+    "type": "image",
+    "fileType": "png",
+    "src": "/projects/LuaCPPSnake/Images/gameplay_02.png",
+    "width": 642,
+    "height": 642,
+    "aspectRatio": 1,
+    "alt": "gameplay 02"
+  },
+  "game_over": {
+    "name": "game_over",
+    "type": "image",
+    "fileType": "png",
+    "src": "/projects/LuaCPPSnake/Images/game_over.png",
+    "width": 642,
+    "height": 642,
+    "aspectRatio": 1,
+    "alt": "game over"
+  },
+  "Gameplay": {
+    "name": "Gameplay",
+    "type": "fileVideo",
+    "fileType": "mp4",
+    "src": "/projects/LuaCPPSnake/Videos/Gameplay.mp4",
+    "width": 642,
+    "height": 642,
+    "alt": "Gameplay"
   }
 }
 };

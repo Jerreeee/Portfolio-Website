@@ -31,6 +31,8 @@ const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
 // =====================================================================
 // ============================= Component ==============================
 
+export interface ImageMultiCompareCmpSettings {}
+
 export interface ImageMultiCompareCmpProps {
   images: ImageCompareItem[];
   bars?: BarLayerProps[];
