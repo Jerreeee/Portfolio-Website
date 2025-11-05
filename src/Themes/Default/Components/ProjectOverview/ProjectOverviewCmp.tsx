@@ -27,9 +27,7 @@ const OverviewTextBox = makeSlot(motion.div, 'textBox')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  color: theme.palette.text.secondary,
   borderRadius: `${theme.shape.borderRadius}px`,
-  lineHeight: 1.7,
 }));
 
 const TechCategoryBox = makeSlot(motion.div, 'techCategory')(({ theme }) => ({

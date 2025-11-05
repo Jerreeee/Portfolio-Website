@@ -5,11 +5,15 @@ import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
 export const navbarCmp = createUtilityClasses('NavbarCmp', [
   'root',
+  'topRow',
   'brand',
   'list',
   'item',
   'link',
-  'underline'
+  'underline',
+  'mobileButton',
+  'divider',
+  'mobileMenu',
 ] as const);
 
 export type NavbarCmpClassKey = typeof navbarCmp.slots[number];

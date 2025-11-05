@@ -26,18 +26,16 @@ export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpPro
   return (
     <Box
       className="markdown-body"
-      // sx={{
-        // }}
-        sx={{
-          backgroundColor: 'transparent',
-            color: 'inherit',
-    '& pre': { background: 'rgba(0,0,0,0.06)', p: 2, borderRadius: 1 },
-    '& code': { background: 'rgba(0,0,0,0.06)', px: .5, borderRadius: .5 },
-    '& table': { borderCollapse: 'collapse', width: '100%' },
-    '& th, td': { border: '1px solid #d0d7de', p: '6px 13px' },
-    '& ul': { listStyle: 'disc', pl: 3 },
-    '& ol': { listStyle: 'decimal', pl: 3 },
-  }}
+      sx={{
+        backgroundColor: 'transparent',
+        color: 'inherit',
+        '& pre': { background: 'rgba(0,0,0,0.06)', p: 2, borderRadius: 1 },
+        '& code': { background: 'rgba(0,0,0,0.06)', px: .5, borderRadius: .5 },
+        '& table': { borderCollapse: 'collapse', width: '100%' },
+        '& th, td': { border: '1px solid #d0d7de', p: '6px 13px' },
+        '& ul': { listStyle: 'disc', pl: 3 },
+        '& ol': { listStyle: 'decimal', pl: 3 },
+      }}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}

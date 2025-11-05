@@ -30,7 +30,7 @@ export const defaultDarkOptions: ThemeOptions = {
       paper: '#1e1e1e',
     },
     text: {
-      primary: '#ffffff',
+      primary: '#e0e0e0',
       secondary: '#b0b0b0',
     },
     divider: 'rgba(255,255,255,0.12)',

@@ -9,7 +9,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
 
   return (
-    <div>
+    <>
       <NavbarCmp navItems={ [
         { href: PATHS.PAGE({page: 'projects'}).url().value, label: 'Projects' },
         { href: PATHS.PAGE({page: 'about'}).url().value, label: 'About' },
@@ -20,6 +20,6 @@ export function PageWrapper({ children }: { children: ReactNode }) {
         style={{ paddingTop: theme.components?.NavbarCmp?.defaultProps?.height }}
       />
       {children}
-    </div>
+    </>
   );
 }
