@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IconButton, Typography, Box } from "@mui/material";
+import {
+  IconButton,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +16,7 @@ import { useTheme } from "@/Themes/ThemeProvider";
 import { anims } from "@/Themes/animations";
 import { mergeAnims } from "@/Utils/MergeObjects";
 import { makeSlotFactory } from "@/Utils/makeSlotFactory";
-import { navbarCmp } from "./NavbarCmpClasses"; // ✅ DO NOT CHANGE
+import { navbarCmp } from "./NavbarCmpClasses";
 import { useState } from "react";
 
 // =====================================================================
@@ -29,7 +35,7 @@ const NavbarRoot = makeSlot(motion.nav, "root")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderBottom: `1px solid ${theme.palette.divider}`,
   minHeight: theme.components?.NavbarCmp?.defaultProps?.height ?? 64,
-  overflow: 'hidden',
+  overflow: "hidden",
 }));
 
 const NavbarTopRow = makeSlot("div", "topRow")(({ theme }) => ({
@@ -109,8 +115,6 @@ export interface NavItem {
   label: string;
 }
 
-export interface NavbarCmpSettings {}
-
 export interface NavbarCmpProps {
   navItems?: NavItem[];
   height?: number | string;
@@ -124,18 +128,45 @@ export default function NavbarCmp(props: NavbarCmpProps) {
   const baseHeight =
     props.height ?? theme.components?.NavbarCmp?.defaultProps?.height ?? 64;
 
+  // ✅ Correct detection: only show on /projects/[slug]
+  const showBackToProjects =
+    /^\/projects\/[^\/]+\/?$/.test(pathname ?? "");
+
   return (
     <NavbarRoot>
-      {/* ─────────────────────────────
-          TOP ROW (brand + desktop links + hamburger)
-      ───────────────────────────── */}
       <NavbarTopRow>
-        <NavbarBrand>
-          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Typography variant="h6">Jeroen Denayer</Typography>
-          </Link>
-        </NavbarBrand>
+        {/* Left side group (Back button + Brand) */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {showBackToProjects && (
+            <Button
+              component={Link}
+              href="/projects"
+              variant="outlined"
+              size="small"
+              sx={{
+                textTransform: "none",
+                borderRadius: 2,
+                fontSize: "0.85rem",
+                mr: 1,
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                minWidth: "auto",
+                px: 1.2,
+              }}
+            >
+              <ArrowBackIcon fontSize="small" />
+            </Button>
+          )}
 
+          <NavbarBrand>
+            <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+              <Typography variant="h6">Jeroen Denayer</Typography>
+            </Link>
+          </NavbarBrand>
+        </Box>
+
+        {/* Desktop nav items */}
         <NavbarList>
           {props.navItems?.map((item) => {
             const isActive = pathname === item.href;
@@ -160,19 +191,17 @@ export default function NavbarCmp(props: NavbarCmpProps) {
           })}
         </NavbarList>
 
+        {/* Mobile hamburger */}
         <MobileMenuButton onClick={() => setOpen((v) => !v)} size="large">
           {open ? <CloseIcon /> : <MenuIcon />}
         </MobileMenuButton>
       </NavbarTopRow>
 
-      {/* ─────────────────────────────
-          EXPANDING MOBILE MENU
-      ───────────────────────────── */}
+      {/* Mobile expanding menu */}
       <AnimatePresence initial={false}>
         {open && (
           <>
             <DividerLine />
-
             <MobileMenu
               key="mobile-menu"
               initial={{ opacity: 0, height: 0 }}

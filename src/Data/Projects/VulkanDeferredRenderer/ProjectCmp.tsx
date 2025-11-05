@@ -148,6 +148,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           <Box
             key={index}
             sx={{
+              width: '100%',
               mb: 2,
               backgroundColor: 'rgba(255,255,255,0.03)',
               borderRadius: 2,
@@ -158,6 +159,8 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             <Accordion
               disableGutters
               sx={{
+                width: '100%',
+                maxWidth: '100%',
                 backgroundColor: 'transparent',
                 '&:before': { display: 'none' },
               }}
