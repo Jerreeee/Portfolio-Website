@@ -115,6 +115,8 @@ export interface NavItem {
   label: string;
 }
 
+export interface NavbarCmpSettings {}
+
 export interface NavbarCmpProps {
   navItems?: NavItem[];
   height?: number | string;
@@ -128,9 +130,8 @@ export default function NavbarCmp(props: NavbarCmpProps) {
   const baseHeight =
     props.height ?? theme.components?.NavbarCmp?.defaultProps?.height ?? 64;
 
-  // ✅ Correct detection: only show on /projects/[slug]
-  const showBackToProjects =
-    /^\/projects\/[^\/]+\/?$/.test(pathname ?? "");
+  // Only show on /projects/[slug]
+  const showBackToProjects = /^\/projects\/[^\/]+\/?$/.test(pathname ?? "");
 
   return (
     <NavbarRoot>
