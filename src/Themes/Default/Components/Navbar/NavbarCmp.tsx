@@ -143,6 +143,7 @@ export default function NavbarCmp(props: NavbarCmpProps) {
               component={Link}
               href="/projects"
               variant="outlined"
+              onClick={() => setOpen(false)}
               size="small"
               sx={{
                 textTransform: "none",

@@ -22,6 +22,7 @@ const MediaRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   overflow: 'hidden',
   width: '100%',
   height: '100%',
+   maxWidth: "100%",
   borderRadius: theme.shape.borderRadius,
 }));
 

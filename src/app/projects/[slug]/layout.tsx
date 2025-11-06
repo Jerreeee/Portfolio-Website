@@ -16,13 +16,9 @@ export default function ProjectSlugLayout({
     <Box
       component="main"
       sx={{
-        maxWidth: (t) => t.breakpoints.values.lg,
+        maxWidth: theme.breakpoints.values.lg,
         mx: "auto",
         width: "100%",
-        px: 2,
-        py: 2,
-        mt: navbarHeight, // push below navbar
-        minWidth: 0,
       }}
     >
       {children}

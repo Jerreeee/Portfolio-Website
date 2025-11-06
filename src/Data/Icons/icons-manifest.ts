@@ -16,6 +16,14 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "3DS Max"
   },
+  "ArtStation": {
+    "type": "svg",
+    "src": "/Icons/ArtStation.svg",
+    "width": 208.8,
+    "height": 195.9,
+    "aspectRatio": 1.0658499234303216,
+    "displayName": "ArtStation"
+  },
   "Blender": {
     "type": "svg",
     "src": "/Icons/Blender.svg",
@@ -103,6 +111,14 @@ export const iconManifest = {
     "height": 128,
     "aspectRatio": 1,
     "displayName": "JSON"
+  },
+  "Linkedin": {
+    "type": "svg",
+    "src": "/Icons/Linkedin.svg",
+    "width": 382,
+    "height": 382,
+    "aspectRatio": 1,
+    "displayName": "Linkedin"
   },
   "Lua": {
     "type": "svg",

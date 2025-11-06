@@ -43,22 +43,23 @@ const GalleryThumbs = makeSlot('div', 'thumbs')({
   gap: '1rem',
 });
 
-const ThumbButton = makeSlot('button', 'thumbButton',
-{shouldForwardProp: (prop) => prop !== 'active',}
+const ThumbButton = makeSlot("button", "thumbButton",
+  { shouldForwardProp: (prop) => prop !== "active" }
 )<{ active: boolean }>(({ theme, active }) => ({
-  position: 'relative',
-  height: '100px',
-  overflow: 'hidden',
-  alignItems: 'center',
+  position: "relative",
+  height: "100px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
   flexShrink: 0,
-  background: 'transparent',
-  border: `2px solid ${active ? theme.palette.common.white : 'transparent'}`,
-  transition: 'border-color 0.2s',
-  cursor: 'pointer',
+  minWidth: 0,
+  maxWidth: "100%",
+  background: "transparent",
+  border: `2px solid ${active ? theme.palette.common.white : "transparent"}`,
+  transition: "border-color 0.2s",
+  cursor: "pointer",
   borderRadius: theme.shape.borderRadius,
-  '&:hover': {
-    borderColor: active ? theme.palette.common.white : theme.palette.grey[400],
-  },
 }));
 
 const VideoOverlay = makeSlot('div', 'videoOverlay')({
@@ -124,7 +125,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                         active={isActive}
                         onClick={() => setActiveIndex(index)}
                       >
-                        <MediaCmp item={thumbItem} priority={index === 0}/>s
+                        <MediaCmp item={thumbItem} priority={index === 0}/>
                         {item.type !== "image" && <VideoOverlay>▶</VideoOverlay>}
                       </ThumbButton>
                     );
