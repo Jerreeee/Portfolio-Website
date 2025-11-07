@@ -20,7 +20,7 @@ export function TallSection({ title, children }: TallSectionProps) {
       <Box
         sx={{
           width: "1.2mm",
-          bgcolor: "#FF0000",
+          bgcolor: "#00d474",
           borderRadius: "1mm",
           flexShrink: 0,
         }}

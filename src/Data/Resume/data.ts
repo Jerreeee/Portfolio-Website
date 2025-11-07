@@ -92,7 +92,7 @@ export const resumeData: ResumeData = {
   experience: {
     work: [
       {
-        title: "Internship / Technical Artist — Neopica",
+        title: "Technical Artist — Neopica",
         right: "22–23",
         body:
           "Building and maintaining a set of Houdini-based procedural tools for Unreal Engine, each handling a specific part of the level pipeline—terrain, road, cliff, vegetation generation/placement—linked together through PCG so large worlds could be generated efficiently in chunks. Responsible for extending functionality, solving pipeline issues, and keeping the tools flexible and performant for environment artists.",

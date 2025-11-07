@@ -5,7 +5,7 @@ import fs from "fs";
 
 async function generateResumePDF(): Promise<void> {
   const outputPath = path.join(process.cwd(), "public", "resume.pdf");
-  const url = "http://localhost:3000/resume";
+  const url = "http://localhost:3000/resume/raw";
 
   console.log("🟡 Launching browser...");
   const browser: Browser = await puppeteer.launch({
@@ -23,10 +23,9 @@ async function generateResumePDF(): Promise<void> {
     const box = await resume!.boundingBox();
 
     const pdfBuffer = await page.pdf({
+      path: outputPath,
+      format: "A4",
       printBackground: true,
-      width: `${box!.width}px`,
-      height: `${box!.height}px`,
-      pageRanges: "1",
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
 

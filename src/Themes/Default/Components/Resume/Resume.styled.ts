@@ -53,6 +53,7 @@ export const RightColumn = styled(Box)({
 
 export const NameBlock = styled(Box)({
   flexShrink: 1,
+  textAlign: "center",
 });
 
 export const FirstName = styled(Typography)({
@@ -82,18 +83,25 @@ export const ContactBlock = styled(Box)({
   gap: "clamp(1.5mm, 1vh, 3mm)",
   flexShrink: 1,
   minHeight: 0,
+  alignItems: "center",
+  textAlign: "center",
 });
 
 export const ContactRow = styled(Box)({
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
   fontSize: "clamp(2.4mm, 0.8vw, 3.2mm)",
+  width: "100%",
+  textAlign: "center",
 });
 
 export const SocialRow = styled(Box)({
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
   gap: "2.5mm",
+  width: "100%",
 });
 
 export const QRWrapper = styled(Box)({
@@ -112,11 +120,16 @@ export const SkillsBlock = styled(Box)({
   gap: "clamp(1.4mm, 1vh, 3mm)",
   flexShrink: 1,
   minHeight: 0,
+  alignItems: "center",
+  textAlign: "center",
 });
 
 export const SkillGroup = styled(Box)({
   display: "flex",
   flexDirection: "column",
+  alignItems: "center",
+  textAlign: "center",
+  width: "100%",
 });
 
 export const SkillGroupTitle = styled(Typography)({
@@ -129,6 +142,18 @@ export const SkillGroupText = styled(Typography)({
   fontSize: "clamp(2.6mm, 0.8vw, 3.2mm)",
   lineHeight: 1.15,
   whiteSpace: "pre-line",
+  textAlign: "center",
+});
+
+export const SkillGrid3 = styled(Box)({
+  width: "100%",
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr",
+  columnGap: "2.2mm",
+  rowGap: "0.3mm", // ✅ tighter vertical spacing
+  justifyItems: "center",
+  alignItems: "center",
+  textAlign: "center",
 });
 
 export const DividerBar = styled(Box)({
@@ -208,13 +233,22 @@ export const EntryBody = styled(Typography)({
 });
 
 /* ===========================
-   NEW: SECTION HEADER (WORK / PROJECTS)
+   SECTION HEADER
 =========================== */
 
-export const SectionHeader = styled(Typography)({
+export const SectionHeaderLeft = styled(Typography)({
   fontWeight: 700,
   fontSize: "clamp(3.6mm, 1vw, 4.2mm)",
   lineHeight: 1,
-  margin: 0,
-  padding: 0,
+  marginBottom: "0.6mm",
+  textAlign: "center",       // stays centered
+});
+
+export const SectionHeaderRight = styled(Typography)({
+  fontWeight: 700,
+  fontSize: "clamp(3.6mm, 1vw, 4.2mm)",
+  lineHeight: 1,
+  marginBottom: 0,
+  paddingBottom: 0,
+  textAlign: "left",
 });
