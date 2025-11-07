@@ -51,6 +51,7 @@ export function TallSection({ title, children }: TallSectionProps) {
         />
 
         <Typography
+          component="div"
           sx={{
             fontSize: "clamp(2.6mm, 1vw, 3.3mm)",
             lineHeight: 1.5,

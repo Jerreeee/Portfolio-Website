@@ -1,5 +1,5 @@
-import Resume from "@/app/(site)/resume/page";
+import Resume from "@/Themes/Default/Components/Resume/Resume";
 
 export default function RawResumePage() {
-  return <Resume />;
+  return <Resume scale={1}/>;
 }

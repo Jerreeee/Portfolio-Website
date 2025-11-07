@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs";
 
 async function generateResumePDF(): Promise<void> {
-  const outputPath = path.join(process.cwd(), "public", "resume.pdf");
+  const outputPath = path.join(process.cwd(), "public", "files", "resume.pdf");
   const url = "http://localhost:3000/resume/raw";
 
   console.log("🟡 Launching browser...");

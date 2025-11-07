@@ -103,7 +103,7 @@ export const resumeData: ResumeData = {
         title: "ISS Docking Simulator — Team Project",
         right: "Sept – Dec 21",
         body:
-          "Responsible for modelling and texturing high-quality ISS modules and components as part of a multi-disciplinary team. Worked collaboratively using shared asset pipelines and version control, strengthening communication, teamwork, and problem-solving skills while delivering production-ready real-time assets.",
+        "Responsible for modelling and texturing high-quality ISS modules and components for the “Space – The Human Quest” exhibition in Antwerp. Working in a team and sharing assets through a common workflow and version control, improving communication, teamwork, and problem-solving skills while creating real-time assets for the exhibit."
       },
     ],
   },
