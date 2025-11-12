@@ -121,7 +121,7 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                         rel="noopener noreferrer"
                         variant="outlined"
                         size="small"
-                        startIcon={<IconCmp techName="Github" height={18} showDisplayName={false} />}
+                        startIcon={<IconCmp techName="GitHub" height={18} showDisplayName={false} />}
                         sx={{
                           textTransform: 'none',
                           borderColor: 'rgba(255,255,255,0.2)',
