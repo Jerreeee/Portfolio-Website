@@ -26,10 +26,10 @@ export const LeftColumn = styled(Box)({
   background: "#1f1f1f",
   color: "#fff",
   boxSizing: "border-box",
-  padding: "clamp(6mm, 3vh, 10mm)",
+  padding: "6mm",
   display: "flex",
   flexDirection: "column",
-  gap: "clamp(3mm, 2vh, 6mm)",
+  gap: "8mm",
   flexShrink: 1,
   minHeight: 0,
   alignItems: "center",
@@ -39,10 +39,10 @@ export const LeftColumn = styled(Box)({
 export const RightColumn = styled(Box)({
   width: "65%",
   boxSizing: "border-box",
-  padding: "clamp(6mm, 3vh, 10mm)",
+  padding: "6mm",
   display: "flex",
   flexDirection: "column",
-  gap: "clamp(4mm, 2vh, 7mm)",
+  gap: "3mm",
   flexShrink: 1,
   minHeight: 0,
 });
@@ -57,19 +57,19 @@ export const NameBlock = styled(Box)({
 });
 
 export const FirstName = styled(Typography)({
-  fontSize: "clamp(8mm, 3vw, 11mm)",
+  fontSize: "10mm",
   fontWeight: 800,
   lineHeight: 1,
 });
 
 export const LastName = styled(Typography)({
-  fontSize: "clamp(8mm, 3vw, 11mm)",
+  fontSize: "10mm",
   fontWeight: 800,
   lineHeight: 1,
 });
 
 export const Tagline = styled(Typography)({
-  fontSize: "clamp(3mm, 1vw, 4mm)",
+  fontSize: "4mm",
   marginTop: "2mm",
 });
 
@@ -80,7 +80,7 @@ export const Tagline = styled(Typography)({
 export const ContactBlock = styled(Box)({
   display: "flex",
   flexDirection: "column",
-  gap: "clamp(1.5mm, 1vh, 3mm)",
+  gap: "3mm",
   flexShrink: 1,
   minHeight: 0,
   alignItems: "center",
@@ -91,7 +91,7 @@ export const ContactRow = styled(Box)({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "clamp(2.4mm, 0.8vw, 3.2mm)",
+  fontSize: "3mm",
   width: "100%",
   textAlign: "center",
 });
@@ -117,7 +117,7 @@ export const QRWrapper = styled(Box)({
 export const SkillsBlock = styled(Box)({
   display: "flex",
   flexDirection: "column",
-  gap: "clamp(1.4mm, 1vh, 3mm)",
+  gap: "3mm",
   flexShrink: 1,
   minHeight: 0,
   alignItems: "center",
@@ -134,12 +134,12 @@ export const SkillGroup = styled(Box)({
 
 export const SkillGroupTitle = styled(Typography)({
   fontWeight: 700,
-  fontSize: "clamp(2.7mm, 0.8vw, 3.3mm)",
+  fontSize: "3.3mm",
   lineHeight: 1,
 });
 
 export const SkillGroupText = styled(Typography)({
-  fontSize: "clamp(2.6mm, 0.8vw, 3.2mm)",
+  fontSize: "3.2mm",
   lineHeight: 1.15,
   whiteSpace: "pre-line",
   textAlign: "center",
@@ -150,7 +150,7 @@ export const SkillGrid3 = styled(Box)({
   display: "grid",
   gridTemplateColumns: "1fr 1fr 1fr",
   columnGap: "2.2mm",
-  rowGap: "0.3mm", // ✅ tighter vertical spacing
+  rowGap: "0.3mm",
   justifyItems: "center",
   alignItems: "center",
   textAlign: "center",
@@ -175,7 +175,7 @@ export const TallBar = styled(Box)({
 });
 
 export const TallTitle = styled(Typography)({
-  fontSize: "clamp(3.6mm, 1.4vw, 5mm)",
+  fontSize: "5mm",
   fontWeight: 800,
   letterSpacing: "0.5mm",
   lineHeight: 1,
@@ -185,7 +185,7 @@ export const TallTitle = styled(Typography)({
 
 export const TallDivider = styled(Divider)({
   marginTop: "0.3mm",
-  marginBottom: "clamp(0.6mm, 0.5vh, 1.2mm)",
+  marginBottom: "1.2mm",
   borderColor: "#000",
 });
 
@@ -194,7 +194,7 @@ export const TallDivider = styled(Divider)({
 =========================== */
 
 export const EntryWrapper = styled(Box)({
-  marginTop: "clamp(0.8mm, 0.5vh, 2mm)",
+  marginTop: "2mm",
   breakInside: "avoid",
   pageBreakInside: "avoid",
 });
@@ -203,23 +203,23 @@ export const EntryRow = styled(Box)({
   display: "flex",
   alignItems: "baseline",
   gap: "1.6mm",
-  marginBottom: "clamp(0.2mm, 0.4vh, 1mm)",
+  marginBottom: "1mm",
 });
 
 export const EntryTitle = styled(Typography)({
   fontWeight: 700,
-  fontSize: "clamp(2.8mm, 0.9vw, 3.4mm)",
+  fontSize: "3.4mm)",
   flex: 1,
   lineHeight: 1.05,
 });
 
 export const EntryRight = styled(Typography)({
-  fontSize: "clamp(2.4mm, 0.8vw, 3.1mm)",
+  fontSize: "3.1mm",
   lineHeight: 1,
 });
 
 export const EntrySub = styled(Typography)({
-  fontSize: "clamp(2.3mm, 0.7vw, 2.9mm)",
+  fontSize: "2.9mm",
   fontStyle: "italic",
   color: "#444",
   marginTop: "-3mm",
@@ -228,7 +228,7 @@ export const EntrySub = styled(Typography)({
 });
 
 export const EntryBody = styled(Typography)({
-  fontSize: "clamp(2.5mm, 0.85vw, 3.1mm)",
+  fontSize: "3.1mm",
   lineHeight: 1.45,
 });
 
@@ -238,7 +238,7 @@ export const EntryBody = styled(Typography)({
 
 export const SectionHeaderLeft = styled(Typography)({
   fontWeight: 700,
-  fontSize: "clamp(3.6mm, 1vw, 4.2mm)",
+  fontSize: "4.2mm",
   lineHeight: 1,
   marginBottom: "0.6mm",
   textAlign: "center",       // stays centered
@@ -246,7 +246,7 @@ export const SectionHeaderLeft = styled(Typography)({
 
 export const SectionHeaderRight = styled(Typography)({
   fontWeight: 700,
-  fontSize: "clamp(3.6mm, 1vw, 4.2mm)",
+  fontSize: "4.2mm",
   lineHeight: 1,
   marginBottom: 0,
   paddingBottom: 0,

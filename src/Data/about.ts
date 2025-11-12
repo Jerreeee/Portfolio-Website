@@ -1,4 +1,4 @@
-import { AboutInfo } from "@/Types/about.types";
+import { AboutInfo } from "@/Types/about";
 
 export const aboutInfo: AboutInfo = {
   bio: {
@@ -28,7 +28,7 @@ export const aboutInfo: AboutInfo = {
       },
       artstation: {
         label: "ArtStation",
-        icon: "Brush",
+        icon: "ArtStation",
         href: "https://www.artstation.com/jeroendenayer",
         tooltip: "View ArtStation",
       },
@@ -38,20 +38,37 @@ export const aboutInfo: AboutInfo = {
   skills: {
     groups: [
       {
-        title: "Programming",
-        items: ["C++", "C#", "Lua", "Python"],
+        title: "Programming Languages",
+        items: ["cplusplus", "csharp", "Python", "Typescript", "Lua"],
       },
       {
-        title: "API",
-        items: ["Vulkan", "DirectX 11"],
+        title: "APIs & Libraries",
+        items: ["Vulkan", "DirectX 11", "OpenGL", "SDL", "GLM"],
       },
       {
-        title: "Engines",
+        title: "Game Engines",
         items: ["Unreal", "Unity"],
       },
       {
-        title: "Tools",
-        items: ["Houdini", "Blender", "CMake", "Perforce", "GitHub"],
+        title: "Tools & Pipeline",
+        items: [
+          "Houdini",
+          "Visual_Studio",
+          "Visual_Studio_Code",
+          "RenderDoc",
+          "CMake",
+          "Perforce",
+          "GitHub",
+          "Substance_Designer",
+          "Substance_Painter",
+          "Blender",
+          "3DS_Max",
+          "Maya",
+        ],
+      },
+      {
+        title: "Art & Design",
+        items: ["Photoshop", "Premiere_Pro"],
       },
     ],
     languages: [

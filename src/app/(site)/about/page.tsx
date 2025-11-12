@@ -10,12 +10,12 @@ import {
   Tooltip,
   useTheme,
 } from '@mui/material';
-import { GitHub, LinkedIn, Email, Brush } from '@mui/icons-material';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
-import { iconManifest } from '@/Data/Icons/icons-manifest'; // ✅ import manifest
+import { aboutInfo } from '@/Data/about';
 
 export default function About() {
   const theme = useTheme();
+  const { bio, contact, skills } = aboutInfo;
 
   return (
     <Box
@@ -41,8 +41,8 @@ export default function About() {
           >
             <Box
               component="img"
-              src="/Images/profilepic.jpg"
-              alt="Profile"
+              src={bio.profileImage}
+              alt={`${bio.firstName} ${bio.lastName}`}
               sx={{
                 width: { xs: 200, md: 240 },
                 height: { xs: 200, md: 240 },
@@ -55,53 +55,55 @@ export default function About() {
 
             {/* Contact Icons */}
             <Box sx={{ display: 'flex', gap: 2 }}>
+              {/* Email */}
               <Tooltip title="Copy Email">
                 <IconButton
                   color="primary"
                   size="large"
-                  onClick={() => {
-                    navigator.clipboard.writeText('jeroen@denayer.com');
-                  }}
+                  onClick={() => navigator.clipboard.writeText(contact.email)}
                 >
-                  <Email />
+                  <IconCmp techName="Email" />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="GitHub">
-                <IconButton
-                  component="a"
-                  href="https://github.com/Jerreeee"
-                  target="_blank"
-                  color="primary"
-                  size="large"
-                >
-                  <GitHub />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip title="LinkedIn">
-                <IconButton
-                  component="a"
-                  href="https://www.linkedin.com/in/jeroen-denayer"
-                  target="_blank"
-                  color="primary"
-                  size="large"
-                >
-                  <LinkedIn />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip title="ArtStation">
-                <IconButton
-                  component="a"
-                  href="https://www.artstation.com/jeroendenayer"
-                  target="_blank"
-                  color="primary"
-                  size="large"
-                >
-                  <Brush />
-                </IconButton>
-              </Tooltip>
+              {/* Social Links */}
+              {Object.values(contact.links).map(
+                (link) =>
+                  link && (
+                    <Tooltip key={link.label} title={link.tooltip}>
+                      <IconButton
+                        component="a"
+                        href={link.href}
+                        target="_blank"
+                        color="primary"
+                        size="large"
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1.2,
+                          borderRadius: '50%',
+                          transition: 'transform 0.15s ease',
+                          '&:hover': { transform: 'scale(1.1)' },
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 28,
+                            height: 28,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <IconCmp techName={link.icon} grayScaleIconColor='#FFFFFF' />
+                        </Box>
+                      </IconButton>
+                    </Tooltip>
+                  )
+              )}
             </Box>
           </Grid>
 
@@ -120,13 +122,14 @@ export default function About() {
                 maxWidth: 700,
               }}
             >
-                I’m Jeroen Denayer, a C++ programmer and technical artist who became fascinated by how much creative and technical work can be automated and improved. During my Game Graphics Production studies at DAE, I discovered procedural workflows through Houdini and started exploring how to make production faster and more efficient. While working at Neopica, I developed this interest further by building procedural tools that improved entire pipelines, which motivated me to start a second bachelor in Game Development. There, I focused on C++ and low-level GPU programming, learning how to create tools and systems that make complex artistic and technical work easier, faster, and less repetitive.
+              {bio.description}
             </Typography>
           </Grid>
         </Grid>
 
         {/* ================= SKILLS SECTION ================= */}
         <Box sx={{ mb: 6 }}>
+          {/* Header */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
             <Typography
               variant="h4"
@@ -184,98 +187,91 @@ export default function About() {
                 alignItems: 'center',
               }}
             >
-              <Typography
-                variant="caption"
-                sx={{
-                  color: theme.palette.text.secondary,
-                  fontSize: '0.75rem',
-                }}
-              >
-                Dutch — Native
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: theme.palette.text.secondary,
-                  fontSize: '0.75rem',
-                }}
-              >
-                English — Fluent
-              </Typography>
+              {skills.languages.map((lang) => (
+                <Typography
+                  key={lang.name}
+                  variant="caption"
+                  sx={{
+                    color: theme.palette.text.secondary,
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  {lang.name}
+                  {lang.level ? ` — ${lang.level}` : ''}
+                </Typography>
+              ))}
             </Box>
           </Box>
 
-          {/* ===== Two Columns of Skill Groups ===== */}
+          {/* Skill Groups in two columns */}
           <Grid
             container
             spacing={2}
             justifyContent="center"
             sx={{ px: { xs: 1, md: 2 } }}
           >
-            {[
-              [
-                { title: 'Programming Languages', items: ['cplusplus', 'Python', 'csharp', 'Typescript', 'Lua'] },
-                { title: 'APIs & Libraries', items: ['Vulkan', 'OpenGL', 'SDL', 'GLM'] },
-                { title: 'Game Engines', items: ['Unreal', 'Unity'] },
-              ],
-              [
-                { title: 'Tools & Pipeline', items: ['Houdini', 'Visual_Studio', 'Visual_Studio_Code', 'RenderDoc', 'CMake', 'Substance_Designer', 'Substance_Painter', 'Blender', '3DS_Max', 'Maya'] },
-                { title: 'Art & Design', items: ['Photoshop', 'Premiere_Pro'] },
-              ],
-            ].map((column, i) => (
+            {skills.groups.map((section, i) => (
               <Grid
-                key={i}
+                key={section.title}
                 size={{ xs: 12, md: 6 }}
-                sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1.5,
+                  // Force odd/even distribution so last "Art & Design" stays left
+                  gridColumn: { md: i % 2 === 0 ? '1' : '2' },
+                }}
               >
-                {column.map((section) => (
-                  <Box
-                    key={section.title}
+                <Box
+                  sx={{
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    border: `1px solid rgba(255,255,255,0.06)`,
+                    borderRadius: 2,
+                    p: 1.25,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 0.5,
+                    height: '100%',
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
                     sx={{
-                      backgroundColor: 'rgba(255,255,255,0.03)',
-                      border: `1px solid rgba(255,255,255,0.06)`,
-                      borderRadius: 2,
-                      p: 1.25,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 0.5,
+                      color: theme.palette.text.primary,
+                      fontSize: '0.85rem',
+                      mb: 0.25,
                     }}
                   >
-                    <Typography
-                      variant="subtitle1"
-                      sx={{
-                        color: theme.palette.text.primary,
-                        fontSize: '0.85rem',
-                        mb: 0.25,
-                      }}
-                    >
-                      {section.title}
-                    </Typography>
+                    {section.title}
+                  </Typography>
 
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: 1,
-                        alignItems: 'center',
-                      }}
-                    >
-                      {section.items.map((item) => (
-                        <Box
-                          key={item}
-                          sx={{
-                            height: 22,
-                            opacity: 0.9,
-                            transition: 'transform 0.15s ease',
-                            '&:hover': { transform: 'scale(1.1)' },
-                          }}
-                        >
-                          <IconCmp techName={item} showDisplayName />
-                        </Box>
-                      ))}
-                    </Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 1,
+                      alignItems: 'center',
+                    }}
+                  >
+                    {section.items.map((item) => (
+                      <Box
+                        key={item}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: 22,
+                          minWidth: 22,
+                          opacity: 0.9,
+                          transition: 'transform 0.15s ease',
+                          '&:hover': { transform: 'scale(1.1)' },
+                        }}
+                      >
+                        <IconCmp techName={item} showDisplayName />
+                      </Box>
+                    ))}
                   </Box>
-                ))}
+                </Box>
               </Grid>
             ))}
           </Grid>

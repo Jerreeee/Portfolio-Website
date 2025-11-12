@@ -72,13 +72,13 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "error"
   },
-  "Github": {
+  "GitHub": {
     "type": "svg",
-    "src": "/Icons/Github.svg",
+    "src": "/Icons/GitHub.svg",
     "width": 25,
     "height": 25,
     "aspectRatio": 1,
-    "displayName": "Github"
+    "displayName": "GitHub"
   },
   "GLM": {
     "type": "image",
@@ -112,13 +112,13 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "JSON"
   },
-  "Linkedin": {
+  "LinkedIn": {
     "type": "svg",
-    "src": "/Icons/Linkedin.svg",
+    "src": "/Icons/LinkedIn.svg",
     "width": 382,
     "height": 382,
     "aspectRatio": 1,
-    "displayName": "Linkedin"
+    "displayName": "LinkedIn"
   },
   "Lua": {
     "type": "svg",

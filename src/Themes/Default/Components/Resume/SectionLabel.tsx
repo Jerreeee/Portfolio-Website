@@ -9,7 +9,7 @@ export function SectionLabel({ children }: SectionLabelProps) {
   return (
     <Typography
       sx={{
-        fontSize: "clamp(3mm, 0.9vw, 4mm)",
+        fontSize: "4mm",
         fontWeight: 800,
         letterSpacing: "0.6mm",
         lineHeight: 1,

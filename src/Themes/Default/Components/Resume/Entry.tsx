@@ -12,7 +12,7 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
   return (
     <Box
       sx={{
-        mt: "clamp(0.8mm, 0.5vh, 2mm)",
+        mt: "2mm",
         breakInside: "avoid",
         pageBreakInside: "avoid",
       }}
@@ -22,13 +22,13 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
           display: "flex",
           alignItems: "baseline",
           gap: "1.6mm",
-          mb: "clamp(0.2mm, 0.4vh, 1mm)",
+          mb: "1mm",
         }}
       >
         <Typography
           sx={{
             fontWeight: 700,
-            fontSize: "clamp(2.8mm, 0.9vw, 3.4mm)",
+            fontSize: "3.4mm",
             flex: 1,
             lineHeight: 1.05,
           }}
@@ -39,7 +39,7 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
         {right && (
           <Typography
             sx={{
-              fontSize: "clamp(2.4mm, 0.8vw, 3.1mm)",
+              fontSize: "3.1mm",
               lineHeight: 1,
             }}
           >
@@ -51,7 +51,7 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
       {sub && (
         <Typography
           sx={{
-            fontSize: "clamp(2.3mm, 0.7vw, 2.9mm)",
+            fontSize: "2.9mm",
             fontStyle: "italic",
             color: "#444",
             mt: "-3mm",
@@ -65,7 +65,7 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
 
       <Typography
         sx={{
-          fontSize: "clamp(2.5mm, 0.85vw, 3.1mm)",
+          fontSize: "3.1mm",
           lineHeight: 1.45,
         }}
       >
@@ -76,7 +76,7 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
         <MuiLink
           href={link}
           sx={{
-            fontSize: "clamp(2.5mm, 0.85vw, 3.1mm)",
+            fontSize: "3.1mm",
             color: "#0a84ff",
           }}
           underline="hover"

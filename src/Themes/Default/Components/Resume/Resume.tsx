@@ -1,6 +1,6 @@
 "use client";
 
-import { CssBaseline, GlobalStyles, Link as MuiLink } from "@mui/material";
+import { Box, CssBaseline, GlobalStyles, Link as MuiLink } from "@mui/material";
 import {
   PageContainer,
   LeftColumn,
@@ -88,7 +88,7 @@ export default function Resume() {
                 href={`mailto:${contact.email}`}
                 color="#b3ffc8"
                 underline="hover"
-                sx={{ fontSize: "clamp(2.4mm, 0.8vw, 3.2mm)" }}
+                sx={{ fontSize: "3.2mm" }}
               >
                 {contact.email}
               </MuiLink>
@@ -122,10 +122,38 @@ export default function Resume() {
             </SkillGroup>
 
             <SectionLabel>TECHNICAL SKILLS</SectionLabel>
+
             {skills.groups.map((group: SkillGroupType) => (
               <SkillGroup key={group.title}>
                 <SkillGroupTitle>{group.title.toUpperCase()}</SkillGroupTitle>
-                {renderSkills(group.items)}
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    gap: "1.8mm",
+                    mt: "0.8mm",
+                  }}
+                >
+                  {group.items.map((item: string) => (
+                    <Box
+                      key={item}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "5mm",
+                        opacity: 0.9,
+                        transition: "transform 0.15s ease",
+                        "&:hover": { transform: "scale(1.1)" },
+                      }}
+                    >
+                      <IconCmp techName={item} showDisplayName />
+                    </Box>
+                  ))}
+                </Box>
               </SkillGroup>
             ))}
           </SkillsBlock>
