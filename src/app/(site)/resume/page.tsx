@@ -22,8 +22,10 @@ export default function ResumePage() {
 
   const rawNavH = theme.components?.NavbarCmp?.defaultProps?.height ?? 0;
   const navH = typeof rawNavH === "number" ? rawNavH : parseFloat(rawNavH);
-  const borderThickness = 0;
+  const borderThickness = 2;
   const buttonH = 50;
+  const cornerR = Number.parseFloat(theme.shape.borderRadius.toString());
+  const innerR = Math.max(0, cornerR - borderThickness);
 
   // Track viewport height
   useEffect(() => {
@@ -115,13 +117,13 @@ export default function ResumePage() {
           width: "100%",
           height: `calc(100% - ${buttonH}px)`,
           border: "0px solid green",
-          background: "#000",
           boxSizing: "border-box",
           overflowY: "auto",
           overflowX: "auto",
         }}
       >
         {ready && (
+          // Outer rounded frame with gradient ring
           <Box
             sx={{
               position: "absolute",
@@ -132,19 +134,39 @@ export default function ResumePage() {
               width: `${borderW}px`,
               height: `${borderH}px`,
               boxSizing: "border-box",
-              border: `${borderThickness}px solid orange`,
+              border: `${borderThickness}px solid transparent`,
+              borderRadius: `${cornerR}px`,
+              background:
+                "linear-gradient(#0000,#0000) padding-box, linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%) border-box",
+
+              // clip INSIDE this frame so the resume can't overflow the rounded corners
               overflow: "hidden",
             }}
           >
+            {/* Middle clipper: exact inner area, rounded + hidden overflow */}
             <Box
               sx={{
-                width: "210mm",
-                height: "297mm",
-                transform: `scale(${appliedScale})`,
-                transformOrigin: "top left",
+                width: `${scaledW}px`,
+                height: `${scaledH}px`,
+                borderRadius: `${innerR}px`,
+                overflow: "hidden",
+                background: "#fff",
               }}
             >
-              <Resume />
+              {/* Scaled A4 page (no radius here) */}
+              <Box
+                sx={{
+                  width: "210mm",
+                  height: "297mm",
+                  transform: `scale(${appliedScale})`,
+                  transformOrigin: "top left",
+                  // rendering niceties
+                  willChange: "transform",
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                <Resume />
+              </Box>
             </Box>
           </Box>
         )}
