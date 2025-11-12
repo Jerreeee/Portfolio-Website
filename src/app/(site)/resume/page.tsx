@@ -87,7 +87,15 @@ export default function ResumePage() {
   const ready = viewportH > 0 && fitScale > 0;
 
   return (
-    <Box sx={{ width: "100%", height: viewportH - navH }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: viewportH - navH,
+        background: "linear-gradient(to bottom, #151a2c, #221730)", // match About page
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {/* Top bar */}
       <Box
         sx={{
