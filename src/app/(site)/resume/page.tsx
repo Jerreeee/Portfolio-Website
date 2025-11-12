@@ -16,16 +16,16 @@ export default function ResumePage() {
   const { theme } = useTheme();
   const measureRef = useRef<HTMLDivElement>(null);
 
-  const [fitScale, setFitScale] = useState(0);    // auto calculated scale
-  const [zoomScale, setZoomScale] = useState(1);  // ctrl+scroll zoom
-  const [viewportH, setViewportH] = useState(0);  // for green container height
+  const [fitScale, setFitScale] = useState(0);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [viewportH, setViewportH] = useState(0);
 
   const rawNavH = theme.components?.NavbarCmp?.defaultProps?.height ?? 0;
   const navH = typeof rawNavH === "number" ? rawNavH : parseFloat(rawNavH);
   const borderThickness = 0;
   const buttonH = 50;
 
-  // ✅ Track real viewport height only (NOT zoom changes)
+  // Track viewport height
   useEffect(() => {
     const update = () => setViewportH(window.innerHeight);
     update();
@@ -33,7 +33,7 @@ export default function ResumePage() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // ✅ ResizeObserver recalculates ONLY when container layout changes, NOT on zoom
+  // Auto-fit resume to container
   useLayoutEffect(() => {
     const el = measureRef.current;
     if (!el) return;
@@ -54,11 +54,10 @@ export default function ResumePage() {
     const rect = el.getBoundingClientRect();
     calc(rect.width, rect.height);
     ro.observe(el);
-
     return () => ro.disconnect();
   }, []);
 
-  // ✅ Ctrl + scroll zoom (NOT tied to fitScale)
+  // Ctrl+scroll zoom
   useEffect(() => {
     const el = measureRef.current;
     if (!el) return;
@@ -111,23 +110,22 @@ export default function ResumePage() {
       {/* GREEN container */}
       <Box
         ref={measureRef}
-  sx={{
-    position: "relative",
-    width: "100%",
-    height: `calc(100% - ${buttonH}px)`,
-    // border: "5px solid green",
-    background: "#000",
-    boxSizing: "border-box",
-
-    overflowY: "auto",
-    overflowX: "auto",
-  }}
+        sx={{
+          position: "relative",
+          width: "100%",
+          height: `calc(100% - ${buttonH}px)`,
+          border: "0px solid green",
+          background: "#000",
+          boxSizing: "border-box",
+          overflowY: "auto",
+          overflowX: "auto",
+        }}
       >
         {ready && (
           <Box
             sx={{
               position: "absolute",
-              top: "0%",
+              top: 0,
               left: "50%",
               transform: "translateX(-50%)",
               transformOrigin: "top center",
@@ -140,12 +138,13 @@ export default function ResumePage() {
           >
             <Box
               sx={{
-                width: `${scaledW}px`,
-                height: `${scaledH}px`,
-                overflow: "hidden",
+                width: "210mm",
+                height: "297mm",
+                transform: `scale(${appliedScale})`,
+                transformOrigin: "top left",
               }}
             >
-              <Resume scale={appliedScale} />
+              <Resume />
             </Box>
           </Box>
         )}

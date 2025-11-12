@@ -3,11 +3,11 @@ import { ProjectRequiredInfo } from '@/Data/Projects/project';
 export const data: ProjectRequiredInfo = {
   slug: 'DualRasterizer',
   title: 'Dual Rasterizer ',
-  thumbnailImage: 'GPU_AnisotropicSampling',
-  heroImage: 'GPU_AnisotropicSampling_NoFire',
+  thumbnailImage: 'GPU_Final',
+  heroImage: 'GPU_Final',
   overviewMedia: [
+    "GPU_Final",
     "GPU_AnisotropicSampling",
-    "GPU_AnisotropicSampling_NoFire",
   ],
   shortDescription: 'A Dual Rasterizer build with c++ and DirectX 11',
   mediumDescription: `**The Dual Rasterizer** was built around three goals.

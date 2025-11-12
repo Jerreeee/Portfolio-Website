@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, CssBaseline, GlobalStyles, Link as MuiLink } from "@mui/material";
+import { CssBaseline, GlobalStyles, Link as MuiLink } from "@mui/material";
 import {
   PageContainer,
   LeftColumn,
@@ -22,11 +22,12 @@ import {
   SectionHeaderRight,
 } from "./Resume.styled";
 
-import { resumeData } from "@/Data/Resume/data";
+import { aboutInfo } from "@/Data/about";
 import { IconCmp } from "@/Themes/Default/Components/Icon";
 import { SectionLabel } from "@/Themes/Default/Components/Resume/SectionLabel";
 import { TallSection } from "@/Themes/Default/Components/Resume/TallSection";
 import { Entry } from "@/Themes/Default/Components/Resume/Entry";
+import type { ContactLink, SkillGroup as SkillGroupType, EntryItem, Language } from "@/Types/about";
 
 /* --------- Helpers --------- */
 
@@ -41,7 +42,7 @@ function renderSkills(items: string[]) {
 
   return (
     <SkillGrid3>
-      {normalized.map((x, i) =>
+      {normalized.map((x: string | null, i: number) =>
         x ? <SkillGroupText key={i}>{`• ${x}`}</SkillGroupText> : <span key={i} />
       )}
     </SkillGrid3>
@@ -50,13 +51,14 @@ function renderSkills(items: string[]) {
 
 /* --------- Component --------- */
 
-export default function Resume({ scale }: { scale: number }) {
-  const { name, contact, skills, summary, experience, education } = resumeData;
+export default function Resume() {
+  const { bio, contact, skills, experience, education } = aboutInfo;
 
   return (
     <div id="resume-page">
       <CssBaseline />
 
+      {/* Print layout rules */}
       <GlobalStyles
         styles={{
           "@page": { size: "A4", margin: 0 },
@@ -69,116 +71,91 @@ export default function Resume({ scale }: { scale: number }) {
         }}
       />
 
-      <Box
-        sx={{
-          width: "210mm",
-          height: "297mm",
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-        }}
-      >
-        <PageContainer>
-          {/* LEFT COLUMN */}
-          <LeftColumn>
-            <NameBlock>
-              <FirstName>{name.first}</FirstName>
-              <LastName>{name.last}</LastName>
-              <Tagline>{name.tagline}</Tagline>
-            </NameBlock>
+      <PageContainer>
+        {/* LEFT COLUMN */}
+        <LeftColumn>
+          <NameBlock>
+            <FirstName>{bio.firstName}</FirstName>
+            <LastName>{bio.lastName}</LastName>
+            <Tagline>{bio.tagline}</Tagline>
+          </NameBlock>
 
-            <ContactBlock>
-              <SectionLabel>CONTACT</SectionLabel>
-              <ContactRow>
-                <MuiLink
-                  href={`mailto:${contact.email}`}
-                  color="#b3ffc8"
-                  underline="hover"
-                  sx={{ fontSize: "clamp(2.4mm, 0.8vw, 3.2mm)" }}
-                >
-                  {contact.email}
-                </MuiLink>
-              </ContactRow>
-              <SocialRow>
-                {contact.links.github && (
-                  <MuiLink href={contact.links.github} underline="none">
-                    <IconCmp techName="Github" height="4.2mm" />
+          <ContactBlock>
+            <SectionLabel>CONTACT</SectionLabel>
+
+            <ContactRow>
+              <MuiLink
+                href={`mailto:${contact.email}`}
+                color="#b3ffc8"
+                underline="hover"
+                sx={{ fontSize: "clamp(2.4mm, 0.8vw, 3.2mm)" }}
+              >
+                {contact.email}
+              </MuiLink>
+            </ContactRow>
+
+            <SocialRow>
+              {(Object.values(contact.links) as ContactLink[]).map(
+                (link: ContactLink) => (
+                  <MuiLink key={link.label} href={link.href} underline="none">
+                    <IconCmp techName={link.icon} height="4.2mm" />
                   </MuiLink>
-                )}
-                {contact.links.linkedin && (
-                  <MuiLink href={contact.links.linkedin} underline="none">
-                    <IconCmp techName="Linkedin" height="4.2mm" />
-                  </MuiLink>
-                )}
-                {contact.links.artstation && (
-                  <MuiLink href={contact.links.artstation} underline="none">
-                    <IconCmp techName="ArtStation" height="4.2mm" />
-                  </MuiLink>
-                )}
-              </SocialRow>
-              {contact.qrSrc && (
-                <QRWrapper>
-                  <img src={contact.qrSrc} alt="QR Code" />
-                </QRWrapper>
+                )
               )}
-            </ContactBlock>
+            </SocialRow>
 
-            <SkillsBlock>
-              <SkillGroup>
-                <SectionLabel>LANGUAGES</SectionLabel>
-                {renderSkills(
-                  skills.languages.map((l) => l.name + (l.level ? ` (${l.level})` : ""))
-                )}
+            {contact.qrSrc && (
+              <QRWrapper>
+                <img src={contact.qrSrc} alt="QR Code" />
+              </QRWrapper>
+            )}
+          </ContactBlock>
+
+          <SkillsBlock>
+            <SkillGroup>
+              <SectionLabel>LANGUAGES</SectionLabel>
+              {renderSkills(
+                skills.languages.map((l: Language) =>
+                  l.level ? `${l.name} (${l.level})` : l.name
+                )
+              )}
+            </SkillGroup>
+
+            <SectionLabel>TECHNICAL SKILLS</SectionLabel>
+            {skills.groups.map((group: SkillGroupType) => (
+              <SkillGroup key={group.title}>
+                <SkillGroupTitle>{group.title.toUpperCase()}</SkillGroupTitle>
+                {renderSkills(group.items)}
               </SkillGroup>
+            ))}
+          </SkillsBlock>
+        </LeftColumn>
 
-              <SectionLabel>TECHNICAL SKILLS</SectionLabel>
+        {/* RIGHT COLUMN */}
+        <RightColumn>
+          <TallSection title="SUMMARY">{bio.description}</TallSection>
 
-              <SkillGroup>
-                <SkillGroupTitle>PROGRAMMING</SkillGroupTitle>
-                {renderSkills(skills.programming)}
-              </SkillGroup>
+          <TallSection title="EXPERIENCE">
+            <SectionHeaderRight>Work</SectionHeaderRight>
+            <DividerBar />
+            {experience.work.map((item: EntryItem, i: number) => (
+              <Entry key={i} {...item} />
+            ))}
 
-              <SkillGroup>
-                <SkillGroupTitle>API</SkillGroupTitle>
-                {renderSkills(skills.api)}
-              </SkillGroup>
+            <SectionHeaderRight>Projects</SectionHeaderRight>
+            <DividerBar />
+            {experience.projects.map((item: EntryItem, i: number) => (
+              <Entry key={i} {...item} />
+            ))}
+          </TallSection>
 
-              <SkillGroup>
-                <SkillGroupTitle>ENGINES</SkillGroupTitle>
-                {renderSkills(skills.engines)}
-              </SkillGroup>
-
-              <SkillGroup>
-                <SkillGroupTitle>TOOLS</SkillGroupTitle>
-                {renderSkills(skills.tools)}
-              </SkillGroup>
-            </SkillsBlock>
-          </LeftColumn>
-
-          {/* RIGHT COLUMN */}
-          <RightColumn>
-            <TallSection title="SUMMARY">{summary}</TallSection>
-
-            <TallSection title="EXPERIENCE">
-              <SectionHeaderRight>Work</SectionHeaderRight>
-              <DividerBar />
-              {experience.work.map((item, i) => (
-                <Entry key={i} {...item} />
-              ))}
-              <SectionHeaderRight>Projects</SectionHeaderRight>
-              <DividerBar />
-              {experience.projects.map((item, i) => (
-                <Entry key={i} {...item} />
-              ))}
-            </TallSection>
-
-            <TallSection title="EDUCATION">
-              {education.map((item, i) => (
-                <Entry key={i} {...item} />
-              ))}
-            </TallSection>
-          </RightColumn>
-        </PageContainer>
-      </Box>
+          <TallSection title="EDUCATION">
+            {education.map((item: EntryItem, i: number) => (
+              <Entry key={i} {...item} />
+            ))}
+          </TallSection>
+        </RightColumn>
+      </PageContainer>
     </div>
   );
 }

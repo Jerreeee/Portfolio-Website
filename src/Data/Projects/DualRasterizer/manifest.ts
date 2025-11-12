@@ -61,15 +61,15 @@ export const projectManifest: ProjectManifest = {
     "aspectRatio": 1.7777777777777777,
     "alt": "CPU Final NoNormalMap"
   },
-  "CPU_ObservedView": {
-    "name": "CPU_ObservedView",
+  "CPU_ObservedArea": {
+    "name": "CPU_ObservedArea",
     "type": "image",
     "fileType": "png",
-    "src": "/projects/DualRasterizer/Images/CPU_ObservedView.png",
+    "src": "/projects/DualRasterizer/Images/CPU_ObservedArea.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
-    "alt": "CPU ObservedView"
+    "alt": "CPU ObservedArea"
   },
   "CPU_Specular": {
     "name": "CPU_Specular",
@@ -101,15 +101,15 @@ export const projectManifest: ProjectManifest = {
     "aspectRatio": 1.7777777777777777,
     "alt": "GPU AnisotropicSampling"
   },
-  "GPU_AnisotropicSampling_NoFire": {
-    "name": "GPU_AnisotropicSampling_NoFire",
+  "GPU_Final": {
+    "name": "GPU_Final",
     "type": "image",
     "fileType": "png",
-    "src": "/projects/DualRasterizer/Images/GPU_AnisotropicSampling_NoFire.png",
+    "src": "/projects/DualRasterizer/Images/GPU_Final.png",
     "width": 1920,
     "height": 1080,
     "aspectRatio": 1.7777777777777777,
-    "alt": "GPU AnisotropicSampling NoFire"
+    "alt": "GPU Final"
   },
   "GPU_LinearSampling": {
     "name": "GPU_LinearSampling",

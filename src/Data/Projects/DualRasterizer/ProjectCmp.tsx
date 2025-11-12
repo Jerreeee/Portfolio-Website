@@ -98,7 +98,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             'CPU_BoundingRects',
             'CPU_Depth',
             'CPU_Diffuse',
-            'CPU_ObservedView',
+            'CPU_ObservedArea',
             'CPU_Specular_NoNormalMap',
             'CPU_Specular',
             'CPU_Final_NoNormalMap',
@@ -116,7 +116,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           <ImageMultiCompareCmp
             images={getMediaItemsFromManifest(manifest, [
               "CPU_Final",
-              "GPU_AnisotropicSampling",
+              "GPU_Final",
             ])}
           />
         </Grid>
@@ -130,7 +130,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             images={getMediaItemsFromManifest(manifest, [
               "GPU_PointSampling",
               "GPU_LinearSampling",
-              "GPU_AnisotropicSampling_NoFire",
+              "GPU_AnisotropicSampling",
             ])}
           />
         </Grid>
