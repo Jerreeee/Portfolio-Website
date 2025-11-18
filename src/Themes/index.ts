@@ -1,12 +1,20 @@
 //mui
-import { ThemeOptions } from '@mui/material/styles';
+import { ThemeOptions, Theme } from '@mui/material/styles';
 
 //custom
-import { defaultDarkOptions } from './Default/Variations/Dark';
+import { defaultDarkBase, defaultDarkEnhanced } from './Default/Variations/Dark';
 
-export const themeRegistry: Record<string, Record<string, ThemeOptions>> = {
+export interface RegisteredTheme {
+  base: ThemeOptions;
+  enhance?: (base: Theme) => ThemeOptions;
+}
+
+export const themeRegistry: Record<string, Record<string, RegisteredTheme>> = {
   Default: {
-    Dark: defaultDarkOptions,
+    Dark: {
+      base: defaultDarkBase,
+      enhance: defaultDarkEnhanced
+    },
   },
 };
 

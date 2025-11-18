@@ -48,6 +48,24 @@ declare module '@mui/material/styles' {
     gradientH1?: React.CSSProperties;
   }
 
+  interface Palette {
+    gradients: {
+      primary: (direction?: string) => string;
+      background: (direction?: string) => string;
+      subtle: (direction?: string) => string;
+      h1: (direction?: string) => string;
+    };
+  }
+
+  interface PaletteOptions {
+    gradients?: {
+      primary?: (direction?: string) => string;
+      background?: (direction?: string) => string;
+      subtle?: (direction?: string) => string;
+      h1?: (direction?: string) => string;
+    };
+  }
+
   // Custom component definitions
   interface ComponentsProps {
     // AUTO-GENERATED ComponentsProps START

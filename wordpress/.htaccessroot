@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Redirect old media URLs to the WordPress folder
+RewriteRule ^wp-content/(.*)$ /wordpress/wp-content/$1 [L,R=302]
+
+</IfModule>

@@ -1,0 +1,298 @@
+
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>The &#8220;curvePos&#8221; parameter defines at what arclength value along my racetrack the handle is positioned. This can be a value from 0 to the length of your track.  </p>
+
+
+
+<p>You could also use a  &#8220;curveU&#8221; value which maps the entire curve between a value from 0 to 1. The downside to using a curveU value is that when you change the length of your curve that the handles will jump around as their position is defined as a percentage of the entire length of the curve. You won&#8217;t have this when you define the position as an arclength value.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_164626.png" alt="" class="wp-image-188" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_164626.png 760w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_164626-288x300.png 288w" sizes="(max-width: 760px) 100vw, 760px" /></figure>
+
+
+
+<p class="m0">I created a <code>getCurvePos()</code> function that gets a list of all the &#8220;curvePos&#8221; values of all the handles that are in the json. To get the index we can just sort the list and get the index by value. This index represents the position in the json list in which our handle dictionary should be placed. </p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="changing-the-curve-position" style="background-color:#2b2b2b">Changing the curve position</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>By changing the &#8220;curvePos&#8221; parameter the corresponding handle will move along. The handles are all ordered in the json list based on their &#8220;curvePos&#8221; value. So if you change the &#8220;curvePos&#8221; value then it could be that this order is not correct anymore. To check this I added a function to my Python Module called <code>updateCurvePos()</code> which I set in the Callback Script of the &#8220;curvePos&#8221; parameter. This function will call the <code>getCurvePos()</code> <a href="#curvePosition">function </a>to get the correct index of this handle. If the index is not equal to the current index of the handle dictionary in the list, then the handle dictionary is removed from the list and inserted back at the correct index.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1811" height="593" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ChangingCurvePos2.gif" alt="" class="wp-image-286"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="changing-the-curve-position" style="background-color:#2b2b2b">Adding and deleting handles</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">The next functionality that we need to add is being able to add and delete handles from our json. To be able to add handles, we need some default values for all our parameters. For this, I created an extra section in my UI.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="381" height="201" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_170346.png" alt="" class="wp-image-197" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_170346.png 381w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_170346-300x158.png 300w" sizes="auto, (max-width: 381px) 100vw, 381px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-6.png" alt="" class="wp-image-185" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-6.png 958w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-6-300x63.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-6-768x161.png 768w" sizes="(max-width: 958px) 100vw, 958px" /></figure>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="256" height="38" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-7.png" alt="" class="wp-image-186"/></figure>
+
+
+
+<p>Whenever the user now clicks on &#8220;Add handle&#8221;, I construct a <a href="#json">dictionary</a> for this handle by looking at the default values. The parameter will only be added to the dictionary if the &#8220;Add Default&#8221; toggle is True. If there is no toggle the parameter will be added by default. Now at what position in the json do we insert this new handle dictionary? I check at what index in the list the default &#8220;curvePos&#8221; value should be placed. (see <a href="https://jeroen.denayer.com/wp-admin/post.php?post=5&amp;action=edit#curvePosition">Curve Position</a>). Afterwards I insert the new handle dictionary into the list at this index.</p>
+
+
+
+<p class="m0">To delete the handle, we can just get the value from the &#8220;Active Handle&#8221; parameter which will act as our index when deleting a handle from the json using <code>del jsl[index]</code>.</p>
+
+
+
+<h4 class="has-black-color has-luminous-vivid-orange-background-color has-text-color has-background wp-block-heading" id="creating-a-python-viewer-state">Creating a python viewer state</h4>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UIViewerStates-962x1024.png" alt="" class="wp-image-527" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-962x1024.png 962w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-282x300.png 282w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-768x817.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-1444x1536.png 1444w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates.png 1639w" sizes="(max-width: 962px) 100vw, 962px" /></figure>
+
+
+
+<p>So far, we have not yet touched python viewer states. However, all the setup so far has been super important as we will be using a lot of the functions that we created in our Python Module in our viewer state as well.</p>
+
+
+
+<p>You can create a brand-new python viewer state by going on your digital asset to Type Properties &gt; Interactive &gt; State Script. Here you click &#8220;New&#8221; to create a new viewer state. The following pop-up window will appear where you can select some pre-made functions that you would like to use. The ones that I have selected where most useful for me.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_183546.png" alt="" class="wp-image-229" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_183546.png 645w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_183546-232x300.png 232w" sizes="(max-width: 645px) 100vw, 645px" /></figure>
+
+
+
+<p>Let&#8217;s start by assigning some class variables when the user enters the viewer state by pressing &#8220;Enter&#8221; with their mouse cursor in the viewport. The self.node and self.phm are important variables which we will use a lot. Self.node refers to our HDA node and self.phm refers to our Python Module.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-10.png" alt="" class="wp-image-236" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-10.png 572w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-10-300x76.png 300w" sizes="(max-width: 572px) 100vw, 572px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="adding-and-deleting-handles" style="background-color:#333333">Adding and deleting handles</h4>
+
+
+
+<p class="m0">Now we will add the option to change parameter values by using your mouse and the ability to add and delete handles. For this we will need some keybinds. You can add this right above your __init__ function.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="591" height="91" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_184403.png" alt="" class="wp-image-234" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_184403.png 591w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_184403-300x46.png 300w" sizes="auto, (max-width: 591px) 100vw, 591px" /></figure>
+
+
+
+<p>Adding and deleting handles is easy as we have already implemented this in the Python Module. In the onKeyTransitEvent() first get the key that was pressed and afterwards check if this key matches with one of our keybinds. If this is the case press the &#8220;Add&#8221; or &#8220;Delete&#8221; button through code. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_185422.png" alt="" class="wp-image-237" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_185422.png 638w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_185422-300x185.png 300w" sizes="(max-width: 638px) 100vw, 638px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="selecting-handles-in-the-viewport" style="background-color:#2b2b2b">Selecting handles in the viewport</h4>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1629" height="453" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/SelectingHandles.gif" alt="" class="wp-image-421"/></figure>
+
+
+
+<p>First get the most important variables from the onMouseEvent(). The following three are used almost always in mouse and keyboard events.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="382" height="171" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_143321.png" alt="" class="wp-image-424" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143321.png 382w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143321-300x134.png 300w" sizes="auto, (max-width: 382px) 100vw, 382px" /></figure>
+
+
+
+<p>If the user clicked in the viewport then the reason why the onMouseEvent() was trigered will be &#8220;Start&#8221;. Next we can cast a ray into the scene and collide with a custom geometry from inside our HDA. Afterwards, we can get an id attribute that you have to store on the primitives of the collision geo. This id represents the position of the handle in the json. Using this id we can set the new active handle.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-26.png" alt="" class="wp-image-426" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-26.png 814w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-26-300x21.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-26-768x55.png 768w" sizes="(max-width: 814px) 100vw, 814px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_143337.png" alt="" class="wp-image-425" width="810" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143337.png 944w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143337-300x118.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143337-768x303.png 768w" sizes="(max-width: 944px) 100vw, 944px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="cycling-the-active-parameter" style="background-color:#2b2b2b">Cycling the active parameter</h4>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="497" height="235" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ScrollingActiveParm2.gif" alt="" class="wp-image-262"/></figure>
+
+
+
+<p class="m0">Up until now I hardcoded the parameter that would be changed when dragging your LMB. But ideally we could replace this with a variable. For this I used the concept of an &#8220;Active Parameter&#8221;. We need two new parameters for this on our UI. One which will contain the currently active parameter and another which will contain all the parameters that can be cycled through using a keyboard shortcut.</p>
+
+
+
+<figure class="wp-block-image size-large m0"><img loading="lazy" decoding="async" width="1024" height="31" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_194730-1024x31.png" alt="" class="wp-image-247" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730-1024x31.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730-300x9.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730-768x23.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730.png 1034w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-12.png" alt="" class="wp-image-245" width="223" height="-6"/></figure>
+
+
+
+<p>The &#8220;Cyclable Active Parms&#8221; parameter is automatically set in the OnUpdated event handler. To define if a parameter can be used in this cycle I added a tag to the parameter in the Parameter Description.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-13.png" alt="" class="wp-image-249" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-13.png 455w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-13-300x35.png 300w" sizes="(max-width: 455px) 100vw, 455px" /></figure>
+
+
+
+<p>In the onUpdated event handler we can now add some code that will check all the parameters in the UI if they have this tag. If so, then they are added to the active parameter cycle.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_195317.png" alt="" class="wp-image-253" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_195317.png 611w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_195317-300x122.png 300w" sizes="(max-width: 611px) 100vw, 611px" /></figure>
+
+
+
+<p class="m0">Now that the setup is done we still need a way to change the active parameter and cycle through the list we just created. I will be using the onMouseWheelEvent() in the python viewer state for this. Don&#8217;t forget to add new class variables for the active_parm and the cyclable_active_parms.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_200210.png" alt="" class="wp-image-257" width="500" title="m0" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210.png 961w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210-300x27.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210-768x68.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210-950x85.png 950w" sizes="(max-width: 961px) 100vw, 961px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_202342.png" alt="" class="wp-image-266" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202342.png 456w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202342-300x132.png 300w" sizes="(max-width: 456px) 100vw, 456px" /></figure>
+
+
+
+<p class="m0">Now when you scroll with your MMB, the <code>cycleMode()</code> function will be called. In this function it is just a matter of getting the active parameter &gt; getting the index of this parameter in the  cyclable_active_parms list. Adding the direction to this index &gt; getting the new active parameter from the list &gt; and lastly setting the active parameter to this new one. After that we can cycle through all the cyclable_active_parms, disable all of them and only enable the active parameter.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_202145.png" alt="" class="wp-image-265" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202145.png 552w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202145-300x52.png 300w" sizes="(max-width: 552px) 100vw, 552px" /></figure>
+
+
+
+<p class="m0">We can now also use this active parameter as the parameter to change when the user holds LMB and drags. Cycling through the parameters looks like the following.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="updating-parameter-values" style="background-color:#333333">Updating parameter values</h4>
+
+
+
+<p>Updating the parameter value by holding LMB and dragging is a bit complexer. Again, tart by getting some of the most important values we can get from the onMouseEvent(). </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-11.png" alt="" class="wp-image-239" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-11.png 655w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-11-300x128.png 300w" sizes="(max-width: 655px) 100vw, 655px" /></figure>
+
+
+
+<p>You will still need to add the self.mouse_x_start variable to your class. You can set it using <code>device.mouseX()</code> when the reason is &#8220;Start&#8221;. If the reason is &#8220;Active&#8221; then this means the user is holding LMB and dragging their mouse. When this happens, we want to update our parameter. Let&#8217;s get the old value, add the direction and set the new value. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_190711.png" alt="" class="wp-image-242" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_190711.png 516w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_190711-300x84.png 300w" sizes="(max-width: 516px) 100vw, 516px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="multiplier-tag" style="background-color:#2b2b2b">Multiplier tag</h4>
+
+
+
+<p class="m0">At the moment the rate at which the parameter value changes is always one. However, some parameters need to go quicker up and down than others. To define the multiplier for a certain parameter, change the active_parm_cycle tag so it is structured as a dictionary with the multiplier being a key-value pair.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="343" height="26" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-22.png" alt="" class="wp-image-404" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-22.png 343w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-22-300x23.png 300w" sizes="auto, (max-width: 343px) 100vw, 343px" /></figure>
+
+
+
+<p>Next in the python viewer state we have to create a new class variable called <code>self.active_parm_tags</code>. Each time the user enters the state or changes the active parameter, we will call the following function that will set this variable.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-23.png" alt="" class="wp-image-405" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-23.png 787w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-23-300x78.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-23-768x199.png 768w" sizes="(max-width: 787px) 100vw, 787px" /></figure>
+
+
+
+<p>If we now calculate the <code>new_value</code> we can multiple the <code>direction</code> with the multiplier defined in the <code>self.active_parm_tags</code> variable. Below, I am changing these values purely by scrolling with my mouse. Note how they all change with different steps. This is because of the multiplier. This way we can also change the handle type through our viewer state if we set the multiplier to one. I also added the functionality to change the value by scrolling with your middle mouse button. Use device.mouseWheel() in the onMouseWheelEvent() to get the scroll direction.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1230" height="408" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/MultiplierTag2.gif" alt="" class="wp-image-410"/></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="adding-and-deleting-spare-parameters" style="background-color:#2b2b2b">Adding and deleting spare parameters</h4>
+
+
+
+<p class="m0">To do this we need to create some extra keybinds in our class. Add an <code>addSpareParm()</code> and a <code>deleteSpareParm()</code> function to the viewer state. To add a spare parameter, just call the <code>addSpareParm()</code> <a href="#spareParms">function </a>from the python module. </p>
+
+
+
+<p>To delete a spare parameter first get the currently active parameter and check if this parameter has the &#8220;spare_parm = 1&#8221; tag. If this is the case then pass the parameter name on to the <code>deleteSpareParm()</code> function in the Python module to delete it.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="468" height="29" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_141924.png" alt="" class="wp-image-419" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_141924.png 468w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_141924-300x19.png 300w" sizes="auto, (max-width: 468px) 100vw, 468px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="creating-a-hud-info-panel" style="background-color:#2b2b2b">Geometry functions</h4>
+
+
+
+<p>I do this by using something I made myself called geometry functions. </p>
+
+
+
+<p>The idea is that using python viewer states we click in our viewport and get the position of where we clicked by colliding with a collision geometry (<a href="#selecting-handles-in-the-viewport">see selecting handles</a>). This position is stored in a vector parameter in our user interface. This is the input of our geometry function. This position is read into the geometry network and a point is created at this position. I ray the point onto my racetrack curve from which I can get the &#8220;curvePos&#8221; value. All of the values that I want to use as output for my geometry function I store in a parameter on a single output node. This way I can set the output parameters in the user interface by just grabbing the value from this output node.</p>
+
+
+
+<p>To use this geometry function you first have to enter a special mode called &#8220;SetParm&#8221; using a keyboard shortcut. When you are in this mode, then every mouse action in the viewport will run our special geometry function.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="355" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/GeometryFunctions-1024x355.png" alt="" class="wp-image-553" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-1024x355.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-300x104.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-768x266.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-1536x532.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-2048x710.png 2048w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-2000x693.png 2000w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>

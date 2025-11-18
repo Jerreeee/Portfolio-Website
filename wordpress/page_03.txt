@@ -1,0 +1,300 @@
+
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="conclusion" style="background-color:#2b2b2b">Conclusion</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>The multiparameter block is a super nice Houdini feature but it has it&#8217;s drawbacks. When we use json on the other hand the possibilities to store our racetrack data are just endless as we are only limited by what Python can do. And python can a lot. So for my tool I decided to work with json to transfer data from the user interface to the geometry network. As I mentioned in the cons about using json, we don&#8217;t want an artist to manually change the json. We will need to create a user interface for this so the artist who will use the tool does not have to touch the json to change parameter values.</p>
+
+
+
+<h4 class="has-black-color has-luminous-vivid-orange-background-color has-text-color has-background wp-block-heading" id="user-interface">User interface</h4>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UserInterface.png" alt="" class="wp-image-514" width="837" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UserInterface.png 746w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UserInterface-243x300.png 243w" sizes="(max-width: 746px) 100vw, 746px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="active-handle-user-interface" style="background-color:#2b2b2b">Active handle user interface</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">Because I am using a <a href="#toggleParameter">json</a> structure to transfer my per point data, I need a way for the user of my tool to interact with this json. The first thing I did was add a UI section on my HDA that could show all the values of a single handle dictionary. I will be calling this the <span style="text-decoration: underline;">active handle</span> from now on. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0" id="toggleParameter"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_165522.png" alt="" class="wp-image-192" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_165522.png 474w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_165522-300x255.png 300w" sizes="(max-width: 474px) 100vw, 474px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ActiveHandleUI.png" alt="" class="wp-image-512" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ActiveHandleUI.png 1020w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ActiveHandleUI-300x127.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ActiveHandleUI-768x326.png 768w" sizes="(max-width: 1020px) 100vw, 1020px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="all-handles-json" style="background-color:#2b2b2b">All handles json</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>We will need some helper parameters in our user interface. First we need a string parameter that will contain the json. Note, as we do not yet have an option to <a href="#addAndDeleteHandles">add and delete control handles</a> (we will add this functionality later) you can always manually edit the json to add a handle dictionary. Beware of typos!</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="996" height="29" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_182332.png" alt="" class="wp-image-218" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332.png 996w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332-300x9.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332-768x22.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332-950x29.png 950w" sizes="auto, (max-width: 996px) 100vw, 996px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="allHandleParms" style="background-color:#2b2b2b">All handle parms</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>We also need to add a new string parameter which will contain all the parameters that our active handle UI contains. This will be very useful later.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="980" height="28" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-16.png" alt="" class="wp-image-271" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16.png 980w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16-300x9.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16-768x22.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16-950x28.png 950w" sizes="auto, (max-width: 980px) 100vw, 980px" /></figure>
+
+
+
+<p>To set this parameter, I created a function in the OnUpdated event handler in the Type Properties &gt; Scripts tab. Here I loop through all the parameters in my main folder and add them to the &#8220;All Handle Parms&#8221; parameter.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-17.png" alt="" class="wp-image-272" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-17.png 628w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-17-300x185.png 300w" sizes="(max-width: 628px) 100vw, 628px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="changing-the-active-handle" style="background-color:#2b2b2b">Changing the active handle</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">The &#8220;Active Handle&#8221; parameter defines which handle&#8217;s values are shown. In the callback script for this parameter I placed the following code: <code>hou.phm().updateActiveHandleParms(kwargs)</code>. This will call a function that I added to the Python Module.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="462" height="204" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_180143.png" alt="" class="wp-image-207" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_180143.png 462w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_180143-300x132.png 300w" sizes="auto, (max-width: 462px) 100vw, 462px" /></figure>
+
+
+
+<p class="m0">When the user now changes this parameter, we can get the new value using <code>kwargs["script_value"</code>]. Using this we can get the dictionary of the new active handle using <code>jsl[index</code>].. Afterwards I just loop through the keys in this dictionary and set the corresponding parameter to the value of each key. Make sure that the keys match with your parameter names in the UI. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_204657.png" alt="" class="wp-image-279" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_204657.png 342w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_204657-300x75.png 300w" sizes="(max-width: 342px) 100vw, 342px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="updating-other-parameters" style="background-color:#2b2b2b">Updating other parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">On top of this I have another function in my Python Module that takes count of updating one single parameter in the json. I add this function to the callback script of all my parameters except for the &#8220;Active Handle&#8221; and the &#8220;<a href="#curvePosition">curvePos</a>&#8221; as these are both important for something else.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_161547.png" alt="" class="wp-image-178" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_161547.png 630w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_161547-300x108.png 300w" sizes="(max-width: 630px) 100vw, 630px" /></figure>
+
+
+
+<p class="m0">Below you can see this in action. When I change a parameter the callback script is ran and the json is updated. When I change the &#8220;Active Handle&#8221;, all of the parameters are updated with the correct values from the json.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="955" height="240" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ActiveHandleChangeParameters.gif" alt="" class="wp-image-174"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="handle-type" style="background-color:#2b2b2b">Handle type</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>So what is this handle type? The handle type defines what parameters can be changed on that handle. I have a handle type &#8220;Normal&#8221; where you can only change the road width and rotation. Another handle type &#8220;Delete&#8221; which allows you to cut away parts of the racetrack. And the last one &#8220;Railings&#8221; which allows you to add some sort of barrier at the two sides of the track. Because I also added this handle type parameter, I need a way to only show the parameters of the chosen handle type. I set the &#8220;Hide When&#8221; value of the parent folders (Basic, Delete, Rail) to hide the folder when the handle type is 0, 1 or 2.</p>
+
+
+
+<p class="m0">Below you can see that only the parameters from one handle type are shown and that all the other parameters are hidden. Note how the json also reflects these changes. I do this with some extra case handling in my code. I delete all the parameters that do not have the correct handle type. I can easily check if the parameter is from a certain handle type because I added Basic__, Delete__ or Rail__ before their names. These prefixes are used as a context for the parameters. You could do without this context, but then you would not have the option to for example have a length parameter under more than one handle type. This is because each parameter has to have a unique name and using these contexts is a neat way to get around that.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="941" height="239" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ChangingHandleTypes.gif" alt="" class="wp-image-363"/></figure>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="1711" height="474" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/HandleTypes.gif" alt="" class="wp-image-401"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="spareParms" style="background-color:#2b2b2b">Spare parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>These are optional parameters that the user can dynamically add and remove from the handle dictionary. Spare parameters are also linked to a certain handle type.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/SpareParms2.gif" alt="" class="wp-image-379" width="840"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="menu-script" style="background-color:#2b2b2b">Menu Script</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>You can see that the content of the Spare Parms menu updates according to what is in the Spare Parms list underneath the menu. To do this we first need to create this list. I do this by adding the following code in my <code>updateActiveHandleParms()</code> function. Every time this function is called it loops through the &#8220;All Handle Parms&#8221; list. If the parameter is not visible but has the correct handle type, then we add it to the &#8220;Spare Parms&#8221; list. Later on we set the spare parms string parameter to this list.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_115930.png" alt="" class="wp-image-387" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_115930.png 562w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_115930-300x144.png 300w" sizes="(max-width: 562px) 100vw, 562px" /></figure>
+
+
+
+<p>Now to update the spare parms menu we need to create an extra function called <code>updateSpareParmsMenu()</code>. This function will create a list of all the spare parameters.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-19.png" alt="" class="wp-image-386" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-19.png 595w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-19-300x105.png 300w" sizes="(max-width: 595px) 100vw, 595px" /></figure>
+
+
+
+<p>In the Menu &gt; Menu Script tab set the following code: <code>kwargs["node"].hdaModule().updateSpareParmsMenu(kwargs)</code>. To make sure that this code runs whenever something changes, we can just manually run this code by using <code>.pressButton()</code> in the <code>updateActiveHandleParms()</code> function. This will make sure that the code above is triggered. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_120237.png" alt="" class="wp-image-389" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_120237.png 421w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_120237-300x49.png 300w" sizes="(max-width: 421px) 100vw, 421px" /></figure>
+
+
+
+<div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="defining-spare-parameters" style="background-color:#2b2b2b">Defining spare parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">To create a new spare parameter, we have to do a couple of things. Let&#8217;s first add an extra toggle parameter (<a href="#toggleParameter">see image</a>) with the exact same name + &#8220;_hide&#8221; at the end. Set the &#8220;Hide When&#8221; value to hide the parameter when the toggle is 1 (True). You could use <code>node.parm.disable()</code> for this but Houdini won&#8217;t memorize the disabled state of the parameter across sessions. If you want a work around you can make use of toggles. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="http://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_203827.png" alt="" class="wp-image-274" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_203827.png 590w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_203827-300x15.png 300w" sizes="(max-width: 590px) 100vw, 590px" /></figure>
+
+
+
+<p class="m0">Under the Action Button tab for this parameter I added the following code: <code>kwargs["node"].hdaModule().deleteSpareParm(kwargs)</code>. To set the icon for this button you can use the following tag.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img loading="lazy" decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_112608.png" alt="" class="wp-image-374" width="500" height="50" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_112608.png 496w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_112608-300x30.png 300w" sizes="auto, (max-width: 500px) 100vw, 500px" /></figure>
+
+
+
+<p class="m0">I also add the following tag. We will use this later on when we delete spare parameters using viewer states.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img loading="lazy" decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-21.png" alt="" class="wp-image-393" width="221" height="27"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="adding-and-deleting-spare-parameters" style="background-color:#2b2b2b">Adding and deleting spare parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>To add spare parameters, I created an extra function <code>addSpareParm()</code> in my Python Module. This function is added to the Callback Script of the &#8220;Add&#8221; Button. In this function, I retrieve the parameter that is currently selected in the &#8220;Spare Parms&#8221; menu. Next, I retrieve the default value for this parameter and lastly, I add this parameter to the active handle dictionary.</p>
+
+
+
+<p>To delete spare parameters, I create an extra function <code>deleteSpareParm()</code> in my Python Module. This function will be called whenever the user presses the &#8220;Delete&#8221; button. In this function we can get the name of the parameter that should be deleted using <code>kwargs["parmtuple"].name()</code>. Afterwards, this parameter is removed from the active handle dictionary.</p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="curvePosition" style="background-color:#2b2b2b">Curve Position</h5>
+</div>

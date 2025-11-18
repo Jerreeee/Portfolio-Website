@@ -16,6 +16,14 @@ import { data as LuaCPPSnakeData } from '@/Data/Projects/LuaCPPSnake/data';
 import LuaCPPSnakeCmp from '@/Data/Projects/LuaCPPSnake/ProjectCmp';
 import { projectManifest as LuaCPPSnakeManifest } from '@/Data/Projects/LuaCPPSnake/manifest';
 
+import { data as Overpass2Data } from '@/Data/Projects/Overpass2/data';
+import Overpass2Cmp from '@/Data/Projects/Overpass2/ProjectCmp';
+import { projectManifest as Overpass2Manifest } from '@/Data/Projects/Overpass2/manifest';
+
+import { data as PythonHoudiniTrackToolData } from '@/Data/Projects/PythonHoudiniTrackTool/data';
+import PythonHoudiniTrackToolCmp from '@/Data/Projects/PythonHoudiniTrackTool/ProjectCmp';
+import { projectManifest as PythonHoudiniTrackToolManifest } from '@/Data/Projects/PythonHoudiniTrackTool/manifest';
+
 import { data as VulkanDeferredRendererData } from '@/Data/Projects/VulkanDeferredRenderer/data';
 import VulkanDeferredRendererCmp from '@/Data/Projects/VulkanDeferredRenderer/ProjectCmp';
 import { projectManifest as VulkanDeferredRendererManifest } from '@/Data/Projects/VulkanDeferredRenderer/manifest';
@@ -38,6 +46,18 @@ const LuaCPPSnakeProjectInfo: ProjectInfo = {
   manifest: LuaCPPSnakeManifest,
 };
 
+const Overpass2ProjectInfo: ProjectInfo = {
+  ...Overpass2Data,
+  component: Overpass2Cmp,
+  manifest: Overpass2Manifest,
+};
+
+const PythonHoudiniTrackToolProjectInfo: ProjectInfo = {
+  ...PythonHoudiniTrackToolData,
+  component: PythonHoudiniTrackToolCmp,
+  manifest: PythonHoudiniTrackToolManifest,
+};
+
 const VulkanDeferredRendererProjectInfo: ProjectInfo = {
   ...VulkanDeferredRendererData,
   component: VulkanDeferredRendererCmp,
@@ -45,12 +65,17 @@ const VulkanDeferredRendererProjectInfo: ProjectInfo = {
 };
 
 export const projects: ProjectInfo[] = [
+  Overpass2ProjectInfo,
+  VulkanDeferredRendererProjectInfo,
   DualRasterizerProjectInfo,
+  PythonHoudiniTrackToolProjectInfo,
   JREngineProjectInfo,
   LuaCPPSnakeProjectInfo,
-  VulkanDeferredRendererProjectInfo,
 ];
 // AUTO-GENERATED PROJECT IMPORTS END
+
+
+
 
 
 

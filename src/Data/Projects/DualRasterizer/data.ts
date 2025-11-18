@@ -2,7 +2,7 @@ import { ProjectRequiredInfo } from '@/Data/Projects/project';
 
 export const data: ProjectRequiredInfo = {
   slug: 'DualRasterizer',
-  title: 'Dual Rasterizer ',
+  title: 'Dual Rasterizer',
   thumbnailImage: 'GPU_Final',
   heroImage: 'GPU_Final',
   overviewMedia: [

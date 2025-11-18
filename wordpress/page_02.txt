@@ -1,0 +1,301 @@
+
+
+
+
+<h4 class="has-background wp-block-heading" id="creating-racetracks" style="background-color:#333333">Creating racetracks</h4>
+
+
+
+<p>Starting off with looking for what&#8217;s already been done in this field I found some interesting sources which helped me with my research. Let&#8217;s start off with the creation of the procedural racetrack itself. There are a couple of techniques that are commonly used to create racetracks for games.</p>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-bottom"><figure class="wp-block-media-text__media"><img decoding="async" width="1024" height="470" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/TrackmaniaTrackEditor-1024x470.jpg" alt="" class="wp-image-35 size-full" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-1024x470.jpg 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-300x138.jpg 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-768x352.jpg 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-1536x705.jpg 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor.jpg 1920w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure><div class="wp-block-media-text__content">
+<h5 class="has-background wp-block-heading" id="pre-made-segments" style="background-color:#2b2b2b">Pre-made segments</h5>
+
+
+
+<p>In this approach you create pre-made segments of the track (corner segment, straight segment, etc&#8230;) and then place one segment after the other to create the track. The Trackmania games make use of this approach. The advantage is that different tracks are very consistent in their style as they consist of the same pre-made segments. The disadvantage is that you loose the ability to create very specific turns like 17.6 degrees to the left as all the segments have pre-defined standard angles like 45 or 90 degrees.</p>
+</div></div>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-bottom"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="600" height="338" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/Splinemesh.gif" alt="" class="wp-image-34 size-full"/></figure><div class="wp-block-media-text__content">
+<h5 class="has-background wp-block-heading" id="bending-pre-made-segments" style="background-color:#2b2b2b">Bending pre-made segments</h5>
+
+
+
+<p>A second option is to create pre-made segments that have multiple edge loops along their length and then bend them along a curve inside of a game engine. This approach is often used for cables inside of games and gives you the freedom to turn in any direction. But it comes with some negatives. It is a quick and dirty way. These extra edge loops are wasted geometry on straight parts of the curve and this bending method can also cause pinching and stretching of UV&#8217;s at parts with a high curvature. </p>
+</div></div>
+
+
+
+<h5 class="has-background wp-block-heading" id="fully-procedural-racetrack" style="background-color:#2b2b2b">Fully procedural racetrack</h5>
+
+
+
+<p id="viewer-enqvq">Using Houdini, the company Space Ape created a fully procedural racetrack based on an input curve that defines the main shape. In <a href="http://The following GDC talk (link) shows how the company Space Ape tackled this problem and how they ultimately started using the fully procedural method to create race tracks.">this</a> GDC talk, they explain all the benefits of using this method. It gives you full flexibility over the direction of your track, optimization of polycount on straight parts and automatically creating correct UV&#8217;s for your track. Their tool was directly implemented inside of a game engine and updates in real-time when a change is made. This is thanks to the Houdini Engine for Unreal plugin which connects both software.  It allows you to change parameters inside of Unreal Engine and in the background Houdini will re-calculate the output. Space Ape created their game in Unity but everything is applicable to Unreal Engine as well.</p>
+
+
+
+<figure class="wp-block-gallery alignwide has-nested-images columns-default is-cropped wp-block-gallery-2 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1920" height="1080" data-id="63" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-22_164602.png" alt="" class="wp-image-63" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602.png 1920w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-300x169.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-1024x576.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-768x432.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-1536x864.png 1536w" sizes="auto, (max-width: 1920px) 100vw, 1920px" /><figcaption>Space Ape tool end result</figcaption></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1836" height="915" data-id="48" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UnityHoudiniEngine3.gif" alt="" class="wp-image-48"/><figcaption>Space Ape tool in action</figcaption></figure>
+</figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="viewer-2dm7f" style="background-color:#333333">Limitations of Unreal and Houdini Engine</h4>
+
+
+
+<p>The tool that Space Ape created was amazing! They could fully customize tons of parameters to change the visual look of the racetrack. However, to do this they still needed to drag around sliders in the UI. <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-black-color">This is the normal way of working when working with Unreal and Houdini. But this doesn&#8217;t fit in with the idea of making everything</mark> as interactive as possible for the artist that will use the tool in the end. What I want is something more like how you would model in Blender. Every action is done inside of the viewport using simple mouse clicks and keyboard shortcuts. And this is something that I wanted for my own racetrack tool as well. This is when I found out about Python viewer states.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="viewer-e289m" style="background-color:#333333">Python viewer states</h4>
+
+
+
+<p>Python viewer states are a way to interactively update parameter values on your tool or HDA using mouse clicks and keyboard shortcuts. </p>
+
+
+
+<p>I found that some students from the Breda University of Applied Sciences <a href="https://youtu.be/mBdKK_VKDHQ?t=893">(link)</a> had already built something that was similar to what I wanted to do. I used their <a href="https://youtu.be/2XIIEhgcWMQ">tutorial</a> as a starting point for my own tool. They implemented some interactivity but I wanted to take this even a step further. I wanted to navigate the entire UI of my tool purely using python viewer states.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="476" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/HoudiniTalkResult-2-1024x476.png" alt="" class="wp-image-55" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-1024x476.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-300x140.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-768x357.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-1536x714.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2.png 1879w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption>Racetrack tool made by students from the Breda University of Applied Sciences </figcaption></figure>
+
+
+
+<p>So using python viewer states we can now interactively work with our tool. But what is the benefit of using this approach if we can&#8217;t get our racetrack back into Unreal Engine? We can achieve this using <a href="https://www.youtube.com/watch?v=Yn9rnQRkCUQ">Houdini session sync</a>. This allows us to open a live connection between Unreal and Houdini and we can now jump back and forth between both softwares, change something in one and it will immediately update in the other and vice versa.</p>
+
+
+
+<h4 class="has-black-color has-text-color has-background wp-block-heading" id="viewer-a5up1" style="background-color:#333333">Conclusion</h4>
+
+
+
+<p>What was very clear to me, is the workflow/pipeline that I would use during my research. First create a tool inside of Houdini. Afterwards convert it into a digital asset which can be imported into Unreal engine. Then using Houdini engine and Houdini session sync we can open a live connection between the softwares and use python viewer states in Houdini to change parameters on our racetrack tool.</p>
+
+
+
+<p id="viewer-8rrvr">Some questions that occurred to me after doing my literature study and before starting on my own tool were:</p>
+
+
+
+<ol class="wp-block-list"><li>How does the tool compare when built with and without python viewer states? What are the pros and cons?</li><li>Is using Houdini engine in combination with Houdini session sync a benefit to the game asset creation pipeline?</li></ol>
+
+
+
+<div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="workflow">Workflow</h1>
+
+
+
+<h4 class="has-background wp-block-heading" id="python-module" style="background-color:#333333">Overview</h4>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="903" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/WorkflowDiagram-3-1024x903.png" alt="" class="wp-image-464" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-1024x903.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-300x264.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-768x677.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-1536x1354.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-2048x1805.png 2048w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-2000x1763.png 2000w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Here you can see an overview of how I connected all the different parts.</p>
+
+
+
+<ul class="wp-block-list"><li>Step 1: create a standard procedural Houdini network using nodes.</li><li>Step 2: convert this network into a tool/HDA and import it into Unreal with the Houdini Engine plugin.</li><li>Step 3: change the position of curve points in Unreal Engine to shape the racetrack.</li><li>Step 4: use Houdini session sync to open a live connection between Unreal and Houdini.</li><li>Step 5: interactively work with the tool in the Houdini viewport using python viewer states.</li><li>Step 6: the viewer state will automatically update the UI when the artist changes something in the viewport.</li><li>Step 7: the python module will run when the artist changes a parameter value in the UI directly</li><li>Step 8: the only reason that this UI exists is to construct a json file that will hold all the data of the entire racetrack.</li><li>Step 9: json parameter and other parameters that will help us to construct the json.</li><li>Step 1: the procedural network will read in this json and construct a complete racetrack from it.</li></ul>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="prototyping">Prototyping</h1>
+
+
+
+<p id="viewer-7d0e8">This will be a more technical part as it is all about using Python. I will always mention all the functions that I created and explain their functionality. I will not always show the code as some of it is just Python basics. Making use of an external code editor is highly advisable but not necessary. I personally used Visual Studio Code. To interact with Houdini using python we will make use of the Houdini object model or <a href="https://www.sidefx.com/docs/houdini/hom/intro.html">HOM </a>for short. This is a python library that allows you to interact with Houdini. If you don&#8217;t now how something works, or how you can get access to a certain part of Houdini. Then HOM is your best friend. Thousands of functions, classes, objects and way more are all super well documented. Use this documentation!!</p>
+
+
+
+<p>You will probably not understand everything I do the first time you read it or try it out yourself in Houdini. Be patient and dissect every step into smaller chunks. Begin by creating something small and make sure that it works perfect. Then you can start implementing complexer python systems to improve your tool.</p>
+
+
+
+<p>Before creating a viewer state let&#8217;s first create our UI and the rest of our tool which we will link the viewer state to later on. Don&#8217;t worry, this also involves a lot of Python. I will skip the step on how to create the geometry network as you should already be able to do this if you read this. Let&#8217;s start with the basics of Python for Houdini digital assets and work our way up from there.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="python-module" style="background-color:#333333">Python Module</h4>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UIPythonModule-1-1024x629.png" alt="" class="wp-image-492" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-1024x629.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-300x184.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-768x472.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-1536x943.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1.png 1632w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The first thing that you should do when considering to enhance your tool using Python is learn about the Python Module. The Python Module is a type of event handler. It can run code whenever the user presses a button, manually enters a value or slides the slider around in the UI.  Doing this will trigger and event to which code can be linked in the Python Module. There are other event handlers like OnUpdated which we will be using as well. You can find these event handlers on your HDA under Type Properties &gt; Scripts.</p>
+
+
+
+<p>How to link a parameter to a function in the python module? Start off by creating your function. Afterwards go to the parameter that you want to link this function to. In the parameter description under Callback Script we can call our function. </p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<p>Use <a href="https://www.sidefx.com/docs/houdini/hom/hou/phm.html">hou.phm()</a> to get a reference to the <a href="https://www.sidefx.com/docs/houdini/hom/hou/HDAModule.html">Python Module</a> and after that add the name of the function you created in the Python Module. Add kwargs as an argument. This is a dictionary from which you can get information about the current node, parameter the user changed, etc&#8230; . Make sure to set the script language to python.</p>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="177" height="43" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-26_195621.png" alt="" class="wp-image-488"/></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="378" height="36" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-26_195554.png" alt="" class="wp-image-487" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195554.png 378w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195554-300x29.png 300w" sizes="auto, (max-width: 378px) 100vw, 378px" /></figure>
+</div>
+</div>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="865" height="87" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-26_195905.png" alt="" class="wp-image-490" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195905.png 865w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195905-300x30.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195905-768x77.png 768w" sizes="auto, (max-width: 865px) 100vw, 865px" /></figure>
+
+
+
+<p>This kwargs dictionary is super important and we will be using it a lot. What is in this dictionary is dependent on where the function is called from. Sometimes you will get more info than other times.</p>
+
+
+
+<p>This is the basic setup, when you now change the parameter the script will run. An easy way to test this is to print some text in your function. You can open the python console to see this text appear</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="json-vs-multiparameter-block" style="background-color:#333333">Json vs Multiparameter block</h4>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UiGeometryNetwork-1024x714.png" alt="" class="wp-image-510" width="497" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork-1024x714.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork-300x209.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork-768x535.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork.png 1531w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Another super important step that we have to figure out is how we can transfer the data that defines our racetrack from our user interface into our geometry network so we can use regular Houdini nodes to construct the racetrack. But to figure that out we need to first figure out what this data looks like so we might have an idea on how to store it.</p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="alignwide has-background wp-block-heading" id="multiparameter-block" style="background-color:#2b2b2b">Control handles/points</h5>
+</div>
+
+
+
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ControlHandles-1-1024x492.png" alt="" class="wp-image-499" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1-1024x492.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1-300x144.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1-768x369.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1.png 1277w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>I will only define certain parameters at a couple of points on the racetrack. I will be calling these control handles or control points. The idea is that every point can contain multiple parameters that define how the racetrack looks and plays like at that point. Different points can have different parameters with different values. Looking in Houdini, I found two ways that are mostly used to store this data and then transfer it on to the geometry network.</p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="alignwide has-background wp-block-heading" id="multiparameter-block" style="background-color:#2b2b2b">Multiparameter block</h5>
+</div>
+
+
+
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-top" style="grid-template-columns:auto 30%"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="256" height="98" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_181815.png" alt="" class="wp-image-212 size-full"/></figure><div class="wp-block-media-text__content">
+<p>This is a special parameter type that allows you to create multiple instances of the same set of parameters. Every instance in this multiparameter would represent a control handle/point on our racetrack. This would allow us to define per point data (<a href="https://youtu.be/nS4FSMEas-I">example</a>).</p>
+</div></div>
+
+
+
+<figure class="wp-block-gallery alignwide has-nested-images columns-default is-cropped m0 wp-block-gallery-3 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="526" height="361" data-id="146" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_143541.png" alt="" class="wp-image-146" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143541.png 526w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143541-300x206.png 300w" sizes="auto, (max-width: 526px) 100vw, 526px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="566" height="432" data-id="147" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_143558.png" alt="" class="wp-image-147" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143558.png 566w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143558-300x229.png 300w" sizes="auto, (max-width: 566px) 100vw, 566px" /></figure>
+</figure>
+
+
+
+<div class="wp-block-columns are-vertically-aligned-top m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-vertically-aligned-top m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="pros" style="background-color:#2b2b2b">Pros</h5>
+
+
+
+<ul class="wp-block-list"><li>Very visual and easy to understand</li><li>All parameters of all the handles are visible at the same time</li></ul>
+</div>
+
+
+
+<div class="wp-block-column is-vertically-aligned-top m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="cons" style="background-color:#2b2b2b">Cons</h5>
+
+
+
+<ul class="wp-block-list"><li>Hard to manage using Python when handles are deleted or added</li><li>Every control handle will contain the exact same set of parameters. For&#8217; some of the control handles we probably only want to change specific parameters like the road width. This however is not possible when using a multiparameter. Every point contains all the parameters. This clutters the UI and is harder to manage.</li></ul>
+</div>
+</div>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="json" style="background-color:#2b2b2b">Json</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>Using jsons is the other way to transfer data from the user interface to your geometry network.  A json allows you to put many different parameters in a single text field. Each element in the json is a dictionary and represents a control handle/point. I will be calling this the handle dictionary.  In this dictionary we can define all the per point data using key-value pairs. </p>
+
+
+
+<figure class="wp-block-image size-large m0"><img loading="lazy" decoding="async" width="1024" height="531" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/JsonStructure-1024x531.png" alt="" class="wp-image-505" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure-1024x531.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure-300x155.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure-768x398.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure.png 1474w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<div class="wp-block-columns are-vertically-aligned-top m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-vertically-aligned-top is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="pros" style="background-color:#2b2b2b">Pros</h5>
+
+
+
+<ul class="wp-block-list"><li>Easy to manage through python</li><li>You can add handles that only change certain parameters but not others. So the json would only be as big as it needs to be.</li><li>Can save to disk. This would be a super easy way to transfer a racetrack between multiple artist who can work on it.</li></ul>
+</div>
+
+
+
+<div class="wp-block-column is-vertically-aligned-top is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="cons" style="background-color:#2b2b2b">Cons</h5>
+
+
+
+<ul class="wp-block-list"><li>Not as visual and easy to understand as a multiparameter </li><li>Editing a json structure manually is possible but error prone. Therefore, you need another way for the user to change parameter values in the json without having the user edit the json directly.</li></ul>
+</div>
+</div>

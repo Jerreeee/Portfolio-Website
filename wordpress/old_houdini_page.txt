@@ -1,0 +1,1336 @@
+
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Python in Houdini &#8211; Creating a procedural race track tool using python viewer states.</title>
+<meta name='robots' content='max-image-preview:large' />
+	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+	<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel="alternate" type="application/rss+xml" title="Python in Houdini &raquo; Feed" href="https://jeroen.denayer.com/wordpress/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Python in Houdini &raquo; Comments Feed" href="https://jeroen.denayer.com/wordpress/comments/feed/" />
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/16.0.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/16.0.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/jeroen.denayer.com\/wordpress\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.8.3"}};
+/*! This file is auto-generated */
+!function(s,n){var o,i,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),a=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===a[t]})}function u(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);for(var n=e.getImageData(16,16,1,1),a=0;a<n.data.length;a++)if(0!==n.data[a])return!1;return!0}function f(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\udedf")}return!1}function g(e,t,n,a){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):s.createElement("canvas"),o=r.getContext("2d",{willReadFrequently:!0}),i=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(function(e){i[e]=t(o,e,n,a)}),i}function t(e){var t=s.createElement("script");t.src=e,t.defer=!0,s.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",i=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){s.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+g.toString()+"("+[JSON.stringify(i),f.toString(),p.toString(),u.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"}),r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=function(e){c(n=e.data),r.terminate(),t(n)})}catch(e){}c(n=g(i,f,p,u))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script>
+<style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='wp-block-library-css' href='https://jeroen.denayer.com/wordpress/wp-includes/css/dist/block-library/style.min.css?ver=6.8.3' media='all' />
+<style id='wp-block-library-theme-inline-css'>
+.wp-block-audio :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio :where(figcaption){color:#ffffffa6}.wp-block-audio{margin:0 0 1em}.wp-block-code{border:1px solid #ccc;border-radius:4px;font-family:Menlo,Consolas,monaco,monospace;padding:.8em 1em}.wp-block-embed :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed :where(figcaption){color:#ffffffa6}.wp-block-embed{margin:0 0 1em}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:#ffffffa6}:root :where(.wp-block-image figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme :root :where(.wp-block-image figcaption){color:#ffffffa6}.wp-block-image{margin:0 0 1em}.wp-block-pullquote{border-bottom:4px solid;border-top:4px solid;color:currentColor;margin-bottom:1.75em}.wp-block-pullquote cite,.wp-block-pullquote footer,.wp-block-pullquote__citation{color:currentColor;font-size:.8125em;font-style:normal;text-transform:uppercase}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;font-style:normal;position:relative}.wp-block-quote:where(.has-text-align-right){border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote:where(.has-text-align-center){border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large,.wp-block-quote:where(.is-style-plain){border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-search__button{border:1px solid #ccc;padding:.375em .625em}:where(.wp-block-group.has-background){padding:1.25em 2.375em}.wp-block-separator.has-css-opacity{opacity:.4}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto}.wp-block-separator.has-alpha-channel-opacity{opacity:1}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table{margin:0 0 1em}.wp-block-table td,.wp-block-table th{word-break:normal}.wp-block-table :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table :where(figcaption){color:#ffffffa6}.wp-block-video :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video :where(figcaption){color:#ffffffa6}.wp-block-video{margin:0 0 1em}:root :where(.wp-block-template-part.has-background){margin-bottom:0;margin-top:0;padding:1.25em 2.375em}
+</style>
+<style id='classic-theme-styles-inline-css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='inspiro-google-fonts-css' href='//fonts.googleapis.com/css?family=Inter%3A400%2C700%2C%2C200%2C300%2C500%2C600%7CMontserrat%3A500%2C600%2C700&#038;display=swap&#038;ver=1.6.2' media='all' />
+<link rel='stylesheet' id='inspiro-style-css' href='https://jeroen.denayer.com/wordpress/wp-content/themes/inspiro/assets/css/minified/style.min.css?ver=1.6.2' media='all' />
+<style id='inspiro-style-inline-css'>
+body, button, input, select, textarea {
+font-family: 'Inter', sans-serif;
+font-weight: 400;
+}
+@media screen and (min-width: 782px) {
+body, button, input, select, textarea {
+font-size: 16px;
+line-height: 1.8;
+} }
+body:not(.wp-custom-logo) a.custom-logo-text {
+font-family: 'Montserrat', sans-serif;
+font-weight: 700;
+text-transform: uppercase;
+}
+@media screen and (min-width: 782px) {
+body:not(.wp-custom-logo) a.custom-logo-text {
+font-size: 26px;
+line-height: 1.8;
+} }
+h1, h2, h3, h4, h5, h6 {
+font-weight: 700;
+text-transform: none;
+line-height: 1.4;
+}
+.site-title {
+font-family: 'Inter', sans-serif;
+font-weight: 700;
+line-height: 1.25;
+}
+@media screen and (min-width: 782px) {
+.site-title {
+font-size: 80px;
+} }
+.site-description {
+font-family: 'Inter', sans-serif;
+line-height: 1.8;
+}
+@media screen and (min-width: 782px) {
+.site-description {
+font-size: 20px;
+} }
+.custom-header-button {
+font-family: 'Inter', sans-serif;
+line-height: 1.8;
+}
+@media screen and (min-width: 782px) {
+.custom-header-button {
+font-size: 16px;
+} }
+.navbar-nav a {
+font-family: 'Montserrat', sans-serif;
+font-weight: 500;
+line-height: 1.8;
+}
+@media screen and (min-width: 782px) {
+.navbar-nav a {
+font-size: 16px;
+} }
+@media screen and (max-width: 64em) {
+.navbar-nav li a {
+font-family: 'Montserrat', sans-serif;
+font-size: 16px;
+font-weight: 600;
+text-transform: uppercase;
+line-height: 1.8;
+} }
+
+</style>
+<link rel='stylesheet' id='inspiro-colors-dark-css' href='https://jeroen.denayer.com/wordpress/wp-content/themes/inspiro/assets/css/minified/colors-dark.min.css?ver=1.6.2' media='all' />
+<script src="https://jeroen.denayer.com/wordpress/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script src="https://jeroen.denayer.com/wordpress/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://jeroen.denayer.com/wordpress/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://jeroen.denayer.com/wordpress/wp-json/wp/v2/pages/5" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://jeroen.denayer.com/wordpress/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.8.3" />
+<link rel="canonical" href="https://jeroen.denayer.com/wordpress/" />
+<link rel='shortlink' href='https://jeroen.denayer.com/wordpress/' />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://jeroen.denayer.com/wordpress/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fjeroen.denayer.com%2Fwordpress%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://jeroen.denayer.com/wordpress/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fjeroen.denayer.com%2Fwordpress%2F&#038;format=xml" />
+		<style id="inspiro-custom-header-styles" type="text/css">
+					.site-title a,
+			.colors-dark .site-title a,
+			.colors-custom .site-title a,
+			body.has-header-image .site-title a,
+			body.has-header-video .site-title a,
+			body.has-header-image.colors-dark .site-title a,
+			body.has-header-video.colors-dark .site-title a,
+			body.has-header-image.colors-custom .site-title a,
+			body.has-header-video.colors-custom .site-title a,
+			.site-description,
+			.colors-dark .site-description,
+			.colors-custom .site-description,
+			body.has-header-image .site-description,
+			body.has-header-video .site-description,
+			body.has-header-image.colors-dark .site-description,
+			body.has-header-video.colors-dark .site-description,
+			body.has-header-image.colors-custom .site-description,
+			body.has-header-video.colors-custom .site-description {
+				color: ;
+			}
+		
+					.custom-header-button {
+				color: #ff0000;
+				border-color: #ff0000;
+			}
+		
+					.custom-header-button:hover {
+				color: #ff0000;
+			}
+		
+					.custom-header-button:hover {
+				background-color: #0bb4aa;
+				border-color: #0bb4aa;
+			}
+				</style>
+				<style id="wp-custom-css">
+			.m0 {
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+}		</style>
+		
+</head>
+
+<body class="home wp-singular page-template-default page page-id-5 wp-embed-responsive wp-theme-inspiro inspiro-front-page has-header-image inspiro--with-page-nav page-layout-full-width post-display-content-excerpt full-height-iframe-video colors-dark">
+
+<aside id="side-nav" class="side-nav" tabindex="-1">
+	<div class="side-nav__scrollable-container">
+		<div class="side-nav__wrap">
+			<div class="side-nav__close-button">
+				<button type="button" class="navbar-toggle">
+					<span class="screen-reader-text">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+						<div id="block-2" class="widget widget_block widget_search"><form role="search" method="get" action="https://jeroen.denayer.com/wordpress/" class="wp-block-search__button-outside wp-block-search__text-button wp-block-search"    ><label class="wp-block-search__label" for="wp-block-search__input-1" >Search</label><div class="wp-block-search__inside-wrapper " ><input class="wp-block-search__input" id="wp-block-search__input-1" placeholder="" value="" type="search" name="s" required /><button aria-label="Search" class="wp-block-search__button wp-element-button" type="submit" >Search</button></div></form><div class="clear"></div></div><div id="block-3" class="widget widget_block"><div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow"><h2 class="wp-block-heading">Recent Posts</h2><ul class="wp-block-latest-posts__list wp-block-latest-posts"><li><a class="wp-block-latest-posts__post-title" href="https://jeroen.denayer.com/wordpress/2022/01/22/hello-world/">Hello world!</a></li>
+</ul></div></div><div class="clear"></div></div><div id="block-4" class="widget widget_block"><div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow"><h2 class="wp-block-heading">Recent Comments</h2><ol class="wp-block-latest-comments"><li class="wp-block-latest-comments__comment"><article><footer class="wp-block-latest-comments__comment-meta"><a class="wp-block-latest-comments__comment-author" href="https://wordpress.org/">A WordPress Commenter</a> on <a class="wp-block-latest-comments__comment-link" href="https://jeroen.denayer.com/wordpress/2022/01/22/hello-world/#comment-1">Hello world!</a></footer></article></li></ol></div></div><div class="clear"></div></div>		</div>
+	</div>
+</aside>
+<div class="side-nav-overlay"></div>
+
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+<!--	<header id="masthead" class="site-header" role="banner">
+			</header>-->
+
+	<div class="custom-header">
+	<div class="site-branding">
+	<div class="inner-wrap">
+		
+		<div class="site-branding-text">
+			
+			
+							<h1 class="site-title"><a href="" target="_blank">Python in Houdini</a></h1>
+			
+							<p class="site-description">Creating a procedural race track tool using python viewer states.</p>
+					</div><!-- .site-branding-text -->
+
+		<div class="custom-header-button-wrapper">
+		<a class="custom-header-button button" href="" target="_blank" rel="nofollow" style="display: none;">
+			</a>
+</div><!-- .custom-header-button -->
+
+	</div><!-- .inner-wrap -->
+</div><!-- .site-branding -->
+
+	<div class="custom-header-media">
+		<div id="wp-custom-header" class="wp-custom-header"><img src="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniBackground.jpg" width="1200" height="630" alt="" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniBackground.jpg 1200w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniBackground-300x158.jpg 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniBackground-1024x538.jpg 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniBackground-768x403.jpg 768w" sizes="100vw" decoding="async" fetchpriority="high" /></div>	</div>
+
+		<div id="scroll-to-content" title="Scroll down to content">
+		<span class="screen-reader-text">Scroll down to content</span>
+	</div>
+	</div><!-- .custom-header -->
+
+	<div class="site-content-contain">
+		<div id="content" class="site-content">
+
+
+		<main id="main" class="site-main" role="main">
+
+			
+<article id="post-5" class="post-5 page type-page status-publish has-post-thumbnail hentry">
+
+	
+	<header class="entry-header">
+
+		
+	</header><!-- .entry-header -->
+
+	
+	<div class="entry-content">
+		
+<div style="height:5px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="Houdini procedural racetrack tool using python viewer states." width="950" height="534" src="https://www.youtube.com/embed/aGOkyTMvipA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<h1 class="has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="introduction">Introduction</h1>
+
+
+
+<h4 class="has-background wp-block-heading" id="about-me" style="background-color:#333333">About me</h4>
+
+
+
+<p id="viewer-ef5k0">Hello, my name is Jeroen Denayer and I&#8217;m from Belgium. I am a Technical Artist currently studying a <a href="https://www.digitalartsandentertainment.be">Digital Arts &amp; Entertainment program</a> at the Howest university of applied sciences for my Bachelor&#8217;s Degree. </p>
+
+
+
+<p>Why did I choose Python in Houdini? </p>
+
+
+
+<p>The game industry is all about speeding up game development. Games are becoming bigger, more qualitative. Companies are met with ever increasing pressure from tight deadlines to get new updates out for the player. And of course getting as many sales as possible. This is made possible thanks to amazing tool developers who create easy to use, highly interactive tools that update real-time in a game engine when the user changes something. This keeps the user from going back to their modelling software &gt; changing an asset &gt; exporting to disk and reimporting into the game engine. My personal interests are completely in line with this mindset of automating highly repetitive work while still focusing on art <span class="has-inline-color has-black-color">directability</span>. Everything related to scripting, proceduralism and getting your assets inside of a game engine as fast as possible is a great interest of mine. That&#8217;s why I wanted to research all the steps from creating a tool to in the end having an artist use the tool inside of a game engine.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="what-to-expect" style="background-color:#333333">What to expect?</h4>
+
+
+
+<p id="viewer-1juh9">As a practical proof point I have created a Houdini Digital Asset (HDA) that helps in the creation of a procedural racetrack that can be integrated into Unreal Engine. Instead of updating parameters of the Houdini Asset in Unreal, I will make use of Houdini session sync and python viewer states to change parameters of the HDA in Houdini. This will allow us to make changes to the racetrack inside of Houdini and see it automatically update in Unreal as well.</p>
+
+
+
+<p>Here is what I will cover:</p>
+
+
+
+<ul class="wp-block-list"><li>How to interact with objects in your viewport using your mouse and keyboard.</li><li>How to make a super interactive UI that can be navigated using only your mouse and keyboard.</li><li>How to store all the data of the entire racetrack in one json.</li><li>How we can get this json into our geometry network so we can construct the racetrack mesh from it using regular Houdini nodes..</li><li>Why I made the decision to use certain features such as Houdini session sync and python viewer states. </li><li>How to integrate this tool into Unreal Engine</li></ul>
+
+
+
+<p>I will not cover:</p>
+
+
+
+<ul class="wp-block-list"><li>How to use this json data to create the racetrack mesh itself</li></ul>
+
+
+
+<div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h1 class="has-black-color has-luminous-vivid-orange-background-color has-text-color has-background has-medium-font-size wp-block-heading" id="literature-prior-art-study">Literature/prior-art study </h1>
+
+
+
+<h4 class="has-background wp-block-heading" id="creating-racetracks" style="background-color:#333333">Creating racetracks</h4>
+
+
+
+<p>Starting off with looking for what&#8217;s already been done in this field I found some interesting sources which helped me with my research. Let&#8217;s start off with the creation of the procedural racetrack itself. There are a couple of techniques that are commonly used to create racetracks for games.</p>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-bottom"><figure class="wp-block-media-text__media"><img decoding="async" width="1024" height="470" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/TrackmaniaTrackEditor-1024x470.jpg" alt="" class="wp-image-35 size-full" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-1024x470.jpg 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-300x138.jpg 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-768x352.jpg 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor-1536x705.jpg 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/TrackmaniaTrackEditor.jpg 1920w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure><div class="wp-block-media-text__content">
+<h5 class="has-background wp-block-heading" id="pre-made-segments" style="background-color:#2b2b2b">Pre-made segments</h5>
+
+
+
+<p>In this approach you create pre-made segments of the track (corner segment, straight segment, etc&#8230;) and then place one segment after the other to create the track. The Trackmania games make use of this approach. The advantage is that different tracks are very consistent in their style as they consist of the same pre-made segments. The disadvantage is that you loose the ability to create very specific turns like 17.6 degrees to the left as all the segments have pre-defined standard angles like 45 or 90 degrees.</p>
+</div></div>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-bottom"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="600" height="338" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/Splinemesh.gif" alt="" class="wp-image-34 size-full"/></figure><div class="wp-block-media-text__content">
+<h5 class="has-background wp-block-heading" id="bending-pre-made-segments" style="background-color:#2b2b2b">Bending pre-made segments</h5>
+
+
+
+<p>A second option is to create pre-made segments that have multiple edge loops along their length and then bend them along a curve inside of a game engine. This approach is often used for cables inside of games and gives you the freedom to turn in any direction. But it comes with some negatives. It is a quick and dirty way. These extra edge loops are wasted geometry on straight parts of the curve and this bending method can also cause pinching and stretching of UV&#8217;s at parts with a high curvature. </p>
+</div></div>
+
+
+
+<h5 class="has-background wp-block-heading" id="fully-procedural-racetrack" style="background-color:#2b2b2b">Fully procedural racetrack</h5>
+
+
+
+<p id="viewer-enqvq">Using Houdini, the company Space Ape created a fully procedural racetrack based on an input curve that defines the main shape. In <a href="http://The following GDC talk (link) shows how the company Space Ape tackled this problem and how they ultimately started using the fully procedural method to create race tracks.">this</a> GDC talk, they explain all the benefits of using this method. It gives you full flexibility over the direction of your track, optimization of polycount on straight parts and automatically creating correct UV&#8217;s for your track. Their tool was directly implemented inside of a game engine and updates in real-time when a change is made. This is thanks to the Houdini Engine for Unreal plugin which connects both software.  It allows you to change parameters inside of Unreal Engine and in the background Houdini will re-calculate the output. Space Ape created their game in Unity but everything is applicable to Unreal Engine as well.</p>
+
+
+
+<figure class="wp-block-gallery alignwide has-nested-images columns-default is-cropped wp-block-gallery-2 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1920" height="1080" data-id="63" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-22_164602.png" alt="" class="wp-image-63" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602.png 1920w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-300x169.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-1024x576.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-768x432.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-22_164602-1536x864.png 1536w" sizes="auto, (max-width: 1920px) 100vw, 1920px" /><figcaption>Space Ape tool end result</figcaption></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1836" height="915" data-id="48" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UnityHoudiniEngine3.gif" alt="" class="wp-image-48"/><figcaption>Space Ape tool in action</figcaption></figure>
+</figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="viewer-2dm7f" style="background-color:#333333">Limitations of Unreal and Houdini Engine</h4>
+
+
+
+<p>The tool that Space Ape created was amazing! They could fully customize tons of parameters to change the visual look of the racetrack. However, to do this they still needed to drag around sliders in the UI. <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-black-color">This is the normal way of working when working with Unreal and Houdini. But this doesn&#8217;t fit in with the idea of making everything</mark> as interactive as possible for the artist that will use the tool in the end. What I want is something more like how you would model in Blender. Every action is done inside of the viewport using simple mouse clicks and keyboard shortcuts. And this is something that I wanted for my own racetrack tool as well. This is when I found out about Python viewer states.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="viewer-e289m" style="background-color:#333333">Python viewer states</h4>
+
+
+
+<p>Python viewer states are a way to interactively update parameter values on your tool or HDA using mouse clicks and keyboard shortcuts. </p>
+
+
+
+<p>I found that some students from the Breda University of Applied Sciences <a href="https://youtu.be/mBdKK_VKDHQ?t=893">(link)</a> had already built something that was similar to what I wanted to do. I used their <a href="https://youtu.be/2XIIEhgcWMQ">tutorial</a> as a starting point for my own tool. They implemented some interactivity but I wanted to take this even a step further. I wanted to navigate the entire UI of my tool purely using python viewer states.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="476" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/HoudiniTalkResult-2-1024x476.png" alt="" class="wp-image-55" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-1024x476.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-300x140.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-768x357.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2-1536x714.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/HoudiniTalkResult-2.png 1879w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption>Racetrack tool made by students from the Breda University of Applied Sciences </figcaption></figure>
+
+
+
+<p>So using python viewer states we can now interactively work with our tool. But what is the benefit of using this approach if we can&#8217;t get our racetrack back into Unreal Engine? We can achieve this using <a href="https://www.youtube.com/watch?v=Yn9rnQRkCUQ">Houdini session sync</a>. This allows us to open a live connection between Unreal and Houdini and we can now jump back and forth between both softwares, change something in one and it will immediately update in the other and vice versa.</p>
+
+
+
+<h4 class="has-black-color has-text-color has-background wp-block-heading" id="viewer-a5up1" style="background-color:#333333">Conclusion</h4>
+
+
+
+<p>What was very clear to me, is the workflow/pipeline that I would use during my research. First create a tool inside of Houdini. Afterwards convert it into a digital asset which can be imported into Unreal engine. Then using Houdini engine and Houdini session sync we can open a live connection between the softwares and use python viewer states in Houdini to change parameters on our racetrack tool.</p>
+
+
+
+<p id="viewer-8rrvr">Some questions that occurred to me after doing my literature study and before starting on my own tool were:</p>
+
+
+
+<ol class="wp-block-list"><li>How does the tool compare when built with and without python viewer states? What are the pros and cons?</li><li>Is using Houdini engine in combination with Houdini session sync a benefit to the game asset creation pipeline?</li></ol>
+
+
+
+<div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="workflow">Workflow</h1>
+
+
+
+<h4 class="has-background wp-block-heading" id="python-module" style="background-color:#333333">Overview</h4>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="903" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/WorkflowDiagram-3-1024x903.png" alt="" class="wp-image-464" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-1024x903.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-300x264.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-768x677.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-1536x1354.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-2048x1805.png 2048w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/WorkflowDiagram-3-2000x1763.png 2000w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Here you can see an overview of how I connected all the different parts.</p>
+
+
+
+<ul class="wp-block-list"><li>Step 1: create a standard procedural Houdini network using nodes.</li><li>Step 2: convert this network into a tool/HDA and import it into Unreal with the Houdini Engine plugin.</li><li>Step 3: change the position of curve points in Unreal Engine to shape the racetrack.</li><li>Step 4: use Houdini session sync to open a live connection between Unreal and Houdini.</li><li>Step 5: interactively work with the tool in the Houdini viewport using python viewer states.</li><li>Step 6: the viewer state will automatically update the UI when the artist changes something in the viewport.</li><li>Step 7: the python module will run when the artist changes a parameter value in the UI directly</li><li>Step 8: the only reason that this UI exists is to construct a json file that will hold all the data of the entire racetrack.</li><li>Step 9: json parameter and other parameters that will help us to construct the json.</li><li>Step 1: the procedural network will read in this json and construct a complete racetrack from it.</li></ul>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="prototyping">Prototyping</h1>
+
+
+
+<p id="viewer-7d0e8">This will be a more technical part as it is all about using Python. I will always mention all the functions that I created and explain their functionality. I will not always show the code as some of it is just Python basics. Making use of an external code editor is highly advisable but not necessary. I personally used Visual Studio Code. To interact with Houdini using python we will make use of the Houdini object model or <a href="https://www.sidefx.com/docs/houdini/hom/intro.html">HOM </a>for short. This is a python library that allows you to interact with Houdini. If you don&#8217;t now how something works, or how you can get access to a certain part of Houdini. Then HOM is your best friend. Thousands of functions, classes, objects and way more are all super well documented. Use this documentation!!</p>
+
+
+
+<p>You will probably not understand everything I do the first time you read it or try it out yourself in Houdini. Be patient and dissect every step into smaller chunks. Begin by creating something small and make sure that it works perfect. Then you can start implementing complexer python systems to improve your tool.</p>
+
+
+
+<p>Before creating a viewer state let&#8217;s first create our UI and the rest of our tool which we will link the viewer state to later on. Don&#8217;t worry, this also involves a lot of Python. I will skip the step on how to create the geometry network as you should already be able to do this if you read this. Let&#8217;s start with the basics of Python for Houdini digital assets and work our way up from there.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="python-module" style="background-color:#333333">Python Module</h4>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UIPythonModule-1-1024x629.png" alt="" class="wp-image-492" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-1024x629.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-300x184.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-768x472.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1-1536x943.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIPythonModule-1.png 1632w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The first thing that you should do when considering to enhance your tool using Python is learn about the Python Module. The Python Module is a type of event handler. It can run code whenever the user presses a button, manually enters a value or slides the slider around in the UI.  Doing this will trigger and event to which code can be linked in the Python Module. There are other event handlers like OnUpdated which we will be using as well. You can find these event handlers on your HDA under Type Properties &gt; Scripts.</p>
+
+
+
+<p>How to link a parameter to a function in the python module? Start off by creating your function. Afterwards go to the parameter that you want to link this function to. In the parameter description under Callback Script we can call our function. </p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<p>Use <a href="https://www.sidefx.com/docs/houdini/hom/hou/phm.html">hou.phm()</a> to get a reference to the <a href="https://www.sidefx.com/docs/houdini/hom/hou/HDAModule.html">Python Module</a> and after that add the name of the function you created in the Python Module. Add kwargs as an argument. This is a dictionary from which you can get information about the current node, parameter the user changed, etc&#8230; . Make sure to set the script language to python.</p>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="177" height="43" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-26_195621.png" alt="" class="wp-image-488"/></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="378" height="36" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-26_195554.png" alt="" class="wp-image-487" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195554.png 378w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195554-300x29.png 300w" sizes="auto, (max-width: 378px) 100vw, 378px" /></figure>
+</div>
+</div>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="865" height="87" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-26_195905.png" alt="" class="wp-image-490" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195905.png 865w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195905-300x30.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-26_195905-768x77.png 768w" sizes="auto, (max-width: 865px) 100vw, 865px" /></figure>
+
+
+
+<p>This kwargs dictionary is super important and we will be using it a lot. What is in this dictionary is dependent on where the function is called from. Sometimes you will get more info than other times.</p>
+
+
+
+<p>This is the basic setup, when you now change the parameter the script will run. An easy way to test this is to print some text in your function. You can open the python console to see this text appear</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="json-vs-multiparameter-block" style="background-color:#333333">Json vs Multiparameter block</h4>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UiGeometryNetwork-1024x714.png" alt="" class="wp-image-510" width="497" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork-1024x714.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork-300x209.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork-768x535.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UiGeometryNetwork.png 1531w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Another super important step that we have to figure out is how we can transfer the data that defines our racetrack from our user interface into our geometry network so we can use regular Houdini nodes to construct the racetrack. But to figure that out we need to first figure out what this data looks like so we might have an idea on how to store it.</p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="alignwide has-background wp-block-heading" id="multiparameter-block" style="background-color:#2b2b2b">Control handles/points</h5>
+</div>
+
+
+
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ControlHandles-1-1024x492.png" alt="" class="wp-image-499" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1-1024x492.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1-300x144.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1-768x369.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ControlHandles-1.png 1277w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>I will only define certain parameters at a couple of points on the racetrack. I will be calling these control handles or control points. The idea is that every point can contain multiple parameters that define how the racetrack looks and plays like at that point. Different points can have different parameters with different values. Looking in Houdini, I found two ways that are mostly used to store this data and then transfer it on to the geometry network.</p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="alignwide has-background wp-block-heading" id="multiparameter-block" style="background-color:#2b2b2b">Multiparameter block</h5>
+</div>
+
+
+
+<div class="wp-block-column m0 is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-top" style="grid-template-columns:auto 30%"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="256" height="98" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_181815.png" alt="" class="wp-image-212 size-full"/></figure><div class="wp-block-media-text__content">
+<p>This is a special parameter type that allows you to create multiple instances of the same set of parameters. Every instance in this multiparameter would represent a control handle/point on our racetrack. This would allow us to define per point data (<a href="https://youtu.be/nS4FSMEas-I">example</a>).</p>
+</div></div>
+
+
+
+<figure class="wp-block-gallery alignwide has-nested-images columns-default is-cropped m0 wp-block-gallery-3 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="526" height="361" data-id="146" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_143541.png" alt="" class="wp-image-146" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143541.png 526w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143541-300x206.png 300w" sizes="auto, (max-width: 526px) 100vw, 526px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="566" height="432" data-id="147" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_143558.png" alt="" class="wp-image-147" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143558.png 566w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_143558-300x229.png 300w" sizes="auto, (max-width: 566px) 100vw, 566px" /></figure>
+</figure>
+
+
+
+<div class="wp-block-columns are-vertically-aligned-top m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-vertically-aligned-top m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="pros" style="background-color:#2b2b2b">Pros</h5>
+
+
+
+<ul class="wp-block-list"><li>Very visual and easy to understand</li><li>All parameters of all the handles are visible at the same time</li></ul>
+</div>
+
+
+
+<div class="wp-block-column is-vertically-aligned-top m0 is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="cons" style="background-color:#2b2b2b">Cons</h5>
+
+
+
+<ul class="wp-block-list"><li>Hard to manage using Python when handles are deleted or added</li><li>Every control handle will contain the exact same set of parameters. For&#8217; some of the control handles we probably only want to change specific parameters like the road width. This however is not possible when using a multiparameter. Every point contains all the parameters. This clutters the UI and is harder to manage.</li></ul>
+</div>
+</div>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="json" style="background-color:#2b2b2b">Json</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>Using jsons is the other way to transfer data from the user interface to your geometry network.  A json allows you to put many different parameters in a single text field. Each element in the json is a dictionary and represents a control handle/point. I will be calling this the handle dictionary.  In this dictionary we can define all the per point data using key-value pairs. </p>
+
+
+
+<figure class="wp-block-image size-large m0"><img loading="lazy" decoding="async" width="1024" height="531" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/JsonStructure-1024x531.png" alt="" class="wp-image-505" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure-1024x531.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure-300x155.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure-768x398.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/JsonStructure.png 1474w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<div class="wp-block-columns are-vertically-aligned-top m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-vertically-aligned-top is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="pros" style="background-color:#2b2b2b">Pros</h5>
+
+
+
+<ul class="wp-block-list"><li>Easy to manage through python</li><li>You can add handles that only change certain parameters but not others. So the json would only be as big as it needs to be.</li><li>Can save to disk. This would be a super easy way to transfer a racetrack between multiple artist who can work on it.</li></ul>
+</div>
+
+
+
+<div class="wp-block-column is-vertically-aligned-top is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="cons" style="background-color:#2b2b2b">Cons</h5>
+
+
+
+<ul class="wp-block-list"><li>Not as visual and easy to understand as a multiparameter </li><li>Editing a json structure manually is possible but error prone. Therefore, you need another way for the user to change parameter values in the json without having the user edit the json directly.</li></ul>
+</div>
+</div>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="conclusion" style="background-color:#2b2b2b">Conclusion</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>The multiparameter block is a super nice Houdini feature but it has it&#8217;s drawbacks. When we use json on the other hand the possibilities to store our racetrack data are just endless as we are only limited by what Python can do. And python can a lot. So for my tool I decided to work with json to transfer data from the user interface to the geometry network. As I mentioned in the cons about using json, we don&#8217;t want an artist to manually change the json. We will need to create a user interface for this so the artist who will use the tool does not have to touch the json to change parameter values.</p>
+
+
+
+<h4 class="has-black-color has-luminous-vivid-orange-background-color has-text-color has-background wp-block-heading" id="user-interface">User interface</h4>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UserInterface.png" alt="" class="wp-image-514" width="837" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UserInterface.png 746w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UserInterface-243x300.png 243w" sizes="(max-width: 746px) 100vw, 746px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="active-handle-user-interface" style="background-color:#2b2b2b">Active handle user interface</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">Because I am using a <a href="#toggleParameter">json</a> structure to transfer my per point data, I need a way for the user of my tool to interact with this json. The first thing I did was add a UI section on my HDA that could show all the values of a single handle dictionary. I will be calling this the <span style="text-decoration: underline;">active handle</span> from now on. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0" id="toggleParameter"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_165522.png" alt="" class="wp-image-192" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_165522.png 474w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_165522-300x255.png 300w" sizes="(max-width: 474px) 100vw, 474px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ActiveHandleUI.png" alt="" class="wp-image-512" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ActiveHandleUI.png 1020w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ActiveHandleUI-300x127.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/ActiveHandleUI-768x326.png 768w" sizes="(max-width: 1020px) 100vw, 1020px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="all-handles-json" style="background-color:#2b2b2b">All handles json</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>We will need some helper parameters in our user interface. First we need a string parameter that will contain the json. Note, as we do not yet have an option to <a href="#addAndDeleteHandles">add and delete control handles</a> (we will add this functionality later) you can always manually edit the json to add a handle dictionary. Beware of typos!</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="996" height="29" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_182332.png" alt="" class="wp-image-218" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332.png 996w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332-300x9.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332-768x22.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_182332-950x29.png 950w" sizes="auto, (max-width: 996px) 100vw, 996px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="allHandleParms" style="background-color:#2b2b2b">All handle parms</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>We also need to add a new string parameter which will contain all the parameters that our active handle UI contains. This will be very useful later.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="980" height="28" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-16.png" alt="" class="wp-image-271" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16.png 980w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16-300x9.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16-768x22.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-16-950x28.png 950w" sizes="auto, (max-width: 980px) 100vw, 980px" /></figure>
+
+
+
+<p>To set this parameter, I created a function in the OnUpdated event handler in the Type Properties &gt; Scripts tab. Here I loop through all the parameters in my main folder and add them to the &#8220;All Handle Parms&#8221; parameter.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-17.png" alt="" class="wp-image-272" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-17.png 628w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-17-300x185.png 300w" sizes="(max-width: 628px) 100vw, 628px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="changing-the-active-handle" style="background-color:#2b2b2b">Changing the active handle</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">The &#8220;Active Handle&#8221; parameter defines which handle&#8217;s values are shown. In the callback script for this parameter I placed the following code: <code>hou.phm().updateActiveHandleParms(kwargs)</code>. This will call a function that I added to the Python Module.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="462" height="204" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_180143.png" alt="" class="wp-image-207" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_180143.png 462w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_180143-300x132.png 300w" sizes="auto, (max-width: 462px) 100vw, 462px" /></figure>
+
+
+
+<p class="m0">When the user now changes this parameter, we can get the new value using <code>kwargs["script_value"</code>]. Using this we can get the dictionary of the new active handle using <code>jsl[index</code>].. Afterwards I just loop through the keys in this dictionary and set the corresponding parameter to the value of each key. Make sure that the keys match with your parameter names in the UI. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_204657.png" alt="" class="wp-image-279" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_204657.png 342w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_204657-300x75.png 300w" sizes="(max-width: 342px) 100vw, 342px" /></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="updating-other-parameters" style="background-color:#2b2b2b">Updating other parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">On top of this I have another function in my Python Module that takes count of updating one single parameter in the json. I add this function to the callback script of all my parameters except for the &#8220;Active Handle&#8221; and the &#8220;<a href="#curvePosition">curvePos</a>&#8221; as these are both important for something else.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_161547.png" alt="" class="wp-image-178" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_161547.png 630w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_161547-300x108.png 300w" sizes="(max-width: 630px) 100vw, 630px" /></figure>
+
+
+
+<p class="m0">Below you can see this in action. When I change a parameter the callback script is ran and the json is updated. When I change the &#8220;Active Handle&#8221;, all of the parameters are updated with the correct values from the json.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="955" height="240" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ActiveHandleChangeParameters.gif" alt="" class="wp-image-174"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="handle-type" style="background-color:#2b2b2b">Handle type</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>So what is this handle type? The handle type defines what parameters can be changed on that handle. I have a handle type &#8220;Normal&#8221; where you can only change the road width and rotation. Another handle type &#8220;Delete&#8221; which allows you to cut away parts of the racetrack. And the last one &#8220;Railings&#8221; which allows you to add some sort of barrier at the two sides of the track. Because I also added this handle type parameter, I need a way to only show the parameters of the chosen handle type. I set the &#8220;Hide When&#8221; value of the parent folders (Basic, Delete, Rail) to hide the folder when the handle type is 0, 1 or 2.</p>
+
+
+
+<p class="m0">Below you can see that only the parameters from one handle type are shown and that all the other parameters are hidden. Note how the json also reflects these changes. I do this with some extra case handling in my code. I delete all the parameters that do not have the correct handle type. I can easily check if the parameter is from a certain handle type because I added Basic__, Delete__ or Rail__ before their names. These prefixes are used as a context for the parameters. You could do without this context, but then you would not have the option to for example have a length parameter under more than one handle type. This is because each parameter has to have a unique name and using these contexts is a neat way to get around that.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="941" height="239" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ChangingHandleTypes.gif" alt="" class="wp-image-363"/></figure>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="1711" height="474" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/HandleTypes.gif" alt="" class="wp-image-401"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="spareParms" style="background-color:#2b2b2b">Spare parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>These are optional parameters that the user can dynamically add and remove from the handle dictionary. Spare parameters are also linked to a certain handle type.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/SpareParms2.gif" alt="" class="wp-image-379" width="840"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="menu-script" style="background-color:#2b2b2b">Menu Script</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>You can see that the content of the Spare Parms menu updates according to what is in the Spare Parms list underneath the menu. To do this we first need to create this list. I do this by adding the following code in my <code>updateActiveHandleParms()</code> function. Every time this function is called it loops through the &#8220;All Handle Parms&#8221; list. If the parameter is not visible but has the correct handle type, then we add it to the &#8220;Spare Parms&#8221; list. Later on we set the spare parms string parameter to this list.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_115930.png" alt="" class="wp-image-387" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_115930.png 562w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_115930-300x144.png 300w" sizes="(max-width: 562px) 100vw, 562px" /></figure>
+
+
+
+<p>Now to update the spare parms menu we need to create an extra function called <code>updateSpareParmsMenu()</code>. This function will create a list of all the spare parameters.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-19.png" alt="" class="wp-image-386" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-19.png 595w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-19-300x105.png 300w" sizes="(max-width: 595px) 100vw, 595px" /></figure>
+
+
+
+<p>In the Menu &gt; Menu Script tab set the following code: <code>kwargs["node"].hdaModule().updateSpareParmsMenu(kwargs)</code>. To make sure that this code runs whenever something changes, we can just manually run this code by using <code>.pressButton()</code> in the <code>updateActiveHandleParms()</code> function. This will make sure that the code above is triggered. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_120237.png" alt="" class="wp-image-389" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_120237.png 421w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_120237-300x49.png 300w" sizes="(max-width: 421px) 100vw, 421px" /></figure>
+
+
+
+<div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="defining-spare-parameters" style="background-color:#2b2b2b">Defining spare parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">To create a new spare parameter, we have to do a couple of things. Let&#8217;s first add an extra toggle parameter (<a href="#toggleParameter">see image</a>) with the exact same name + &#8220;_hide&#8221; at the end. Set the &#8220;Hide When&#8221; value to hide the parameter when the toggle is 1 (True). You could use <code>node.parm.disable()</code> for this but Houdini won&#8217;t memorize the disabled state of the parameter across sessions. If you want a work around you can make use of toggles. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="http://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_203827.png" alt="" class="wp-image-274" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_203827.png 590w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_203827-300x15.png 300w" sizes="(max-width: 590px) 100vw, 590px" /></figure>
+
+
+
+<p class="m0">Under the Action Button tab for this parameter I added the following code: <code>kwargs["node"].hdaModule().deleteSpareParm(kwargs)</code>. To set the icon for this button you can use the following tag.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img loading="lazy" decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_112608.png" alt="" class="wp-image-374" width="500" height="50" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_112608.png 496w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_112608-300x30.png 300w" sizes="auto, (max-width: 500px) 100vw, 500px" /></figure>
+
+
+
+<p class="m0">I also add the following tag. We will use this later on when we delete spare parameters using viewer states.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img loading="lazy" decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-21.png" alt="" class="wp-image-393" width="221" height="27"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="adding-and-deleting-spare-parameters" style="background-color:#2b2b2b">Adding and deleting spare parameters</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>To add spare parameters, I created an extra function <code>addSpareParm()</code> in my Python Module. This function is added to the Callback Script of the &#8220;Add&#8221; Button. In this function, I retrieve the parameter that is currently selected in the &#8220;Spare Parms&#8221; menu. Next, I retrieve the default value for this parameter and lastly, I add this parameter to the active handle dictionary.</p>
+
+
+
+<p>To delete spare parameters, I create an extra function <code>deleteSpareParm()</code> in my Python Module. This function will be called whenever the user presses the &#8220;Delete&#8221; button. In this function we can get the name of the parameter that should be deleted using <code>kwargs["parmtuple"].name()</code>. Afterwards, this parameter is removed from the active handle dictionary.</p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="curvePosition" style="background-color:#2b2b2b">Curve Position</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>The &#8220;curvePos&#8221; parameter defines at what arclength value along my racetrack the handle is positioned. This can be a value from 0 to the length of your track.  </p>
+
+
+
+<p>You could also use a  &#8220;curveU&#8221; value which maps the entire curve between a value from 0 to 1. The downside to using a curveU value is that when you change the length of your curve that the handles will jump around as their position is defined as a percentage of the entire length of the curve. You won&#8217;t have this when you define the position as an arclength value.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_164626.png" alt="" class="wp-image-188" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_164626.png 760w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_164626-288x300.png 288w" sizes="(max-width: 760px) 100vw, 760px" /></figure>
+
+
+
+<p class="m0">I created a <code>getCurvePos()</code> function that gets a list of all the &#8220;curvePos&#8221; values of all the handles that are in the json. To get the index we can just sort the list and get the index by value. This index represents the position in the json list in which our handle dictionary should be placed. </p>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="changing-the-curve-position" style="background-color:#2b2b2b">Changing the curve position</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p>By changing the &#8220;curvePos&#8221; parameter the corresponding handle will move along. The handles are all ordered in the json list based on their &#8220;curvePos&#8221; value. So if you change the &#8220;curvePos&#8221; value then it could be that this order is not correct anymore. To check this I added a function to my Python Module called <code>updateCurvePos()</code> which I set in the Callback Script of the &#8220;curvePos&#8221; parameter. This function will call the <code>getCurvePos()</code> <a href="#curvePosition">function </a>to get the correct index of this handle. If the index is not equal to the current index of the handle dictionary in the list, then the handle dictionary is removed from the list and inserted back at the correct index.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1811" height="593" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ChangingCurvePos2.gif" alt="" class="wp-image-286"/></figure>
+
+
+
+<div class="wp-block-columns m0 is-layout-flex wp-container-core-columns-is-layout-9d6595d7 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<h5 class="has-background wp-block-heading" id="changing-the-curve-position" style="background-color:#2b2b2b">Adding and deleting handles</h5>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"></div>
+</div>
+
+
+
+<p class="m0">The next functionality that we need to add is being able to add and delete handles from our json. To be able to add handles, we need some default values for all our parameters. For this, I created an extra section in my UI.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="381" height="201" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_170346.png" alt="" class="wp-image-197" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_170346.png 381w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_170346-300x158.png 300w" sizes="auto, (max-width: 381px) 100vw, 381px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-6.png" alt="" class="wp-image-185" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-6.png 958w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-6-300x63.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-6-768x161.png 768w" sizes="(max-width: 958px) 100vw, 958px" /></figure>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="256" height="38" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-7.png" alt="" class="wp-image-186"/></figure>
+
+
+
+<p>Whenever the user now clicks on &#8220;Add handle&#8221;, I construct a <a href="#json">dictionary</a> for this handle by looking at the default values. The parameter will only be added to the dictionary if the &#8220;Add Default&#8221; toggle is True. If there is no toggle the parameter will be added by default. Now at what position in the json do we insert this new handle dictionary? I check at what index in the list the default &#8220;curvePos&#8221; value should be placed. (see <a href="https://jeroen.denayer.com/wp-admin/post.php?post=5&amp;action=edit#curvePosition">Curve Position</a>). Afterwards I insert the new handle dictionary into the list at this index.</p>
+
+
+
+<p class="m0">To delete the handle, we can just get the value from the &#8220;Active Handle&#8221; parameter which will act as our index when deleting a handle from the json using <code>del jsl[index]</code>.</p>
+
+
+
+<h4 class="has-black-color has-luminous-vivid-orange-background-color has-text-color has-background wp-block-heading" id="creating-a-python-viewer-state">Creating a python viewer state</h4>
+
+
+
+<figure class="wp-block-image size-large is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/UIViewerStates-962x1024.png" alt="" class="wp-image-527" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-962x1024.png 962w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-282x300.png 282w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-768x817.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates-1444x1536.png 1444w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/UIViewerStates.png 1639w" sizes="(max-width: 962px) 100vw, 962px" /></figure>
+
+
+
+<p>So far, we have not yet touched python viewer states. However, all the setup so far has been super important as we will be using a lot of the functions that we created in our Python Module in our viewer state as well.</p>
+
+
+
+<p>You can create a brand-new python viewer state by going on your digital asset to Type Properties &gt; Interactive &gt; State Script. Here you click &#8220;New&#8221; to create a new viewer state. The following pop-up window will appear where you can select some pre-made functions that you would like to use. The ones that I have selected where most useful for me.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_183546.png" alt="" class="wp-image-229" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_183546.png 645w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_183546-232x300.png 232w" sizes="(max-width: 645px) 100vw, 645px" /></figure>
+
+
+
+<p>Let&#8217;s start by assigning some class variables when the user enters the viewer state by pressing &#8220;Enter&#8221; with their mouse cursor in the viewport. The self.node and self.phm are important variables which we will use a lot. Self.node refers to our HDA node and self.phm refers to our Python Module.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-10.png" alt="" class="wp-image-236" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-10.png 572w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-10-300x76.png 300w" sizes="(max-width: 572px) 100vw, 572px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="adding-and-deleting-handles" style="background-color:#333333">Adding and deleting handles</h4>
+
+
+
+<p class="m0">Now we will add the option to change parameter values by using your mouse and the ability to add and delete handles. For this we will need some keybinds. You can add this right above your __init__ function.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="591" height="91" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_184403.png" alt="" class="wp-image-234" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_184403.png 591w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_184403-300x46.png 300w" sizes="auto, (max-width: 591px) 100vw, 591px" /></figure>
+
+
+
+<p>Adding and deleting handles is easy as we have already implemented this in the Python Module. In the onKeyTransitEvent() first get the key that was pressed and afterwards check if this key matches with one of our keybinds. If this is the case press the &#8220;Add&#8221; or &#8220;Delete&#8221; button through code. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_185422.png" alt="" class="wp-image-237" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_185422.png 638w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_185422-300x185.png 300w" sizes="(max-width: 638px) 100vw, 638px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="selecting-handles-in-the-viewport" style="background-color:#2b2b2b">Selecting handles in the viewport</h4>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1629" height="453" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/SelectingHandles.gif" alt="" class="wp-image-421"/></figure>
+
+
+
+<p>First get the most important variables from the onMouseEvent(). The following three are used almost always in mouse and keyboard events.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="382" height="171" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_143321.png" alt="" class="wp-image-424" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143321.png 382w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143321-300x134.png 300w" sizes="auto, (max-width: 382px) 100vw, 382px" /></figure>
+
+
+
+<p>If the user clicked in the viewport then the reason why the onMouseEvent() was trigered will be &#8220;Start&#8221;. Next we can cast a ray into the scene and collide with a custom geometry from inside our HDA. Afterwards, we can get an id attribute that you have to store on the primitives of the collision geo. This id represents the position of the handle in the json. Using this id we can set the new active handle.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-26.png" alt="" class="wp-image-426" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-26.png 814w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-26-300x21.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-26-768x55.png 768w" sizes="(max-width: 814px) 100vw, 814px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_143337.png" alt="" class="wp-image-425" width="810" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143337.png 944w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143337-300x118.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_143337-768x303.png 768w" sizes="(max-width: 944px) 100vw, 944px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="cycling-the-active-parameter" style="background-color:#2b2b2b">Cycling the active parameter</h4>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="497" height="235" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/ScrollingActiveParm2.gif" alt="" class="wp-image-262"/></figure>
+
+
+
+<p class="m0">Up until now I hardcoded the parameter that would be changed when dragging your LMB. But ideally we could replace this with a variable. For this I used the concept of an &#8220;Active Parameter&#8221;. We need two new parameters for this on our UI. One which will contain the currently active parameter and another which will contain all the parameters that can be cycled through using a keyboard shortcut.</p>
+
+
+
+<figure class="wp-block-image size-large m0"><img loading="lazy" decoding="async" width="1024" height="31" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_194730-1024x31.png" alt="" class="wp-image-247" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730-1024x31.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730-300x9.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730-768x23.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_194730.png 1034w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-12.png" alt="" class="wp-image-245" width="223" height="-6"/></figure>
+
+
+
+<p>The &#8220;Cyclable Active Parms&#8221; parameter is automatically set in the OnUpdated event handler. To define if a parameter can be used in this cycle I added a tag to the parameter in the Parameter Description.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-13.png" alt="" class="wp-image-249" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-13.png 455w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-13-300x35.png 300w" sizes="(max-width: 455px) 100vw, 455px" /></figure>
+
+
+
+<p>In the onUpdated event handler we can now add some code that will check all the parameters in the UI if they have this tag. If so, then they are added to the active parameter cycle.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_195317.png" alt="" class="wp-image-253" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_195317.png 611w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_195317-300x122.png 300w" sizes="(max-width: 611px) 100vw, 611px" /></figure>
+
+
+
+<p class="m0">Now that the setup is done we still need a way to change the active parameter and cycle through the list we just created. I will be using the onMouseWheelEvent() in the python viewer state for this. Don&#8217;t forget to add new class variables for the active_parm and the cyclable_active_parms.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_200210.png" alt="" class="wp-image-257" width="500" title="m0" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210.png 961w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210-300x27.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210-768x68.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_200210-950x85.png 950w" sizes="(max-width: 961px) 100vw, 961px" /></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_202342.png" alt="" class="wp-image-266" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202342.png 456w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202342-300x132.png 300w" sizes="(max-width: 456px) 100vw, 456px" /></figure>
+
+
+
+<p class="m0">Now when you scroll with your MMB, the <code>cycleMode()</code> function will be called. In this function it is just a matter of getting the active parameter &gt; getting the index of this parameter in the  cyclable_active_parms list. Adding the direction to this index &gt; getting the new active parameter from the list &gt; and lastly setting the active parameter to this new one. After that we can cycle through all the cyclable_active_parms, disable all of them and only enable the active parameter.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_202145.png" alt="" class="wp-image-265" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202145.png 552w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_202145-300x52.png 300w" sizes="(max-width: 552px) 100vw, 552px" /></figure>
+
+
+
+<p class="m0">We can now also use this active parameter as the parameter to change when the user holds LMB and drags. Cycling through the parameters looks like the following.</p>
+
+
+
+<h4 class="has-background wp-block-heading" id="updating-parameter-values" style="background-color:#333333">Updating parameter values</h4>
+
+
+
+<p>Updating the parameter value by holding LMB and dragging is a bit complexer. Again, tart by getting some of the most important values we can get from the onMouseEvent(). </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-11.png" alt="" class="wp-image-239" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-11.png 655w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-11-300x128.png 300w" sizes="(max-width: 655px) 100vw, 655px" /></figure>
+
+
+
+<p>You will still need to add the self.mouse_x_start variable to your class. You can set it using <code>device.mouseX()</code> when the reason is &#8220;Start&#8221;. If the reason is &#8220;Active&#8221; then this means the user is holding LMB and dragging their mouse. When this happens, we want to update our parameter. Let&#8217;s get the old value, add the direction and set the new value. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-23_190711.png" alt="" class="wp-image-242" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_190711.png 516w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-23_190711-300x84.png 300w" sizes="(max-width: 516px) 100vw, 516px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="multiplier-tag" style="background-color:#2b2b2b">Multiplier tag</h4>
+
+
+
+<p class="m0">At the moment the rate at which the parameter value changes is always one. However, some parameters need to go quicker up and down than others. To define the multiplier for a certain parameter, change the active_parm_cycle tag so it is structured as a dictionary with the multiplier being a key-value pair.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="343" height="26" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-22.png" alt="" class="wp-image-404" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-22.png 343w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-22-300x23.png 300w" sizes="auto, (max-width: 343px) 100vw, 343px" /></figure>
+
+
+
+<p>Next in the python viewer state we have to create a new class variable called <code>self.active_parm_tags</code>. Each time the user enters the state or changes the active parameter, we will call the following function that will set this variable.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-23.png" alt="" class="wp-image-405" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-23.png 787w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-23-300x78.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-23-768x199.png 768w" sizes="(max-width: 787px) 100vw, 787px" /></figure>
+
+
+
+<p>If we now calculate the <code>new_value</code> we can multiple the <code>direction</code> with the multiplier defined in the <code>self.active_parm_tags</code> variable. Below, I am changing these values purely by scrolling with my mouse. Note how they all change with different steps. This is because of the multiplier. This way we can also change the handle type through our viewer state if we set the multiplier to one. I also added the functionality to change the value by scrolling with your middle mouse button. Use device.mouseWheel() in the onMouseWheelEvent() to get the scroll direction.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1230" height="408" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/MultiplierTag2.gif" alt="" class="wp-image-410"/></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="adding-and-deleting-spare-parameters" style="background-color:#2b2b2b">Adding and deleting spare parameters</h4>
+
+
+
+<p class="m0">To do this we need to create some extra keybinds in our class. Add an <code>addSpareParm()</code> and a <code>deleteSpareParm()</code> function to the viewer state. To add a spare parameter, just call the <code>addSpareParm()</code> <a href="#spareParms">function </a>from the python module. </p>
+
+
+
+<p>To delete a spare parameter first get the currently active parameter and check if this parameter has the &#8220;spare_parm = 1&#8221; tag. If this is the case then pass the parameter name on to the <code>deleteSpareParm()</code> function in the Python module to delete it.</p>
+
+
+
+<figure class="wp-block-image size-full m0"><img loading="lazy" decoding="async" width="468" height="29" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-24_141924.png" alt="" class="wp-image-419" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_141924.png 468w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-24_141924-300x19.png 300w" sizes="auto, (max-width: 468px) 100vw, 468px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="creating-a-hud-info-panel" style="background-color:#2b2b2b">Geometry functions</h4>
+
+
+
+<p>I do this by using something I made myself called geometry functions. </p>
+
+
+
+<p>The idea is that using python viewer states we click in our viewport and get the position of where we clicked by colliding with a collision geometry (<a href="#selecting-handles-in-the-viewport">see selecting handles</a>). This position is stored in a vector parameter in our user interface. This is the input of our geometry function. This position is read into the geometry network and a point is created at this position. I ray the point onto my racetrack curve from which I can get the &#8220;curvePos&#8221; value. All of the values that I want to use as output for my geometry function I store in a parameter on a single output node. This way I can set the output parameters in the user interface by just grabbing the value from this output node.</p>
+
+
+
+<p>To use this geometry function you first have to enter a special mode called &#8220;SetParm&#8221; using a keyboard shortcut. When you are in this mode, then every mouse action in the viewport will run our special geometry function.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="355" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/GeometryFunctions-1024x355.png" alt="" class="wp-image-553" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-1024x355.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-300x104.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-768x266.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-1536x532.png 1536w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-2048x710.png 2048w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/GeometryFunctions-2000x693.png 2000w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Using Output 0.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1280" height="552" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/SettingCurvePos2.gif" alt="" class="wp-image-551"/></figure>
+
+
+
+<p>Using output 1.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1280" height="534" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/GeometryFunctionDeleteLength.gif" alt="" class="wp-image-556"/></figure>
+
+
+
+<p>To define what geometry function a parameter should use as you can create multiple geometry functions I modified the &#8220;<a href="#cycling-the-active-parameter">active_parm_cycle</a>&#8221; tag. Add a new key-value pair.  The key is &#8220;SetParm&#8221;, I will use this to detect if a parameter even has a geometry function assigned to it as not all parameters will have one. The value consists of three parts. The first one being which geometry function to use. The second is which collision geometry to use. This value is used in another geometry function to switch the collision geometry in my geometry network. And the last part is which output to use.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="51" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-27-1024x51.png" alt="" class="wp-image-560" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27-1024x51.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27-300x15.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27-768x38.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27.png 1064w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Below you see the geometry function I created to switch collision geometries. Using python I can set the index in the switch node. This will change which collision is used.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-28.png" alt="" class="wp-image-561" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-28.png 454w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-28-300x228.png 300w" sizes="(max-width: 454px) 100vw, 454px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="creating-a-hud-info-panel" style="background-color:#2b2b2b">Creating a HUD info panel</h4>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-top" style="grid-template-columns:auto 42%"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="369" height="258" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-27_121831.png" alt="" class="wp-image-564 size-full" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_121831.png 369w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_121831-300x210.png 300w" sizes="auto, (max-width: 369px) 100vw, 369px" /></figure><div class="wp-block-media-text__content">
+<p class="has-text-align-left has-normal-font-size">This is a new feature since Houdini 19. It allows you to create an info panel linked to your viewerstate. It is meant to explain the most important functionality of your tool. You can create a HUD panel using the following references. </p>
+
+
+
+<ul class="wp-block-list"><li><a href="https://www.sidefx.com/docs/houdini/hom/hud_info.html">Python state info panels</a></li><li><a href="https://www.sidefx.com/docs/houdini/hom/hou/SceneViewer.html#hudInfo">hou.SceneViewer.hudInfo()</a></li></ul>
+</div></div>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="integration-into-unreal-engine">Integration into Unreal Engine</h1>
+
+
+
+<p>To integrate a tool like this into Unreal Engine you will need to install the Houdini Engine for Unreal plugin. This will allow you to import your Houdini digital assets into Unreal and Unreal will recognize them. The most important parameter on my HDA is the curve input. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-27_150229.png" alt="" class="wp-image-578" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_150229.png 690w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_150229-252x300.png 252w" sizes="(max-width: 690px) 100vw, 690px" /></figure>
+
+
+
+<p>I create the shape of the racetrack inside of Unreal using this curve. Afterwards, I open a live connection between Unreal and Houdini using Houdini session sync. Now I am in Houdini and I can start editing my racetrack using the  python viewer state that I created.</p>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="prototyping">Reflection</h1>
+
+
+
+<h4 class="wp-block-heading" id="so-how-did-the-tool-compare-when-built-with-and-without-python-viewer-states-how-did-i-experience-using-python-in-houdini">So how did the tool compare when built with and without python viewer states? How did I experience using Python in Houdini? </h4>
+
+
+
+<p>Well, it was not easy, but still I think it was worth investing my time researching this. I really believe that I created an interactive, user-friendly tool that can benefit a game company if they would want to create a racetrack. Of course my tool can still be refined but that&#8217;s not what this research was about. Creating the tool is the hard part. Adding extra options and increasing the graphical quality is the &#8220;relatively&#8221; easy part. And that is something that I might consider doing in the future. </p>
+
+
+
+<p>While creating this tool I learned so much about Python in Houdini. One of the most important things I learned was that you can literally connect every part of Houdini together. At times I felt like I was wrongly using Houdini and Python. For example with the parameter tags to define geometry functions. It almost felt like hacking or abusing the system. But who is to say what the correct way of doing things is? If it is possible and it works, then that is the only thing that matters. </p>
+
+
+
+<p>I do have to mention that you can clearly feel that the part of the Houdini object model (HOM) that is used to work with Houdini digital assets is not yet perfect for creating a super interactive, flawless user interface. Quite often I came across bugs or couldn&#8217;t find functions to do specific things and I had to find workarounds. If the workaround does its job then you could say that there is no problem at all. However, I would tend to disagree because these workarounds lead to lost time for the developer of the tool and make it more difficult to maintain.</p>
+
+
+
+<p>But, this is also part of the process. Houdini and the python integration are in constant development. The only thing that we can do as users of Houdini is give feedback. All the 14 bugs I found I sent to SideFx support. I also sent 5 feature requests of which 3 have already been accepted. When I could not find how to do something I first would experiment, watch tutorials or ask around on forums. When that didn&#8217;t work the collaboration with SideFx support went very well.</p>
+
+
+
+<h4 class="wp-block-heading" id="is-using-houdini-engine-in-combination-with-houdini-session-sync-a-benefit-to-the-game-asset-creation-pipeline">Is using Houdini engine in combination with Houdini session sync a benefit to the game asset creation pipeline?</h4>
+
+
+
+<p>There is always the valid recommendation to use as little software as possible when creating a game. This drastically simplifies the pipeline. The more you can do inside of your game engine directly the better. However, I believe that this is not the case when these softwares are limiting your possibilities for creating the best game that you can possibly create. Houdini Engine and Houdini session sync are really good tools to link Unreal Engine and Houdini together. They allow you to tap into all the things that Houdini has to offer. There are still flaws and you will even have crashes, but I am confident this will get better over time. And in general I think that that these tools are way more valuable than a few rough edges here and there.</p>
+
+
+
+<h4 class="wp-block-heading" id="in-general">In general</h4>
+
+
+
+<p>Bridging the gap between Houdini and Unreal complicates the pipeline and artists will have to learn to work with Houdini and the Houdini tools that tool developers create for them. But, it is absolutely worth to use Houdini. The software is super powerful and flexible as I have demonstrated with my racetrack tool. It is no wonder why more and more game companies are starting to make use of Houdini and all of the benefits that proceduralism brings with it. For me personally the end goal is always to make as much quality content in as little time as possible and make this content available in a game engine as well. Using the combination of Houdini, Houdini Engine and Houdini session sync I am able to do this. I am not paid to say this. I really believe that Houdini will play a bigger and bigger role in the future of game development. In the meantime I will keep learning; keep exploring Python and Houdini and I hope that you could take something away from my research.</p>
+	</div><!-- .entry-content -->
+</article><!-- #post-5 -->
+
+		</main><!-- #main -->
+
+
+
+		</div><!-- #content -->
+
+		
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			<div class="inner-wrap">
+				<div class="site-info">
+		<span class="copyright">
+		<span>
+			<a href="https://wordpress.org/" target="_blank">
+				Powered by WordPress			</a>
+		</span>
+		<span>
+			Inspiro WordPress Theme by <a href="https://www.wpzoom.com/" target="_blank" rel="nofollow">WPZOOM</a>
+		</span>
+	</span>
+</div><!-- .site-info -->
+			</div><!-- .inner-wrap -->
+		</footer><!-- #colophon -->
+	</div><!-- .site-content-contain -->
+</div><!-- #page -->
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/wordpress\/*"},{"not":{"href_matches":["\/wordpress\/wp-*.php","\/wordpress\/wp-admin\/*","\/wordpress\/wp-content\/uploads\/*","\/wordpress\/wp-content\/*","\/wordpress\/wp-content\/plugins\/*","\/wordpress\/wp-content\/themes\/inspiro\/*","\/wordpress\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<style id='core-block-supports-inline-css'>
+.wp-block-gallery.wp-block-gallery-2{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}.wp-container-core-columns-is-layout-9d6595d7{flex-wrap:nowrap;}.wp-block-gallery.wp-block-gallery-3{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}
+</style>
+<script src="https://jeroen.denayer.com/wordpress/wp-content/themes/inspiro/assets/js/minified/plugins.min.js?ver=1.6.2" id="inspiro-lite-js-plugins-js"></script>
+<script src="https://jeroen.denayer.com/wordpress/wp-content/themes/inspiro/assets/js/minified/scripts.min.js?ver=1.6.2" id="inspiro-lite-script-js"></script>
+
+</body>
+</html>

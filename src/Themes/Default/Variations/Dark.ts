@@ -1,18 +1,12 @@
 //mui
-import { ThemeOptions } from '@mui/material/styles';
+import { Theme, ThemeOptions } from '@mui/material/styles';
 
 //custom
 import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
 import { anims } from '@/Themes/animations';
+import { RegisteredTheme } from '@/Themes';
 
-const h1Base = {
-  fontWeight: 600,
-  fontSize: '2.5rem',
-  lineHeight: 1.2,
-  padding: '2rem 0 1rem 0',
-};
-
-export const defaultDarkOptions: ThemeOptions = {
+export const defaultDarkBase: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
@@ -34,11 +28,23 @@ export const defaultDarkOptions: ThemeOptions = {
       secondary: '#b0b0b0',
     },
     divider: 'rgba(255,255,255,0.12)',
+
+    gradients: {
+      primary: (dir = "135deg") => `linear-gradient(${dir}, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)`,
+      background: (dir = "to bottom") => `linear-gradient(${dir}, #151a2c, #221730)`,
+      subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(255,255,255,0.05), rgba(0,0,0,0.05))`,
+      h1: (dir = '135deg') => 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+    },
   },
 
   typography: {
     fontFamily: `'Roboto', 'Helvetica', 'Arial', sans-serif`,
-    h1: h1Base,
+    h1: {
+      fontWeight: 600,
+      fontSize: '2.5rem',
+      lineHeight: 1.2,
+      padding: '2rem 0 1rem 0',
+    },
     h2: { 
       fontWeight: 500, 
       fontSize: '2rem', 
@@ -78,13 +84,6 @@ export const defaultDarkOptions: ThemeOptions = {
       fontSize: '0.875rem', 
       lineHeight: 1.6,
       padding: '0.25rem 0',
-    },
-    gradientH1: {
-      ...h1Base,
-      background: 'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      display: 'inline-block',
     },
   },
 
@@ -223,4 +222,16 @@ export const defaultDarkOptions: ThemeOptions = {
       }
     }
   },
-};  
+};
+
+export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => ({
+  typography: {
+    gradientH1: {
+      ...base.typography.h1,
+      background: base.palette.gradients.h1(),
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      display: "inline-block",
+    },
+  },
+});

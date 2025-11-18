@@ -26,7 +26,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (themeID: ThemeID) => setThemeID(themeID);
 
-  const theme = createTheme(themeRegistry[themeID.name][themeID.variation]);
+  const themeEntry = themeRegistry[themeID.name][themeID.variation];
+  const baseTheme = createTheme(themeEntry.base);
+  const theme = themeEntry.enhance
+    ? createTheme(baseTheme, themeEntry.enhance(baseTheme))
+    : baseTheme;
 
   return (
     <ThemeContext.Provider value={{ themeID, theme, setTheme }}>

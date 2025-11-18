@@ -1,0 +1,141 @@
+
+
+
+
+<p>Using Output 0.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1280" height="552" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/SettingCurvePos2.gif" alt="" class="wp-image-551"/></figure>
+
+
+
+<p>Using output 1.</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="1280" height="534" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/GeometryFunctionDeleteLength.gif" alt="" class="wp-image-556"/></figure>
+
+
+
+<p>To define what geometry function a parameter should use as you can create multiple geometry functions I modified the &#8220;<a href="#cycling-the-active-parameter">active_parm_cycle</a>&#8221; tag. Add a new key-value pair.  The key is &#8220;SetParm&#8221;, I will use this to detect if a parameter even has a geometry function assigned to it as not all parameters will have one. The value consists of three parts. The first one being which geometry function to use. The second is which collision geometry to use. This value is used in another geometry function to switch the collision geometry in my geometry network. And the last part is which output to use.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="51" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-27-1024x51.png" alt="" class="wp-image-560" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27-1024x51.png 1024w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27-300x15.png 300w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27-768x38.png 768w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-27.png 1064w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Below you see the geometry function I created to switch collision geometries. Using python I can set the index in the switch node. This will change which collision is used.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image-28.png" alt="" class="wp-image-561" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-28.png 454w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image-28-300x228.png 300w" sizes="(max-width: 454px) 100vw, 454px" /></figure>
+
+
+
+<h4 class="has-background wp-block-heading" id="creating-a-hud-info-panel" style="background-color:#2b2b2b">Creating a HUD info panel</h4>
+
+
+
+<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-top" style="grid-template-columns:auto 42%"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="369" height="258" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-27_121831.png" alt="" class="wp-image-564 size-full" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_121831.png 369w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_121831-300x210.png 300w" sizes="auto, (max-width: 369px) 100vw, 369px" /></figure><div class="wp-block-media-text__content">
+<p class="has-text-align-left has-normal-font-size">This is a new feature since Houdini 19. It allows you to create an info panel linked to your viewerstate. It is meant to explain the most important functionality of your tool. You can create a HUD panel using the following references. </p>
+
+
+
+<ul class="wp-block-list"><li><a href="https://www.sidefx.com/docs/houdini/hom/hud_info.html">Python state info panels</a></li><li><a href="https://www.sidefx.com/docs/houdini/hom/hou/SceneViewer.html#hudInfo">hou.SceneViewer.hudInfo()</a></li></ul>
+</div></div>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="integration-into-unreal-engine">Integration into Unreal Engine</h1>
+
+
+
+<p>To integrate a tool like this into Unreal Engine you will need to install the Houdini Engine for Unreal plugin. This will allow you to import your Houdini digital assets into Unreal and Unreal will recognize them. The most important parameter on my HDA is the curve input. </p>
+
+
+
+<figure class="wp-block-image size-full is-resized m0"><img decoding="async" src="https://jeroen.denayer.com/wp-content/uploads/2022/01/image_2022-01-27_150229.png" alt="" class="wp-image-578" width="500" srcset="https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_150229.png 690w, https://jeroen.denayer.com/wordpress/wp-content/uploads/2022/01/image_2022-01-27_150229-252x300.png 252w" sizes="(max-width: 690px) 100vw, 690px" /></figure>
+
+
+
+<p>I create the shape of the racetrack inside of Unreal using this curve. Afterwards, I open a live connection between Unreal and Houdini using Houdini session sync. Now I am in Houdini and I can start editing my racetrack using the  python viewer state that I created.</p>
+
+
+
+<h1 class="alignwide has-text-align-left has-luminous-vivid-orange-background-color has-background has-medium-font-size wp-block-heading" id="prototyping">Reflection</h1>
+
+
+
+<h4 class="wp-block-heading" id="so-how-did-the-tool-compare-when-built-with-and-without-python-viewer-states-how-did-i-experience-using-python-in-houdini">So how did the tool compare when built with and without python viewer states? How did I experience using Python in Houdini? </h4>
+
+
+
+<p>Well, it was not easy, but still I think it was worth investing my time researching this. I really believe that I created an interactive, user-friendly tool that can benefit a game company if they would want to create a racetrack. Of course my tool can still be refined but that&#8217;s not what this research was about. Creating the tool is the hard part. Adding extra options and increasing the graphical quality is the &#8220;relatively&#8221; easy part. And that is something that I might consider doing in the future. </p>
+
+
+
+<p>While creating this tool I learned so much about Python in Houdini. One of the most important things I learned was that you can literally connect every part of Houdini together. At times I felt like I was wrongly using Houdini and Python. For example with the parameter tags to define geometry functions. It almost felt like hacking or abusing the system. But who is to say what the correct way of doing things is? If it is possible and it works, then that is the only thing that matters. </p>
+
+
+
+<p>I do have to mention that you can clearly feel that the part of the Houdini object model (HOM) that is used to work with Houdini digital assets is not yet perfect for creating a super interactive, flawless user interface. Quite often I came across bugs or couldn&#8217;t find functions to do specific things and I had to find workarounds. If the workaround does its job then you could say that there is no problem at all. However, I would tend to disagree because these workarounds lead to lost time for the developer of the tool and make it more difficult to maintain.</p>
+
+
+
+<p>But, this is also part of the process. Houdini and the python integration are in constant development. The only thing that we can do as users of Houdini is give feedback. All the 14 bugs I found I sent to SideFx support. I also sent 5 feature requests of which 3 have already been accepted. When I could not find how to do something I first would experiment, watch tutorials or ask around on forums. When that didn&#8217;t work the collaboration with SideFx support went very well.</p>
+
+
+
+<h4 class="wp-block-heading" id="is-using-houdini-engine-in-combination-with-houdini-session-sync-a-benefit-to-the-game-asset-creation-pipeline">Is using Houdini engine in combination with Houdini session sync a benefit to the game asset creation pipeline?</h4>
+
+
+
+<p>There is always the valid recommendation to use as little software as possible when creating a game. This drastically simplifies the pipeline. The more you can do inside of your game engine directly the better. However, I believe that this is not the case when these softwares are limiting your possibilities for creating the best game that you can possibly create. Houdini Engine and Houdini session sync are really good tools to link Unreal Engine and Houdini together. They allow you to tap into all the things that Houdini has to offer. There are still flaws and you will even have crashes, but I am confident this will get better over time. And in general I think that that these tools are way more valuable than a few rough edges here and there.</p>
+
+
+
+<h4 class="wp-block-heading" id="in-general">In general</h4>
+
+
+
+<p>Bridging the gap between Houdini and Unreal complicates the pipeline and artists will have to learn to work with Houdini and the Houdini tools that tool developers create for them. But, it is absolutely worth to use Houdini. The software is super powerful and flexible as I have demonstrated with my racetrack tool. It is no wonder why more and more game companies are starting to make use of Houdini and all of the benefits that proceduralism brings with it. For me personally the end goal is always to make as much quality content in as little time as possible and make this content available in a game engine as well. Using the combination of Houdini, Houdini Engine and Houdini session sync I am able to do this. I am not paid to say this. I really believe that Houdini will play a bigger and bigger role in the future of game development. In the meantime I will keep learning; keep exploring Python and Houdini and I hope that you could take something away from my research.</p>
+	</div><!-- .entry-content -->
+</article><!-- #post-5 -->
+
+		</main><!-- #main -->
+
+
+
+		</div><!-- #content -->
+
+		
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			<div class="inner-wrap">
+				<div class="site-info">
+		<span class="copyright">
+		<span>
+			<a href="https://wordpress.org/" target="_blank">
+				Powered by WordPress			</a>
+		</span>
+		<span>
+			Inspiro WordPress Theme by <a href="https://www.wpzoom.com/" target="_blank" rel="nofollow">WPZOOM</a>
+		</span>
+	</span>
+</div><!-- .site-info -->
+			</div><!-- .inner-wrap -->
+		</footer><!-- #colophon -->
+	</div><!-- .site-content-contain -->
+</div><!-- #page -->
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/wordpress\/*"},{"not":{"href_matches":["\/wordpress\/wp-*.php","\/wordpress\/wp-admin\/*","\/wordpress\/wp-content\/uploads\/*","\/wordpress\/wp-content\/*","\/wordpress\/wp-content\/plugins\/*","\/wordpress\/wp-content\/themes\/inspiro\/*","\/wordpress\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<style id='core-block-supports-inline-css'>
+.wp-block-gallery.wp-block-gallery-2{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}.wp-container-core-columns-is-layout-9d6595d7{flex-wrap:nowrap;}.wp-block-gallery.wp-block-gallery-3{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}
+</style>
+<script src="https://jeroen.denayer.com/wordpress/wp-content/themes/inspiro/assets/js/minified/plugins.min.js?ver=1.6.2" id="inspiro-lite-js-plugins-js"></script>
+<script src="https://jeroen.denayer.com/wordpress/wp-content/themes/inspiro/assets/js/minified/scripts.min.js?ver=1.6.2" id="inspiro-lite-script-js"></script>
+
+</body>
+</html>
