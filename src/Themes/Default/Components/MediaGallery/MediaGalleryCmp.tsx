@@ -17,7 +17,10 @@ import { alignItems, border, display, flexDirection } from '@mui/system';
 
 const makeSlot = makeSlotFactory('MediaGalleryCmp', mediaGalleryCmp);
 
-const GalleryRoot = makeSlot('div', 'root')({
+const GalleryRoot = makeSlot(
+  'div',
+  'root',
+)({
   display: 'flex',
   width: '100%',
   flexDirection: 'column',
@@ -25,7 +28,10 @@ const GalleryRoot = makeSlot('div', 'root')({
   gap: '0.5rem',
 });
 
-const GalleryMain = makeSlot('div', 'main')(({ theme }) => ({
+const GalleryMain = makeSlot(
+  'div',
+  'main',
+)(({ theme }) => ({
   position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
@@ -36,33 +42,35 @@ const GalleryMain = makeSlot('div', 'main')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-const GalleryThumbs = makeSlot('div', 'thumbs')({
+const GalleryThumbs = makeSlot(
+  'div',
+  'thumbs',
+)({
   width: '100%',
+  height: '100px',
   display: 'flex',
-  justifyContent: 'center', // centers children horizontally
+  justifyContent: 'center',
   gap: '1rem',
 });
 
-const ThumbButton = makeSlot("button", "thumbButton",
-  { shouldForwardProp: (prop) => prop !== "active" }
-)<{ active: boolean }>(({ theme, active }) => ({
-  position: "relative",
-  height: "100px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  overflow: "hidden",
+const ThumbButton = makeSlot('button', 'thumbButton', { shouldForwardProp: (prop) => prop !== 'active' })<{
+  active: boolean;
+}>(({ theme, active }) => ({
+  position: 'relative',
+  height: '100px',
   flexShrink: 0,
-  minWidth: 0,
-  maxWidth: "100%",
-  background: "transparent",
-  border: `2px solid ${active ? theme.palette.common.white : "transparent"}`,
-  transition: "border-color 0.2s",
-  cursor: "pointer",
+  background: 'transparent',
+  border: `2px solid ${active ? theme.palette.common.white : 'transparent'}`,
+  transition: 'border-color 0.2s',
+  cursor: 'pointer',
   borderRadius: theme.shape.borderRadius,
+  overflow: 'hidden',
 }));
 
-const VideoOverlay = makeSlot('div', 'videoOverlay')({
+const VideoOverlay = makeSlot(
+  'div',
+  'videoOverlay',
+)({
   position: 'absolute',
   inset: 0,
   display: 'flex',
@@ -84,7 +92,7 @@ export interface MediaGalleryCmpProps {
 
 export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
   const { theme: activeTheme } = useTheme();
-  
+
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = media[activeIndex];
 
@@ -99,7 +107,8 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
         <AnimatePresence mode="wait">
           <MediaCmp
             item={activeItem}
-            fit='contain'
+            fit="contain"
+            mode="upscale"
           />
         </AnimatePresence>
       </GalleryMain>
@@ -108,14 +117,14 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
       {media.length > 1 && (
         <GalleryThumbs>
           {/* ⬇ THIS must shrink to content size, not be 100% */}
-          <div style={{ maxWidth: "100%" }}>
+          <div style={{ height: '100px', maxWidth: '100%' }}>
             <ScrollableCmp>
               <ScrollableCmp.Group horizontalId="0">
-                <div style={{ display: "flex", flexDirection: "row", gap: activeTheme.spacing(1) }}>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: activeTheme.spacing(1) }}>
                   {media.map((item, index) => {
                     const isActive = index === activeIndex;
                     const thumbItem =
-                      item.type === "embeddedVideo"
+                      item.type === 'embeddedVideo'
                         ? { ...item, playerProps: { ...item.playerProps, light: true } }
                         : item;
 
@@ -125,8 +134,8 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                         active={isActive}
                         onClick={() => setActiveIndex(index)}
                       >
-                        <MediaCmp item={thumbItem} priority={index === 0}/>
-                        {item.type !== "image" && <VideoOverlay>▶</VideoOverlay>}
+                        <MediaCmp item={thumbItem} />
+                        {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
                       </ThumbButton>
                     );
                   })}
@@ -136,6 +145,9 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
             </ScrollableCmp>
           </div>
         </GalleryThumbs>
+        // <div style={{ height: '100px', maxWidth: '100%' }}>
+
+        // </div>
       )}
     </GalleryRoot>
   );

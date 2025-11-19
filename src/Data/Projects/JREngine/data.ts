@@ -6,13 +6,13 @@ export const data: ProjectRequiredInfo = {
   thumbnailImage: 'MainMenu',
   heroImage: 'MainMenu',
   overviewMedia: [
-    "Gameplay",
-    "Level01_001",
-    "Level01_002",
-    "Level02_001",
-    "Level03_001",
-    "LoadingScreen",
-    "MainMenu",
+    'Gameplay',
+    'Level01_001',
+    'Level01_002',
+    'Level02_001',
+    'Level03_001',
+    'LoadingScreen',
+    'MainMenu',
   ],
   shortDescription: 'A small custom 2D Game-Engine made from scratch in c++',
   mediumDescription: `**JREngine** is a 2D game engine I wrote in **C++** from the ground up.
@@ -24,16 +24,23 @@ JREngine includes a component-based setup, input handling, asset loading, a basi
 To make sure everything holds up, I built a game with it: a remake of **Bubble Bobble** made entirely in JREngine.`,
   technologies: {
     Core: [
-      { name: 'cplusplus', version: 'C++20', usage: 'Core language used for the renderer implementation.' },
+      {
+        name: 'cplusplus',
+        version: 'C++20',
+        usage: 'Core language used for the renderer implementation.',
+      },
     ],
     Libraries: [
       { name: 'SDL' },
-      { name: 'GLM', version: '0.9.9', usage: 'Mathematics library for vectors, matrices, and transformations.' },
+      {
+        name: 'GLM',
+        version: '0.9.9',
+        usage:
+          'Mathematics library for vectors, matrices, and transformations.',
+      },
       { name: 'XInput', usage: 'Controller Input' },
     ],
-    Tools: [
-      { name: 'CMake' },
-    ],
+    Tools: [{ name: 'CMake' }],
   },
 
   githubURL: 'https://github.com/Jerreeee/DAE_GD_S4_PROG4_ExamProject',

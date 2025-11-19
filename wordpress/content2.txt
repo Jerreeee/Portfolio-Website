@@ -1,0 +1,375 @@
+      {/* --------------------------------------------------------- */}
+      {/* CREATING A PYTHON VIEWER STATE                            */}
+      {/* --------------------------------------------------------- */}
+      <Box mt={4}>
+        <H2>Creating a python viewer state</H2>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['UIViewerStates-962x1024'])[0]} />
+
+        <Typography>
+          So far, we have not yet touched python viewer states. However, all the setup so far has been super important
+          as we will be using a lot of the functions that we created in our Python Module in our viewer state as well.
+        </Typography>
+
+        <Typography>
+          You can create a brand-new python viewer state by going on your digital asset to Type Properties &gt;
+          Interactive &gt; State Script. Here you click “New” to create a new viewer state. The following pop-up window
+          will appear where you can select some pre-made functions that you would like to use. The ones that I have
+          selected where most useful for me.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_183546.png'])[0]} />
+
+        <Typography>
+          Let’s start by assigning some class variables when the user enters the viewer state by pressing “Enter” with
+          their mouse cursor in the viewport. The self.node and self.phm are important variables which we will use a
+          lot. Self.node refers to our HDA node and self.phm refers to our Python Module.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-10.png'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* ADDING AND DELETING HANDLES                              */}
+        {/* --------------------------------------------------------- */}
+        <H5>Adding and deleting handles</H5>
+
+        <Typography>
+          Now we will add the option to change parameter values by using your mouse and the ability to add and delete
+          handles. For this we will need some keybinds. You can add this right above your __init__ function.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_184403.png'])[0]} />
+
+        <Typography>
+          Adding and deleting handles is easy as we have already implemented this in the Python Module. In the
+          onKeyTransitEvent() first get the key that was pressed and afterwards check if this key matches with one of
+          our keybinds. If this is the case press the “Add” or “Delete” button through code.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_185422.png'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* SELECTING HANDLES IN THE VIEWPORT                        */}
+        {/* --------------------------------------------------------- */}
+        <H5>Selecting handles in the viewport</H5>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['SelectingHandles.gif'])[0]} />
+
+        <Typography>
+          First get the most important variables from the onMouseEvent(). The following three are used almost always in
+          mouse and keyboard events.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-24_143321.png'])[0]} />
+
+        <Typography>
+          If the user clicked in the viewport then the reason why the onMouseEvent() was trigered will be “Start”. Next
+          we can cast a ray into the scene and collide with a custom geometry from inside our HDA. Afterwards, we can
+          get an id attribute that you have to store on the primitives of the collision geo. This id represents the
+          position of the handle in the json. Using this id we can set the new active handle.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-26.png'])[0]} />
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-24_143337.png'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* CYCLING THE ACTIVE PARAMETER                              */}
+        {/* --------------------------------------------------------- */}
+        <H5>Cycling the active parameter</H5>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['ScrollingActiveParm2.gif'])[0]} />
+
+        <Typography>
+          Up until now I hardcoded the parameter that would be changed when dragging your LMB. But ideally we could
+          replace this with a variable. For this I used the concept of an “Active Parameter”. We need two new parameters
+          for this on our UI. One which will contain the currently active parameter and another which will contain all
+          the parameters that can be cycled through using a keyboard shortcut.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_194730-1024x31.png'])[0]} />
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-12.png'])[0]} />
+
+        <Typography>
+          The “Cyclable Active Parms” parameter is automatically set in the OnUpdated event handler. To define if a
+          parameter can be used in this cycle I added a tag to the parameter in the Parameter Description.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-13.png'])[0]} />
+
+        <Typography>
+          In the onUpdated event handler we can now add some code that will check all the parameters in the UI if they
+          have this tag. If so, then they are added to the active parameter cycle.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_195317.png'])[0]} />
+
+        <Typography>
+          Now that the setup is done we still need a way to change the active parameter and cycle through the list we
+          just created. I will be using the onMouseWheelEvent() in the python viewer state for this. Don’t forget to add
+          new class variables for the active_parm and the cyclable_active_parms.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_200210.png'])[0]} />
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_202342.png'])[0]} />
+
+        <Typography>
+          Now when you scroll with your MMB, the <code>cycleMode()</code> function will be called. In this function it
+          is just a matter of getting the active parameter &gt; getting the index of this parameter in the
+          cyclable_active_parms list. Adding the direction to this index &gt; getting the new active parameter from the
+          list &gt; and lastly setting the active parameter to this new one. After that we can cycle through all the
+          cyclable_active_parms, disable all of them and only enable the active parameter.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_202145.png'])[0]} />
+
+        <Typography>
+          We can now also use this active parameter as the parameter to change when the user holds LMB and drags.
+          Cycling through the parameters looks like the following.
+        </Typography>
+
+        {/* --------------------------------------------------------- */}
+        {/* UPDATING PARAMETER VALUES                                 */}
+        {/* --------------------------------------------------------- */}
+        <H5>Updating parameter values</H5>
+
+        <Typography>
+          Updating the parameter value by holding LMB and dragging is a bit complexer. Again, tart by getting some of
+          the most important values we can get from the onMouseEvent().
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-11.png'])[0]} />
+
+        <Typography>
+          You will still need to add the self.mouse_x_start variable to your class. You can set it using{' '}
+          <code>device.mouseX()</code> when the reason is “Start”. If the reason is “Active” then this means the user is
+          holding LMB and dragging their mouse. When this happens, we want to update our parameter. Let’s get the old
+          value, add the direction and set the new value.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-23_190711.png'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* MULTIPLIER TAG                                            */}
+        {/* --------------------------------------------------------- */}
+        <H5>Multiplier tag</H5>
+
+        <Typography>
+          At the moment the rate at which the parameter value changes is always one. However, some parameters need to go
+          quicker up and down than others. To define the multiplier for a certain parameter, change the
+          active_parm_cycle tag so it is structured as a dictionary with the multiplier being a key-value pair.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-22.png'])[0]} />
+
+        <Typography>
+          Next in the python viewer state we have to create a new class variable called{' '}
+          <code>self.active_parm_tags</code>. Each time the user enters the state or changes the active parameter, we
+          will call the following function that will set this variable.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-23.png'])[0]} />
+
+        <Typography>
+          If we now calculate the <code>new_value</code> we can multiple the <code>direction</code> with the multiplier
+          defined in the <code>self.active_parm_tags</code> variable. Below, I am changing these values purely by
+          scrolling with my mouse. Note how they all change with different steps. This is because of the multiplier.
+          This way we can also change the handle type through our viewer state if we set the multiplier to one. I also
+          added the functionality to change the value by scrolling with your middle mouse button. Use
+          device.mouseWheel() in the onMouseWheelEvent() to get the scroll direction.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['MultiplierTag2.gif'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* ADDING AND DELETING SPARE PARAMETERS                     */}
+        {/* --------------------------------------------------------- */}
+        <H5>Adding and deleting spare parameters</H5>
+
+        <Typography>
+          To do this we need to create some extra keybinds in our class. Add an <code>addSpareParm()</code> and a{' '}
+          <code>deleteSpareParm()</code> function to the viewer state. To add a spare parameter, just call the{' '}
+          <code>addSpareParm()</code> <a href="#spareParms">function</a> from the python module.
+        </Typography>
+
+        <Typography>
+          To delete a spare parameter first get the currently active parameter and check if this parameter has the
+          “spare_parm = 1” tag. If this is the case then pass the parameter name on to the{' '}
+          <code>deleteSpareParm()</code> function in the Python module to delete it.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-24_141924.png'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* GEOMETRY FUNCTIONS                                        */}
+        {/* --------------------------------------------------------- */}
+        <H5>Geometry functions</H5>
+
+        <Typography>I do this by using something I made myself called geometry functions.</Typography>
+
+        <Typography>
+          The idea is that using python viewer states we click in our viewport and get the position of where we clicked
+          by colliding with a collision geometry (<a href="#selecting-handles-in-the-viewport">see selecting handles</a>
+          ). This position is stored in a vector parameter in our user interface. This is the input of our geometry
+          function. This position is read into the geometry network and a point is created at this position. I ray the
+          point onto my racetrack curve from which I can get the “curvePos” value. All of the values that I want to use
+          as output for my geometry function I store in a parameter on a single output node. This way I can set the
+          output parameters in the user interface by just grabbing the value from this output node.
+        </Typography>
+
+        <Typography>
+          To use this geometry function you first have to enter a special mode called “SetParm” using a keyboard
+          shortcut. When you are in this mode, then every mouse action in the viewport will run our special geometry
+          function.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['GeometryFunctions-1024x355.png'])[0]} />
+
+        <Typography>Using Output 0.</Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['SettingCurvePos2.gif'])[0]} />
+
+        <Typography>Using output 1.</Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['GeometryFunctionDeleteLength.gif'])[0]} />
+
+        <Typography>
+          To define what geometry function a parameter should use as you can create multiple geometry functions I
+          modified the “<a href="#cycling-the-active-parameter">active_parm_cycle</a>” tag. Add a new key-value pair.
+          The key is “SetParm”, I will use this to detect if a parameter even has a geometry function assigned to it as
+          not all parameters will have one. The value consists of three parts. The first one being which geometry
+          function to use. The second is which collision geometry to use. This value is used in another geometry
+          function to switch the collision geometry in my geometry network. And the last part is which output to use.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-27-1024x51.png'])[0]} />
+
+        <Typography>
+          Below you see the geometry function I created to switch collision geometries. Using python I can set the index
+          in the switch node. This will change which collision is used.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image-28.png'])[0]} />
+
+        {/* --------------------------------------------------------- */}
+        {/* CREATING A HUD INFO PANEL                                 */}
+        {/* --------------------------------------------------------- */}
+        <H5 id="creating-a-hud-info-panel">Creating a HUD info panel</H5>
+
+        <Box mt={2} sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+          <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-27_121831.png'])[0]} />
+
+          <Box>
+            <Typography>
+              This is a new feature since Houdini 19. It allows you to create an info panel linked to your viewerstate.
+              It is meant to explain the most important functionality of your tool. You can create a HUD panel using the
+              following references.
+            </Typography>
+
+            <ul>
+              <li>
+                <a href="https://www.sidefx.com/docs/houdini/hom/hud_info.html">Python state info panels</a>
+              </li>
+              <li>
+                <a href="https://www.sidefx.com/docs/houdini/hom/hou/SceneViewer.html#hudInfo">
+                  hou.SceneViewer.hudInfo()
+                </a>
+              </li>
+            </ul>
+          </Box>
+        </Box>
+
+        {/* --------------------------------------------------------- */}
+        {/* INTEGRATION INTO UNREAL ENGINE                            */}
+        {/* --------------------------------------------------------- */}
+        <H4 id="integration-into-unreal-engine">Integration into Unreal Engine</H4>
+
+        <Typography>
+          To integrate a tool like this into Unreal Engine you will need to install the Houdini Engine for Unreal
+          plugin. This will allow you to import your Houdini digital assets into Unreal and Unreal will recognize them.
+          The most important parameter on my HDA is the curve input.
+        </Typography>
+
+        <MediaCmp item={getMediaItemsFromManifest(manifest, ['image_2022-01-27_150229.png'])[0]} />
+
+        <Typography>
+          I create the shape of the racetrack inside of Unreal using this curve. Afterwards, I open a live connection
+          between Unreal and Houdini using Houdini session sync. Now I am in Houdini and I can start editing my
+          racetrack using the python viewer state that I created.
+        </Typography>
+
+        {/* --------------------------------------------------------- */}
+        {/* REFLECTION                                                */}
+        {/* --------------------------------------------------------- */}
+        <H4 id="prototyping">Reflection</H4>
+
+        <H5 id="so-how-did-the-tool-compare-when-built-with-and-without-python-viewer-states-how-did-i-experience-using-python-in-houdini">
+          So how did the tool compare when built with and without python viewer states? How did I experience using
+          Python in Houdini?
+        </H5>
+
+        <Typography>
+          Well, it was not easy, but still I think it was worth investing my time researching this. I really believe
+          that I created an interactive, user-friendly tool that can benefit a game company if they would want to create
+          a racetrack. Of course my tool can still be refined but that’s not what this research was about. Creating the
+          tool is the hard part. Adding extra options and increasing the graphical quality is the “relatively” easy
+          part. And that is something that I might consider doing in the future.
+        </Typography>
+
+        <Typography>
+          While creating this tool I learned so much about Python in Houdini. One of the most important things I learned
+          was that you can literally connect every part of Houdini together. At times I felt like I was wrongly using
+          Houdini and Python. For example with the parameter tags to define geometry functions. It almost felt like
+          hacking or abusing the system. But who is to say what the correct way of doing things is? If it is possible
+          and it works, then that is the only thing that matters.
+        </Typography>
+
+        <Typography>
+          I do have to mention that you can clearly feel that the part of the Houdini object model (HOM) that is used to
+          work with Houdini digital assets is not yet perfect for creating a super interactive, flawless user interface.
+          Quite often I came across bugs or couldn’t find functions to do specific things and I had to find workarounds.
+          If the workaround does its job then you could say that there is no problem at all. However, I would tend to
+          disagree because these workarounds lead to lost time for the developer of the tool and make it more difficult
+          to maintain.
+        </Typography>
+
+        <Typography>
+          But, this is also part of the process. Houdini and the python integration are in constant development. The
+          only thing that we can do as users of Houdini is give feedback. All the 14 bugs I found I sent to SideFx
+          support. I also sent 5 feature requests of which 3 have already been accepted. When I could not find how to do
+          something I first would experiment, watch tutorials or ask around on forums. When that didn’t work the
+          collaboration with SideFx support went very well.
+        </Typography>
+
+        <H5 id="is-using-houdini-engine-in-combination-with-houdini-session-sync-a-benefit-to-the-game-asset-creation-pipeline">
+          Is using Houdini engine in combination with Houdini session sync a benefit to the game asset creation
+          pipeline?
+        </H5>
+
+        <Typography>
+          There is always the valid recommendation to use as little software as possible when creating a game. This
+          drastically simplifies the pipeline. The more you can do inside of your game engine directly the better.
+          However, I believe that this is not the case when these softwares are limiting your possibilities for creating
+          the best game that you can possibly create. Houdini Engine and Houdini session sync are really good tools to
+          link Unreal Engine and Houdini together. They allow you to tap into all the things that Houdini has to offer.
+          There are still flaws and you will even have crashes, but I am confident this will get better over time. And
+          in general I think that that these tools are way more valuable than a few rough edges here and there.
+        </Typography>
+
+        <H5 id="in-general">In general</H5>
+
+        <Typography>
+          Bridging the gap between Houdini and Unreal complicates the pipeline and artists will have to learn to work
+          with Houdini and the Houdini tools that tool developers create for them. But, it is absolutely worth to use
+          Houdini. The software is super powerful and flexible as I have demonstrated with my racetrack tool. It is no
+          wonder why more and more game companies are starting to make use of Houdini and all of the benefits that
+          proceduralism brings with it. For me personally the end goal is always to make as much quality content in as
+          little time as possible and make this content available in a game engine as well. Using the combination of
+          Houdini, Houdini Engine and Houdini session sync I am able to do this. I am not paid to say this. I really
+          believe that Houdini will play a bigger and bigger role in the future of game development. In the meantime I
+          will keep learning; keep exploring Python and Houdini and I hope that you could take something away from my
+          research.
+        </Typography>
+      </Box>

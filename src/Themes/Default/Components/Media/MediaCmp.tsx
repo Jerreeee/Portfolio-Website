@@ -3,113 +3,168 @@
 import Image from 'next/image';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
-import { SxProps, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { mediaCmp } from './MediaCmpClasses';
 import { MediaItem } from '@/Types/media';
+import { useMemo } from 'react';
+import { useSizeObserver } from '@/Hooks/useSizeObserver';
+
+export type MediaScaleMode = 'downscale' | 'upscale';
+export type FitMode = 'contain' | 'cover' | 'fill';
+export type Alignment = 'flex-start' | 'center' | 'flex-end';
 
 const makeSlot = makeSlotFactory('MediaCmp', mediaCmp);
 
 /**
- * MediaRoot is ONLY a centering wrapper.
- * It must NOT force width/height stretching, so media can size naturally.
+ * MediaRoot becomes the *scaled element*, exactly like SmartImage's yellow box.
+ * It receives width/height from computed scale (scaledW/scaledH).
  */
-
-const MediaRoot = makeSlot(motion.div, 'root', {
-    shouldForwardProp: (prop) => prop !== 'align',
-  }
-)<{ align?: Alignment }>(
-  ({ theme, align = 'center' }) => ({
-    position: 'relative',
-    display: 'flex',
-    justifyContent: align,
-    alignItems: align,
-    overflow: 'hidden',
-    width: '100%',
-    height: '100%',
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  })
-);
+const MediaRoot = makeSlot(
+  motion.div,
+  'root',
+)(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+}));
 
 export function getMediaLabel(item: MediaItem) {
-  if (item.type === "image" || item.type === "fileVideo") {
-    return item.alt ?? item.name ?? "";
+  if (item.type === 'image' || item.type === 'fileVideo') {
+    return item.alt ?? item.name ?? '';
   }
 
-  return "";
+  return '';
 }
-
-type FitMode = 'cover' | 'contain' | 'fill';
-type Alignment = 'flex-start' | 'center' | 'flex-end';
-
-export interface MediaCmpSettings {}
 
 export interface MediaCmpProps {
   item: MediaItem;
-  fit?: FitMode; // default = contain
-  priority?: boolean;
-  sx?: SxProps;
-  alignItems?: Alignment;
+  fit?: FitMode;
+  mode?: MediaScaleMode;
 }
 
-/**
- * UNIVERSAL MEDIA COMPONENT
- * - Always keeps aspect ratio
- * - Scales until it hits parent constraint (width OR height)
- * - Default objectFit = "contain"
- */
-export default function MediaCmp({ item, fit = 'contain', priority, alignItems = 'center' }: MediaCmpProps) {
+export interface MediaCmpSettings {}
+
+export default function MediaCmp({
+  item,
+  fit = 'contain',
+  mode = 'downscale',
+}: MediaCmpProps) {
   const { theme } = useTheme();
-  const objectFit = fit;
 
-  if (!item) return;
+  const naturalWidth = item.width ?? 1;
+  const naturalHeight = item.height ?? 1;
 
-  // Shared style for ALL media types
-  const responsiveStyle: React.CSSProperties = {
-    display: 'block',
-  	maxWidth: '100%',
-    maxHeight: '100%',
-    width: '100%',
-    height: '100%',
-    objectFit,
-  };
+  // Use the new size observer measuring the parent
+  const { ref, size } = useSizeObserver<HTMLDivElement>({
+    mode: 'both',
+    measure: 'parent',
+  });
+
+  const scale = useMemo(() => {
+    if (!size) return 1;
+
+    const w = size.width;
+    const h = size.height;
+
+    const hasW = w > 0 && !isNaN(w);
+    const hasH = h > 0 && !isNaN(h);
+
+    let s = 1;
+
+    if (hasW && hasH) {
+      if (fit === 'cover') {
+        // Cover → fill entire parent, crop overflow
+        s = Math.max(w / naturalWidth, h / naturalHeight);
+      } else {
+        // Contain (default) → stay fully visible
+        s = Math.min(w / naturalWidth, h / naturalHeight);
+      }
+    } else if (hasH) {
+      s = h / naturalHeight;
+    } else if (hasW) {
+      s = w / naturalWidth;
+    }
+
+    if (fit === 'cover') {
+      // cover MUST be allowed to upscale
+    } else {
+      if (mode === 'downscale') {
+        s = Math.min(s, 1);
+      }
+    }
+
+    return s;
+  }, [size, naturalWidth, naturalHeight, mode, fit]);
+
+  const scaledW = naturalWidth * scale;
+  const scaledH = naturalHeight * scale;
+
+  // Debug logging — optional
+  // console.groupCollapsed(`MediaCmp: ${item.src}`);
+  // console.log('Natural Size:', { naturalWidth, naturalHeight });
+  // console.log('Parent Size:', size);
+  // console.log('Scale:', scale);
+  // console.log('Scaled Size:', { scaledW, scaledH });
+  // console.groupEnd();
+
+  if (!item) return null;
+
+  // First render: size not known yet
+  if (!size) return <MediaRoot ref={ref} />;
 
   return (
-    <MediaRoot align={alignItems}>
+    <div
+      ref={ref}
+      style={{
+        // border: '2px solid yellow',
+        width: scaledW,
+        height: scaledH,
+        overflow: 'hidden',
+        borderRadius: theme.shape.borderRadius,
+      }}
+    >
+      {/* IMAGE */}
       {item.type === 'image' && (
         <Image
           src={item.src}
-          alt={item.alt || ''}
+          alt={item.alt}
           width={item.width}
           height={item.height}
-          priority={priority}
-          style={{...responsiveStyle, border: '2px solid red'}}
-          {...item.imageProps}
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+          }}
         />
       )}
 
+      {/* FILE VIDEO */}
       {item.type === 'fileVideo' && (
         <video
           src={item.src}
-          width={item.width}
-          height={item.height}
+          // width={item.width}
+          // height={item.height}
           controls
-          style={responsiveStyle}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: fit,
+            display: 'block',
+          }}
           {...item.videoProps}
         />
       )}
 
+      {/* EMBEDDED VIDEO (YouTube, Vimeo, etc.) */}
       {item.type === 'embeddedVideo' && (
         <ReactPlayer
           src={item.src}
           width="auto"
           height="auto"
-          style={responsiveStyle}
           {...item.playerProps}
         />
       )}
-    </MediaRoot>
+    </div>
   );
 }

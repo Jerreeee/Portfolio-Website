@@ -11,6 +11,9 @@ export interface UserSizeObserverProps {
   maxHeight?: number;
   /** Which dimension drives scaling or constraints */
   mode?: MultiDirection;
+
+  /** NEW — choose whether we measure the element itself or its parent */
+  measure?: 'self' | 'parent';
 }
 
 /**
@@ -23,19 +26,29 @@ export interface UserSizeObserverProps {
  * If mode="both", both constraints apply independently.
  */
 export function useSizeObserver<T extends HTMLElement>(props: UserSizeObserverProps) {
-  const { aspectRatio, maxWidth, maxHeight, mode = 'both' } = props;
+  const {
+    aspectRatio,
+    maxWidth,
+    maxHeight,
+    mode = 'both',
+
+    measure = 'self', // NEW default
+  } = props;
+
   const ref = useRef<T | null>(null);
   const [size, setSize] = useState<Size>();
 
   useEffect(() => {
-    const target = ref.current;
+    const el = ref.current;
+    if (!el) return;
+
+    // NEW — decide what we measure
+    const target = measure === 'parent' ? (el.parentElement as HTMLElement | null) : el;
+
     if (!target) return;
 
-    const measure = () => {
-      const target = ref.current;
-      if (!target) return;
-
-      const rect = target.getBoundingClientRect(); // ✅ measure itself, not parent
+    const measureSize = () => {
+      const rect = target.getBoundingClientRect(); // may now be parent or self
       let { width, height } = rect;
 
       // Aspect Ratio Logic
@@ -56,17 +69,16 @@ export function useSizeObserver<T extends HTMLElement>(props: UserSizeObserverPr
       setSize({ width, height });
     };
 
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(target); // observe itself
-    window.addEventListener('resize', measure);
+    measureSize();
+    const observer = new ResizeObserver(measureSize);
+    observer.observe(target); // observe the correct element
+    window.addEventListener('resize', measureSize);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('resize', measure);
+      window.removeEventListener('resize', measureSize);
     };
-  }, [aspectRatio, maxWidth, maxHeight, mode]);
+  }, [aspectRatio, maxWidth, maxHeight, mode, measure]);
 
   return { ref, size };
 }
-

@@ -128,7 +128,7 @@ projectFolders.forEach(async (projectName) => {
   }
 
   // ---------------- MERGE extra.json ----------------
-  const extraFile = path.join(projectPath, "extra.json");
+  const extraFile = path.join(projectPath, "extraMedia.json");
   if (fs.existsSync(extraFile)) {
     try {
       const extraData = JSON.parse(fs.readFileSync(extraFile, "utf-8")) as {

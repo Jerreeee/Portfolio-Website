@@ -4431,6 +4431,16 @@ export const projectManifest: ProjectManifest = {
     "aspectRatio": 2.1793416572077184,
     "alt": "TrackmaniaTrackEditor"
   },
+  "TrailerImage": {
+    "name": "TrailerImage",
+    "type": "image",
+    "fileType": "jpg",
+    "src": "/projects/PythonHoudiniTrackTool/Images/TrailerImage.jpg",
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": 1.7777777777777777,
+    "alt": "TrailerImage"
+  },
   "UiGeometryNetwork-1024x714": {
     "name": "UiGeometryNetwork-1024x714",
     "type": "image",
