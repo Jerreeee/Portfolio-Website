@@ -11,4 +11,9 @@ export const projectOrderings: Record<string, ValidProjectSlug[]> = {
     'PythonHoudiniTrackTool',
     'LuaCPPSnake',
   ],
+  "3GweQp8wkPX3VaA3": [ // sidefx
+    "PythonHoudiniTrackTool",
+    "VulkanDeferredRenderer",
+    "DualRasterizer",
+  ]
 };

@@ -105,9 +105,33 @@ export default function Resume() {
             </SocialRow>
 
             {contact.qrSrc && (
-              <QRWrapper>
-                <img src={contact.qrSrc} alt="QR Code" />
-              </QRWrapper>
+              <>
+                <Box
+                  sx={{
+                    fontSize: "3mm",
+                    textAlign: "center",
+                    opacity: 0.9,
+                    marginY: '0.5mm',
+                    lineHeight: 1.3,
+                  }}
+                >
+                  Visit my website at{" "}
+                  <MuiLink
+                    href="https://jeroen.denayer.com"
+                    color="#b3ffc8"
+                    underline="hover"
+                    sx={{ fontSize: "3mm" }}
+                  >
+                    jeroen.denayer.com
+                  </MuiLink>
+                  <br />
+                  or scan the QR code
+                </Box>
+
+                <QRWrapper>
+                  <img src={contact.qrSrc} alt="QR Code" />
+                </QRWrapper>
+              </>
             )}
           </ContactBlock>
 

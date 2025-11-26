@@ -23,7 +23,7 @@ export const PageContainer = styled(Box)({
 
 export const LeftColumn = styled(Box)({
   width: "35%",
-  background: "#1f1f1f",
+  background: 'linear-gradient(to bottom, #151a2c, #221730)',
   color: "#fff",
   boxSizing: "border-box",
   padding: "6mm",
@@ -77,15 +77,20 @@ export const Tagline = styled(Typography)({
    CONTACT
 =========================== */
 
-export const ContactBlock = styled(Box)({
+export const ContactBlock = styled(Box)(({ theme }) => ({
+  width: '100%',
   display: "flex",
   flexDirection: "column",
-  gap: "3mm",
+  gap: "1.8mm",
   flexShrink: 1,
   minHeight: 0,
   alignItems: "center",
   textAlign: "center",
-});
+  background: 'rgba(255, 255, 255 0.1)',
+  backdropFilter: 'saturate(150%) brightness(150%)',
+  padding: '2mm',
+  borderRadius: theme.shape.borderRadius,
+}));
 
 export const ContactRow = styled(Box)({
   display: "flex",
@@ -114,7 +119,8 @@ export const QRWrapper = styled(Box)({
    SKILLS
 =========================== */
 
-export const SkillsBlock = styled(Box)({
+export const SkillsBlock = styled(Box)(({ theme }) => ({
+  width: '100%',
   display: "flex",
   flexDirection: "column",
   gap: "3mm",
@@ -122,7 +128,11 @@ export const SkillsBlock = styled(Box)({
   minHeight: 0,
   alignItems: "center",
   textAlign: "center",
-});
+  background: 'rgba(255, 255, 255 0.05)',
+  backdropFilter: 'saturate(150%) brightness(125%)',
+  padding: '2mm',
+  borderRadius: theme.shape.borderRadius,
+}));
 
 export const SkillGroup = styled(Box)({
   display: "flex",
