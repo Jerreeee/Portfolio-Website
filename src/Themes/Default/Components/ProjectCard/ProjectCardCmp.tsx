@@ -29,8 +29,7 @@ const ProjectCardRoot = makeSlot(
   flexDirection: 'column',
   boxShadow: theme.shadows[3],
   cursor: 'pointer',
-  borderRadius:
-    typeof theme.shape.borderRadius === 'number' ? `${theme.shape.borderRadius}px` : theme.shape.borderRadius,
+  borderRadius: theme.shape.borderRadius,
 }));
 
 const ProjectCardHeader = makeSlot(

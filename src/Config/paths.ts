@@ -71,6 +71,9 @@ const PATHS = {
   PROJECT_CODE: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
     makePath(`${BASE.PUBLIC_PROJECTS}/${projectName}/Code${fileName ? `/${fileName}` : ""}`),
 
+  PROJECT_DOWNLOAD: ({ projectName, fileName }: { projectName: string; fileName?: string }) =>
+    makePath(`${BASE.PUBLIC_PROJECTS}/${projectName}/Downloads${fileName ? `/${fileName}` : ""}`),
+
   COMPONENTS: (theme: ThemeName = "Default" as ThemeName) =>
     makePath(`${BASE.SRC_THEMES}/${theme}/Components`),
 

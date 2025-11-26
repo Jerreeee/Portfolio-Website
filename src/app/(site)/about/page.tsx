@@ -154,7 +154,7 @@ export default function About() {
               mx: 'auto',
               mb: 3,
               background: 'linear-gradient(90deg, #3fa0ff, #7b72f0, #ec38bc)',
-              borderRadius: 1,
+              borderRadius: `${theme.shape.borderRadius}px`,
               opacity: 0.5,
             }}
           />
@@ -226,7 +226,7 @@ export default function About() {
                   sx={{
                     backgroundColor: 'rgba(255,255,255,0.03)',
                     border: `1px solid rgba(255,255,255,0.06)`,
-                    borderRadius: 2,
+                    borderRadius: `${theme.shape.borderRadius}px`,
                     p: 1.25,
                     display: 'flex',
                     flexDirection: 'column',

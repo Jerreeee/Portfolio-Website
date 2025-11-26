@@ -22,6 +22,7 @@ export type ProjectRequiredInfo = {
   mediumDescription: string;
   githubURL?: string;
   steamURL?: string;
+  downloads?: string[];
 }
 
 export type ProjectInfo = ProjectRequiredInfo & {

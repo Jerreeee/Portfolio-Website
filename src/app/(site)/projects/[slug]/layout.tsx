@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useTheme } from "@/Themes/ThemeProvider";
 
 export default function ProjectSlugLayout({
@@ -13,15 +13,25 @@ export default function ProjectSlugLayout({
     theme.components?.NavbarCmp?.defaultProps?.height ?? 64;
 
   return (
-    <Box
-      component="main"
-      sx={{
-        maxWidth: theme.breakpoints.values.lg,
-        mx: "auto",
-        width: "100%",
+    <div
+      style={{
+        background: 'linear-gradient(to bottom, #151a2c, #221730)',
       }}
     >
-      {children}
-    </Box>
+      <Box
+        component="main"
+        sx={{
+          maxWidth: theme.breakpoints.values.lg,
+          mx: "auto",
+          width: "100%",
+          background: 'rgba(255, 255, 255 0.1)',
+          backdropFilter: 'saturate(150%) brightness(125%)',
+        }}
+      >
+        <Container>
+          {children}
+        </Container>
+      </Box>
+    </div>
   );
 }

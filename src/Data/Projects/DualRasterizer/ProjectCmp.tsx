@@ -20,12 +20,14 @@ import { IconCmp } from '@/Themes/Default/Components/Icon';
 import Timeline from '@/Themes/Default/Components/Timeline/Timeline';
 import PATHS from '@/Config/paths';
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
+import { useTheme } from '@/Themes/ThemeProvider';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
+  const { theme } = useTheme();
   const manifest: ProjectManifest = project.manifest;
 
   return (
-    <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
+    <Box>
       {/* ==================== HERO SECTION ==================== */}
       <Container maxWidth="md" sx={{ textAlign: 'center', mb: 6 }}>
         <Typography variant="gradientH1">
@@ -62,7 +64,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
                 sx={{
                   p: 1,
                   bgcolor: 'rgba(255,255,255,0.04)',
-                  borderRadius: 1.5,
+                  borderRadius: `${theme.shape.borderRadius}px`,
                   textAlign: 'center',
                   border: '1px solid rgba(255,255,255,0.06)',
                   transition: 'background 0.2s ease',

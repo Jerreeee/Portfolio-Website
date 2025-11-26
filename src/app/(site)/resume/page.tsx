@@ -109,7 +109,7 @@ export default function ResumePage() {
           variant="contained"
           size="small"
           startIcon={<DownloadIcon />}
-          sx={{ textTransform: "none", fontWeight: 600, borderRadius: "6px" }}
+          sx={{ textTransform: "none", fontWeight: 600, borderRadius: `${theme.shape.borderRadius}px` }}
           href="/files/resume.pdf"
           download
         >

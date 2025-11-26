@@ -2,47 +2,34 @@
 
 import { Typography } from '@mui/material';
 import { motion } from 'framer-motion';
-import { projects } from '@/Data/Projects';
+import { projects, getProjectBySlug } from '@/Data/Projects';
+import { projectOrderings } from '@/Data/Projects/projectOrdering';
 import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCardCmp';
 import { useTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { projectsOverviewCmp } from './ProjectsOverviewCmpClasses';
-import { width } from '@mui/system';
+import type { ValidProjectSlug } from '@/Data/Projects';
 
 // =====================================================================
-// ========================= Slot Definitions ==========================
+// Slot Definitions
+// =====================================================================
 
 const makeSlot = makeSlotFactory('ProjectsOverviewCmp', projectsOverviewCmp);
 
-const ProjectsOverviewRoot = makeSlot(
-  'div',
-  'root',
-)(({ theme }) => ({
+const ProjectsOverviewRoot = makeSlot('div', 'root')(({ theme }) => ({
   width: '100%',
 }));
 
-const ProjectsOverviewContainer = makeSlot(
-  motion.main,
-  'container',
-)(({ theme }) => ({
+const ProjectsOverviewContainer = makeSlot(motion.main, 'container')(({ theme }) => ({
   maxWidth: '70%',
   margin: '0 auto',
 }));
 
-const ProjectsOverviewHeader = makeSlot(
-  motion.div,
-  'header',
-)(({ theme }) => ({
+const ProjectsOverviewHeader = makeSlot(motion.div, 'header')(({ theme }) => ({
   textAlign: 'center',
-  //   marginTop: theme.spacing(4),
-  // paddingTop: theme.components?.NavbarCmp?.defaultProps?.height,
-  // paddingBottom: 200,
 }));
 
-const ProjectsOverviewGrid = makeSlot(
-  motion.div,
-  'grid',
-)(({ theme }) => ({
+const ProjectsOverviewGrid = makeSlot(motion.div, 'grid')(({ theme }) => ({
   display: 'grid',
   gap: theme.spacing(3),
   gridTemplateColumns: '1fr',
@@ -51,23 +38,51 @@ const ProjectsOverviewGrid = makeSlot(
   },
 }));
 
-const ProjectsOverviewCardWrapper = makeSlot(
-  motion.div,
-  'cardWrapper',
-)({
+const ProjectsOverviewCardWrapper = makeSlot(motion.div, 'cardWrapper')({
   width: '100%',
   minWidth: 0,
 });
 
 // =====================================================================
-// ============================= Component =============================
+// Component
+// =====================================================================
 
-export interface ProjectsOverviewCmpSettings {}
+export interface ProjectsOverviewCmpProps {
+  order: string;
+}
 
-export interface ProjectsOverviewCmpProps {}
-
-export default function ProjectsOverviewCmp(props: ProjectsOverviewCmpProps) {
+export default function ProjectsOverviewCmp({ order: key }: ProjectsOverviewCmpProps) {
   const { theme } = useTheme();
+
+  // -----------------------------------------------------
+  // Determine ordering
+  // -----------------------------------------------------
+
+  let orderedProjects;
+
+  if (key === 'default') {
+    // Use full list as-is
+    orderedProjects = projects;
+
+  } else if (key in projectOrderings) {
+    const slugs = projectOrderings[key]; // ValidProjectSlug[]
+
+    const orderedFirst = slugs
+      .map((slug) => getProjectBySlug(slug))
+      .filter((p): p is NonNullable<typeof p> => p !== undefined);
+
+    const orderedSlugsSet = new Set(slugs);
+
+    const remainingProjects = projects.filter(
+      (p) => !orderedSlugsSet.has(p.slug as ValidProjectSlug),
+    );
+
+    orderedProjects = [...orderedFirst, ...remainingProjects];
+
+  } else {
+    // Unknown key → default order
+    orderedProjects = projects;
+  }
 
   return (
     <ProjectsOverviewRoot>
@@ -77,11 +92,8 @@ export default function ProjectsOverviewCmp(props: ProjectsOverviewCmpProps) {
         </ProjectsOverviewHeader>
 
         <ProjectsOverviewGrid>
-          {projects.map((project, i) => (
-            <ProjectsOverviewCardWrapper
-              key={project.slug}
-              custom={i}
-            >
+          {orderedProjects.map((project, i) => (
+            <ProjectsOverviewCardWrapper key={project.slug} custom={i}>
               <ProjectCardCmp project={project} />
             </ProjectsOverviewCardWrapper>
           ))}

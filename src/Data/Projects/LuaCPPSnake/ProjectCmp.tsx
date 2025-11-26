@@ -18,12 +18,14 @@ import { data } from './data';
 import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
 import { IconCmp } from '@/Themes/Default/Components/Icon';
 import PATHS from '@/Config/paths';
+import { useTheme } from '@/Themes/ThemeProvider';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
+  const { theme } = useTheme();
   const manifest: ProjectManifest = project.manifest;
 
   return (
-    <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
+    <Box>
       {/* ==================== HERO SECTION ==================== */}
       <Container maxWidth="md" sx={{ textAlign: 'center'}}>
         <Typography variant="gradientH1">
@@ -60,7 +62,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             sx={{
               mb: 2,
               backgroundColor: 'rgba(255,255,255,0.03)',
-              borderRadius: 2,
+              borderRadius: `${theme.shape.borderRadius}px`,
               border: '1px solid rgba(255,255,255,0.08)',
               overflow: 'hidden',
             }}

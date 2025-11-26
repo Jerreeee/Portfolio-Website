@@ -61,9 +61,7 @@ const SegmentSliderHandle = makeSlot('div', 'handle')(({ theme }) => ({
   width: theme.spacing(1),
   height: theme.spacing(3),
   backgroundColor: theme.palette.common.white,
-  borderRadius: typeof theme.shape.borderRadius === 'number'
-    ? `${theme.shape.borderRadius}px`
-    : theme.shape.borderRadius,
+  borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
   cursor: 'pointer',
   transform: 'translateX(-50%)',

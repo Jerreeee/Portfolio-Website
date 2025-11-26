@@ -26,7 +26,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
   const manifest: ProjectManifest = project.manifest;
 
   return (
-    <Box sx={{ background: 'linear-gradient(to bottom, #151a2c, #221730)' }}>
+    <Box>
       {/* ==================== HERO SECTION ==================== */}
       <Container maxWidth="md" sx={{ textAlign: 'center' }}>
         <Typography variant="gradientH1">

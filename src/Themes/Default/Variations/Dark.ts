@@ -88,7 +88,7 @@ export const defaultDarkBase: ThemeOptions = {
   },
 
   shape: {
-    borderRadius: 20,
+    borderRadius: 10,
   },
 
   components: {
@@ -104,7 +104,6 @@ export const defaultDarkBase: ThemeOptions = {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: 8,
         },
       },
     },

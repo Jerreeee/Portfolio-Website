@@ -9,6 +9,7 @@ import { Typography, Link as MuiLink } from '@mui/material';
 import { Box } from '@mui/material';
 import CodeBlockCmp from '../Code/CodeBlockCmp';
 import CodeInlineCmp from '../Code/CodeInlineCmp';
+import { useTheme } from '@/Themes/ThemeProvider';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -23,14 +24,16 @@ export interface MarkdownRendererCmpProps {
 }
 
 export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpProps) {
+  const { theme } = useTheme();
+
   return (
     <Box
       className="markdown-body"
       sx={{
         backgroundColor: 'transparent',
         color: 'inherit',
-        '& pre': { background: 'rgba(0,0,0,0.06)', p: 2, borderRadius: 1 },
-        '& code': { background: 'rgba(0,0,0,0.06)', px: .5, borderRadius: .5 },
+        '& pre': { background: 'rgba(0,0,0,0.06)', p: 2 },
+        '& code': { background: 'rgba(0,0,0,0.06)', px: .5 },
         '& table': { borderCollapse: 'collapse', width: '100%' },
         '& th, td': { border: '1px solid #d0d7de', p: '6px 13px' },
         '& ul': { listStyle: 'disc', pl: 3 },
