@@ -1,6 +1,10 @@
-import ProjectsOverviewClient from './ProjectsOverviewClient';
+import { Suspense } from "react";
+import ProjectsOverviewClient from "./ProjectsOverviewClient";
 
 export default function ProjectsPage() {
-  return <ProjectsOverviewClient />;
+  return (
+    <Suspense>
+      <ProjectsOverviewClient />
+    </Suspense>
+  );
 }
-

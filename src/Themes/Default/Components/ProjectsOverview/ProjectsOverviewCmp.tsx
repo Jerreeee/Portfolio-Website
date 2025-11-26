@@ -51,6 +51,8 @@ export interface ProjectsOverviewCmpProps {
   order: string;
 }
 
+export interface ProjectsOverviewCmpSettings {}
+
 export default function ProjectsOverviewCmp({ order: key }: ProjectsOverviewCmpProps) {
   const { theme } = useTheme();
 
