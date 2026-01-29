@@ -108,8 +108,7 @@ export default function Timeline({
   const { theme } = useTheme();
 
   const [collapsedState, setCollapsedState] = React.useState<Record<string, boolean>>({});
-  const rowHeights = React.useRef<Record<string, number>>({});
-  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [rowHeights, setRowHeights] = React.useState<Record<string, number>>({});
 
   const flattened = React.useMemo(() => flatten(children, 0, '', collapsedState), [children, collapsedState]);
   const toggleCollapse = React.useCallback((id: string) => setCollapsedState((p) => ({ ...p, [id]: !p[id] })), []);
@@ -127,12 +126,13 @@ export default function Timeline({
   React.useLayoutEffect(() => {
     const elements = document.querySelectorAll('[data-layer-id]');
     const newHeights: Record<string, number> = {};
+
     elements.forEach((el) => {
       const id = el.getAttribute('data-layer-id');
       if (id) newHeights[id] = el.getBoundingClientRect().height || 1;
     });
-    rowHeights.current = newHeights;
-    forceUpdate();
+
+    setRowHeights(newHeights);
   }, [flattened]);
 
   const getDefaultLayerHeight = (el: React.ReactElement): number => {
@@ -145,7 +145,7 @@ export default function Timeline({
 
   const getRowHeight = (row: FlattenedRow): number => {
     if (row.type === 'group') return GROUP_ROW_HEIGHT;
-    return rowHeights.current[row.id] ?? getDefaultLayerHeight(row.element);
+    return rowHeights[row.id] ?? getDefaultLayerHeight(row.element);
   };
 
   const depthColors = ['#4fc3f7', '#ba68c8', '#81c784', '#ffb74d', '#64b5f6', '#f06292', '#aed581'];

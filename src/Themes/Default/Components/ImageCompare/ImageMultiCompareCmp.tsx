@@ -19,9 +19,7 @@ import { BarLayerProps } from '../Timeline/BarLayer';
 
 const makeSlot = makeSlotFactory('ImageMultiCompareCmp', imageMultiCompareCmp);
 
-const ImageMultiCompareRoot = makeSlot(motion.div, 'root', {
-  shouldForwardProp: (prop) => prop !== 'size',
-})<{ size?: Size }>(({ size }) => ({
+const ImageMultiCompareRoot = makeSlot(motion.div, 'root')(() => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '0.5rem',
