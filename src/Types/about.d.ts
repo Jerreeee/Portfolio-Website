@@ -13,6 +13,7 @@ export interface LinkSet {
 }
 
 export interface Contact {
+  gsm: string;
   email: string;
   links: LinkSet;
   qrSrc: string;
@@ -54,6 +55,7 @@ export interface Experience {
 }
 
 export interface AboutInfo {
+  website: string;
   bio: AboutBio;
   contact: Contact;
   skills: SkillSet;

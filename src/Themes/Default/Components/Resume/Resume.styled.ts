@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Typography, Divider, styled } from "@mui/material";
+import { Box, Typography, Link, Divider, styled } from "@mui/material";
 
 /* ===========================
    PAGE + LAYOUT
@@ -13,6 +13,7 @@ export const PageContainer = styled(Box)({
   background: "#ffffff",
   color: "#111",
   display: "flex",
+  flexDirection: "column",
   overflow: "hidden",
   boxShadow: "0 0 8mm rgba(0,0,0,0.25)",
   "@media print": {
@@ -37,7 +38,7 @@ export const LeftColumn = styled(Box)({
 });
 
 export const RightColumn = styled(Box)({
-  width: "65%",
+  width: "100%",
   boxSizing: "border-box",
   padding: "6mm",
   display: "flex",
@@ -262,3 +263,75 @@ export const SectionHeaderRight = styled(Typography)({
   paddingBottom: 0,
   textAlign: "left",
 });
+
+
+export const ResumeHeader = styled(Box)({
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+
+  paddingTop: "2mm",
+  paddingBottom: "6mm",
+  paddingLeft: "6mm",
+  paddingRight: "6mm",
+
+  position: "relative",
+});
+
+export const HeaderName = styled(Typography)({
+  fontSize: "11mm",
+  fontWeight: 900,
+  lineHeight: 1,
+  letterSpacing: "-0.25mm",
+});
+
+export const HeaderFirstName = styled("span")({
+  fontWeight: 900,
+});
+
+export const HeaderLastName = styled("span")({
+  fontWeight: 900,
+});
+
+export const HeaderContactLink = styled(Link)({
+  color: "inherit",
+  textDecoration: "none",
+  borderBottom: "0.2mm solid rgba(0,0,0,0.2)",
+  paddingBottom: "0.2mm",
+  transition: "border-color 0.2s ease",
+});
+
+export const HeaderContactText = styled("span")({});
+
+export const HeaderDivider = styled("div")({
+  position: "absolute",
+  bottom: 0,
+  left: "6mm",
+  right: "6mm",
+  height: "1px",
+  backgroundColor: "#000",
+});
+
+export const HeaderRight = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  gap: "2mm",
+  fontSize: "3.3mm",
+  lineHeight: 1.3,
+  opacity: 0.9,
+});
+
+export const HeaderContactRow = styled(Box)({
+  display: "grid",
+  gridTemplateColumns: "22mm auto", // fixed label column
+  alignItems: "baseline",
+  columnGap: "3mm",
+});
+
+export const HeaderLabel = styled("span")({
+  fontWeight: 600,
+  textAlign: "right",
+  opacity: 0.65,
+});
+

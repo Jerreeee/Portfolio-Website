@@ -20,7 +20,18 @@ import {
   SkillGrid3,
   DividerBar,
   SectionHeaderRight,
+  ResumeHeader,
+  HeaderName,
+  HeaderFirstName,
+  HeaderLastName,
+  HeaderRight,
+  HeaderContactRow,
+  HeaderLabel,
+  HeaderContactLink,
+  HeaderContactText,
+  HeaderDivider,
 } from "./Resume.styled";
+
 
 import { aboutInfo } from "@/Data/about";
 import { IconCmp } from "@/Themes/Default/Components/Icon";
@@ -52,7 +63,7 @@ function renderSkills(items: string[]) {
 /* --------- Component --------- */
 
 export default function Resume() {
-  const { bio, contact, skills, experience, education } = aboutInfo;
+  const { website, bio, contact, skills, experience, education } = aboutInfo;
 
   return (
     <div id="resume-page">
@@ -73,7 +84,7 @@ export default function Resume() {
 
       <PageContainer>
         {/* LEFT COLUMN */}
-        <LeftColumn>
+        {/* <LeftColumn>
           <NameBlock>
             <FirstName>{bio.firstName}</FirstName>
             <LastName>{bio.lastName}</LastName>
@@ -181,7 +192,40 @@ export default function Resume() {
               </SkillGroup>
             ))}
           </SkillsBlock>
-        </LeftColumn>
+        </LeftColumn> */}
+
+        {/* ===== HEADER (single line / no icons) ===== */}
+<ResumeHeader>
+  <HeaderName>
+    <HeaderFirstName>{bio.firstName}</HeaderFirstName>{" "}
+    <HeaderLastName>{bio.lastName}</HeaderLastName>
+  </HeaderName>
+
+  <HeaderRight>
+    <HeaderContactRow>
+      <HeaderLabel>Email:</HeaderLabel>
+      <HeaderContactLink href={`mailto:${contact.email}`}>
+        {contact.email}
+      </HeaderContactLink>
+    </HeaderContactRow>
+
+    <HeaderContactRow>
+      <HeaderLabel>Website:</HeaderLabel>
+      <HeaderContactLink href={website} target="_blank" rel="noreferrer">
+        {String(website).replace(/^https?:\/\//, "")}
+      </HeaderContactLink>
+    </HeaderContactRow>
+
+    {contact.gsm && (
+      <HeaderContactRow>
+        <HeaderLabel>GSM:</HeaderLabel>
+        <HeaderContactText>{contact.gsm}</HeaderContactText>
+      </HeaderContactRow>
+    )}
+  </HeaderRight>
+
+  <HeaderDivider />
+</ResumeHeader>
 
         {/* RIGHT COLUMN */}
         <RightColumn>
