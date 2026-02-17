@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { createTheme, Theme, ThemeOptions } from '@mui/material/styles';
-import { StyledEngineProvider as MuiStyledEngineProvider, ThemeProvider as MuiThemeProvider, CssBaseline as MuiCssBaseline } from '@mui/material';
+import { ThemeProvider as MuiThemeProvider, CssBaseline as MuiCssBaseline } from '@mui/material';
 import { themeRegistry } from './index';
 
 interface ThemeID {
@@ -34,12 +34,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ themeID, theme, setTheme }}>
-      <MuiStyledEngineProvider injectFirst>
-        <MuiThemeProvider theme={theme}>
-          <MuiCssBaseline />
-          {children}
-        </MuiThemeProvider>
-      </MuiStyledEngineProvider>
+      <MuiThemeProvider theme={theme}>
+        <MuiCssBaseline />
+        {children}
+      </MuiThemeProvider>
     </ThemeContext.Provider>
   );
 }

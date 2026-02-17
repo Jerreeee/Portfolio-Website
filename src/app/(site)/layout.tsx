@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="bg-[#000000]">
       <body>
-        <AppRouterCacheProvider options={{ key: 'mui-style' }}>
+        <AppRouterCacheProvider>
           <ClientProviders>{children}</ClientProviders>
         </AppRouterCacheProvider>
       </body>
