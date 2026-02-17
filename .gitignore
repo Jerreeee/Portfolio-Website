@@ -23,6 +23,7 @@ yarn.lock
 
 # misc
 .DS_Store
+.claude/
 *.pem
 
 # debug
