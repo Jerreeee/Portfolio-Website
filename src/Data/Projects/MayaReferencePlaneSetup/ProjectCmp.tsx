@@ -51,9 +51,9 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             key={index}
             sx={{
               mb: 2,
-              backgroundColor: 'rgba(255,255,255,0.03)',
+              backgroundColor: theme.palette.action.hover,
               borderRadius: `${theme.shape.borderRadius}px`,
-              border: '1px solid rgba(255,255,255,0.08)',
+              border: `1px solid ${theme.palette.divider}`,
               overflow: 'hidden',
             }}
           >
@@ -65,10 +65,10 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
               }}
             >
               <AccordionSummary
-                expandIcon={<span style={{ color: '#7b72f0', fontSize: '1.2rem' }}>▸</span>}
+                expandIcon={<span style={{ color: theme.palette.primary.main, fontSize: '1.2rem' }}>▸</span>}
                 sx={{
                   '& .MuiAccordionSummary-content': { margin: 0 },
-                  '&.Mui-expanded': { backgroundColor: 'rgba(255,255,255,0.04)' },
+                  '&.Mui-expanded': { backgroundColor: theme.palette.action.hover },
                   transition: 'background 0.2s',
                 }}
               >

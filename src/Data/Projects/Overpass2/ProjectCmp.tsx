@@ -52,11 +52,12 @@ const ROW_H   = 28;
 
 function ScrollableSyncDemo() {
   const { ScrollableCmp } = useComponents();
+  const { theme } = useAppTheme();
   return (
     <Box
       sx={{
         height: 380,
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: 2,
         overflow: 'hidden',
         fontFamily: 'monospace',
@@ -307,11 +308,12 @@ function specColor(v: number): string {
  */
 function SignalStudioDemo() {
   const { ScrollableCmp } = useComponents();
+  const { theme } = useAppTheme();
   return (
     <Box
       sx={{
         height: 420,
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: 2,
         overflow: 'hidden',
         fontFamily: 'monospace',
@@ -571,11 +573,12 @@ const PIPELINE_RANGE = makeDefaultRangeProvider([0, 100]);
 
 function TimelineDemo() {
   const { TimelineCmp } = useComponents();
+  const { theme } = useAppTheme();
   return (
     <Box
       sx={{
         height: 500,
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: 2,
         overflow: 'hidden',
       }}

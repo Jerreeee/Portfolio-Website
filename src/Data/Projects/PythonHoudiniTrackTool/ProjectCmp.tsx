@@ -25,8 +25,8 @@ import { SmartImage } from './test';
 
 export const H2 = styled('h2')(({ theme }) => ({
   ...theme.typography.h2,
-  backgroundColor: '#f60',
-  color: 'black',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
   padding: theme.spacing(1),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(2),
@@ -35,14 +35,16 @@ export const H2 = styled('h2')(({ theme }) => ({
 
 export const H4 = styled(Typography)(({ theme }) => ({
   ...theme.typography.h4,
-  backgroundColor: '#333',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+  color: theme.palette.text.primary,
   padding: theme.spacing(1),
   borderRadius: theme.shape.borderRadius,
 }));
 
 export const H5 = styled('h5')(({ theme }) => ({
   ...theme.typography.h5,
-  backgroundColor: '#333',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+  color: theme.palette.text.primary,
   padding: theme.spacing(1),
   marginTop: theme.spacing(3),
   marginBottom: theme.spacing(1.5),
@@ -51,7 +53,8 @@ export const H5 = styled('h5')(({ theme }) => ({
 
 export const H6 = styled('h6')(({ theme }) => ({
   ...theme.typography.h6,
-  backgroundColor: '#333',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+  color: theme.palette.text.primary,
   padding: theme.spacing(1),
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(1),

@@ -1,12 +1,12 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { useAppTheme } from '../Themes/ThemeProvider';
-import NavbarCmp from '@/Themes/Default/Components/Navbar/NavbarCmp';
+import { useAppTheme, useComponents } from '../Themes/ThemeProvider';
 import PATHS from '@/Config/paths';
 
 export function PageWrapper({ children }: { children: ReactNode }) {
   const { theme } = useAppTheme();
+  const { NavbarCmp } = useComponents();
 
   return (
     <>

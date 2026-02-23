@@ -13,10 +13,9 @@ export default function ProjectSlugLayout({
     theme.components?.NavbarCmp?.defaultProps?.height ?? 64;
 
   return (
-    <div
-      style={{
-        background: 'linear-gradient(to bottom, #151a2c, #221730)',
-      }}
+    <Box
+      component="div"
+      sx={{ background: theme.palette.gradients.background(), minHeight: '100vh' }}
     >
       <Box
         component="main"
@@ -24,14 +23,12 @@ export default function ProjectSlugLayout({
           maxWidth: theme.breakpoints.values.lg,
           mx: "auto",
           width: "100%",
-          background: 'rgba(255, 255, 255 0.1)',
-          backdropFilter: 'saturate(150%) brightness(125%)',
         }}
       >
         <Container>
           {children}
         </Container>
       </Box>
-    </div>
+    </Box>
   );
 }

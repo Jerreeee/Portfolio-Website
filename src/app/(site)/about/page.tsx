@@ -23,7 +23,7 @@ export default function About() {
         width: '100%',
         minHeight: '100vh',
         py: { xs: 6, md: 12 },
-        background: 'linear-gradient(to bottom, #151a2c, #221730)',
+        background: theme.palette.gradients.background(),
       }}
     >
       <Container maxWidth="lg">
@@ -98,7 +98,7 @@ export default function About() {
                             justifyContent: 'center',
                           }}
                         >
-                          <IconCmp techName={link.icon} grayScaleIconColor='#FFFFFF' />
+                          <IconCmp techName={link.icon} grayScaleIconColor={theme.palette.common.white} />
                         </Box>
                       </IconButton>
                     </Tooltip>
@@ -135,8 +135,7 @@ export default function About() {
               variant="h4"
               sx={{
                 fontWeight: 600,
-                background:
-                  'linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)',
+                background: theme.palette.gradients.primary(),
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'inline-block',
@@ -153,7 +152,7 @@ export default function About() {
               width: '60%',
               mx: 'auto',
               mb: 3,
-              background: 'linear-gradient(90deg, #3fa0ff, #7b72f0, #ec38bc)',
+              background: theme.palette.gradients.primary('90deg'),
               borderRadius: `${theme.shape.borderRadius}px`,
               opacity: 0.5,
             }}
@@ -224,8 +223,8 @@ export default function About() {
               >
                 <Box
                   sx={{
-                    backgroundColor: 'rgba(255,255,255,0.03)',
-                    border: `1px solid rgba(255,255,255,0.06)`,
+                    backgroundColor: theme.palette.action.hover,
+                    border: `1px solid ${theme.palette.divider}`,
                     borderRadius: `${theme.shape.borderRadius}px`,
                     p: 1.25,
                     display: 'flex',

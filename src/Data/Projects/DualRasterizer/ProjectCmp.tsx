@@ -57,12 +57,12 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
               <Box
                 sx={{
                   p: 1,
-                  bgcolor: 'rgba(255,255,255,0.04)',
+                  bgcolor: theme.palette.action.hover,
                   borderRadius: `${theme.shape.borderRadius}px`,
                   textAlign: 'center',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  border: `1px solid ${theme.palette.divider}`,
                   transition: 'background 0.2s ease',
-                  '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
+                  '&:hover': { bgcolor: theme.palette.action.selected },
                 }}
               >
                 <Typography

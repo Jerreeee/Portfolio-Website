@@ -4,7 +4,8 @@ import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { Size } from '@/Types/extra';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { codeBlockCmp } from './CodeBlockCmpClasses';
@@ -34,7 +35,7 @@ const CodeStyling = makeSlot('div', 'styling')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   padding: '1rem 1.25rem',
-  backgroundColor: '#1e1e1e',
+  backgroundColor: theme.palette.background.paper,
   fontFamily: `'Fira Code', monospace`,
   fontSize: '0.9rem',
   lineHeight: 1.6,
@@ -80,6 +81,8 @@ export interface CodeBlockCmpProps {
 
 // ---------- Component ----------
 export default function CodeBlockCmp(props: CodeBlockCmpProps) {
+  const { theme } = useAppTheme();
+  const syntaxStyle = theme.palette.mode === 'dark' ? oneDark : oneLight;
   const [content, setContent] = React.useState<string>("");
 
   useEffect(() => {
@@ -120,7 +123,7 @@ export default function CodeBlockCmp(props: CodeBlockCmpProps) {
           <CodeStyling>
             <SyntaxHighlighter
               language={detectedLanguage}
-              style={oneDark}
+              style={syntaxStyle}
               PreTag="div"
               customStyle={{
                   background: 'transparent',

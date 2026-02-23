@@ -11,15 +11,14 @@ import { codeInlineCmp } from './CodeInlineCmpClasses';
 const makeSlot = makeSlotFactory('CodeInlineCmp', codeInlineCmp);
 
 const CodeInlineRoot = makeSlot('code', 'root')(({ theme }) => ({
-  backgroundColor: theme.palette.grey[200],
-  padding: '0 0.25rem',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+  color: theme.palette.text.primary,
+  padding: '0.125rem 0.375rem',
   borderRadius: theme.shape.borderRadius,
   fontFamily: `'Fira Code', monospace`,
   fontSize: '0.875rem',
   lineHeight: 1.4,
-
   // Kill unwanted token backgrounds from syntax highlighters
-  background: 'transparent',
   '& span': {
     background: 'transparent !important',
   },

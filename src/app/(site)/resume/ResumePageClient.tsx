@@ -91,7 +91,7 @@ export default function ResumePage() {
       sx={{
         width: "100%",
         height: viewportH - navH,
-        background: "linear-gradient(to bottom, #151a2c, #221730)", // match About page
+        background: theme.palette.gradients.background(),
         display: "flex",
         flexDirection: "column",
       }}
@@ -144,8 +144,7 @@ export default function ResumePage() {
               boxSizing: "border-box",
               border: `${borderThickness}px solid transparent`,
               borderRadius: `${cornerR}px`,
-              background:
-                "linear-gradient(#0000,#0000) padding-box, linear-gradient(135deg, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%) border-box",
+              background: `linear-gradient(#0000,#0000) padding-box, ${theme.palette.gradients.primary()} border-box`,
 
               // clip INSIDE this frame so the resume can't overflow the rounded corners
               overflow: "hidden",

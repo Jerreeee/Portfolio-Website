@@ -31,11 +31,11 @@ export function CardTabs({ children, defaultIndex = 0 }: CardTabsProps) {
           display: "flex",
           flexWrap: "wrap",
           gap: 1,
-          justifyContent: "center",   // << add
-          alignContent: "center",     // << optional but helps with grid-like wrap feel
+          justifyContent: "center",
+          alignContent: "center",
           px: 2,
           py: 1.25,
-          bgcolor: theme.palette.grey[900],
+          bgcolor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[100],
           borderBottom: `1px solid ${theme.palette.divider}`,
         }}
       >
@@ -53,15 +53,15 @@ export function CardTabs({ children, defaultIndex = 0 }: CardTabsProps) {
                 fontSize: "0.9rem",
                 whiteSpace: "nowrap",
                 transition: "0.2s ease",
-                border: "1px solid rgba(255,255,255,0.12)",
-                bgcolor: "rgba(255,255,255,0.06)",
+                border: `1px solid ${theme.palette.divider}`,
+                bgcolor: theme.palette.action.hover,
                 color: theme.palette.text.secondary,
                 "&:hover": {
-                  bgcolor: "rgba(255,255,255,0.12)",
+                  bgcolor: theme.palette.action.selected,
                 },
                 ...(selected && {
-                  border: "1px solid rgba(255,255,255,0.28)",
-                  bgcolor: "rgba(255,255,255,0.18)",
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  bgcolor: theme.palette.action.selected,
                   color: theme.palette.text.primary,
                 }),
               }}
@@ -77,7 +77,7 @@ export function CardTabs({ children, defaultIndex = 0 }: CardTabsProps) {
         key={activeIndex}
         sx={{
           p: 2,
-          bgcolor: "rgba(255,255,255,0.03)",
+          bgcolor: theme.palette.background.paper,
         }}
       >
         {activeContent}
