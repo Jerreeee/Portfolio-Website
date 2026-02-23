@@ -123,6 +123,10 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                 <div style={{ display: 'flex', flexDirection: 'row', gap: activeTheme.spacing(1) }}>
                   {media.map((item, index) => {
                     const isActive = index === activeIndex;
+                    const thumbH = 100;
+                    const thumbW = item.width && item.height
+                      ? Math.round((item.width / item.height) * thumbH)
+                      : thumbH;
                     const thumbItem =
                       item.type === 'embeddedVideo'
                         ? { ...item, playerProps: { ...item.playerProps, light: true } }
@@ -133,6 +137,7 @@ export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
                         key={index}
                         active={isActive}
                         onClick={() => setActiveIndex(index)}
+                        style={{ width: thumbW }}
                       >
                         <MediaCmp item={thumbItem} />
                         {item.type !== 'image' && <VideoOverlay>▶</VideoOverlay>}
