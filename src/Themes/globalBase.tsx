@@ -48,6 +48,11 @@ export const globalBase: ThemeOptions = {
           '& .MuiAccordionSummary-content': { margin: 0 },
           '&.Mui-expanded': { backgroundColor: theme.palette.action.hover },
           transition: 'background 0.2s',
+          '& .MuiTypography-root': {
+            color: theme.palette.text.primary,
+            fontWeight: 500,
+            fontSize: '0.9rem',
+          },
         }),
         expandIconWrapper: ({ theme }) => ({
           color: theme.palette.primary.main,

@@ -48,14 +48,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         ].map((snippet, index) => (
           <Accordion key={index}>
             <AccordionSummary>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  color: 'text.primary',
-                  fontWeight: 500,
-                  fontSize: '0.9rem',
-                }}
-              >
+              <Typography variant="subtitle1">
                 {snippet.title}
               </Typography>
             </AccordionSummary>
