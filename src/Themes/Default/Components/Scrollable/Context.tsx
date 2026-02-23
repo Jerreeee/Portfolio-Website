@@ -54,7 +54,7 @@ export function useScrollableRegistry(): ScrollableContextType {
   const authorities = useRef(new Map<string, Authority>());
   const scrollbars = useRef(new Map<string, Set<(ratio: number, scrollRange: number) => void>>());
   const authorityListeners = useRef(new Map<string, Set<() => void>>());
-  const pendingAuthorityUpdates = new Set<string>();
+  const pendingAuthorityUpdates = useRef(new Set<string>());
   const lock = useRef<Set<HTMLDivElement>>(new Set());
 
   const getContainers = useCallback((id: string): HTMLDivElement[] => {
@@ -90,8 +90,8 @@ export function useScrollableRegistry(): ScrollableContextType {
 
   const notifyAuthorityChange = useCallback((id: string) => {
     // If an update for this id is already scheduled this frame, skip
-    if (pendingAuthorityUpdates.has(id)) return;
-    pendingAuthorityUpdates.add(id);
+    if (pendingAuthorityUpdates.current.has(id)) return;
+    pendingAuthorityUpdates.current.add(id);
 
     // Schedule notifications at next animation frame
     // this ensure that if many updates happen in the same frame, we only notify once
@@ -100,7 +100,7 @@ export function useScrollableRegistry(): ScrollableContextType {
       if (subs) {
         subs.forEach((cb) => cb());
       }
-      pendingAuthorityUpdates.delete(id);
+      pendingAuthorityUpdates.current.delete(id);
     });
   }, []);
 
@@ -116,8 +116,11 @@ export function useScrollableRegistry(): ScrollableContextType {
     const newRange = getScrollRange(el, dir);
     const newVisibleRatio = getVisibleRatio(el, dir);
 
-    const currentRange = getScrollRange(authority.biggestScrollRange.el.current, authority.biggestScrollRange.dir);
-    const currentVisibleRatio = getVisibleRatio(authority.smallestVisibleRatio.el.current, authority.smallestVisibleRatio.dir);
+    const authorityRangeEl = authority.biggestScrollRange.el.current;
+    const authorityRatioEl = authority.smallestVisibleRatio.el.current;
+    if (!authorityRangeEl || !authorityRatioEl) return { betterRange: true, betterRatio: true };
+    const currentRange = getScrollRange(authorityRangeEl, authority.biggestScrollRange.dir);
+    const currentVisibleRatio = getVisibleRatio(authorityRatioEl, authority.smallestVisibleRatio.dir);
 
     return {
       betterRange: newRange > currentRange,
@@ -390,7 +393,7 @@ export function useScrollableRegistry(): ScrollableContextType {
       subscribeScrollbar,
       subscribeAuthorityListener,
     }),
-    [registerContainer, unregisterContainer, updateScroll, getContainers, getAuthority]
+    [registerContainer, unregisterContainer, containerChanged, updateScroll, getContainers, getAuthority, subscribeScrollbar, subscribeAuthorityListener]
   );
 }
 

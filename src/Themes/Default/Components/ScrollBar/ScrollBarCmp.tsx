@@ -94,6 +94,8 @@ export default function ScrollBarCmp({
   const startPos = useRef(0);
   const startOffset = useRef(0);
   const userDragging = useRef(false);
+  const onMouseMoveRef = useRef<(e: MouseEvent) => void>(() => {});
+  const onMouseUpRef = useRef<() => void>(() => {});
   const minThumbSize = 20;
 
   // --- Sync thumb with scroll container (if provided)
@@ -177,7 +179,7 @@ export default function ScrollBarCmp({
     e.preventDefault();
   }
 
-  function onMouseMove(e: MouseEvent) {
+  onMouseMoveRef.current = (e: MouseEvent) => {
     if (!userDragging.current) return;
     const delta =
       (direction === 'horizontal' ? e.clientX : e.clientY) - startPos.current;
@@ -198,22 +200,24 @@ export default function ScrollBarCmp({
       if (direction === 'horizontal') el.scrollLeft = ratio * range;
       else el.scrollTop = ratio * range;
     }
-  }
+  };
 
-  function onMouseUp() {
+  onMouseUpRef.current = () => {
     userDragging.current = false;
     setIsDragging(false);
     onDragEnded?.();
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    const move = (e: MouseEvent) => onMouseMoveRef.current(e);
+    const up = () => onMouseUpRef.current();
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
     };
-  });
+  }, []);
 
   return (
     <ScrollBarRoot

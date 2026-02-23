@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { ScrollableContext, useScrollableRegistry } from './Context';
 import { scrollableCmp } from './ScrollableCmpClasses';
@@ -92,7 +92,7 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
   const registry = useScrollableRegistry();
 
   // Detect advanced usage — any ScrollableCmp.Group, Vertical, or Horizontal child
-  const hasAdvancedChildren = (() => {
+  const hasAdvancedChildren = useMemo(() => {
     function containsAdvanced(node: React.ReactNode): boolean {
       return React.Children.toArray(node).some((child) => {
         if (!React.isValidElement(child)) return false;
@@ -106,7 +106,7 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
     }
 
     return containsAdvanced(children);
-    })();
+  }, [children]);
 
   if (!hasAdvancedChildren) {
     // SIMPLE MODE (classic ScrollableCmp)
@@ -120,13 +120,11 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
   }
 
   // ADVANCED MODE (provides shared context)
-  if (hasAdvancedChildren) {
-    return (
-        <ScrollableContext.Provider value={registry}>
-          {children}
-        </ScrollableContext.Provider>
-    );
-  }
+  return (
+    <ScrollableContext.Provider value={registry}>
+      {children}
+    </ScrollableContext.Provider>
+  );
 }
 
 // Attach subcomponents for declarative use

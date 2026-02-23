@@ -51,7 +51,6 @@ export function Group({
     if (!el) return;
 
     let raf: number | null = null;
-    let lastDevicePixelRatio = window.devicePixelRatio;
 
     const handleResize = () => {
       if (raf) cancelAnimationFrame(raf);
@@ -62,27 +61,18 @@ export function Group({
       });
     };
 
-    // --- ResizeObserver for container + child ---
+    // --- ResizeObserver for container + all direct children ---
     const ro = new ResizeObserver(handleResize);
     ro.observe(el);
-    if (el.firstElementChild) ro.observe(el.firstElementChild);
+    Array.from(el.children).forEach((child) => ro.observe(child));
 
     // --- Window resize fallback ---
     window.addEventListener('resize', handleResize);
-
-    // --- Detect browser zoom / DPI changes ---
-    const zoomCheck = setInterval(() => {
-      if (window.devicePixelRatio !== lastDevicePixelRatio) {
-        lastDevicePixelRatio = window.devicePixelRatio;
-        handleResize();
-      }
-    }, 500);
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener('resize', handleResize);
-      clearInterval(zoomCheck);
     };
   }, [ctx, hId, vId]);
 
