@@ -1,4 +1,4 @@
-import { Variants, MotionProps } from "framer-motion";
+import { Variants, MotionProps } from "motion/react";
 import { mergeVariants } from '@/Utils/MergeObjects'
 
 

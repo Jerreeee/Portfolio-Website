@@ -82,15 +82,19 @@ const motionPropKeys = new Set([
   "whileTap",
   "whileFocus",
   "whileInView",
+  "whileDrag",
   "drag",
   "layout",
+  "layoutId",
   "transition",
   "style",
   "viewport",
+  "exit",
+  "custom",
 ]);
 
 export function mergeAnims(
-  addDefaultProps: boolean,
+  asRoot: boolean,
   ...items: (Variants | MotionProps)[]
 ): MotionProps {
   const merged: MotionProps = { variants: {} };
@@ -114,7 +118,7 @@ export function mergeAnims(
     }
   }
 
-  if (addDefaultProps && merged.variants) {
+  if (asRoot && merged.variants) {
     for (const key in merged.variants) {
       if ((merged as Record<string, unknown>)[key] === undefined) {
         (merged as Record<string, unknown>)[key] = key;
