@@ -8,13 +8,13 @@ import {
   Grid,
   IconButton,
   Tooltip,
-  useTheme,
 } from '@mui/material';
-import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
+import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
 import { aboutInfo } from '@/Data/about';
 
 export default function About() {
-  const theme = useTheme();
+  const { theme } = useAppTheme();
+  const { IconCmp } = useComponents();
   const { bio, contact, skills } = aboutInfo;
 
   return (

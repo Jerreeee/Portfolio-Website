@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@/Themes/ThemeProvider'
+import { useAppTheme } from '@/Themes/ThemeProvider'
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { segmentSliderCmp } from './SegmentSliderCmpClasses';
 
@@ -110,7 +110,7 @@ SegmentSliderCmp.computeGlobalPercentage = function computeGlobalPercentage(
 };
 
 export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   
   const segmentCount = props.tickCount - 1;
   const [state, setState] = useState<SegmentSliderState>(

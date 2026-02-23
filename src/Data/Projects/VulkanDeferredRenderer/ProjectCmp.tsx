@@ -6,24 +6,18 @@ import { Box, Typography, Container, Grid, Divider,
 AccordionSummary,
 AccordionDetails,
 } from '@mui/material';
-import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
 import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
-import ParentSizeObserver from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
-import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
 import { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
-import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
 import type { ProjectManifest } from "@/Types/projectManifest";
 import type { ProjectCmpProps } from '../project';
 import { data } from './data';
-import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
-import { IconCmp } from '@/Themes/Default/Components/Icon';
-import Timeline from '@/Themes/Default/Components/Timeline/Timeline';
 import PATHS from '@/Config/paths';
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
-  const { theme } = useTheme();
+  const { MediaCmp, ParentSizeObserverCmp: ParentSizeObserver, ImageMultiCompareCmp, CodeBlockCmp, ProjectOverviewCmp, IconCmp, TimelineCmp: Timeline } = useComponents();
+  const { theme } = useAppTheme();
   const manifest: ProjectManifest = project.manifest;
 
   return (

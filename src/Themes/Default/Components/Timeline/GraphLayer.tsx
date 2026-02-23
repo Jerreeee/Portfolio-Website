@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { graphLayer } from './GraphLayerClasses';
 import { useTimeline } from './Context';
@@ -39,7 +39,7 @@ export default function GraphLayer({
   color,
   children,
 }: GraphLayerProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const { rangeProvider } = useTimeline();
   const { normalize } = rangeProvider;
 

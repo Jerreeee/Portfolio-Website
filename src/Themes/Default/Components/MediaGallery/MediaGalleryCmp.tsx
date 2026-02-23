@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
 import { MediaItem } from '@/Types/media';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
@@ -91,7 +91,7 @@ export interface MediaGalleryCmpProps {
 }
 
 export default function MediaGalleryCmp({ media }: MediaGalleryCmpProps) {
-  const { theme: activeTheme } = useTheme();
+  const { theme: activeTheme } = useAppTheme();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = media[activeIndex];

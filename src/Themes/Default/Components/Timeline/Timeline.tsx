@@ -12,7 +12,7 @@ import BarLayer, { BAR_FLAG } from './BarLayer';
 import GraphLayer, { GRAPH_FLAG } from './GraphLayer';
 import Group, { GroupProps, GROUP_FLAG } from './Group';
 import { LayerProps } from './Layer';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 
 const makeSlot = makeSlotFactory('Timeline', timeline);
 
@@ -105,7 +105,7 @@ export default function Timeline({
   showTopBar = true,
   maxHeight,
 }: TimelineProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   const [collapsedState, setCollapsedState] = React.useState<Record<string, boolean>>({});
   const [rowHeights, setRowHeights] = React.useState<Record<string, number>>({});

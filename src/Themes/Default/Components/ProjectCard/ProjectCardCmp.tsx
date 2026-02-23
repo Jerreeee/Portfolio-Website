@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Card, CardContent, Typography } from '@mui/material';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { ProjectInfo } from '@/Data/Projects/project';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
@@ -87,7 +87,7 @@ export interface ProjectCardCmpProps {
 }
 
 export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   const item: MediaItem = getMediaItemsFromManifest(project.manifest, [project.thumbnailImage])[0];
 

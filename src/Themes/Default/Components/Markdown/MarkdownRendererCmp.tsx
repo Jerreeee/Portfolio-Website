@@ -9,7 +9,7 @@ import { Typography, Link as MuiLink } from '@mui/material';
 import { Box } from '@mui/material';
 import CodeBlockCmp from '../Code/CodeBlockCmp';
 import CodeInlineCmp from '../Code/CodeInlineCmp';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 
 // =====================================================================
 // ========================= Slot Definitions ==========================
@@ -24,7 +24,7 @@ export interface MarkdownRendererCmpProps {
 }
 
 export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   return (
     <Box

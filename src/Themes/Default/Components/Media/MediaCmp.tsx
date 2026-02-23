@@ -4,7 +4,7 @@ import Image from 'next/image';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { mediaCmp } from './MediaCmpClasses';
 import { MediaItem } from '@/Types/media';
@@ -50,7 +50,7 @@ export default function MediaCmp({
   fit = 'contain',
   mode = 'downscale',
 }: MediaCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   const naturalWidth = item.width ?? 1;
   const naturalHeight = item.height ?? 1;

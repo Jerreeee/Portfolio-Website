@@ -2,38 +2,38 @@
 import { Theme, ThemeOptions } from '@mui/material/styles';
 
 //custom
-import { mergeVariants, mergeAnims } from '@/Utils/MergeObjects';
+import { mergeAnims } from '@/Utils/MergeObjects';
 import { anims } from '@/Themes/animations';
 import { RegisteredTheme } from '@/Themes';
 
-export const defaultDarkBase: ThemeOptions = {
+export const defaultLightBase: ThemeOptions = {
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
-      main: '#90caf9',    // light blue
-      light: '#e3f2fd',
-      dark: '#42a5f5',
+      main: '#1976d2',
+      light: '#42a5f5',
+      dark: '#1565c0',
     },
     secondary: {
-      main: '#f48fb1',    // pink
-      light: '#f8bbd0',
-      dark: '#f06292',
+      main: '#c2185b',
+      light: '#f06292',
+      dark: '#880e4f',
     },
     background: {
-      default: '#121212',
-      paper: '#1e1e1e',
+      default: '#f5f5f5',
+      paper: '#ffffff',
     },
     text: {
-      primary: '#e0e0e0',
-      secondary: '#b0b0b0',
+      primary: '#1a1a1a',
+      secondary: '#555555',
     },
-    divider: 'rgba(255,255,255,0.12)',
+    divider: 'rgba(0,0,0,0.12)',
 
     gradients: {
-      primary: (dir = "135deg") => `linear-gradient(${dir}, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)`,
-      background: (dir = "to bottom") => `linear-gradient(${dir}, #151a2c, #221730)`,
-      subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(255,255,255,0.05), rgba(0,0,0,0.05))`,
-      h1: (dir = '135deg') => `linear-gradient(${dir}, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)`,
+      primary: (dir = "135deg") => `linear-gradient(${dir}, #1976d2 0%, #7b72f0 50%, #c2185b 100%)`,
+      background: (dir = "to bottom") => `linear-gradient(${dir}, #e8eaf6, #fce4ec)`,
+      subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(0,0,0,0.03), rgba(0,0,0,0.06))`,
+      h1: (dir = '135deg') => `linear-gradient(${dir}, #1976d2 0%, #7b72f0 50%, #c2185b 100%)`,
     },
   },
 
@@ -99,7 +99,6 @@ export const defaultDarkBase: ThemeOptions = {
         },
       },
     },
-    //Global MUI overrides
     MuiButton: {
       styleOverrides: {
         root: {
@@ -109,20 +108,20 @@ export const defaultDarkBase: ThemeOptions = {
     },
     IconCmp: {
       defaultProps: {
-        convertToGrayScale: true,
-        grayScaleIconColor: '#FF0000',
+        convertToGrayScale: false,
       }
     },
     ProjectCardCmp: {
       styleOverrides: {
         root: {
-          backgroundColor: '#1e1e1e',
+          backgroundColor: '#ffffff',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           '&:hover': {
-            backgroundColor: '#2c2c2c',
+            backgroundColor: '#f0f4ff',
           },
         },
         header: {
-          color: '#F0F0F0',
+          color: '#1a1a1a',
         },
         techList: {
           height: 30
@@ -137,7 +136,7 @@ export const defaultDarkBase: ThemeOptions = {
       }
     },
     ProjectsOverviewCmp: {
-      // styleOverrides using palette.gradients are in defaultDarkEnhanced
+      // styleOverrides using palette.gradients are in defaultLightEnhanced
       slotAnimations: {
         root:        mergeAnims(true, anims.staggerChildren(0.25)),
         header:      mergeAnims(false, anims.fadeInUp()),
@@ -160,19 +159,20 @@ export const defaultDarkBase: ThemeOptions = {
       },
       styleOverrides: {
         root: {
-          backgroundColor: '#141418',
-          borderBottom: '1px solid #3fa0ff',
+          backgroundColor: '#ffffff',
+          borderBottom: '1px solid #1976d2',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
         },
-        // brand styleOverride using palette.gradients is in defaultDarkEnhanced
+        // brand styleOverride using palette.gradients is in defaultLightEnhanced
         list: {},
         item: {},
         link: {
-          color: '#888888',
-          '&:hover': { color: '#d0d0d0' },
-          '&[data-active="true"]': { color: '#7b72f0' },
+          color: '#555555',
+          '&:hover': { color: '#1a1a1a' },
+          '&[data-active="true"]': { color: '#1976d2' },
         },
         underline: {
-          backgroundColor: '#3fa0ff',
+          backgroundColor: '#1976d2',
         },
       },
       slotAnimations: {
@@ -188,19 +188,10 @@ export const defaultDarkBase: ThemeOptions = {
         thickness: 10
       },
     },
-    CodeBlockCmp: {
-      styleOverrides: {
-        root: {
-          '& .ScrollableCmp-container': {
-            border: '2px solid green',
-          }
-        }
-      }
-    }
   },
 };
 
-export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => ({
+export const defaultLightEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => ({
   typography: {
     gradientH1: {
       ...base.typography.h1,

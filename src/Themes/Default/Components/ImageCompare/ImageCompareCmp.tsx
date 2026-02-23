@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { imageCompareCmp } from './ImageCompareCmpClasses';
 import { MediaItem } from '@/Types/media';
@@ -59,7 +59,7 @@ export interface ImageCompareCmpProps {
 }
 
 export default function ImageCompareCmp(props: ImageCompareCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const [_progress, SetProgress] = useState(props.progress);
 
   useLayoutEffect(() => {

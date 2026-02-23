@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { scrollBarCmp } from './ScrollBarCmpClasses';
 import { getScrollRange, getScrollRatio, getScrollVisibleArea } from '../Scrollable/ScrollableCmp';

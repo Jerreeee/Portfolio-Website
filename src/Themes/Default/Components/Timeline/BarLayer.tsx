@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { barLayer } from './BarLayerClasses';
 import { useTimeline } from './Context';
@@ -45,7 +45,7 @@ export interface BarLayerProps extends LayerProps {
 }
 
 export default function BarLayer({ name, bars, height = 20, children }: BarLayerProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const { rangeProvider } = useTimeline();
   const { normalize } = rangeProvider;
 

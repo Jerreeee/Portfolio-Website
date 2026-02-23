@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Box } from '@mui/material';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import ImageCompareCmp, { ImageCompareItem } from '@/Themes/Default/Components/ImageCompare/ImageCompareCmp';
 import SegmentSliderCmp, { SegmentSliderState } from '@/Themes/Default/Components/SegmentSlider/SegmentSliderCmp';
 import { Size } from '@/Types/extra';
@@ -37,7 +37,7 @@ export interface ImageMultiCompareCmpProps {
 }
 
 export default function ImageMultiCompareCmp({ images, bars = [] }: ImageMultiCompareCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const imageCount = images.length;
 
   const initialProgress = 0.5 * (1 / (imageCount - 1));

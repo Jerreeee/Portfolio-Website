@@ -3,7 +3,7 @@
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-import { useTheme } from "@/Themes/ThemeProvider";
+import { useAppTheme } from "@/Themes/ThemeProvider";
 import Resume from "@/Themes/Default/Components/Resume/Resume";
 
 const A4_W_MM = 210;
@@ -13,7 +13,7 @@ const A4_W_PX = A4_W_MM * MM_TO_PX;
 const A4_H_PX = A4_H_MM * MM_TO_PX;
 
 export default function ResumePage() {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const measureRef = useRef<HTMLDivElement>(null);
 
   const [fitScale, setFitScale] = useState(0);

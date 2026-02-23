@@ -5,11 +5,8 @@ import { Box, Typography, Container } from '@mui/material';
 import type { ProjectManifest } from "@/Types/projectManifest";
 import type { ProjectCmpProps } from '../project';
 import { data } from './data';
-import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
-import { MarkdownRendererCmp } from '@/Themes/Default/Components/Markdown';
-import ScrollableCmp from '@/Themes/Default/Components/Scrollable/ScrollableCmp';
-import { TimelineCmp } from '@/Themes/Default/Components/Timeline';
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
+import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
 
 // ===========================================================================
 // Scrollable demo data
@@ -54,6 +51,7 @@ const CELL_W  = 72;
 const ROW_H   = 28;
 
 function ScrollableSyncDemo() {
+  const { ScrollableCmp } = useComponents();
   return (
     <Box
       sx={{
@@ -308,6 +306,7 @@ function specColor(v: number): string {
  *   sig-freq → freq ruler + spectrum scroll together horizontally (independent axis)
  */
 function SignalStudioDemo() {
+  const { ScrollableCmp } = useComponents();
   return (
     <Box
       sx={{
@@ -571,6 +570,7 @@ function SignalStudioDemo() {
 const PIPELINE_RANGE = makeDefaultRangeProvider([0, 100]);
 
 function TimelineDemo() {
+  const { TimelineCmp } = useComponents();
   return (
     <Box
       sx={{
@@ -706,6 +706,7 @@ function TimelineDemo() {
 // ===========================================================================
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
+  const { ProjectOverviewCmp, MarkdownRendererCmp, ScrollableCmp, TimelineCmp } = useComponents();
   const manifest: ProjectManifest = project.manifest;
 
   return (

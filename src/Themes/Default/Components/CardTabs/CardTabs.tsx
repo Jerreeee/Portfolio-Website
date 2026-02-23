@@ -1,7 +1,7 @@
 import { useState, Children, isValidElement, ReactNode, ReactElement } from "react";
 import { Box } from "@mui/material";
 import { Item, ItemProps } from "./Item";
-import { useTheme } from "@/Themes/ThemeProvider";
+import { useAppTheme } from "@/Themes/ThemeProvider";
 
 export interface CardTabsProps {
   children?: ReactNode;
@@ -9,7 +9,7 @@ export interface CardTabsProps {
 }
 
 export function CardTabs({ children, defaultIndex = 0 }: CardTabsProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const items = Children.toArray(children).filter(isValidElement) as ReactElement<ItemProps>[];
 
   const [activeIndex, setActiveIndex] = useState(defaultIndex);

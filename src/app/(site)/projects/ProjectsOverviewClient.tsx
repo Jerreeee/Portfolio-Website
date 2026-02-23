@@ -1,9 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import ProjectsOverviewCmp from '@/Themes/Default/Components/ProjectsOverview/ProjectsOverviewCmp';
+import { useComponents } from '@/Themes/ThemeProvider';
 
 export default function ProjectsOverviewClient() {
+  const { ProjectsOverviewCmp } = useComponents();
   const search = useSearchParams();
   const order = search.get("order") ?? "default";
 

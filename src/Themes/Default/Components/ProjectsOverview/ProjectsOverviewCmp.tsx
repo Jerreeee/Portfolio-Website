@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { projects, getProjectBySlug } from '@/Data/Projects';
 import { projectOrderings } from '@/Data/Projects/projectOrdering';
 import ProjectCardCmp from '@/Themes/Default/Components/ProjectCard/ProjectCardCmp';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { projectsOverviewCmp } from './ProjectsOverviewCmpClasses';
 import type { ValidProjectSlug } from '@/Data/Projects';
@@ -54,7 +54,7 @@ export interface ProjectsOverviewCmpProps {
 export interface ProjectsOverviewCmpSettings {}
 
 export default function ProjectsOverviewCmp({ order: key }: ProjectsOverviewCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   // -----------------------------------------------------
   // Determine ordering

@@ -7,12 +7,19 @@ import {
   Typography,
   Box,
   Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+  ListSubheader,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import PaletteIcon from "@mui/icons-material/Palette";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "@/Themes/ThemeProvider";
+import { useAppTheme } from "@/Themes/ThemeProvider";
+import { themeRegistry } from "@/Themes";
+import type { ThemeName, VariationName } from "@/Themes";
 import { anims } from "@/Themes/animations";
 import { mergeAnims } from "@/Utils/MergeObjects";
 import { makeSlotFactory } from "@/Utils/makeSlotFactory";
@@ -123,15 +130,22 @@ export interface NavbarCmpProps {
 }
 
 export default function NavbarCmp(props: NavbarCmpProps) {
-  const { theme } = useTheme();
+  const { theme, themeID, setTheme } = useAppTheme();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [themeMenuAnchor, setThemeMenuAnchor] = useState<null | HTMLElement>(null);
 
   const baseHeight =
     props.height ?? theme.components?.NavbarCmp?.defaultProps?.height ?? 64;
 
   // Only show on /projects/[slug]
   const showBackToProjects = /^\/projects\/[^\/]+\/?$/.test(pathname ?? "");
+
+  // Build grouped list of theme options from the live registry
+  const themeGroups = Object.entries(themeRegistry).map(([themeName, variations]) => ({
+    themeName: themeName as ThemeName,
+    variations: Object.keys(variations) as VariationName<ThemeName>[],
+  }));
 
   return (
     <NavbarRoot>
@@ -193,10 +207,54 @@ export default function NavbarCmp(props: NavbarCmpProps) {
           })}
         </NavbarList>
 
-        {/* Mobile hamburger */}
-        <MobileMenuButton onClick={() => setOpen((v) => !v)} size="large">
-          {open ? <CloseIcon /> : <MenuIcon />}
-        </MobileMenuButton>
+        {/* Right side: theme switcher + mobile hamburger */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <Tooltip title="Switch theme">
+            <IconButton
+              onClick={(e) => setThemeMenuAnchor(e.currentTarget)}
+              size="small"
+              aria-label="Switch theme"
+            >
+              <PaletteIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+
+          <Menu
+            anchorEl={themeMenuAnchor}
+            open={Boolean(themeMenuAnchor)}
+            onClose={() => setThemeMenuAnchor(null)}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            {themeGroups.map(({ themeName, variations }) => [
+              themeGroups.length > 1 && (
+                <ListSubheader key={`header-${themeName}`} disableSticky>
+                  {themeName}
+                </ListSubheader>
+              ),
+              ...variations.map((variation) => {
+                const isActive =
+                  themeID.name === themeName && themeID.variation === variation;
+                return (
+                  <MenuItem
+                    key={`${themeName}-${variation}`}
+                    selected={isActive}
+                    onClick={() => {
+                      setTheme({ name: themeName, variation });
+                      setThemeMenuAnchor(null);
+                    }}
+                  >
+                    {themeGroups.length > 1 ? variation : `${themeName} · ${variation}`}
+                  </MenuItem>
+                );
+              }),
+            ])}
+          </Menu>
+
+          <MobileMenuButton onClick={() => setOpen((v) => !v)} size="large">
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </MobileMenuButton>
+        </Box>
       </NavbarTopRow>
 
       {/* Mobile expanding menu */}

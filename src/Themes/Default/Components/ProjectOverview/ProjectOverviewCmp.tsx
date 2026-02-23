@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Box, Button, Container, Grid, styled, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import type { ProjectInfo } from '@/Data/Projects/project';
@@ -65,7 +65,7 @@ export interface ProjectOverviewCmpProps {
 }
 
 export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   const heroFile = project.heroImage || Object.keys(project.manifest.media)[0];
 

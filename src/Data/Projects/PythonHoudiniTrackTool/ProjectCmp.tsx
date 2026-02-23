@@ -13,19 +13,14 @@ import {
   AccordionDetails,
   styled,
 } from '@mui/material';
-import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
-import ImageMultiCompareCmp from '@/Themes/Default/Components/ImageCompare/ImageMultiCompareCmp';
-import ParentSizeObserver from '@/Themes/Default/Components/ParentSizeObserver/ParentSizeObserverCmp';
-import CodeBlockCmp from '@/Themes/Default/Components/Code/CodeBlockCmp';
 import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 
 import type { ProjectCmpProps } from '../project';
 import type { ProjectManifest } from '@/Types/projectManifest';
 
-import { ProjectOverviewCmp } from '@/Themes/Default/Components/ProjectOverview';
 import PATHS from '@/Config/paths';
 import { data } from './data';
-import { MarkdownRendererCmp } from '@/Themes/Default/Components/Markdown';
+import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
 import { SmartImage } from './test';
 
 export const H2 = styled('h2')(({ theme }) => ({
@@ -64,6 +59,7 @@ export const H6 = styled('h6')(({ theme }) => ({
 }));
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
+  const { MediaCmp, ImageMultiCompareCmp, ParentSizeObserverCmp: ParentSizeObserver, CodeBlockCmp, ProjectOverviewCmp, MarkdownRendererCmp } = useComponents();
   const manifest: ProjectManifest = project.manifest;
 
   return (

@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 import { Typography, Box } from '@mui/material';
-import { useTheme } from '@/Themes/ThemeProvider';
+import { useAppTheme } from '@/Themes/ThemeProvider';
 import { iconCmp } from './IconCmpClasses';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { iconManifest, type IconKey } from '@/Data/Icons/icons-manifest';
@@ -60,7 +60,7 @@ export interface IconCmpProps {
  * Automatically scales to parent constraints while maintaining aspect ratio.
  */
 export default function IconCmp(inProps: IconCmpProps) {
-  const { theme } = useTheme(); 
+  const { theme } = useAppTheme(); 
   const defaultProps = theme.components?.IconCmp?.defaultProps ?? {};
   const props = { ...defaultProps, ...inProps };
 

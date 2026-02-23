@@ -1,14 +1,14 @@
 "use client";
 
 import { Box, Container } from "@mui/material";
-import { useTheme } from "@/Themes/ThemeProvider";
+import { useAppTheme } from "@/Themes/ThemeProvider";
 
 export default function ProjectSlugLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
   const navbarHeight =
     theme.components?.NavbarCmp?.defaultProps?.height ?? 64;
 

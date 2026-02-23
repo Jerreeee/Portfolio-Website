@@ -1,7 +1,7 @@
 // 'use client';
 
 // import React from 'react';
-// import { useTheme } from '@/Themes/ThemeProvider';
+// import { useAppTheme } from '@/Themes/ThemeProvider';
 // import { useTimeline } from './Context';
 // import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 // import { timelineCmp } from './TimelineCmpClasses';
@@ -26,7 +26,7 @@
 // export default function TimelineCmpTopBar({ tickCount = 5, formatter }: TimelineCmpTopBarProps) {
 //   const { rangeProvider: provider } = useTimeline();
 //   const { start, end, denormalize: unscale } = provider;
-//   const { theme } = useTheme();
+//   const { theme } = useAppTheme();
 
 //   const ticks = Array.from({ length: tickCount + 1 }).map((_, i) => i / tickCount);
 
