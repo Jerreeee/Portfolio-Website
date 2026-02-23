@@ -90,7 +90,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         <Typography variant="h3" align="center" gutterBottom>
           Frame Breakdown
         </Typography>
-        
+
         <ImageMultiCompareCmp
           images={getMediaItemsFromManifest(manifest, [
             'depth',
@@ -125,80 +125,53 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           {
             title: 'Depth Prepass',
             description:
-              'This function handles my Depth Pre-Pass stage. I first transition the depth image into the proper layout for depth writes, then begin a depth-only rendering pass using Vulkan’s dynamic rendering. I bind the depth pre-pass pipeline, set the viewport and scissor, and draw all meshes to fill the depth buffer. This ensures early depth testing works efficiently in later passes like the G-buffer and lighting stages.',
+              'This function handles my Depth Pre-Pass stage. I first transition the depth image into the proper layout for depth writes, then begin a depth-only rendering pass using Vulkan\u2019s dynamic rendering. I bind the depth pre-pass pipeline, set the viewport and scissor, and draw all meshes to fill the depth buffer. This ensures early depth testing works efficiently in later passes like the G-buffer and lighting stages.',
             file: 'DepthPrepass.cpp',
           },
           {
-            title: 'Lighting Pass — Fragment Shader',
+            title: 'Lighting Pass \u2014 Fragment Shader',
             description:
-              'This is my deferred lighting fragment shader. It reconstructs the world position from the depth buffer, samples the G-buffer textures (albedo, normal, metallic, roughness), and applies physically-based lighting (PBR). It supports both directional and point lights, using GGX microfacet BRDF for specular reflection, Schlick’s Fresnel approximation, and Smith’s geometry term. When no geometry is present (depth ≥ 1), it renders the skybox. It also includes image-based lighting (IBL) using a diffuse irradiance cubemap for ambient contribution. The final output is the combined diffuse + specular lighting written to outColor.',
+              'This is my deferred lighting fragment shader. It reconstructs the world position from the depth buffer, samples the G-buffer textures (albedo, normal, metallic, roughness), and applies physically-based lighting (PBR). It supports both directional and point lights, using GGX microfacet BRDF for specular reflection, Schlick\u2019s Fresnel approximation, and Smith\u2019s geometry term. When no geometry is present (depth \u2265 1), it renders the skybox. It also includes image-based lighting (IBL) using a diffuse irradiance cubemap for ambient contribution. The final output is the combined diffuse + specular lighting written to outColor.',
             file: 'LightingFrag.glsl',
           },
           {
             title: 'Creating Descriptor Set Layouts',
             description:
-              'This function creates all the descriptor set layouts used in my renderer. To make this process easier and less error-prone, I used a builder pattern for the Vulkan descriptor bindings and layouts. Instead of manually filling in big Vulkan structs every time, I can call methods like .SetDescriptorType(...).SetStageFlags(...).Build(). This makes it a lot cleaner and faster to set up all my descriptor sets — for the camera, materials, G-buffer, lights, and post-processing — without repeating tons of Vulkan boilerplate.',
+              'This function creates all the descriptor set layouts used in my renderer. To make this process easier and less error-prone, I used a builder pattern for the Vulkan descriptor bindings and layouts. Instead of manually filling in big Vulkan structs every time, I can call methods like .SetDescriptorType(...).SetStageFlags(...).Build(). This makes it a lot cleaner and faster to set up all my descriptor sets \u2014 for the camera, materials, G-buffer, lights, and post-processing \u2014 without repeating tons of Vulkan boilerplate.',
             file: 'CreateDescriptorSetLayouts.cpp',
           },
         ].map((snippet, index) => (
-          <Box
-            key={index}
-            sx={{
-              width: '100%',
-              mb: 2,
-              backgroundColor: theme.palette.action.hover,
-              borderRadius: `${theme.shape.borderRadius}px`,
-              border: `1px solid ${theme.palette.divider}`,
-              overflow: 'hidden',
-            }}
-          >
-            <Accordion
-              disableGutters
-              sx={{
-                width: '100%',
-                maxWidth: '100%',
-                backgroundColor: 'transparent',
-                '&:before': { display: 'none' },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<span style={{ color: theme.palette.primary.main, fontSize: '1.2rem' }}>▸</span>}
+          <Accordion key={index}>
+            <AccordionSummary>
+              <Typography
+                variant="subtitle1"
                 sx={{
-                  '& .MuiAccordionSummary-content': { margin: 0 },
-                  '&.Mui-expanded': { backgroundColor: theme.palette.action.hover },
-                  transition: 'background 0.2s',
+                  color: 'text.primary',
+                  fontWeight: 500,
+                  fontSize: '0.9rem',
                 }}
               >
+                {snippet.title}
+              </Typography>
+            </AccordionSummary>
+
+            <AccordionDetails>
+              {/* --- Description Text --- */}
+              <Box sx={{ px: 2, pt: 1, pb: 2 }}>
                 <Typography
-                  variant="subtitle1"
-                  sx={{
-                    color: 'text.primary',
-                    fontWeight: 500,
-                    fontSize: '0.9rem',
-                  }}
+                  variant="body2"
+                  sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
                 >
-                  {snippet.title}
+                  {snippet.description}
                 </Typography>
-              </AccordionSummary>
+              </Box>
 
-              <AccordionDetails sx={{ p: 0 }}>
-                {/* --- Description Text --- */}
-                <Box sx={{ px: 2, pt: 1, pb: 2 }}>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
-                  >
-                    {snippet.description}
-                  </Typography>
-                </Box>
-
-                {/* --- Code Block --- */}
-                <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-                  <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file }).url().value} />
-                </ParentSizeObserver>
-              </AccordionDetails>
-            </Accordion>
-          </Box>
+              {/* --- Code Block --- */}
+              <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
+                <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file }).url().value} />
+              </ParentSizeObserver>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </Container>
 
@@ -211,7 +184,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         </Typography>
 
         <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
-One of the main challenges I faced was properly managing synchronization between Vulkan’s different subpasses and stages. Making sure each resource was in the right state at the right moment required quite a bit of experimentation and debugging. Another challenge was handling the lifetime of resources, especially separating those that need to exist per frame from those that persist across frames. Setting up a clean deletion queue system helped a lot with that. I also had to carefully design the descriptor set layout, deciding how often each set should update and how to organize them to keep things efficient and maintainable.
+One of the main challenges I faced was properly managing synchronization between Vulkan\u2019s different subpasses and stages. Making sure each resource was in the right state at the right moment required quite a bit of experimentation and debugging. Another challenge was handling the lifetime of resources, especially separating those that need to exist per frame from those that persist across frames. Setting up a clean deletion queue system helped a lot with that. I also had to carefully design the descriptor set layout, deciding how often each set should update and how to organize them to keep things efficient and maintainable.
         </Typography>
       </Container>
     </Box>

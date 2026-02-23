@@ -12,11 +12,10 @@ import type { ProjectManifest } from "@/Types/projectManifest";
 import type { ProjectCmpProps } from '../project';
 import { data } from './data';
 import PATHS from '@/Config/paths';
-import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
+import { useComponents } from '@/Themes/ThemeProvider';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const { MediaCmp, ParentSizeObserverCmp: ParentSizeObserver, ImageMultiCompareCmp, CodeBlockCmp, ProjectOverviewCmp, IconCmp } = useComponents();
-  const { theme } = useAppTheme();
   const manifest: ProjectManifest = project.manifest;
 
   return (
@@ -52,61 +51,37 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
             file: 'CreateLuaBindings.cpp',
           },
         ].map((snippet, index) => (
-          <Box
-            key={index}
-            sx={{
-              mb: 2,
-              backgroundColor: theme.palette.action.hover,
-              borderRadius: `${theme.shape.borderRadius}px`,
-              border: `1px solid ${theme.palette.divider}`,
-              overflow: 'hidden',
-            }}
-          >
-            <Accordion
-              disableGutters
-              sx={{
-                backgroundColor: 'transparent',
-                '&:before': { display: 'none' },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<span style={{ color: theme.palette.primary.main, fontSize: '1.2rem' }}>▸</span>}
+          <Accordion key={index}>
+            <AccordionSummary>
+              <Typography
+                variant="subtitle1"
                 sx={{
-                  '& .MuiAccordionSummary-content': { margin: 0 },
-                  '&.Mui-expanded': { backgroundColor: theme.palette.action.hover },
-                  transition: 'background 0.2s',
+                  color: 'text.primary',
+                  fontWeight: 500,
+                  fontSize: '0.9rem',
                 }}
               >
+                {snippet.title}
+              </Typography>
+            </AccordionSummary>
+
+            <AccordionDetails>
+              {/* --- Description Text --- */}
+              <Box sx={{ px: 2, pt: 1, pb: 2 }}>
                 <Typography
-                  variant="subtitle1"
-                  sx={{
-                    color: 'text.primary',
-                    fontWeight: 500,
-                    fontSize: '0.9rem',
-                  }}
+                  variant="body2"
+                  sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
                 >
-                  {snippet.title}
+                  {snippet.description}
                 </Typography>
-              </AccordionSummary>
+              </Box>
 
-              <AccordionDetails sx={{ p: 0 }}>
-                {/* --- Description Text --- */}
-                <Box sx={{ px: 2, pt: 1, pb: 2 }}>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
-                  >
-                    {snippet.description}
-                  </Typography>
-                </Box>
-
-                {/* --- Code Block --- */}
-                <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
-                  <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file }).url().value} />
-                </ParentSizeObserver>
-              </AccordionDetails>
-            </Accordion>
-          </Box>
+              {/* --- Code Block --- */}
+              <ParentSizeObserver mode="width" aspectRatio={16 / 9}>
+                <CodeBlockCmp file={PATHS.PROJECT_CODE({ projectName: project.slug, fileName: snippet.file }).url().value} />
+              </ParentSizeObserver>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </Container>
     </Box>

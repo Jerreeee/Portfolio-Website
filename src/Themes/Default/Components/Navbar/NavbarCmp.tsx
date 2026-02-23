@@ -141,9 +141,9 @@ export default function NavbarCmp(props: NavbarCmpProps) {
   const showBackToProjects = /^\/projects\/[^\/]+\/?$/.test(pathname ?? "");
 
   // Build grouped list of theme options from the live registry
-  const themeGroups = Object.entries(themeRegistry).map(([themeName, variations]) => ({
+  const themeGroups = Object.entries(themeRegistry).map(([themeName, family]) => ({
     themeName: themeName as ThemeName,
-    variations: Object.keys(variations) as VariationName<ThemeName>[],
+    variations: Object.keys(family.variations) as VariationName<ThemeName>[],
   }));
 
   return (
