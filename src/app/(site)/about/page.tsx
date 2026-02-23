@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import EmailIcon from '@mui/icons-material/Email';
 import {
   Box,
   Container,
@@ -62,7 +63,7 @@ export default function About() {
                   size="large"
                   onClick={() => navigator.clipboard.writeText(contact.email)}
                 >
-                  <IconCmp techName="Email" />
+                  <IconCmp libraryIcon={<EmailIcon />} />
                 </IconButton>
               </Tooltip>
 
