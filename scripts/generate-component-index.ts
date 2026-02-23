@@ -43,6 +43,14 @@ function extractStyledNames(content: string): string[] {
   return [...new Set(names)];
 }
 
+// Check whether a file has an active (non-commented-out) default export
+function hasDefaultExport(content: string): boolean {
+  const stripped = content
+    .replace(/\/\/[^\n]*/g, '')        // remove // line comments
+    .replace(/\/\*[\s\S]*?\*\//g, ''); // remove /* */ block comments
+  return /export\s+default\s/.test(stripped);
+}
+
 // Detect Props and Settings exports
 function findExportedTypes(
   content: string,
@@ -131,6 +139,11 @@ function run(): void {
       const componentName = path.basename(file, ".tsx");
       const content = fs.readFileSync(file, "utf8");
 
+      if (!hasDefaultExport(content)) {
+        console.log(`    ⏭️  Skipping "${componentName}" — no active default export`);
+        continue;
+      }
+
       const styledNames = extractStyledNames(content);
       const { hasProps, hasSettings } = findExportedTypes(content, componentName);
 
@@ -160,7 +173,11 @@ function run(): void {
       }
     }
 
-    generateIndex(folderPath, componentsData);
+    if (componentsData.length === 0) {
+      console.log(`    ⏭️  No valid components — skipping index generation for this folder`);
+    } else {
+      generateIndex(folderPath, componentsData);
+    }
     total += files.length;
   }
 
