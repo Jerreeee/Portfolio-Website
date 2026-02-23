@@ -1,4 +1,4 @@
-// src/Types/componentSettings.d.ts
+// () => makePath(`${BASE.TYPES}/componentSettings.d.ts`)
 /**
  * Auto-generated mapping between component names and their Settings types.
  * Used to power theme configuration and typing.
@@ -25,7 +25,6 @@ import type { ProjectsOverviewCmpSettings } from '@/Themes/Default/Components/Pr
 import type { ScrollBarCmpSettings } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpSettings } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpSettings } from '@/Themes/Default/Components/SegmentSlider';
-import type { TimelineCmpSettings } from '@/Themes/Default/Components/Timeline';
 
 export interface ComponentNameToSettings {
   CodeBlockCmp: CodeBlockCmpSettings;
@@ -44,7 +43,6 @@ export interface ComponentNameToSettings {
   ScrollBarCmp: ScrollBarCmpSettings;
   ScrollableCmp: ScrollableCmpSettings;
   SegmentSliderCmp: SegmentSliderCmpSettings;
-  TimelineCmp: TimelineCmpSettings;
 }
 
 /**

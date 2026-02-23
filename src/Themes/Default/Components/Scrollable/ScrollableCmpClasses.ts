@@ -4,7 +4,7 @@
 import { createUtilityClasses } from '@/Utils/createUtilityClasses';
 
 export const scrollableCmp = createUtilityClasses('ScrollableCmp', [
-  'root',
+
 ] as const);
 
 export type ScrollableCmpClassKey = typeof scrollableCmp.slots[number];

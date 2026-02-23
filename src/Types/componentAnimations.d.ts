@@ -40,7 +40,7 @@ import type { ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/Pr
 import type { ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
-import type { TimelineCmpClassKey } from '@/Themes/Default/Components/Timeline';
+import type { TimelineTopBarCmpClassKey } from '@/Themes/Default/Components/Timeline';
 
 export interface ComponentNameToAnimationSlot {
   CodeBlockCmp: CodeBlockCmpClassKey;
@@ -59,6 +59,6 @@ export interface ComponentNameToAnimationSlot {
   ScrollBarCmp: ScrollBarCmpClassKey;
   ScrollableCmp: ScrollableCmpClassKey;
   SegmentSliderCmp: SegmentSliderCmpClassKey;
-  TimelineCmp: TimelineCmpClassKey;
+  TimelineTopBarCmp: TimelineTopBarCmpClassKey;
 }
 // AUTO-GENERATED END
