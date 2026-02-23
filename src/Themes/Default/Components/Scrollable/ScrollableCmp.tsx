@@ -16,35 +16,19 @@ const ScrollableRoot = makeSlot('div', 'root')({
   position: 'relative',
   width: '100%',
   height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
-const ViewportWrapper = makeSlot('div', 'viewportWrapper')({
-  position: 'relative',
-  flex: '1 1 auto',
-  width: '100%',
-  height: '100%',
-  overflow: 'hidden',
-  display: 'flex',
-});
+// ---------------------------------------------------------------------------
+// Utility helpers (used by Group, Scrollbar, Context)
+// ---------------------------------------------------------------------------
 
 export const hideNativeScrollbarsStyles = {
   scrollbarWidth: 'none',
   msOverflowStyle: 'none',
   '&::-webkit-scrollbar': { display: 'none', width: 0, height: 0 },
 } as const;
-
-const ScrollableContainer = makeSlot('div', 'container')({
-  position: 'relative',
-  flex: '1 1 auto',
-  width: '100%',
-  height: '100%',
-  overflow: 'auto',
-  ...hideNativeScrollbarsStyles,
-});
-
-// ---------------------------------------------------------------------------
-// Root ScrollableCmp
-// ---------------------------------------------------------------------------
 
 export function getScrollRange(el: HTMLDivElement, dir: Direction): number {
   const diff = dir === 'horizontal'
@@ -85,7 +69,7 @@ export interface ScrollableCmpProps {
 
 /**
  * Acts as either:
- * 1. A self-contained scrollable region (simple mode)
+ * 1. A self-contained scrollable region with auto-injected scrollbars (simple mode)
  * 2. A scroll registry provider (advanced mode) for linked containers + bars
  */
 export default function ScrollableCmp({ children, direction = 'both' }: ScrollableCmpProps) {
@@ -99,7 +83,6 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
         const role = (child.type as any)?.__scrollableRole;
         if (role) return true;
 
-        // Type guard: child is a ReactElement, so props exists
         const childProps = child.props as { children?: React.ReactNode };
         return childProps?.children ? containsAdvanced(childProps.children) : false;
       });
@@ -109,17 +92,32 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
   }, [children]);
 
   if (!hasAdvancedChildren) {
-    // SIMPLE MODE (classic ScrollableCmp)
+    // SIMPLE MODE — Group acts as the scroll container; scrollbars are auto-injected
+    const showH = direction === 'horizontal' || direction === 'both';
+    const showV = direction === 'vertical' || direction === 'both';
+
     return (
-      <ScrollableRoot>
-        <ViewportWrapper>
-          <ScrollableContainer>{children}</ScrollableContainer>
-        </ViewportWrapper>
-      </ScrollableRoot>
+      <ScrollableContext.Provider value={registry}>
+        <ScrollableRoot>
+          {/* Row: scrollable content + vertical bar */}
+          <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+            <Group
+              horizontalId={showH ? '_h' : undefined}
+              verticalId={showV ? '_v' : undefined}
+              style={{ flex: 1, width: 'auto' }}
+            >
+              {children}
+            </Group>
+            {showV && <VerticalScrollbar id="_v" />}
+          </div>
+          {/* Horizontal bar below */}
+          {showH && <HorizontalScrollbar id="_h" />}
+        </ScrollableRoot>
+      </ScrollableContext.Provider>
     );
   }
 
-  // ADVANCED MODE (provides shared context)
+  // ADVANCED MODE — provides shared context; caller owns all layout
   return (
     <ScrollableContext.Provider value={registry}>
       {children}
