@@ -54,6 +54,7 @@ declare module '@mui/material/styles' {
       background: (direction?: string) => string;
       subtle: (direction?: string) => string;
       h1: (direction?: string) => string;
+      column: () => string;
     };
   }
 
@@ -63,6 +64,7 @@ declare module '@mui/material/styles' {
       background?: (direction?: string) => string;
       subtle?: (direction?: string) => string;
       h1?: (direction?: string) => string;
+      column?: () => string;
     };
   }
 

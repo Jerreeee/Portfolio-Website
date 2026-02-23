@@ -32,6 +32,7 @@ export const defaultLightBase: ThemeOptions = {
       background: (dir = "to bottom") => `linear-gradient(${dir}, #e8eaf6, #fce4ec)`,
       subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(0,0,0,0.03), rgba(0,0,0,0.06))`,
       h1: (dir = '135deg') => `linear-gradient(${dir}, #1976d2 0%, #7b72f0 50%, #c2185b 100%)`,
+      column: () => 'rgba(255,255,255,0.45)',
     },
   },
 
