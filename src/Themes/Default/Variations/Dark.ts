@@ -76,6 +76,17 @@ export const defaultDarkBase: ThemeOptions = {
       // styleOverrides using palette.gradients are in defaultDarkEnhanced
     },
 
+    ScrollBarCmp: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(255,255,255,0.12)',
+        },
+        thumb: {
+          backgroundColor: 'rgba(255,255,255,0.50)',
+        },
+      },
+    },
+
     ProjectOverviewCmp: {
       styleOverrides: {
         infoWrapper: {

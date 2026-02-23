@@ -90,6 +90,17 @@ export const defaultLightBase: ThemeOptions = {
       // styleOverrides using palette.gradients are in defaultLightEnhanced
     },
 
+    ScrollBarCmp: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(0,0,0,0.10)',
+        },
+        thumb: {
+          backgroundColor: 'rgba(0,0,0,0.30)',
+        },
+      },
+    },
+
     ProjectOverviewCmp: {
       styleOverrides: {
         infoWrapper: {
