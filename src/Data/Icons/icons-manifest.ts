@@ -78,7 +78,8 @@ export const iconManifest = {
     "width": 25,
     "height": 25,
     "aspectRatio": 1,
-    "displayName": "GitHub"
+    "displayName": "GitHub",
+    "invertOnDark": true
   },
   "GLM": {
     "type": "image",
@@ -262,7 +263,8 @@ export const iconManifest = {
     "width": 256,
     "height": 263,
     "aspectRatio": 0.973384030418251,
-    "displayName": "Unity"
+    "displayName": "Unity",
+    "invertOnDark": true
   },
   "Unreal": {
     "type": "svg",
@@ -270,7 +272,8 @@ export const iconManifest = {
     "width": 210.4,
     "height": 210.4,
     "aspectRatio": 1,
-    "displayName": "Unreal"
+    "displayName": "Unreal",
+    "invertOnDark": true
   },
   "Visual_Studio": {
     "type": "svg",

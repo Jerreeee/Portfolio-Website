@@ -214,7 +214,7 @@ export default function NavbarCmp(props: NavbarCmpProps) {
               size="small"
               aria-label="Switch theme"
             >
-              <PaletteIcon fontSize="small" />
+              <PaletteIcon fontSize="small" sx={{ color: 'text.primary' }} />
             </IconButton>
           </Tooltip>
 

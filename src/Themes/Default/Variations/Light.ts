@@ -36,11 +36,6 @@ export const defaultLightBase: ThemeOptions = {
   },
 
   components: {
-    IconCmp: {
-      defaultProps: {
-        convertToGrayScale: false,
-      },
-    },
     ProjectCardCmp: {
       styleOverrides: {
         root: {

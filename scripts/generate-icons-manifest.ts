@@ -80,6 +80,7 @@ function generateManifest() {
       height: number;
       aspectRatio: number;
       displayName?: string;
+      invertOnDark?: boolean;
     }
   >;
 
@@ -110,6 +111,8 @@ function generateManifest() {
           height: dims.height,
           aspectRatio: dims.aspectRatio,
           displayName: existingEntry?.displayName ?? generatedDisplayName,
+          // Preserved user-editable fields:
+          ...(existingEntry?.invertOnDark ? { invertOnDark: true as const } : {}),
         };
       } else {
         console.warn(`Skipping unsupported file: ${file}`);
@@ -150,7 +153,6 @@ function run() {
 
   const header =
     headerComment +
-    // `import type { IconManifestEntry } from "@/Types/iconManifest";\n\n` +
     `export const iconManifest = ${JSON.stringify(manifest, null, 2)} as const;\n\n` +
     `export type IconManifest = typeof iconManifest;\n` +
     `export type IconKey = keyof typeof iconManifest;\n`;

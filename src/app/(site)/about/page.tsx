@@ -98,7 +98,7 @@ export default function About() {
                             justifyContent: 'center',
                           }}
                         >
-                          <IconCmp techName={link.icon} grayScaleIconColor={theme.palette.common.white} />
+                          <IconCmp techName={link.icon} />
                         </Box>
                       </IconButton>
                     </Tooltip>

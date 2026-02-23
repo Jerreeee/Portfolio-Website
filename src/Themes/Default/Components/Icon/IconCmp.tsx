@@ -3,16 +3,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
-import { Typography, Box } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useAppTheme } from '@/Themes/ThemeProvider';
-import { iconCmp } from './IconCmpClasses';
-import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { iconManifest, type IconKey } from '@/Data/Icons/icons-manifest';
 
 // ================================================================
 // ========================= Slot Definitions ======================
-
-const makeSlot = makeSlotFactory('IconCmp', iconCmp);
 
 const IconWrapper = styled(motion.div)({
   display: 'inline-flex',
@@ -43,33 +39,39 @@ const IconLabel = styled(Typography)(({ theme }) => ({
 export interface IconCmpSettings {}
 
 export interface IconCmpProps {
-  techName: string; // Key name used to look up the icon from manifest
-
-  /** optional visual filters */
-  convertToGrayScale?: boolean;
-  tintColor?: string;
-  tintStrength?: number;
-  grayScaleIconColor?: string;
+  /** Key name used to look up a custom icon from the manifest */
+  techName?: string;
+  /** Any ReactNode (MUI icon etc.) — inherits color from context */
+  libraryIcon?: React.ReactNode;
 
   showDisplayName?: boolean;
   height?: number | string;
 }
 
-/**
- * Renders an icon (and optional display label) from the pre-generated manifest.
- * Automatically scales to parent constraints while maintaining aspect ratio.
- */
 export default function IconCmp(inProps: IconCmpProps) {
-  const { theme } = useAppTheme(); 
+  const { theme } = useAppTheme();
   const defaultProps = theme.components?.IconCmp?.defaultProps ?? {};
   const props = { ...defaultProps, ...inProps };
 
-  const key = props.techName as IconKey;
-  const icon = iconManifest[key];
+  // ── Library icon (MUI / any ReactNode) ───────────────────────
+  if (props.libraryIcon) {
+    return (
+      <IconWrapper style={{ height: props.height ?? '100%' }}>
+        {props.libraryIcon}
+      </IconWrapper>
+    );
+  }
 
-  // Handle missing icons gracefully
+  // ── Custom icon from manifest ─────────────────────────────────
+  const key = props.techName as IconKey | undefined;
+  const icon = key ? iconManifest[key] : undefined;
+
   if (!icon) {
-    console.warn(`⚠️ Icon "${props.techName}" not found in iconManifest — showing name only.`);
+    if (key) {
+      console.warn(
+        `⚠️ Icon "${props.techName}" not found in iconManifest — showing name only.`,
+      );
+    }
     return (
       <IconWrapper style={{ height: props.height ?? '100%' }}>
         <IconLabel variant="caption">{props.techName}</IconLabel>
@@ -78,19 +80,20 @@ export default function IconCmp(inProps: IconCmpProps) {
   }
 
   const displayName = icon.displayName ?? props.techName;
+  const isDark = theme.palette.mode === 'dark';
+  const imgFilter =
+    'invertOnDark' in icon && icon.invertOnDark && isDark ? 'invert(1)' : undefined;
 
   return (
-    <IconWrapper
-      style={{
-        height: props.height ?? '100%',
-      }}
-    >
+    <IconWrapper style={{ height: props.height ?? '100%' }}>
       <IconImage
         src={icon.src}
         alt={displayName}
-        sx={{ aspectRatio: icon.aspectRatio }}
+        sx={{ aspectRatio: icon.aspectRatio, filter: imgFilter }}
       />
-      {props.showDisplayName && <IconLabel variant="caption">{displayName}</IconLabel>}
+      {props.showDisplayName && (
+        <IconLabel variant="caption">{displayName}</IconLabel>
+      )}
     </IconWrapper>
   );
 }

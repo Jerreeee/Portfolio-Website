@@ -36,12 +36,6 @@ export const defaultDarkBase: ThemeOptions = {
   },
 
   components: {
-    IconCmp: {
-      defaultProps: {
-        convertToGrayScale: true,
-        grayScaleIconColor: '#FF0000',
-      },
-    },
     ProjectCardCmp: {
       styleOverrides: {
         root: {
