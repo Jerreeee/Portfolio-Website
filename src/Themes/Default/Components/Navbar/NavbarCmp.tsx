@@ -48,7 +48,6 @@ const NavbarRoot = makeSlot(motion.nav, "root")(({ theme }) => ({
 const NavbarTopRow = makeSlot("div", "topRow")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
   width: "100%",
   padding: theme.spacing(2, 3),
   height: theme.components?.NavbarCmp?.defaultProps?.height ?? 64,
@@ -151,7 +150,7 @@ export default function NavbarCmp(props: NavbarCmpProps) {
     <NavbarRoot>
       <NavbarTopRow>
         {/* Left side group (Back button + Brand) */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
           {showBackToProjects && (
             <Button
               component={Link}
@@ -208,7 +207,7 @@ export default function NavbarCmp(props: NavbarCmpProps) {
         </NavbarList>
 
         {/* Right side: theme switcher + mobile hamburger */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flex: 1, justifyContent: "flex-end" }}>
           <Tooltip title="Switch theme">
             <IconButton
               onClick={(e) => setThemeMenuAnchor(e.currentTarget)}
