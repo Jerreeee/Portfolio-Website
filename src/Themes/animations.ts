@@ -40,6 +40,13 @@ export const anims = {
     );
   },
 
+  slideInFromLeft: (offsetX: number = 20, duration: number = 0.2): Variants =>
+    mergeVariants(anims.fadeIn(duration), anims.move(-offsetX, 0, duration)),
+
+  exitToLeft: (offsetX: number = 20, duration: number = 0.15): MotionProps => ({
+    exit: { opacity: 0, x: -offsetX, transition: { duration } },
+  }),
+
   hoverScale: (scale: number = 1.25, duration: number = 0.2): MotionProps => ({
     whileHover: {
       scale,

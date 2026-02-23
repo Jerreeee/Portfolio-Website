@@ -7,6 +7,7 @@ export const navbarCmp = createUtilityClasses('NavbarCmp', [
   'root',
   'topRow',
   'brand',
+  'backArrow',
   'list',
   'item',
   'link',

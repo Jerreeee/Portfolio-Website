@@ -55,6 +55,11 @@ const NavbarTopRow = makeSlot("div", "topRow")(({ theme }) => ({
 
 const NavbarBrand = makeSlot(motion.div, "brand")(() => ({}));
 
+const NavbarBackArrow = makeSlot(motion.div, "backArrow")(() => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+}));
+
 const NavbarList = makeSlot(motion.ul, "list")(({ theme }) => ({
   display: "none",
   [theme.breakpoints.up("md")]: {
@@ -151,28 +156,32 @@ export default function NavbarCmp(props: NavbarCmpProps) {
       <NavbarTopRow>
         {/* Left side group (Back button + Brand) */}
         <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
-          {showBackToProjects && (
-            <Button
-              component={Link}
-              href="/projects"
-              variant="outlined"
-              onClick={() => setOpen(false)}
-              size="small"
-              sx={{
-                textTransform: "none",
-                borderRadius: 2,
-                fontSize: "0.85rem",
-                mr: 1,
-                display: "flex",
-                alignItems: "center",
-                gap: 0.5,
-                minWidth: "auto",
-                px: 1.2,
-              }}
-            >
-              <ArrowBackIcon fontSize="small" />
-            </Button>
-          )}
+          <AnimatePresence mode="popLayout">
+            {showBackToProjects && (
+              <NavbarBackArrow key="back-arrow">
+                <Button
+                  component={Link}
+                  href="/projects"
+                  variant="outlined"
+                  onClick={() => setOpen(false)}
+                  size="small"
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: 2,
+                    fontSize: "0.85rem",
+                    mr: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    minWidth: "auto",
+                    px: 1.2,
+                  }}
+                >
+                  <ArrowBackIcon fontSize="small" />
+                </Button>
+              </NavbarBackArrow>
+            )}
+          </AnimatePresence>
 
           <NavbarBrand>
             <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
