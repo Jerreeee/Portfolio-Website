@@ -5,6 +5,7 @@
  */
 
 // AUTO-GENERATED START
+import type { CardTabsCmpSettings } from '@/Themes/Default/Components/CardTabs';
 import type {
   CodeBlockCmpSettings,
   CodeInlineCmpSettings,
@@ -25,8 +26,10 @@ import type { ProjectsOverviewCmpSettings } from '@/Themes/Default/Components/Pr
 import type { ScrollBarCmpSettings } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpSettings } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpSettings } from '@/Themes/Default/Components/SegmentSlider';
+import type { TimelineSettings } from '@/Themes/Default/Components/Timeline';
 
 export interface ComponentNameToSettings {
+  CardTabsCmp: CardTabsCmpSettings;
   CodeBlockCmp: CodeBlockCmpSettings;
   CodeInlineCmp: CodeInlineCmpSettings;
   IconCmp: IconCmpSettings;
@@ -43,6 +46,7 @@ export interface ComponentNameToSettings {
   ScrollBarCmp: ScrollBarCmpSettings;
   ScrollableCmp: ScrollableCmpSettings;
   SegmentSliderCmp: SegmentSliderCmpSettings;
+  Timeline: TimelineSettings;
 }
 
 /**

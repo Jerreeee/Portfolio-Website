@@ -20,6 +20,7 @@ export type ComponentsAnimations<Theme = unknown> = {
 };
 
 // AUTO-GENERATED START
+import type { CardTabsCmpClassKey } from '@/Themes/Default/Components/CardTabs';
 import type {
   CodeBlockCmpClassKey,
   CodeInlineCmpClassKey,
@@ -40,9 +41,10 @@ import type { ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/Pr
 import type { ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
-import type { TimelineTopBarCmpClassKey } from '@/Themes/Default/Components/Timeline';
+import type { TimelineClassKey } from '@/Themes/Default/Components/Timeline';
 
 export interface ComponentNameToAnimationSlot {
+  CardTabsCmp: CardTabsCmpClassKey;
   CodeBlockCmp: CodeBlockCmpClassKey;
   CodeInlineCmp: CodeInlineCmpClassKey;
   IconCmp: IconCmpClassKey;
@@ -59,6 +61,6 @@ export interface ComponentNameToAnimationSlot {
   ScrollBarCmp: ScrollBarCmpClassKey;
   ScrollableCmp: ScrollableCmpClassKey;
   SegmentSliderCmp: SegmentSliderCmpClassKey;
-  TimelineTopBarCmp: TimelineTopBarCmpClassKey;
+  Timeline: TimelineClassKey;
 }
 // AUTO-GENERATED END

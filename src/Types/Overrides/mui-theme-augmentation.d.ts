@@ -7,6 +7,7 @@ import { TypographyPropsVariantOverrides } from '@mui/material/Typography';
 import { ThemedComponent } from '../componentDefinition';
 
 // AUTO-GENERATED Component IMPORTS START
+import type { CardTabsCmpProps, CardTabsCmpClassKey } from '@/Themes/Default/Components/CardTabs';
 import type { CodeBlockCmpProps, CodeBlockCmpClassKey } from '@/Themes/Default/Components/Code';
 import type { CodeInlineCmpProps, CodeInlineCmpClassKey } from '@/Themes/Default/Components/Code';
 import type { IconCmpProps, IconCmpClassKey } from '@/Themes/Default/Components/Icon';
@@ -23,7 +24,6 @@ import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Th
 import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
-import type { TimelineCmpProps, TimelineCmpClassKey } from '@/Themes/Default/Components/Timeline';
 // AUTO-GENERATED Component IMPORTS END
 
 declare module '@mui/material/Typography' {
@@ -69,6 +69,7 @@ declare module '@mui/material/styles' {
   // Custom component definitions
   interface ComponentsProps {
     // AUTO-GENERATED ComponentsProps START
+    CardTabsCmp?: CardTabsCmpProps;
     CodeBlockCmp?: CodeBlockCmpProps;
     CodeInlineCmp?: CodeInlineCmpProps;
     IconCmp?: IconCmpProps;
@@ -85,11 +86,11 @@ declare module '@mui/material/styles' {
     ScrollableCmp?: ScrollableCmpProps;
     ScrollBarCmp?: ScrollBarCmpProps;
     SegmentSliderCmp?: SegmentSliderCmpProps;
-    TimelineCmp?: TimelineCmpProps;
 // AUTO-GENERATED ComponentsProps END
   }
   interface ComponentNameToClassKey {
     // AUTO-GENERATED ComponentNameToClassKey START
+    CardTabsCmp: CardTabsCmpClassKey;
     CodeBlockCmp: CodeBlockCmpClassKey;
     CodeInlineCmp: CodeInlineCmpClassKey;
     IconCmp: IconCmpClassKey;
@@ -106,11 +107,11 @@ declare module '@mui/material/styles' {
     ScrollableCmp: ScrollableCmpClassKey;
     ScrollBarCmp: ScrollBarCmpClassKey;
     SegmentSliderCmp: SegmentSliderCmpClassKey;
-    TimelineCmp: TimelineCmpClassKey;
 // AUTO-GENERATED ComponentNameToClassKey END
   }
   interface Components {
     // AUTO-GENERATED Components START
+    CardTabsCmp?: ThemedComponent<'CardTabsCmp'>;
     CodeBlockCmp?: ThemedComponent<'CodeBlockCmp'>;
     CodeInlineCmp?: ThemedComponent<'CodeInlineCmp'>;
     IconCmp?: ThemedComponent<'IconCmp'>;
@@ -127,7 +128,6 @@ declare module '@mui/material/styles' {
     ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
     ScrollBarCmp?: ThemedComponent<'ScrollBarCmp'>;
     SegmentSliderCmp?: ThemedComponent<'SegmentSliderCmp'>;
-    TimelineCmp?: ThemedComponent<'TimelineCmp'>;
 // AUTO-GENERATED Components END
   }
 }

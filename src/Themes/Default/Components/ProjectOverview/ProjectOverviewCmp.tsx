@@ -1,4 +1,5 @@
 'use client';
+// @generate-component-classes
 
 import React from 'react';
 import { motion } from 'framer-motion';
@@ -51,6 +52,17 @@ const TechCategory = makeSlot(motion.div, 'techCategoryItem')(({ theme }) => ({
   flexDirection: 'column',
 }));
 
+const InfoWrapper = makeSlot('div', 'infoWrapper')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
+  },
+  gap: theme.spacing(1),
+  borderRadius: `${theme.shape.borderRadius}px`,
+  padding: theme.spacing(1),
+}));
+
 const TechIconList = makeSlot(motion.div, 'techIconList')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -95,17 +107,7 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
 
         {/* ===================== WRAPPER FOR DESCRIPTION + LOGOS ===================== */}
         <Grid size={{ xs: 12 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              gap: 1,
-              background: 'rgba(255,255,255,0.03)',
-              borderRadius: `${theme.shape.borderRadius}px`,
-              padding: 1,
-              border: '1px solid rgba(255,255,255,0.05)',
-            }}
-          >
+          <InfoWrapper>
             {/* DESCRIPTION (60%) */}
             <Box
               sx={{
@@ -129,12 +131,6 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                       variant="outlined"
                       size="small"
                       startIcon={<IconCmp techName="GitHub" height={18} showDisplayName={false} />}
-                      sx={{
-                        textTransform: 'none',
-                        borderColor: 'rgba(255,255,255,0.2)',
-                        color: 'white',
-                        '&:hover': { borderColor: 'rgba(255,255,255,0.35)' },
-                      }}
                     >
                       View on GitHub
                     </Button>
@@ -149,12 +145,6 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                       variant="outlined"
                       size="small"
                       startIcon={<IconCmp techName="Steam" height={18} showDisplayName={false} />}
-                      sx={{
-                        textTransform: 'none',
-                        borderColor: 'rgba(255,255,255,0.2)',
-                        color: 'white',
-                        '&:hover': { borderColor: 'rgba(255,255,255,0.35)' },
-                      }}
                     >
                       View on Steam
                     </Button>
@@ -167,7 +157,7 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                         variant="contained"
                         size="small"
                         startIcon={<DownloadIcon />}
-                        sx={{ textTransform: 'none', fontWeight: 600, borderRadius: `${theme.shape.borderRadius}px` }}
+                        sx={{ fontWeight: 600, borderRadius: `${theme.shape.borderRadius}px` }}
                         href={PATHS.PROJECT_DOWNLOAD({ projectName: project.slug, fileName: file }).url().value}
                         download
                       >
@@ -221,7 +211,7 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                 </TechCategoryBox>
               )}
             </Box>
-          </Box>
+          </InfoWrapper>
         </Grid>
       </Grid>
     </OverviewRoot>

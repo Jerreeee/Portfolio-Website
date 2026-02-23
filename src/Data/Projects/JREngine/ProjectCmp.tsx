@@ -13,7 +13,7 @@ import type { ProjectCmpProps } from '../project';
 import { data } from './data';
 import PATHS from '@/Config/paths';
 import DrawioEmbed from '@/Themes/Default/Components/DrawioEmbed/DrawioEmbed';
-import { CardTabs } from '@/Themes/Default/Components/CardTabs/CardTabs';
+import { CardTabsCmp } from '@/Themes/Default/Components/CardTabs';
 import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
@@ -45,8 +45,8 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           Main Features
         </Typography>
       
-        <CardTabs>
-<CardTabs.Item label="Game Objects">
+        <CardTabsCmp>
+<CardTabsCmp.Item label="Game Objects">
   <MarkdownRendererCmp
     markdown={`
 A GameObject is the basic entity that exists in a scene.  
@@ -74,9 +74,9 @@ The GameObject itself does not define gameplay logic — it acts as the containe
 This allows the same GameObject system to represent anything: characters, UI widgets, physics bodies, triggers, cameras, etc.
 `}
   />
-</CardTabs.Item>
+</CardTabsCmp.Item>
 
-<CardTabs.Item label="Components">
+<CardTabsCmp.Item label="Components">
   <MarkdownRendererCmp
     markdown={`
 Components are how behavior is added to a \`GameObject\`.  
@@ -116,9 +116,9 @@ player->AddComponent<PlayerControllerComponent>(actionMapIndex);
 - No inheritance chains — gameplay is built by composition
 `}
   />
-</CardTabs.Item>
+</CardTabsCmp.Item>
 
-<CardTabs.Item label="Events">
+<CardTabsCmp.Item label="Events">
   <MarkdownRendererCmp
     markdown={`
 The engine uses a localized event/observer system.  
@@ -173,9 +173,9 @@ class PlayerScriptComponent final
 This keeps gameplay systems loosely coupled: health, score, UI, audio, and effects can all react without direct references to each other.
 `}
   />
-</CardTabs.Item>
+</CardTabsCmp.Item>
 
-<CardTabs.Item label="Service Locator">
+<CardTabsCmp.Item label="Service Locator">
   <MarkdownRendererCmp
     markdown={`
 The service locator provides global access to core engine systems such as audio, physics, and resource management.  
@@ -205,9 +205,9 @@ Because services are referenced through interfaces (e.g. \`ISoundSystem\`), game
 This allows platform-specific systems, editor overrides, unit-testing stubs, and runtime swapping without changing user code.
 `}
   />
-</CardTabs.Item>
+</CardTabsCmp.Item>
 
-<CardTabs.Item label="Input Handling">
+<CardTabsCmp.Item label="Input Handling">
   <MarkdownRendererCmp
     markdown={`
 The input system is managed by an \`InputManager\` that polls devices, evaluates bindings, and executes commands.  
@@ -263,9 +263,9 @@ private:
 - Per-frame input states: \`Pressed\`, \`DownThisFrame\`, \`UpThisFrame\`
 `}
   />
-</CardTabs.Item>
+</CardTabsCmp.Item>
 
-<CardTabs.Item label="Physics & Collision">
+<CardTabsCmp.Item label="Physics & Collision">
   <MarkdownRendererCmp
     markdown={`
 The physics system is based on axis-aligned box colliders and a single physics system implementation: \`BoxPhysicsSystem\`.  
@@ -376,9 +376,9 @@ void PlayerScriptComponent::OnNotify(EventInfo& event)
 - Gameplay reacts to collision through events, not polling
 `}
   />
-</CardTabs.Item>
+</CardTabsCmp.Item>
 
-<CardTabs.Item label="Resource Manager">
+<CardTabsCmp.Item label="Resource Manager">
   <MarkdownRendererCmp
     markdown={`
 The resource system loads, stores, and retrieves engine assets through a handle-based API.  
@@ -460,8 +460,8 @@ auto tilemap = ResourceManager::GetAsset<TileMap>(handle);
 - New asset types + importers can be added outside the engine
 `}
   />
-</CardTabs.Item>
-        </CardTabs>
+</CardTabsCmp.Item>
+        </CardTabsCmp>
       </Container>
     </Box>
   );

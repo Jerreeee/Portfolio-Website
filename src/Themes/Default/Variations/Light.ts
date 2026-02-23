@@ -36,13 +36,23 @@ export const defaultLightBase: ThemeOptions = {
   },
 
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background: 'linear-gradient(160deg, #eef1fb 0%, #fce8f3 100%)',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        },
+      },
+    },
+
     ProjectCardCmp: {
       styleOverrides: {
         root: {
-          backgroundColor: '#ffffff',
+          background: 'linear-gradient(145deg, #ffffff 0%, #f0f5ff 100%)',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           '&:hover': {
-            backgroundColor: '#f0f4ff',
+            background: 'linear-gradient(145deg, #e8f0fe 0%, #e8e4ff 100%)',
           },
         },
         header: {
@@ -53,10 +63,11 @@ export const defaultLightBase: ThemeOptions = {
         },
       },
     },
+
     NavbarCmp: {
       styleOverrides: {
         root: {
-          backgroundColor: '#ffffff',
+          background: 'linear-gradient(to right, #ffffff 0%, #f5f0ff 100%)',
           borderBottom: '1px solid #1976d2',
           boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
         },
@@ -73,8 +84,40 @@ export const defaultLightBase: ThemeOptions = {
         },
       },
     },
+
     ProjectsOverviewCmp: {
       // styleOverrides using palette.gradients are in defaultLightEnhanced
+    },
+
+    ProjectOverviewCmp: {
+      styleOverrides: {
+        infoWrapper: {
+          background: 'rgba(25,118,210,0.02)',
+          border: '1px solid rgba(25,118,210,0.12)',
+        },
+      },
+    },
+
+    CardTabsCmp: {
+      styleOverrides: {
+        header: {
+          background: 'linear-gradient(to right, #e8eaf6, #f3e5f5)',
+        },
+        tab: {
+          background: 'rgba(255,255,255,0.6)',
+          '&:hover': {
+            background: 'rgba(255,255,255,0.9)',
+          },
+          '&[data-selected="true"]': {
+            borderColor: '#1976d2',
+            background: 'linear-gradient(135deg, rgba(25,118,210,0.12), rgba(123,114,240,0.12))',
+            color: '#1976d2',
+          },
+        },
+        content: {
+          background: 'linear-gradient(to bottom, #f8faff, #ffffff)',
+        },
+      },
     },
   },
 };
@@ -106,6 +149,27 @@ export const defaultLightEnhanced: RegisteredTheme["enhance"] = (base: Theme): T
         },
       },
     },
+
+    ProjectOverviewCmp: {
+      styleOverrides: {
+        root: {
+          background: `linear-gradient(145deg,
+            rgba(25,118,210,0.06) 0%,
+            rgba(123,114,240,0.04) 50%,
+            rgba(194,24,91,0.06) 100%)`,
+          boxShadow: '0 2px 20px rgba(25,118,210,0.10)',
+        },
+        textBox: {
+          background: 'linear-gradient(135deg, #f8faff 0%, #fdf4fb 100%)',
+          boxShadow: '0 1px 8px rgba(0,0,0,0.07)',
+        },
+        techCategory: {
+          background: 'linear-gradient(135deg, #f0f5ff 0%, #fce8f3 100%)',
+          boxShadow: '0 1px 8px rgba(0,0,0,0.07)',
+        },
+      },
+    },
+
     NavbarCmp: {
       styleOverrides: {
         brand: {

@@ -74,6 +74,37 @@ export const defaultDarkBase: ThemeOptions = {
     ProjectsOverviewCmp: {
       // styleOverrides using palette.gradients are in defaultDarkEnhanced
     },
+
+    ProjectOverviewCmp: {
+      styleOverrides: {
+        infoWrapper: {
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.05)',
+        },
+      },
+    },
+
+    CardTabsCmp: {
+      styleOverrides: {
+        header: {
+          backgroundColor: '#0d0d12',
+        },
+        tab: {
+          backgroundColor: 'rgba(255,255,255,0.06)',
+          '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.10)',
+          },
+          '&[data-selected="true"]': {
+            borderColor: '#90caf9',
+            backgroundColor: 'rgba(144,202,249,0.12)',
+            color: '#e0e0e0',
+          },
+        },
+        content: {
+          backgroundColor: '#1e1e1e',
+        },
+      },
+    },
   },
 };
 
