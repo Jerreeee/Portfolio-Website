@@ -1,24 +1,11 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { ScrollableContext, useScrollableRegistry } from './Context';
-import { scrollableCmp } from './ScrollableCmpClasses';
 
 import { Direction } from '../ScrollBar/ScrollBarCmp';
 import { Group } from './Group';
 import { VerticalScrollbar, HorizontalScrollbar } from './Scrollbar';
-
-
-const makeSlot = makeSlotFactory('ScrollableCmp', scrollableCmp);
-
-const ScrollableRoot = makeSlot('div', 'root')({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-});
 
 // ---------------------------------------------------------------------------
 // Utility helpers (used by Group, Scrollbar, Context)
@@ -98,7 +85,7 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
 
     return (
       <ScrollableContext.Provider value={registry}>
-        <ScrollableRoot>
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
           {/* Row: scrollable content + vertical bar */}
           <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
             <Group
@@ -112,7 +99,7 @@ export default function ScrollableCmp({ children, direction = 'both' }: Scrollab
           </div>
           {/* Horizontal bar below */}
           {showH && <HorizontalScrollbar id="_h" />}
-        </ScrollableRoot>
+        </div>
       </ScrollableContext.Provider>
     );
   }
