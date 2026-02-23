@@ -251,7 +251,11 @@ export default function NavbarCmp(props: NavbarCmpProps) {
           </Menu>
 
           <MobileMenuButton onClick={() => setOpen((v) => !v)} size="large">
-            {open ? <CloseIcon /> : <MenuIcon />}
+            {open ? (
+              <CloseIcon sx={{ color: 'text.primary' }} />
+            ) : (
+              <MenuIcon sx={{ color: 'text.primary' }} />
+            )}
           </MobileMenuButton>
         </Box>
       </NavbarTopRow>
