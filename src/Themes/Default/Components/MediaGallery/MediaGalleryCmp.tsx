@@ -2,7 +2,7 @@
 
 // @generate-component-classes
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useAppTheme } from '@/Themes/ThemeProvider';
 import MediaCmp from '@/Themes/Default/Components/Media/MediaCmp';
@@ -149,6 +149,16 @@ export default function MediaGalleryCmp({ media, compactStrip }: MediaGalleryCmp
 
   const [mainRef, mainSize] = useElementSize<HTMLDivElement>();
 
+  const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    thumbRefs.current[activeIndex]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }, [activeIndex]);
+
   const swipeStartX = useRef<number | null>(null);
   const swipeStartY = useRef<number | null>(null);
 
@@ -231,6 +241,7 @@ export default function MediaGalleryCmp({ media, compactStrip }: MediaGalleryCmp
                       return (
                         <ThumbButton
                           key={index}
+                          ref={(el) => { thumbRefs.current[index] = el; }}
                           active={isActive}
                           onClick={() => setActiveIndex(index)}
                           style={{ width: thumbW }}
