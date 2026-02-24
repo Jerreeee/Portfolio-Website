@@ -4,6 +4,7 @@ import { ThemeOptions, Theme } from '@mui/material/styles';
 //custom
 import { defaultDarkBase, defaultDarkEnhanced } from './Default/Variations/Dark';
 import { defaultLightBase, defaultLightEnhanced } from './Default/Variations/Light';
+import { defaultJadeBase, defaultJadeEnhanced } from './Default/Variations/Jade';
 import { defaultSharedBase } from './Default/defaultShared';
 import type { ComponentRegistry } from './componentRegistry';
 
@@ -31,6 +32,10 @@ export const themeRegistry = {
       Light: {
         base: defaultLightBase,
         enhance: defaultLightEnhanced,
+      },
+      Jade: {
+        base: defaultJadeBase,
+        enhance: defaultJadeEnhanced,
       },
     },
   },

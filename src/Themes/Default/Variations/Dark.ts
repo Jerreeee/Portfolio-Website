@@ -42,8 +42,20 @@ export const defaultDarkBase: ThemeOptions = {
       styleOverrides: {
         root: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,
+          position: 'relative',
           '&:hover': {
             backgroundColor: '#2c2c2c',
+            outline: `4px solid ${theme.palette.secondary.main}`,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.60)',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              inset: 0,
+              boxShadow: 'inset 0 0 30px rgba(244,143,177,0.85)',
+              borderRadius: 'inherit',
+              pointerEvents: 'none',
+              zIndex: 1,
+            },
           },
         }),
         header: {
@@ -93,17 +105,6 @@ export const defaultDarkBase: ThemeOptions = {
         header: {
           backgroundColor: '#0d0d12',
         },
-        tab: ({ theme }) => ({
-          backgroundColor: 'rgba(255,255,255,0.06)',
-          '&:hover': {
-            backgroundColor: 'rgba(255,255,255,0.10)',
-          },
-          '&[data-selected="true"]': {
-            borderColor: theme.palette.primary.main,
-            backgroundColor: 'rgba(144,202,249,0.12)',
-            color: theme.palette.text.primary,
-          },
-        }),
         content: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,
         }),

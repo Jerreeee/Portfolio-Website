@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeOptions } from '@mui/material/styles';
+import { ThemeOptions, alpha } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { mergeAnims } from '@/Utils/MergeObjects';
 import { anims } from '@/Themes/animations';
@@ -68,6 +68,11 @@ export const defaultSharedBase: ThemeOptions = {
       defaultProps: {
         expandIcon: React.createElement(ExpandMoreIcon),
       },
+      styleOverrides: {
+        expandIconWrapper: ({ theme }) => ({
+          color: theme.palette.secondary.main,
+        }),
+      },
     },
 
     MediaGalleryCmp: {
@@ -76,6 +81,35 @@ export const defaultSharedBase: ThemeOptions = {
           backgroundColor: 'rgba(0,0,0,0.4)',
           fontSize: '1.8rem',
         },
+        navArrow: ({ theme }) => ({
+          '&:hover': {
+            color: theme.palette.secondary.main,
+            background: alpha(theme.palette.secondary.main, 0.20),
+          },
+        }),
+        dotStrip: ({ theme }) => ({
+          borderColor: alpha(theme.palette.secondary.main, 0.20),
+        }),
+      },
+    },
+
+    ProjectOverviewCmp: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          background: `linear-gradient(145deg,
+            ${alpha(theme.palette.primary.main,   theme.palette.mode === 'dark' ? 0.08 : 0.06)} 0%,
+            ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.08 : 0.06)} 100%)`,
+          boxShadow: `0 2px 20px ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.10)}`,
+        }),
+        techCategory: ({ theme }) => ({
+          borderLeft: `3px solid ${theme.palette.secondary.main}`,
+          background: `linear-gradient(135deg,
+            ${alpha(theme.palette.primary.main,   theme.palette.mode === 'dark' ? 0.10 : 0.06)} 0%,
+            ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.10 : 0.06)} 100%)`,
+          boxShadow: theme.palette.mode === 'dark'
+            ? '0 1px 8px rgba(0,0,0,0.25)'
+            : '0 1px 8px rgba(0,0,0,0.07)',
+        }),
       },
     },
 
@@ -147,9 +181,48 @@ export const defaultSharedBase: ThemeOptions = {
       },
     },
 
+    CardTabsCmp: {
+      styleOverrides: {
+        tab: ({ theme }) => ({
+          backgroundColor: alpha(theme.palette.common.white, theme.palette.mode === 'dark' ? 0.06 : 0.60),
+          '&:hover': {
+            backgroundColor: alpha(theme.palette.primary.main, 0.10),
+          },
+          '&[data-selected="true"]': {
+            borderColor: theme.palette.secondary.main,
+            background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.12)}, ${alpha(theme.palette.secondary.main, 0.10)})`,
+            color: theme.palette.text.primary,
+          },
+        }),
+      },
+    },
+
+    SegmentSliderCmp: {
+      styleOverrides: {
+        highlight: ({ theme }) => ({
+          backgroundColor: theme.palette.secondary.main,
+        }),
+        handle: ({ theme }) => ({
+          backgroundColor: theme.palette.secondary.light,
+        }),
+      },
+    },
+
     NavbarCmp: {
       defaultProps: {
         height: '60px',
+      },
+      styleOverrides: {
+        backArrow: ({ theme }) => ({
+          '& .MuiButtonBase-root': {
+            color: theme.palette.secondary.main,
+            borderColor: theme.palette.secondary.main,
+            '&:hover': {
+              borderColor: theme.palette.secondary.light,
+              backgroundColor: alpha(theme.palette.secondary.main, 0.08),
+            },
+          },
+        }),
       },
       slotAnimations: {
         root:      mergeAnims(true, anims.fadeInDown()),
