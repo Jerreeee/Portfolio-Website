@@ -140,7 +140,7 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
             position: 'absolute',
             inset: 0,
             cursor: 'pointer',
-            touchAction: 'none',
+            touchAction: 'pan-y',
           }}
         />
       )}

@@ -221,7 +221,7 @@ export default function ScrollBarCmp({
   useEffect(() => {
     const move = (e: MouseEvent) => onMouseMoveRef.current(e);
     const up = () => onMouseUpRef.current();
-    const touchMove = (e: TouchEvent) => { e.preventDefault(); onMouseMoveRef.current(e); };
+    const touchMove = (e: TouchEvent) => { if (userDragging.current) e.preventDefault(); onMouseMoveRef.current(e); };
     const touchEnd = () => onMouseUpRef.current();
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup', up);

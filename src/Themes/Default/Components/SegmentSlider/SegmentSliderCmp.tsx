@@ -175,7 +175,7 @@ export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
           inset: 0,
           cursor: 'pointer',
           zIndex: 100,
-          touchAction: 'none',
+          touchAction: 'pan-y',
         }}
       />
     </SegmentSliderRoot>
