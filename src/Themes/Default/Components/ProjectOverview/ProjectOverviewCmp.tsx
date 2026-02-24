@@ -3,14 +3,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Box, Button, Container, Grid, styled, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useAppTheme } from '@/Themes/ThemeProvider';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import type { ProjectInfo } from '@/Data/Projects/project';
 import { projectOverviewCmp } from './ProjectOverviewCmpClasses';
-import { MediaCmp } from '../Media';
 import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 import { MediaGalleryCmp } from '../MediaGallery';
 import { MarkdownRendererCmp } from '../Markdown';
@@ -26,12 +25,8 @@ const OverviewRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
 }));
 
 const OverviewTextBox = makeSlot(motion.div, 'textBox')(({ theme }) => ({
-  padding: 3,
+  padding: theme.spacing(3),
   background: theme.palette.action.hover,
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
   borderRadius: `${theme.shape.borderRadius}px`,
   boxShadow: theme.shadows[4],
 }));
@@ -50,17 +45,6 @@ const TechCategory = makeSlot(motion.div, 'techCategoryItem')(({ theme }) => ({
   flexDirection: 'column',
 }));
 
-const InfoWrapper = makeSlot('div', 'infoWrapper')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  [theme.breakpoints.up('md')]: {
-    flexDirection: 'row',
-  },
-  gap: theme.spacing(1),
-  borderRadius: `${theme.shape.borderRadius}px`,
-  padding: theme.spacing(1),
-}));
-
 const TechIconList = makeSlot(motion.div, 'techIconList')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -77,8 +61,6 @@ export interface ProjectOverviewCmpProps {
 export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps) {
   const { theme } = useAppTheme();
 
-  const heroFile = project.heroImage || Object.keys(project.manifest.media)[0];
-
   const mediaItemStrings: string[] =
     project.overviewMedia && project.overviewMedia.length > 0
       ? project.overviewMedia
@@ -86,128 +68,106 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
 
   const mediaItems = getMediaItemsFromManifest(project.manifest, mediaItemStrings);
 
+  const hasLinks =
+    !!project.githubURL || !!project.steamURL || (!!project.downloads && project.downloads.length > 0);
+
   return (
     <OverviewRoot>
       <Grid container spacing={1}>
-        {/* ===================== ROW 1: MEDIA ===================== */}
-        <Grid size={{ xs: 12 }}>
-          <Box
-            sx={{
-              position: 'relative',
-              width: '100%',
-            }}
-          >
-            <MediaGalleryCmp
-              media={mediaItems}
-            />
-          </Box>
-        </Grid>
-
-        {/* ===================== WRAPPER FOR DESCRIPTION + LOGOS ===================== */}
-        <Grid size={{ xs: 12 }}>
-          <InfoWrapper>
-            {/* DESCRIPTION (60%) */}
-            <Box
-              sx={{
-                flexBasis: { md: '60%' },
-                flexGrow: 1,
-              }}
-            >
-              <OverviewTextBox
-                sx={{padding: 3}}
-              >
-                <MarkdownRendererCmp markdown={project.mediumDescription} />
-
-                {/* --- Project links --- */}
-                <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                  {project.githubURL && (
-                    <Button
-                      component="a"
-                      href={project.githubURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outlined"
-                      size="small"
-                      startIcon={<IconCmp techName="GitHub" height={18} showDisplayName={false} />}
-                    >
-                      View on GitHub
-                    </Button>
-                  )}
-
-                  {project.steamURL && (
-                    <Button
-                      component="a"
-                      href={project.steamURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outlined"
-                      size="small"
-                      startIcon={<IconCmp techName="Steam" height={18} showDisplayName={false} />}
-                    >
-                      View on Steam
-                    </Button>
-                  )}
-
-                  {project.downloads &&
-                    project.downloads.map((file, i) => (
-                      <Button
-                        key={`download-${i}`}
-                        variant="contained"
-                        size="small"
-                        startIcon={<DownloadIcon />}
-                        sx={{ borderRadius: `${theme.shape.borderRadius}px` }}
-                        href={PATHS.PROJECT_DOWNLOAD({ projectName: project.slug, fileName: file }).url().value}
-                        download
-                      >
-                        Download {file}
-                      </Button>
-                    ))}
-                  </Box>
-              </OverviewTextBox>
-            </Box>
-
-            {/* LOGOS (40%) */}
-            <Box
-              sx={{
-                flexBasis: { md: '40%' },
-                flexGrow: 1,
-              }}
-            >
-              {project.technologies && (
-                <TechCategoryBox>
-                  {Object.entries(project.technologies).map(([category, items]) =>
-                    items && items.length > 0 ? (
-                      <TechCategory key={category}>
-                        <Typography
-                          variant="subtitle2"
-                          gutterBottom
-                        >
-                          {category}
-                        </Typography>
-                        <TechIconList>
-                          {items.map((item, i) => (
-                            <Box
-                              key={`${category}-${item.name}-${i}`}
-                              sx={{
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexWrap: 'wrap',
-                              }}
-                            >
-                              <IconCmp techName={item.name} showDisplayName={true} />
-                            </Box>
-                          ))}
-                        </TechIconList>
-                      </TechCategory>
-                    ) : null
-                  )}
-                </TechCategoryBox>
+        {/* ===================== ROW 1: LINKS ===================== */}
+        {hasLinks && (
+          <Grid size={{ xs: 12 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, flexWrap: 'wrap', py: 1 }}>
+              {project.githubURL && (
+                <Button
+                  component="a"
+                  href={project.githubURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outlined"
+                  size="small"
+                  startIcon={<IconCmp techName="GitHub" height={18} showDisplayName={false} />}
+                >
+                  View on GitHub
+                </Button>
               )}
+
+              {project.steamURL && (
+                <Button
+                  component="a"
+                  href={project.steamURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outlined"
+                  size="small"
+                  startIcon={<IconCmp techName="Steam" height={18} showDisplayName={false} />}
+                >
+                  View on Steam
+                </Button>
+              )}
+
+              {project.downloads &&
+                project.downloads.map((file, i) => (
+                  <Button
+                    key={`download-${i}`}
+                    variant="contained"
+                    size="small"
+                    startIcon={<DownloadIcon />}
+                    sx={{ borderRadius: `${theme.shape.borderRadius}px` }}
+                    href={PATHS.PROJECT_DOWNLOAD({ projectName: project.slug, fileName: file }).url().value}
+                    download
+                  >
+                    Download {file}
+                  </Button>
+                ))}
             </Box>
-          </InfoWrapper>
+          </Grid>
+        )}
+
+        {/* ===================== ROW 2: MEDIA ===================== */}
+        <Grid size={{ xs: 12 }}>
+          <MediaGalleryCmp media={mediaItems} />
         </Grid>
+
+        {/* ===================== ROW 3: DESCRIPTION ===================== */}
+        <Grid size={{ xs: 12 }}>
+          <OverviewTextBox>
+            <MarkdownRendererCmp markdown={project.mediumDescription} />
+          </OverviewTextBox>
+        </Grid>
+
+        {/* ===================== ROW 4: TECHNOLOGIES ===================== */}
+        {project.technologies && (
+          <Grid size={{ xs: 12 }}>
+            <TechCategoryBox>
+              {Object.entries(project.technologies).map(([category, items]) =>
+                items && items.length > 0 ? (
+                  <TechCategory key={category}>
+                    <Typography variant="subtitle2" gutterBottom>
+                      {category}
+                    </Typography>
+                    <TechIconList>
+                      {items.map((item, i) => (
+                        <Box
+                          key={`${category}-${item.name}-${i}`}
+                          sx={{
+                            height: 24,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexWrap: 'wrap',
+                          }}
+                        >
+                          <IconCmp techName={item.name} showDisplayName={true} />
+                        </Box>
+                      ))}
+                    </TechIconList>
+                  </TechCategory>
+                ) : null
+              )}
+            </TechCategoryBox>
+          </Grid>
+        )}
       </Grid>
     </OverviewRoot>
   );
