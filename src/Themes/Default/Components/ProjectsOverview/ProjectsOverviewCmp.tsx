@@ -21,8 +21,11 @@ const ProjectsOverviewRoot = makeSlot('div', 'root')(({ theme }) => ({
 }));
 
 const ProjectsOverviewContainer = makeSlot(motion.main, 'container')(({ theme }) => ({
-  maxWidth: '70%',
+  maxWidth: '92%',
   margin: '0 auto',
+  [theme.breakpoints.up('md')]: {
+    maxWidth: '70%',
+  },
 }));
 
 const ProjectsOverviewHeader = makeSlot(motion.div, 'header')(({ theme }) => ({
