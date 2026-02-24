@@ -241,7 +241,7 @@ export default function MediaGalleryCmp({ media, compactStrip }: MediaGalleryCmp
                       return (
                         <ThumbButton
                           key={index}
-                          ref={(el) => { thumbRefs.current[index] = el; }}
+                          ref={(el) => { thumbRefs.current[index] = el as HTMLButtonElement | null; }}
                           active={isActive}
                           onClick={() => setActiveIndex(index)}
                           style={{ width: thumbW }}
