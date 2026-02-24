@@ -155,7 +155,7 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                         variant="contained"
                         size="small"
                         startIcon={<DownloadIcon />}
-                        sx={{ fontWeight: 600, borderRadius: `${theme.shape.borderRadius}px` }}
+                        sx={{ borderRadius: `${theme.shape.borderRadius}px` }}
                         href={PATHS.PROJECT_DOWNLOAD({ projectName: project.slug, fileName: file }).url().value}
                         download
                       >
@@ -180,7 +180,6 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                       <TechCategory key={category}>
                         <Typography
                           variant="subtitle2"
-                          sx={{ fontWeight: 600 }}
                           gutterBottom
                         >
                           {category}
