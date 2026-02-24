@@ -34,10 +34,8 @@ const CodeBackground = makeSlot('div', 'background')(() => ({
 const CodeStyling = makeSlot('div', 'styling')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  padding: '1rem 1.25rem',
+  padding: theme.spacing(2, 2.5),
   backgroundColor: theme.palette.background.paper,
-  fontSize: '0.9rem',
-  lineHeight: 1.6,
 }));
 
 // ---------- File extension → Prism language map ----------

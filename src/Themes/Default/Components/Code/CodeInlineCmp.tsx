@@ -13,10 +13,8 @@ const makeSlot = makeSlotFactory('CodeInlineCmp', codeInlineCmp);
 const CodeInlineRoot = makeSlot('code', 'root')(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
   color: theme.palette.text.primary,
-  padding: '0.125rem 0.375rem',
+  padding: theme.spacing(0.25, 0.75),
   borderRadius: theme.shape.borderRadius,
-  fontSize: '0.875rem',
-  lineHeight: 1.4,
   // Kill unwanted token backgrounds from syntax highlighters
   '& span': {
     background: 'transparent !important',

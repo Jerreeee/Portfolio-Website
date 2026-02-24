@@ -91,6 +91,8 @@ export const defaultSharedBase: ThemeOptions = {
       styleOverrides: {
         styling: {
           fontFamily: `'Fira Code', monospace`,
+          fontSize: '0.9rem',
+          lineHeight: 1.6,
         },
       },
     },
@@ -99,6 +101,8 @@ export const defaultSharedBase: ThemeOptions = {
       styleOverrides: {
         root: {
           fontFamily: `'Fira Code', monospace`,
+          fontSize: '0.875rem',
+          lineHeight: 1.4,
         },
       },
     },
