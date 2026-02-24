@@ -50,7 +50,7 @@ const SegmentSliderHighlight = makeSlot('div', 'highlight')(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   height: theme.spacing(0.25),
-  backgroundColor: 'rgba(255,255,255,0.2)',
+  backgroundColor: theme.palette.action.selected,
   transform: 'translateY(-50%)',
   pointerEvents: 'none',
 }));

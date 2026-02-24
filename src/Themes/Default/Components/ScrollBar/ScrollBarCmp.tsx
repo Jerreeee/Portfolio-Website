@@ -23,7 +23,7 @@ const ScrollBarRoot = makeSlot('div', 'root', {
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
   opacity: dragging ? 1 : 0.5,
-  transition: 'opacity 0.2s ease',
+  transition: theme.transitions.create('opacity', { duration: theme.transitions.duration.shorter }),
   '&:hover': { opacity: 1 },
   ...(direction === 'horizontal'
     ? { height: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12, width: '100%' }
@@ -41,7 +41,7 @@ const ScrollBarThumb = makeSlot('div', 'thumb', {
   borderRadius: theme.shape.borderRadius,
   cursor: 'pointer',
   opacity: dragging ? 1 : 0.6,
-  transition: 'opacity 0.2s ease, background-color 0.2s ease',
+  transition: theme.transitions.create(['opacity', 'backgroundColor'], { duration: theme.transitions.duration.shorter }),
   ...(direction === 'horizontal'
     ? { top: 0, height: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12 }
     : { left: 0, width: theme.components?.ScrollBarCmp?.settings?.thickness ?? 12 }),

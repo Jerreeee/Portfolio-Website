@@ -58,7 +58,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
               <Box sx={{ px: 2, pt: 1, pb: 2 }}>
                 <Typography
                   variant="body2"
-                  sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
+                  sx={{ color: 'text.secondary', mb: 1 }}
                 >
                   {snippet.description}
                 </Typography>

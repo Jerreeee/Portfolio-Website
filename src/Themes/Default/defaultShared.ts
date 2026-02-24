@@ -70,9 +70,48 @@ export const defaultSharedBase: ThemeOptions = {
       },
     },
 
+    MediaGalleryCmp: {
+      styleOverrides: {
+        videoOverlay: {
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          fontSize: '1.8rem',
+        },
+      },
+    },
+
+    ImageCompareCmp: {
+      styleOverrides: {
+        altLabel: {
+          backgroundColor: 'rgba(0,0,0,0.6)',
+        },
+      },
+    },
+
+    CodeBlockCmp: {
+      styleOverrides: {
+        styling: {
+          fontFamily: `'Fira Code', monospace`,
+        },
+      },
+    },
+
+    CodeInlineCmp: {
+      styleOverrides: {
+        root: {
+          fontFamily: `'Fira Code', monospace`,
+        },
+      },
+    },
+
     ScrollBarCmp: {
       settings: {
         thickness: 10,
+      },
+    },
+
+    IconCmp: {
+      settings: {
+        hoverScale: 1.1,
       },
     },
 
@@ -82,7 +121,7 @@ export const defaultSharedBase: ThemeOptions = {
         content:  mergeAnims(true, anims.staggerChildren(0.2)),
         header:   mergeAnims(false, anims.fadeInUp()),
         techList: mergeAnims(false, anims.staggerChildren(0.05, 0.5)),
-        techIcon: mergeAnims(false, anims.fadeInUp(20, 0.2), anims.hoverScale()),
+        techIcon: mergeAnims(false, anims.fadeInUp(20, 0.2)),
       },
     },
 

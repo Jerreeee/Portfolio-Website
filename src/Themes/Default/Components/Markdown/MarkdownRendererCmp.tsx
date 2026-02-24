@@ -32,10 +32,10 @@ export default function MarkdownRendererCmp({ markdown }: MarkdownRendererCmpPro
       sx={{
         backgroundColor: 'transparent',
         color: 'inherit',
-        '& pre': { background: 'rgba(0,0,0,0.06)', p: 2 },
-        '& code': { background: 'rgba(0,0,0,0.06)', px: .5 },
+        '& pre': { background: theme.palette.action.hover, p: 2 },
+        '& code': { background: theme.palette.action.hover, px: .5 },
         '& table': { borderCollapse: 'collapse', width: '100%' },
-        '& th, td': { border: '1px solid #d0d7de', p: '6px 13px' },
+        '& th, td': { border: `1px solid ${theme.palette.divider}`, p: '6px 13px' },
         '& ul': { listStyle: 'disc', pl: 3 },
         '& ol': { listStyle: 'decimal', pl: 3 },
       }}

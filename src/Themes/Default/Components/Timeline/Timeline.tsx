@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { lighten, darken } from '@mui/material/styles';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { timeline } from './TimelineClasses';
 import ScrollableCmp from '../Scrollable/ScrollableCmp';
@@ -16,13 +17,13 @@ import { useAppTheme } from '@/Themes/ThemeProvider';
 
 const makeSlot = makeSlotFactory('Timeline', timeline);
 
-const TimelineRoot = makeSlot(motion.div, 'root')(() => ({
+const TimelineRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   position: 'relative',
   width: '100%',
   height: '100%',
   userSelect: 'none',
-  background: '#121212',
-  color: '#ddd',
+  background: theme.palette.background.default,
+  color: theme.palette.text.primary,
 }));
 
 const GROUP_ROW_HEIGHT = 24;
@@ -148,8 +149,11 @@ export default function Timeline({
     return rowHeights[row.id] ?? getDefaultLayerHeight(row.element);
   };
 
-  const depthColors = ['#4fc3f7', '#ba68c8', '#81c784', '#ffb74d', '#64b5f6', '#f06292', '#aed581'];
-  const getDepthColor = (d: number) => depthColors[d % depthColors.length];
+  const getDepthColor = (d: number) => {
+    const base = theme.palette.primary.main;
+    const factor = Math.min(d * 0.12, 0.6);
+    return theme.palette.mode === 'dark' ? darken(base, factor) : lighten(base, factor);
+  };
 
   const middleRow = maxHeight
       ? `minmax(0, ${maxHeight}px)` // cap middle row height
@@ -165,9 +169,9 @@ export default function Timeline({
               width: '100%',
               gridTemplateRows: `${topBarHeight}px ${middleRow} auto`,
               gridTemplateColumns: `${showLabels ? leftColumnWidth : 0}px 1fr auto`,
-              background: '#121212',
+              background: theme.palette.background.default,
               gap: '1px',
-              backgroundColor: '#FF0000',
+              backgroundColor: theme.palette.divider,
             }}
           >
             {/* Top Bar */}
@@ -175,8 +179,8 @@ export default function Timeline({
               style={{
                 gridRow: 1,
                 gridColumn: '1 / span 2',
-                background: showTopBar ? '#1e1e1e' : 'transparent',
-                borderBottom: showTopBar ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                background: showTopBar ? theme.palette.background.paper : 'transparent',
+                borderBottom: showTopBar ? `1px solid ${theme.palette.divider}` : 'none',
               }}
             />
 
@@ -186,8 +190,8 @@ export default function Timeline({
               style={{
                 gridRow: 2,
                 gridColumn: 1,
-                borderRight: showLabels ? '1px solid rgba(255,255,255,0.1)' : 'none',
-                background: '#181818',
+                borderRight: showLabels ? `1px solid ${theme.palette.divider}` : 'none',
+                background: theme.palette.background.default,
                 position: 'relative',
               }}
             >
@@ -287,10 +291,10 @@ export default function Timeline({
                         alignItems: 'center',
                         height,
                         paddingLeft: 8 + row.depth * 14,
-                        borderBottom: '1px solid rgba(255,255,255,0.08)',
+                        borderBottom: `1px solid ${theme.palette.divider}`,
                         fontSize: '0.78rem',
                         fontWeight: isGroup || isLayerGroup ? 700 : 500,
-                        color: '#eee',
+                        color: theme.palette.text.primary,
                         cursor: isGroup || isLayerGroup ? 'pointer' : 'default',
                         userSelect: 'none',
                         zIndex: 1, // above the lines
@@ -316,16 +320,17 @@ export default function Timeline({
                 gridColumn: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                background: '#181818',
+                background: theme.palette.background.default,
               }}
             >
               <div style={{ width: contentWidth, display: 'flex', flexDirection: 'column' }}>
                 {flattened.map((row) => {
                   const height = getRowHeight(row);
-                  const background = `rgba(255,255,255,${0.01 * (row.depth + 1)})`;
+                  const overlayRgb = theme.palette.mode === 'dark' ? '255,255,255' : '0,0,0';
+                  const background = `rgba(${overlayRgb},${0.01 * (row.depth + 1)})`;
 
                   if (row.type === 'group') {
-                    return <div key={row.id} style={{ height, borderBottom: '1px solid rgba(255,255,255,0.1)', background }} />;
+                    return <div key={row.id} style={{ height, borderBottom: `1px solid ${theme.palette.divider}`, background }} />;
                   }
 
                   const el = row.element as React.ReactElement<LayerProps>;
@@ -337,7 +342,7 @@ export default function Timeline({
                         display: 'flex',
                         flexDirection: 'column',
                         height,
-                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                        borderBottom: `1px solid ${theme.palette.divider}`,
                         background,
                       }}
                     >

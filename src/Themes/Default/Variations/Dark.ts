@@ -40,12 +40,12 @@ export const defaultDarkBase: ThemeOptions = {
   components: {
     ProjectCardCmp: {
       styleOverrides: {
-        root: {
-          backgroundColor: '#1e1e1e',
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
           '&:hover': {
             backgroundColor: '#2c2c2c',
           },
-        },
+        }),
         header: {
           color: '#F0F0F0',
         },
@@ -79,9 +79,9 @@ export const defaultDarkBase: ThemeOptions = {
 
     ScrollBarCmp: {
       styleOverrides: {
-        root: {
-          backgroundColor: 'rgba(255,255,255,0.12)',
-        },
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.divider,
+        }),
         thumb: {
           backgroundColor: 'rgba(255,255,255,0.50)',
         },
@@ -102,20 +102,20 @@ export const defaultDarkBase: ThemeOptions = {
         header: {
           backgroundColor: '#0d0d12',
         },
-        tab: {
+        tab: ({ theme }) => ({
           backgroundColor: 'rgba(255,255,255,0.06)',
           '&:hover': {
             backgroundColor: 'rgba(255,255,255,0.10)',
           },
           '&[data-selected="true"]': {
-            borderColor: '#90caf9',
+            borderColor: theme.palette.primary.main,
             backgroundColor: 'rgba(144,202,249,0.12)',
-            color: '#e0e0e0',
+            color: theme.palette.text.primary,
           },
-        },
-        content: {
-          backgroundColor: '#1e1e1e',
-        },
+        }),
+        content: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
+        }),
       },
     },
   },

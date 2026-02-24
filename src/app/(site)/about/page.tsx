@@ -86,8 +86,6 @@ export default function About() {
                           justifyContent: 'center',
                           p: 1.2,
                           borderRadius: '50%',
-                          transition: 'transform 0.15s ease',
-                          '&:hover': { transform: 'scale(1.1)' },
                         }}
                       >
                         <Box
@@ -118,8 +116,6 @@ export default function About() {
               variant="body1"
               sx={{
                 color: theme.palette.text.secondary,
-                fontSize: '1.05rem',
-                lineHeight: 1.7,
                 maxWidth: 700,
               }}
             >
@@ -135,7 +131,6 @@ export default function About() {
             <Typography
               variant="h4"
               sx={{
-                fontWeight: 600,
                 background: theme.palette.gradients.primary(),
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -172,7 +167,6 @@ export default function About() {
               variant="subtitle1"
               sx={{
                 color: theme.palette.text.primary,
-                fontSize: '0.9rem',
                 mb: 0.5,
               }}
             >
@@ -193,7 +187,6 @@ export default function About() {
                   variant="caption"
                   sx={{
                     color: theme.palette.text.secondary,
-                    fontSize: '0.75rem',
                   }}
                 >
                   {lang.name}
@@ -238,7 +231,6 @@ export default function About() {
                     variant="subtitle1"
                     sx={{
                       color: theme.palette.text.primary,
-                      fontSize: '0.85rem',
                       mb: 0.25,
                     }}
                   >
@@ -263,8 +255,6 @@ export default function About() {
                           height: 22,
                           minWidth: 22,
                           opacity: 0.9,
-                          transition: 'transform 0.15s ease',
-                          '&:hover': { transform: 'scale(1.1)' },
                         }}
                       >
                         <IconCmp techName={item} showDisplayName />

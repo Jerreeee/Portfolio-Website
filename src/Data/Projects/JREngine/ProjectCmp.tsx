@@ -40,7 +40,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           variant="h3"
           align="center"
           gutterBottom
-          sx={{ mb: 2, fontSize: '1.75rem' }}
+          sx={{ mb: 2 }}
         >
           Main Features
         </Typography>

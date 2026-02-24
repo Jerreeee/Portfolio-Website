@@ -20,13 +20,13 @@ const makeSlot = makeSlotFactory('MediaGalleryCmp', mediaGalleryCmp);
 const GalleryRoot = makeSlot(
   'div',
   'root',
-)({
+)(({ theme }) => ({
   display: 'flex',
   width: '100%',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '0.5rem',
-});
+  gap: theme.spacing(1),
+}));
 
 const GalleryMain = makeSlot(
   'div',
@@ -45,13 +45,13 @@ const GalleryMain = makeSlot(
 const GalleryThumbs = makeSlot(
   'div',
   'thumbs',
-)({
+)(({ theme }) => ({
   width: '100%',
   height: '100px',
   display: 'flex',
   justifyContent: 'center',
-  gap: '1rem',
-});
+  gap: theme.spacing(2),
+}));
 
 const ThumbButton = makeSlot('button', 'thumbButton', { shouldForwardProp: (prop) => prop !== 'active' })<{
   active: boolean;
@@ -61,7 +61,7 @@ const ThumbButton = makeSlot('button', 'thumbButton', { shouldForwardProp: (prop
   flexShrink: 0,
   background: 'transparent',
   border: `2px solid ${active ? theme.palette.common.white : 'transparent'}`,
-  transition: 'border-color 0.2s',
+  transition: theme.transitions.create('borderColor'),
   cursor: 'pointer',
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
@@ -70,16 +70,14 @@ const ThumbButton = makeSlot('button', 'thumbButton', { shouldForwardProp: (prop
 const VideoOverlay = makeSlot(
   'div',
   'videoOverlay',
-)({
+)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'rgba(0,0,0,0.4)',
-  color: '#fff',
-  fontSize: '1.8rem',
-});
+  color: theme.palette.common.white,
+}));
 
 // =====================================================================
 // ============================= Component =============================

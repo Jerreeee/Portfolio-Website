@@ -36,7 +36,6 @@ const CodeStyling = makeSlot('div', 'styling')(({ theme }) => ({
   flexDirection: 'column',
   padding: '1rem 1.25rem',
   backgroundColor: theme.palette.background.paper,
-  fontFamily: `'Fira Code', monospace`,
   fontSize: '0.9rem',
   lineHeight: 1.6,
 }));

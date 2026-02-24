@@ -50,8 +50,6 @@ export const globalBase: ThemeOptions = {
           transition: 'background 0.2s',
           '& .MuiTypography-root': {
             color: theme.palette.text.primary,
-            fontWeight: 500,
-            fontSize: '0.9rem',
           },
         }),
         expandIconWrapper: ({ theme }) => ({

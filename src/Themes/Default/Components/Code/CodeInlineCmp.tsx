@@ -15,7 +15,6 @@ const CodeInlineRoot = makeSlot('code', 'root')(({ theme }) => ({
   color: theme.palette.text.primary,
   padding: '0.125rem 0.375rem',
   borderRadius: theme.shape.borderRadius,
-  fontFamily: `'Fira Code', monospace`,
   fontSize: '0.875rem',
   lineHeight: 1.4,
   // Kill unwanted token backgrounds from syntax highlighters

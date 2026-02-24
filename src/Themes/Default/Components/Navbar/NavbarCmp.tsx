@@ -35,7 +35,7 @@ const NavbarRoot = makeSlot(motion.nav, "root")(({ theme }) => ({
   position: "fixed",
   top: 0,
   left: 0,
-  zIndex: 1000,
+  zIndex: theme.zIndex.appBar,
   width: "100%",
   display: "flex",
   flexDirection: "column",
@@ -167,7 +167,7 @@ export default function NavbarCmp(props: NavbarCmpProps) {
                   size="small"
                   sx={{
                     textTransform: "none",
-                    borderRadius: 2,
+                    borderRadius: `${theme.shape.borderRadius}px`,
                     fontSize: "0.85rem",
                     mr: 1,
                     display: "flex",
@@ -290,7 +290,7 @@ export default function NavbarCmp(props: NavbarCmpProps) {
                   sx={{
                     color: "text.primary",
                     textDecoration: "none",
-                    fontSize: "1.1rem",
+                    fontSize: theme.typography.h6.fontSize,
                     "&:hover": { textDecoration: "underline" },
                   }}
                 >

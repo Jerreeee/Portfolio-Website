@@ -10,13 +10,13 @@ import { iconManifest, type IconKey } from '@/Data/Icons/icons-manifest';
 // ================================================================
 // ========================= Slot Definitions ======================
 
-const IconWrapper = styled(motion.div)({
+const IconWrapper = styled(motion.div)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: 6,
+  gap: theme.spacing(0.75),
   overflow: 'visible',
-});
+}));
 
 const IconImage = styled(motion.img)({
   display: 'block',
@@ -29,14 +29,16 @@ const IconImage = styled(motion.img)({
 
 const IconLabel = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
-  fontSize: '0.7rem',
+  fontSize: theme.typography.caption.fontSize,
   whiteSpace: 'nowrap',
 }));
 
 // ================================================================
 // ========================== Component ============================
 
-export interface IconCmpSettings {}
+export interface IconCmpSettings {
+  hoverScale?: number;
+}
 
 export interface IconCmpProps {
   /** Key name used to look up a custom icon from the manifest */
@@ -53,10 +55,15 @@ export default function IconCmp(inProps: IconCmpProps) {
   const defaultProps = theme.components?.IconCmp?.defaultProps ?? {};
   const props = { ...defaultProps, ...inProps };
 
+  const hoverScale = theme.components?.IconCmp?.settings?.hoverScale;
+  const hoverProps = hoverScale
+    ? { whileHover: { scale: hoverScale, transition: { duration: theme.transitions.duration.shortest / 1000 } } }
+    : {};
+
   // ── Library icon (MUI / any ReactNode) ───────────────────────
   if (props.libraryIcon) {
     return (
-      <IconWrapper style={{ height: props.height ?? '100%' }}>
+      <IconWrapper style={{ height: props.height ?? '100%' }} {...hoverProps}>
         {props.libraryIcon}
       </IconWrapper>
     );
@@ -73,7 +80,7 @@ export default function IconCmp(inProps: IconCmpProps) {
       );
     }
     return (
-      <IconWrapper style={{ height: props.height ?? '100%' }}>
+      <IconWrapper style={{ height: props.height ?? '100%' }} {...hoverProps}>
         <IconLabel variant="caption">{props.techName}</IconLabel>
       </IconWrapper>
     );
@@ -85,7 +92,7 @@ export default function IconCmp(inProps: IconCmpProps) {
     'invertOnDark' in icon && icon.invertOnDark && isDark ? 'invert(1)' : undefined;
 
   return (
-    <IconWrapper style={{ height: props.height ?? '100%' }}>
+    <IconWrapper style={{ height: props.height ?? '100%' }} {...hoverProps}>
       <IconImage
         src={icon.src}
         alt={displayName}

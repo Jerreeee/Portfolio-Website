@@ -57,9 +57,9 @@ export const defaultLightBase: ThemeOptions = {
             background: 'linear-gradient(145deg, #e8f0fe 0%, #e8e4ff 100%)',
           },
         },
-        header: {
-          color: '#1a1a1a',
-        },
+        header: ({ theme }) => ({
+          color: theme.palette.text.primary,
+        }),
         techList: {
           height: 30,
         },
@@ -68,22 +68,22 @@ export const defaultLightBase: ThemeOptions = {
 
     NavbarCmp: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           background: 'linear-gradient(to right, #ffffff 0%, #f5f0ff 100%)',
-          borderBottom: '1px solid #1976d2',
+          borderBottom: `1px solid ${theme.palette.primary.main}`,
           boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-        },
+        }),
         // brand styleOverride using palette.gradients is in defaultLightEnhanced
         list: {},
         item: {},
-        link: {
-          color: '#555555',
-          '&:hover': { color: '#1a1a1a' },
-          '&[data-active="true"]': { color: '#1976d2' },
-        },
-        underline: {
-          backgroundColor: '#1976d2',
-        },
+        link: ({ theme }) => ({
+          color: theme.palette.text.secondary,
+          '&:hover': { color: theme.palette.text.primary },
+          '&[data-active="true"]': { color: theme.palette.primary.main },
+        }),
+        underline: ({ theme }) => ({
+          backgroundColor: theme.palette.primary.main,
+        }),
       },
     },
 
@@ -116,17 +116,17 @@ export const defaultLightBase: ThemeOptions = {
         header: {
           background: 'linear-gradient(to right, #e8eaf6, #f3e5f5)',
         },
-        tab: {
+        tab: ({ theme }) => ({
           background: 'rgba(255,255,255,0.6)',
           '&:hover': {
             background: 'rgba(255,255,255,0.9)',
           },
           '&[data-selected="true"]': {
-            borderColor: '#1976d2',
+            borderColor: theme.palette.primary.main,
             background: 'linear-gradient(135deg, rgba(25,118,210,0.12), rgba(123,114,240,0.12))',
-            color: '#1976d2',
+            color: theme.palette.primary.main,
           },
-        },
+        }),
         content: {
           background: 'linear-gradient(to bottom, #f8faff, #ffffff)',
         },

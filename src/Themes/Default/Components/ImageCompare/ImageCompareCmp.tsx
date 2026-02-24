@@ -34,10 +34,9 @@ const ImageCompareHandle = makeSlot('div', 'handle')(({ theme }) => ({
 const AltTextLabel = makeSlot('div', 'altLabel')(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(1),
-  backgroundColor: 'rgba(0,0,0,0.6)',
-  color: 'white',
-  padding: '2px 6px',
-  fontSize: '0.75rem',
+  color: theme.palette.common.white,
+  padding: theme.spacing(0.25, 0.75),
+  fontSize: theme.typography.caption.fontSize,
   whiteSpace: 'nowrap',
   zIndex: 3,
   transition: 'none',

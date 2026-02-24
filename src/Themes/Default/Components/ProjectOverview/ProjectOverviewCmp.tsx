@@ -20,29 +20,27 @@ const makeSlot = makeSlotFactory('ProjectOverviewCmp', projectOverviewCmp);
 
 const OverviewRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
   width: '100%',
-  // background: 'rgba(255, 255, 255, 0.02)',
-    background: 'rgba(255, 255, 255, 0.05)',
-  // backdropFilter: 'saturate(150%) brightness(125%)',
-  boxShadow: '0 0 25px rgba(0,0,0,0.35)',
+  background: theme.palette.action.hover,
+  boxShadow: theme.shadows[4],
   borderRadius: `${theme.shape.borderRadius}px`,
 }));
 
 const OverviewTextBox = makeSlot(motion.div, 'textBox')(({ theme }) => ({
   padding: 3,
-  background: 'rgba(255,255,255,0.05)',
+  background: theme.palette.action.hover,
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   borderRadius: `${theme.shape.borderRadius}px`,
-  boxShadow: '0 0 25px rgba(0,0,0,0.35)',
+  boxShadow: theme.shadows[4],
 }));
 
 const TechCategoryBox = makeSlot(motion.div, 'techCategory')(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: `${theme.shape.borderRadius}px`,
-  backgroundColor: 'rgba(255,255,255,0.05)',
-  boxShadow: '0 0 25px rgba(0,0,0,0.35)',
+  backgroundColor: theme.palette.action.hover,
+  boxShadow: theme.shadows[4],
   display: 'flex',
   flexDirection: 'column',
 }));
@@ -197,8 +195,6 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 flexWrap: 'wrap',
-                                transition: 'transform 0.15s ease',
-                                '&:hover': { transform: 'scale(1.1)' },
                               }}
                             >
                               <IconCmp techName={item.name} showDisplayName={true} />

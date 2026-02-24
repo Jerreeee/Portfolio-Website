@@ -40,7 +40,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         variant="h3"
         align="center"
         gutterBottom
-        sx={{ mb: 2, fontSize: '1.75rem' }}
+        sx={{ mb: 2 }}
       >
         Main Features
       </Typography>
@@ -71,8 +71,6 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
                 variant="body2"
                 sx={{
                   color: 'text.secondary',
-                  fontSize: '0.9rem',
-                  lineHeight: 1.4,
                 }}
               >
                 {feature}
@@ -153,7 +151,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
               <Box sx={{ px: 2, pt: 1, pb: 2 }}>
                 <Typography
                   variant="body2"
-                  sx={{ color: 'text.secondary', lineHeight: 1.5, mb: 1 }}
+                  sx={{ color: 'text.secondary', mb: 1 }}
                 >
                   {snippet.description}
                 </Typography>
