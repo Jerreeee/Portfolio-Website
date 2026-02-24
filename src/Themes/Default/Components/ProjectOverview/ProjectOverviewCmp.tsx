@@ -126,7 +126,7 @@ export default function ProjectOverviewCmp({ project }: ProjectOverviewCmpProps)
 
         {/* ===================== ROW 2: MEDIA ===================== */}
         <Grid size={{ xs: 12 }}>
-          <MediaGalleryCmp media={mediaItems} />
+          <MediaGalleryCmp media={mediaItems} compactStrip/>
         </Grid>
 
         {/* ===================== ROW 3: DESCRIPTION ===================== */}

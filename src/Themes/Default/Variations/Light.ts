@@ -102,15 +102,6 @@ export const defaultLightBase: ThemeOptions = {
       },
     },
 
-    ProjectOverviewCmp: {
-      styleOverrides: {
-        infoWrapper: {
-          background: 'rgba(25,118,210,0.02)',
-          border: '1px solid rgba(25,118,210,0.12)',
-        },
-      },
-    },
-
     CardTabsCmp: {
       styleOverrides: {
         header: {

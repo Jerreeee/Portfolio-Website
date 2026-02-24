@@ -8,7 +8,10 @@ export const mediaGalleryCmp = createUtilityClasses('MediaGalleryCmp', [
   'main',
   'thumbs',
   'thumbButton',
-  'videoOverlay'
+  'videoOverlay',
+  'navArrow',
+  'dotStrip',
+  'dotItem'
 ] as const);
 
 export type MediaGalleryCmpClassKey = typeof mediaGalleryCmp.slots[number];

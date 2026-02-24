@@ -8,7 +8,6 @@ export const projectOverviewCmp = createUtilityClasses('ProjectOverviewCmp', [
   'textBox',
   'techCategory',
   'techCategoryItem',
-  'infoWrapper',
   'techIconList'
 ] as const);
 
