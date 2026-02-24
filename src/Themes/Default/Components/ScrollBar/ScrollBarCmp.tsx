@@ -94,9 +94,16 @@ export default function ScrollBarCmp({
   const startPos = useRef(0);
   const startOffset = useRef(0);
   const userDragging = useRef(false);
-  const onMouseMoveRef = useRef<(e: MouseEvent) => void>(() => {});
+  const onMouseMoveRef = useRef<(e: MouseEvent | TouchEvent) => void>(() => {});
   const onMouseUpRef = useRef<() => void>(() => {});
   const minThumbSize = 20;
+
+  const getClientPos = (e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent): number => {
+    if ('touches' in e) {
+      return direction === 'horizontal' ? e.touches[0].clientX : e.touches[0].clientY;
+    }
+    return direction === 'horizontal' ? (e as MouseEvent).clientX : (e as MouseEvent).clientY;
+  };
 
   // --- Sync thumb with scroll container (if provided)
   useEffect(() => {
@@ -153,10 +160,11 @@ export default function ScrollBarCmp({
   }, [externalControl, trackSize, scrollContainer]);
 
   // --- Dragging logic ---
-  function onMouseDown(e: React.MouseEvent) {
+  function startDrag(e: React.MouseEvent | React.TouchEvent) {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const clientPos = getClientPos(e);
     const clickPos =
-      direction === 'horizontal' ? e.clientX - rect.left : e.clientY - rect.top;
+      direction === 'horizontal' ? clientPos - rect.left : clientPos - rect.top;
     const maxOffset = Math.max(trackSize - thumbSize, 0);
 
     const inThumb =
@@ -173,16 +181,18 @@ export default function ScrollBarCmp({
 
     userDragging.current = true;
     setIsDragging(true);
-    startPos.current = direction === 'horizontal' ? e.clientX : e.clientY;
+    startPos.current = clientPos;
     startOffset.current = newOffset;
 
     e.preventDefault();
   }
 
-  onMouseMoveRef.current = (e: MouseEvent) => {
+  const onMouseDown = (e: React.MouseEvent) => startDrag(e);
+  const onTouchStart = (e: React.TouchEvent) => startDrag(e);
+
+  onMouseMoveRef.current = (e: MouseEvent | TouchEvent) => {
     if (!userDragging.current) return;
-    const delta =
-      (direction === 'horizontal' ? e.clientX : e.clientY) - startPos.current;
+    const delta = getClientPos(e) - startPos.current;
     const maxOffset = Math.max(trackSize - thumbSize, 0);
     const newOffset = Math.min(Math.max(startOffset.current + delta, 0), maxOffset);
     const ratio = newOffset / (maxOffset || 1);
@@ -211,11 +221,17 @@ export default function ScrollBarCmp({
   useEffect(() => {
     const move = (e: MouseEvent) => onMouseMoveRef.current(e);
     const up = () => onMouseUpRef.current();
+    const touchMove = (e: TouchEvent) => { e.preventDefault(); onMouseMoveRef.current(e); };
+    const touchEnd = () => onMouseUpRef.current();
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup', up);
+    window.addEventListener('touchmove', touchMove, { passive: false });
+    window.addEventListener('touchend', touchEnd);
     return () => {
       window.removeEventListener('mousemove', move);
       window.removeEventListener('mouseup', up);
+      window.removeEventListener('touchmove', touchMove);
+      window.removeEventListener('touchend', touchEnd);
     };
   }, []);
 
@@ -225,6 +241,7 @@ export default function ScrollBarCmp({
       direction={direction}
       dragging={isDragging}
       onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
     >
       <ScrollBarThumb
         direction={direction}

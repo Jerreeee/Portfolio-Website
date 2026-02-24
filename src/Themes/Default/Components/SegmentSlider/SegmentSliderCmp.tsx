@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useLayoutEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
 import { useAppTheme } from '@/Themes/ThemeProvider'
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { segmentSliderCmp } from './SegmentSliderCmpClasses';
@@ -111,7 +110,7 @@ SegmentSliderCmp.computeGlobalPercentage = function computeGlobalPercentage(
 
 export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
   const { theme } = useAppTheme();
-  
+
   const segmentCount = props.tickCount - 1;
   const [state, setState] = useState<SegmentSliderState>(
     () => SegmentSliderCmp.computeState(SegmentSliderCmp.computeGlobalPercentage(props.percentage, props.tickCount, props.segmentIndex), props.tickCount)
@@ -121,11 +120,22 @@ export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
     setState(SegmentSliderCmp.computeState(SegmentSliderCmp.computeGlobalPercentage(props.percentage, props.tickCount, props.segmentIndex), props.tickCount));
   }, [props.tickCount, props.percentage, props.segmentIndex]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const newGlobalPercentage = parseFloat(e.target.value);
-    const newInfo = SegmentSliderCmp.computeState(newGlobalPercentage, props.tickCount);
+  function handlePointer(e: React.PointerEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const newInfo = SegmentSliderCmp.computeState(pct, props.tickCount);
     setState(newInfo);
     props.onChange?.(newInfo);
+  }
+
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    handlePointer(e);
+  }
+
+  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+    handlePointer(e);
   }
 
   return (
@@ -156,22 +166,16 @@ export default function SegmentSliderCmp(props: SegmentSliderCmpProps) {
         sx={{ left: `${state.percentage * 100}%` }}
       />
 
-      {/* Transparent Range Input */}
-      <input
-        type="range"
-        min={0}
-        max={1}
-        step="any"
-        value={state.percentage}
-        onChange={handleChange}
+      {/* Transparent Pointer Overlay */}
+      <div
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
         style={{
           position: 'absolute',
           inset: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0,
           cursor: 'pointer',
           zIndex: 100,
+          touchAction: 'none',
         }}
       />
     </SegmentSliderRoot>

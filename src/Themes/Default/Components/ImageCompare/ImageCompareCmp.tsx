@@ -65,10 +65,21 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
     SetProgress(props.progress);
   }, [props.progress]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const newValue = parseFloat(e.target.value);
+  function handlePointer(e: React.PointerEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const newValue = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     SetProgress(newValue);
     props.onDrag?.(newValue);
+  }
+
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    handlePointer(e);
+  }
+
+  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+    handlePointer(e);
   }
 
   const handlePos = _progress * 100;
@@ -122,20 +133,14 @@ export default function ImageCompareCmp(props: ImageCompareCmpProps) {
       )}
 
       {props.enableDrag && (
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step="any"
-          value={_progress}
-          onChange={handleChange}
+        <div
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
           style={{
             position: 'absolute',
             inset: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0,
             cursor: 'pointer',
+            touchAction: 'none',
           }}
         />
       )}
