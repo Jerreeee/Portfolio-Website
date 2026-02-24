@@ -34,6 +34,7 @@ export const defaultLightBase: ThemeOptions = {
       h1: (dir = '135deg') => `linear-gradient(${dir}, #1976d2 0%, #7b72f0 50%, #c2185b 100%)`,
       column: () => 'rgba(255,255,255,0.45)',
     },
+    tone: 'light' as const,
   },
 
   components: {

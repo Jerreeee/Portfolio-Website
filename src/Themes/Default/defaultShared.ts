@@ -1,4 +1,6 @@
+import React from 'react';
 import { ThemeOptions } from '@mui/material/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { mergeAnims } from '@/Utils/MergeObjects';
 import { anims } from '@/Themes/animations';
 
@@ -62,6 +64,12 @@ export const defaultSharedBase: ThemeOptions = {
   },
 
   components: {
+    MuiAccordionSummary: {
+      defaultProps: {
+        expandIcon: React.createElement(ExpandMoreIcon),
+      },
+    },
+
     ScrollBarCmp: {
       settings: {
         thickness: 10,

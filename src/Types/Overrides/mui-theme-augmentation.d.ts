@@ -56,6 +56,7 @@ declare module '@mui/material/styles' {
       h1: (direction?: string) => string;
       column: () => string;
     };
+    tone: 'dark' | 'light';
   }
 
   interface PaletteOptions {
@@ -66,6 +67,7 @@ declare module '@mui/material/styles' {
       h1?: (direction?: string) => string;
       column?: () => string;
     };
+    tone?: 'dark' | 'light';
   }
 
   // Custom component definitions

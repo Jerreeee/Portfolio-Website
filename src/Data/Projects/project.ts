@@ -1,4 +1,4 @@
-import type { ReactNode, FC } from 'react';
+import type { FC } from 'react';
 import { ProjectManifest } from "@/Types/projectManifest";
 import type { IconKey } from '@/Data/Icons/icons-manifest';
 

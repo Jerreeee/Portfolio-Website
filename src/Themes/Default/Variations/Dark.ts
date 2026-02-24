@@ -34,6 +34,7 @@ export const defaultDarkBase: ThemeOptions = {
       h1: (dir = '135deg') => `linear-gradient(${dir}, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)`,
       column: () => 'rgba(0,0,0,0.15)',
     },
+    tone: 'dark' as const,
   },
 
   components: {
