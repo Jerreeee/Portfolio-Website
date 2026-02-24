@@ -11,9 +11,9 @@ export const themeExtension = (base: Theme): ThemeOptions => {
     components: {
       MuiCssBaseline: {
         styleOverrides: `
-          [data-project="PythonHoudiniTrackTool"] h4,
-          [data-project="PythonHoudiniTrackTool"] h5,
-          [data-project="PythonHoudiniTrackTool"] h6 {
+          [data-project="PythonHoudiniTrackTool"] .doc-content h4,
+          [data-project="PythonHoudiniTrackTool"] .doc-content h5,
+          [data-project="PythonHoudiniTrackTool"] .doc-content h6 {
             background-color: ${headingBg};
             border-radius: ${base.shape.borderRadius}px;
           }

@@ -36,6 +36,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
       {/* ================= OVERVIEW ================= */}
       <ProjectOverviewCmp project={project} />
 
+      <div className="doc-content">
       <Divider sx={{ my: 4, opacity: 0.2 }} />
 
       {/* Introduction */}
@@ -1448,6 +1449,7 @@ This is a special parameter type that allows you to create multiple instances of
           </Box>
         </AccordionDetails>
       </Accordion>
+      </div>
     </Box>
   );
 }
