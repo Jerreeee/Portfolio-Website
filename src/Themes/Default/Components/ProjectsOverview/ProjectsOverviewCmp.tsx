@@ -36,9 +36,6 @@ const ProjectsOverviewGrid = makeSlot(motion.div, 'grid')(({ theme }) => ({
   display: 'grid',
   gap: theme.spacing(3),
   gridTemplateColumns: '1fr',
-  [theme.breakpoints.up('md')]: {
-    gridTemplateColumns: '1fr 1fr',
-  },
 }));
 
 const ProjectsOverviewCardWrapper = makeSlot(motion.div, 'cardWrapper')({

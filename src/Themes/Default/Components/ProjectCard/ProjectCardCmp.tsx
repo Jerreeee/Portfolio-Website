@@ -1,16 +1,15 @@
 'use client';
+// @generate-component-classes
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Card, CardContent, Typography } from '@mui/material';
-import { useAppTheme } from '@/Themes/ThemeProvider';
+import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import DownloadIcon from '@mui/icons-material/Download';
 import { ProjectInfo } from '@/Data/Projects/project';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
 import { makeSlotFactory } from '@/Utils/makeSlotFactory';
 import { projectCardCmp } from './ProjectCardCmpClasses';
 import PATHS from '@/Config/paths';
-import { height } from '@mui/system';
 import { MediaCmp } from '../Media';
 import { getMediaItemsFromManifest } from '@/Utils/projectManifest';
 import { MediaItem } from '@/Types/media';
@@ -20,62 +19,86 @@ import { MediaItem } from '@/Types/media';
 
 const makeSlot = makeSlotFactory('ProjectCardCmp', projectCardCmp);
 
-const ProjectCardRoot = makeSlot(
-  motion.create(Card),
-  'root',
-)(({ theme }) => ({
+const ProjectCardRoot = makeSlot(motion.create(Card), 'root')(({ theme }) => ({
   overflow: 'hidden',
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  height: 240,
+  position: 'relative',
   boxShadow: theme.shadows[3],
   cursor: 'pointer',
-  borderRadius: theme.shape.borderRadius,
+  clipPath: 'polygon(36px 0%, 100% 0%, calc(100% - 36px) 100%, 0% 100%)',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    height: 'auto',
+    clipPath: 'none',
+  },
 }));
 
-const ProjectCardHeader = makeSlot(
-  motion.div,
-  'header',
-)(({ theme }) => ({
-  textAlign: 'center',
+const ProjectCardHeader = makeSlot(motion.div, 'header')(({ theme }) => ({
+  textAlign: 'left',
   color: theme.palette.text.primary,
 }));
 
-const ProjectCardImage = makeSlot(
-  motion.div,
-  'image',
-)(({ theme }) => ({
+const ProjectCardImage = makeSlot(motion.div, 'image')(({ theme }) => ({
   position: 'relative',
-  width: '100%',
-  maxWidth: '100%',
-  aspectRatio: '16 / 9',
+  flex: '0 0 calc(60% + 36px)',
+  height: '100%',
   overflow: 'hidden',
+  clipPath: 'polygon(0% 0%, 100% 0%, calc(100% - 36px) 100%, 0% 100%)',
+  '& img, & video': {
+    transition: 'transform 0.4s ease',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    aspectRatio: '16 / 9',
+    flex: 'none',
+    height: 'auto',
+    clipPath: 'none',
+  },
 }));
 
-const ProjectCardTechList = makeSlot(
-  motion.div,
-  'techList',
-)(({ theme }) => ({
+const ProjectCardTechList = makeSlot(motion.div, 'techList')(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   gap: theme.spacing(1),
-  height: 20,
+  height: 24,
 }));
 
-const ProjectCardTechIcon = makeSlot(
-  motion.div,
-  'techIcon',
-)(({ theme }) => ({
+const ProjectCardTechIcon = makeSlot(motion.div, 'techIcon')(({ theme }) => ({
   display: 'flex',
   height: '100%',
 }));
 
-const ProjectCardContentBox = makeSlot(
-  motion(CardContent),
-  'content',
-)(({ theme }) => ({
+const ProjectCardContentBox = makeSlot(motion(CardContent), 'content')(({ theme }) => ({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  minWidth: 0,
+  overflow: 'hidden',
   padding: theme.spacing(2),
-  textAlign: 'center',
+  '&:last-child': {
+    paddingBottom: theme.spacing(2),
+  },
 }));
+
+const ProjectCardLinks = makeSlot(motion.div, 'links')({
+  position: 'absolute',
+  top: 10,
+  right: 12,
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  zIndex: 2,
+});
+
+const ProjectCardDescription = makeSlot(motion.div, 'description')({
+  flex: 1,
+  overflow: 'hidden',
+  display: '-webkit-box',
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: 'vertical',
+});
 
 // =====================================================================
 // ============================= Component =============================
@@ -87,42 +110,109 @@ export interface ProjectCardCmpProps {
 }
 
 export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
-  const { theme } = useAppTheme();
+  const item: MediaItem = getMediaItemsFromManifest(project.manifest, [
+    project.thumbnailImage,
+  ])[0];
 
-  const item: MediaItem = getMediaItemsFromManifest(project.manifest, [project.thumbnailImage])[0];
+  const hasLinks =
+    project.githubURL ||
+    project.steamURL ||
+    (project.downloads && project.downloads.length > 0);
 
   return (
     <ProjectCardRoot viewport={{ once: true, amount: 0.3 }}>
       <Link
         href={PATHS.PROJECT_PAGE({ slug: project.slug }).url().value}
-        style={{ textDecoration: 'none', color: 'inherit' }}
+        style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'flex',
+          flex: 1,
+          minWidth: 0,
+        }}
       >
         <ProjectCardImage>
-          <MediaCmp
-            item={item}
-            fit="cover"
-          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <MediaCmp item={item} fit="cover" />
+          </div>
         </ProjectCardImage>
 
         <ProjectCardContentBox>
           <ProjectCardHeader>
-            <Typography
-              variant="h5"
-              sx={{ m: 0 }}
-            >
+            <Typography variant="h6" sx={{ m: 0 }}>
               {project.title}
             </Typography>
           </ProjectCardHeader>
 
-          <ProjectCardTechList>
-            {project.technologies?.Core?.map((tech) => (
-              <ProjectCardTechIcon key={tech.name}>
-                <IconCmp techName={tech.name} />
-              </ProjectCardTechIcon>
-            ))}
-          </ProjectCardTechList>
+          <ProjectCardDescription>
+            <Typography variant="body2">{project.shortDescription}</Typography>
+          </ProjectCardDescription>
+
+          {project.technologies?.Core && (
+            <Box>
+              <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                Core
+              </Typography>
+              <ProjectCardTechList>
+                {project.technologies.Core.map((tech, i) => (
+                  <ProjectCardTechIcon key={i}>
+                    <IconCmp techName={tech.name} showDisplayName={false} />
+                  </ProjectCardTechIcon>
+                ))}
+              </ProjectCardTechList>
+            </Box>
+          )}
         </ProjectCardContentBox>
       </Link>
+
+      {hasLinks && (
+        <ProjectCardLinks>
+          {project.githubURL && (
+            <IconButton
+              size="small"
+              component="a"
+              href={project.githubURL}
+              target="_blank"
+            >
+              <IconCmp techName="GitHub" height={16} showDisplayName={false} />
+            </IconButton>
+          )}
+          {project.steamURL && (
+            <IconButton
+              size="small"
+              component="a"
+              href={project.steamURL}
+              target="_blank"
+            >
+              <IconCmp techName="Steam" height={16} showDisplayName={false} />
+            </IconButton>
+          )}
+          {project.downloads?.map((file, i) => (
+            <IconButton
+              key={i}
+              size="small"
+              component="a"
+              href={PATHS.PROJECT_DOWNLOAD({
+                projectName: project.slug,
+                fileName: file,
+              })
+                .url()
+                .value}
+              download
+            >
+              <DownloadIcon sx={{ fontSize: 16 }} />
+            </IconButton>
+          ))}
+        </ProjectCardLinks>
+      )}
     </ProjectCardRoot>
   );
 }

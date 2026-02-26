@@ -38,14 +38,13 @@ export const defaultDarkBase: ThemeOptions = {
           position: 'relative',
           '&:hover': {
             backgroundColor: '#2c2c2c',
-            outline: `4px solid ${theme.palette.secondary.main}`,
             boxShadow: '0 8px 32px rgba(0,0,0,0.60)',
+            filter: `drop-shadow(0 0 3px ${theme.palette.secondary.main}) drop-shadow(0 0 12px ${alpha(theme.palette.secondary.light, 0.75)})`,
             '&::after': {
               content: '""',
               position: 'absolute',
               inset: 0,
               boxShadow: `inset 0 0 30px ${alpha(theme.palette.secondary.light, 0.85)}`,
-              borderRadius: 'inherit',
               pointerEvents: 'none',
               zIndex: 1,
             },
@@ -54,9 +53,6 @@ export const defaultDarkBase: ThemeOptions = {
         header: ({ theme }) => ({
           color: theme.palette.text.primary,
         }),
-        techList: {
-          height: 30,
-        },
       },
     },
 

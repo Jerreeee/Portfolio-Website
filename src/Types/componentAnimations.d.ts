@@ -38,6 +38,7 @@ import type { ParentSizeObserverCmpClassKey } from '@/Themes/Default/Components/
 import type { ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
 import type { ProjectOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
+import type { ResumeCmpClassKey } from '@/Themes/Default/Components/Resume';
 import type { ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
@@ -58,6 +59,7 @@ export interface ComponentNameToAnimationSlot {
   ProjectCardCmp: ProjectCardCmpClassKey;
   ProjectOverviewCmp: ProjectOverviewCmpClassKey;
   ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
+  ResumeCmp: ResumeCmpClassKey;
   ScrollBarCmp: ScrollBarCmpClassKey;
   ScrollableCmp: ScrollableCmpClassKey;
   SegmentSliderCmp: SegmentSliderCmpClassKey;

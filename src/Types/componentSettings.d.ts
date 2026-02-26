@@ -23,6 +23,7 @@ import type { ParentSizeObserverCmpSettings } from '@/Themes/Default/Components/
 import type { ProjectCardCmpSettings } from '@/Themes/Default/Components/ProjectCard';
 import type { ProjectOverviewCmpSettings } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpSettings } from '@/Themes/Default/Components/ProjectsOverview';
+import type { ResumeCmpSettings } from '@/Themes/Default/Components/Resume';
 import type { ScrollBarCmpSettings } from '@/Themes/Default/Components/ScrollBar';
 import type { ScrollableCmpSettings } from '@/Themes/Default/Components/Scrollable';
 import type { SegmentSliderCmpSettings } from '@/Themes/Default/Components/SegmentSlider';
@@ -43,6 +44,7 @@ export interface ComponentNameToSettings {
   ProjectCardCmp: ProjectCardCmpSettings;
   ProjectOverviewCmp: ProjectOverviewCmpSettings;
   ProjectsOverviewCmp: ProjectsOverviewCmpSettings;
+  ResumeCmp: ResumeCmpSettings;
   ScrollBarCmp: ScrollBarCmpSettings;
   ScrollableCmp: ScrollableCmpSettings;
   SegmentSliderCmp: SegmentSliderCmpSettings;
