@@ -6,7 +6,7 @@ import {
   EntrySub,
   EntryBody,
   EntryLink,
-} from "./Resume.styled";
+} from "./ResumeCmp";
 
 export interface EntryProps {
   title: string;

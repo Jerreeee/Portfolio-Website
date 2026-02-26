@@ -15,7 +15,7 @@ import {
   HeaderContactLink,
   HeaderContactText,
   HeaderDivider,
-} from "./Resume.styled";
+} from "./ResumeCmp";
 
 import { aboutInfo } from "@/Data/about";
 import { TallSection } from "./TallSection";

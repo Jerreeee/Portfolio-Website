@@ -21,6 +21,7 @@ import type { ParentSizeObserverCmpProps, ParentSizeObserverCmpClassKey } from '
 import type { ProjectCardCmpProps, ProjectCardCmpClassKey } from '@/Themes/Default/Components/ProjectCard';
 import type { ProjectOverviewCmpProps, ProjectOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectOverview';
 import type { ProjectsOverviewCmpProps, ProjectsOverviewCmpClassKey } from '@/Themes/Default/Components/ProjectsOverview';
+import type { ResumeCmpProps, ResumeCmpClassKey } from '@/Themes/Default/Components/Resume';
 import type { ScrollableCmpProps, ScrollableCmpClassKey } from '@/Themes/Default/Components/Scrollable';
 import type { ScrollBarCmpProps, ScrollBarCmpClassKey } from '@/Themes/Default/Components/ScrollBar';
 import type { SegmentSliderCmpProps, SegmentSliderCmpClassKey } from '@/Themes/Default/Components/SegmentSlider';
@@ -87,6 +88,7 @@ declare module '@mui/material/styles' {
     ProjectCardCmp?: ProjectCardCmpProps;
     ProjectOverviewCmp?: ProjectOverviewCmpProps;
     ProjectsOverviewCmp?: ProjectsOverviewCmpProps;
+    ResumeCmp?: ResumeCmpProps;
     ScrollableCmp?: ScrollableCmpProps;
     ScrollBarCmp?: ScrollBarCmpProps;
     SegmentSliderCmp?: SegmentSliderCmpProps;
@@ -108,6 +110,7 @@ declare module '@mui/material/styles' {
     ProjectCardCmp: ProjectCardCmpClassKey;
     ProjectOverviewCmp: ProjectOverviewCmpClassKey;
     ProjectsOverviewCmp: ProjectsOverviewCmpClassKey;
+    ResumeCmp: ResumeCmpClassKey;
     ScrollableCmp: ScrollableCmpClassKey;
     ScrollBarCmp: ScrollBarCmpClassKey;
     SegmentSliderCmp: SegmentSliderCmpClassKey;
@@ -129,6 +132,7 @@ declare module '@mui/material/styles' {
     ProjectCardCmp?: ThemedComponent<'ProjectCardCmp'>;
     ProjectOverviewCmp?: ThemedComponent<'ProjectOverviewCmp'>;
     ProjectsOverviewCmp?: ThemedComponent<'ProjectsOverviewCmp'>;
+    ResumeCmp?: ThemedComponent<'ResumeCmp'>;
     ScrollableCmp?: ThemedComponent<'ScrollableCmp'>;
     ScrollBarCmp?: ThemedComponent<'ScrollBarCmp'>;
     SegmentSliderCmp?: ThemedComponent<'SegmentSliderCmp'>;

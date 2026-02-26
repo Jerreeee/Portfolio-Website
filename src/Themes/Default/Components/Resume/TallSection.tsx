@@ -5,7 +5,7 @@ import {
   TallContent,
   TallTitle,
   TallDivider,
-} from "./Resume.styled";
+} from "./ResumeCmp";
 
 export interface TallSectionProps {
   title: string;

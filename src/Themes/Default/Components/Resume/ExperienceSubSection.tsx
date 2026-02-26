@@ -1,4 +1,4 @@
-import { SectionHeaderRight, DividerBar } from "./Resume.styled";
+import { SectionHeaderRight, DividerBar } from "./ResumeCmp";
 import { Entry } from "./Entry";
 import type { EntryItem } from "@/Types/about";
 

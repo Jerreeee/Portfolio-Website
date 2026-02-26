@@ -208,6 +208,8 @@ export const defaultSharedBase: ThemeOptions = {
       },
     },
 
+    ResumeCmp: {}, // ready for slotAnimations / styleOverrides per variation
+
     NavbarCmp: {
       defaultProps: {
         height: '60px',

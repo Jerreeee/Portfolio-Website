@@ -28,8 +28,7 @@ export const projectManifest: ProjectManifest = {
     "src": "/projects/MayaReferencePlaneSetup/Videos/demo.mp4",
     "width": 1280,
     "height": 720,
-    "alt": "demo",
-    "thumbnail": "example",
+    "alt": "demo"
   }
 }
 };
