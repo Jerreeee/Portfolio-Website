@@ -44,7 +44,7 @@ export interface AboutBio {
 
 export interface EntryItem {
   title: string;
-  right: string;
+  right?: string;
   sub?: string;
   body: string;
 }

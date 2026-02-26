@@ -1,25 +1,10 @@
 "use client";
 
-import { Box, CssBaseline, GlobalStyles, Link as MuiLink } from "@mui/material";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   PageContainer,
-  LeftColumn,
   RightColumn,
-  NameBlock,
-  FirstName,
-  LastName,
-  Tagline,
-  ContactBlock,
-  ContactRow,
-  SocialRow,
-  QRWrapper,
-  SkillsBlock,
-  SkillGroup,
-  SkillGroupTitle,
-  SkillGroupText,
-  SkillGrid3,
-  DividerBar,
-  SectionHeaderRight,
+  SummaryText,
   ResumeHeader,
   HeaderName,
   HeaderFirstName,
@@ -32,217 +17,128 @@ import {
   HeaderDivider,
 } from "./Resume.styled";
 
-
 import { aboutInfo } from "@/Data/about";
-import { IconCmp } from "@/Themes/Default/Components/Icon";
-import { SectionLabel } from "@/Themes/Default/Components/Resume/SectionLabel";
-import { TallSection } from "@/Themes/Default/Components/Resume/TallSection";
-import { Entry } from "@/Themes/Default/Components/Resume/Entry";
-import type { ContactLink, SkillGroup as SkillGroupType, EntryItem, Language } from "@/Types/about";
+import { TallSection } from "./TallSection";
+import { Entry } from "./Entry";
+import { ExperienceSubSection } from "./ExperienceSubSection";
+import type { EntryItem } from "@/Types/about";
+import type { ResumeTailoring } from "@/Types/resume-tailoring";
+import { applyResumeTailoring } from "@/Utils/applyResumeTailoring";
 
-/* --------- Helpers --------- */
-
-function renderSkills(items: string[]) {
-  if (items.length <= 2) {
-    return <SkillGroupText>{items.map((x) => `• ${x}`).join("   ")}</SkillGroupText>;
-  }
-
-  const cols = 3;
-  const rows = Math.ceil(items.length / cols);
-  const normalized = Array.from({ length: rows * cols }, (_, i) => items[i] ?? null);
-
-  return (
-    <SkillGrid3>
-      {normalized.map((x: string | null, i: number) =>
-        x ? <SkillGroupText key={i}>{`• ${x}`}</SkillGroupText> : <span key={i} />
-      )}
-    </SkillGrid3>
-  );
+interface ResumeProps {
+  tailoring?: ResumeTailoring;
 }
 
-/* --------- Component --------- */
+export default function Resume({ tailoring }: ResumeProps = {}) {
+  const { website, bio, contact, experience, education } = applyResumeTailoring(aboutInfo, tailoring);
 
-export default function Resume() {
-  const { website, bio, contact, skills, experience, education } = aboutInfo;
+  const pageContainerRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+  const [sm, setSm] = useState(1);
+  const [sf, setSf] = useState(1);
+  const [overflowed, setOverflowed] = useState(false);
+
+  useLayoutEffect(() => {
+    const col = rightColRef.current;
+    const page = pageContainerRef.current;
+    if (!col || !page) return;
+
+    // Measure available height (col has flex:1, fills remaining page space).
+    const available = col.getBoundingClientRect().height;
+
+    // Temporarily collapse to natural content height.
+    col.style.flex = "none";
+    const natural = col.getBoundingClientRect().height;
+    col.style.flex = "";
+
+    if (natural <= 0 || natural === available) return;
+
+    // --sm/--sf only scale a fraction of total height so a simple ratio
+    // under-corrects. Iterate: apply the property, remeasure, correct.
+    const iterate = (prop: string, start: number, min: number, max: number) => {
+      let v = Math.max(Math.min(start, max), min);
+      for (let i = 0; i < 8; i++) {
+        page.style.setProperty(prop, String(v));
+        col.style.flex = "none";
+        const h = col.getBoundingClientRect().height;
+        col.style.flex = "";
+        const ratio = available / h;
+        if (Math.abs(ratio - 1) < 0.0005) break;
+        v = Math.max(Math.min(v * ratio, max), min);
+      }
+      return v;
+    };
+
+    if (natural < available) {
+      // Content is short — stretch spacing upward.
+      setSm(iterate("--sm", available / natural, 1, 2));
+    } else {
+      // Content overflows — phase 1: compress spacing.
+      const smVal = iterate("--sm", available / natural, 0.75, 1);
+      setSm(smVal);
+
+      // Remeasure after spacing compression.
+      col.style.flex = "none";
+      const afterPhase1 = col.getBoundingClientRect().height;
+      col.style.flex = "";
+
+      if (afterPhase1 > available) {
+        // Phase 2: also compress font sizes.
+        setSf(iterate("--sf", available / afterPhase1, 0.85, 1));
+      }
+
+      setOverflowed(true);
+    }
+  }, []);
 
   return (
     <div id="resume-page">
-      <CssBaseline />
+      <PageContainer
+        ref={pageContainerRef}
+        data-ready={sm !== 1 || sf !== 1 ? "true" : undefined}
+        data-overflow={overflowed ? "true" : undefined}
+        style={{ "--sm": sm, "--sf": sf } as React.CSSProperties}
+      >
+        <ResumeHeader>
+          <HeaderName>
+            <HeaderFirstName>{bio.firstName}</HeaderFirstName>{" "}
+            <HeaderLastName>{bio.lastName}</HeaderLastName>
+          </HeaderName>
 
-      {/* Print layout rules */}
-      <GlobalStyles
-        styles={{
-          "@page": { size: "A4", margin: 0 },
-          "html, body, #root": {
-            margin: 0,
-            padding: 0,
-            height: "100%",
-            background: "#000",
-          },
-        }}
-      />
-
-      <PageContainer>
-        {/* LEFT COLUMN */}
-        {/* <LeftColumn>
-          <NameBlock>
-            <FirstName>{bio.firstName}</FirstName>
-            <LastName>{bio.lastName}</LastName>
-            <Tagline>{bio.tagline}</Tagline>
-          </NameBlock>
-
-          <ContactBlock>
-            <SectionLabel>CONTACT</SectionLabel>
-
-            <ContactRow>
-              <MuiLink
-                href={`mailto:${contact.email}`}
-                color="#b3ffc8"
-                underline="hover"
-                sx={{ fontSize: "3.2mm" }}
-              >
+          <HeaderRight>
+            <HeaderContactRow>
+              <HeaderLabel>Email:</HeaderLabel>
+              <HeaderContactLink href={`mailto:${contact.email}`}>
                 {contact.email}
-              </MuiLink>
-            </ContactRow>
+              </HeaderContactLink>
+            </HeaderContactRow>
 
-            <SocialRow>
-              {(Object.values(contact.links) as ContactLink[]).map(
-                (link: ContactLink) => (
-                  <MuiLink key={link.label} href={link.href} underline="none">
-                    <IconCmp techName={link.icon} height="4.2mm" />
-                  </MuiLink>
-                )
-              )}
-            </SocialRow>
+            <HeaderContactRow>
+              <HeaderLabel>Website:</HeaderLabel>
+              <HeaderContactLink href={website} target="_blank" rel="noreferrer">
+                {String(website).replace(/^https?:\/\//, "")}
+              </HeaderContactLink>
+            </HeaderContactRow>
 
-            {contact.qrSrc && (
-              <>
-                <Box
-                  sx={{
-                    fontSize: "3mm",
-                    textAlign: "center",
-                    opacity: 0.9,
-                    marginY: '0.5mm',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  Visit my website at{" "}
-                  <MuiLink
-                    href="https://jeroen.denayer.com"
-                    color="#b3ffc8"
-                    underline="hover"
-                    sx={{ fontSize: "3mm" }}
-                  >
-                    jeroen.denayer.com
-                  </MuiLink>
-                  <br />
-                  or scan the QR code
-                </Box>
-
-                <QRWrapper>
-                  <img src={contact.qrSrc} alt="QR Code" />
-                </QRWrapper>
-              </>
+            {contact.gsm && (
+              <HeaderContactRow>
+                <HeaderLabel>GSM:</HeaderLabel>
+                <HeaderContactText>{contact.gsm}</HeaderContactText>
+              </HeaderContactRow>
             )}
-          </ContactBlock>
+          </HeaderRight>
 
-          <SkillsBlock>
-            <SkillGroup>
-              <SectionLabel>LANGUAGES</SectionLabel>
-              {renderSkills(
-                skills.languages.map((l: Language) =>
-                  l.level ? `${l.name} (${l.level})` : l.name
-                )
-              )}
-            </SkillGroup>
+          <HeaderDivider />
+        </ResumeHeader>
 
-            <SectionLabel>TECHNICAL SKILLS</SectionLabel>
-
-            {skills.groups.map((group: SkillGroupType) => (
-              <SkillGroup key={group.title}>
-                <SkillGroupTitle>{group.title.toUpperCase()}</SkillGroupTitle>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    gap: "1.8mm",
-                    mt: "0.8mm",
-                  }}
-                >
-                  {group.items.map((item: string) => (
-                    <Box
-                      key={item}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "5mm",
-                        opacity: 0.9,
-                        transition: "transform 0.15s ease",
-                        "&:hover": { transform: "scale(1.1)" },
-                      }}
-                    >
-                      <IconCmp techName={item} showDisplayName />
-                    </Box>
-                  ))}
-                </Box>
-              </SkillGroup>
-            ))}
-          </SkillsBlock>
-        </LeftColumn> */}
-
-        {/* ===== HEADER (single line / no icons) ===== */}
-<ResumeHeader>
-  <HeaderName>
-    <HeaderFirstName>{bio.firstName}</HeaderFirstName>{" "}
-    <HeaderLastName>{bio.lastName}</HeaderLastName>
-  </HeaderName>
-
-  <HeaderRight>
-    <HeaderContactRow>
-      <HeaderLabel>Email:</HeaderLabel>
-      <HeaderContactLink href={`mailto:${contact.email}`}>
-        {contact.email}
-      </HeaderContactLink>
-    </HeaderContactRow>
-
-    <HeaderContactRow>
-      <HeaderLabel>Website:</HeaderLabel>
-      <HeaderContactLink href={website} target="_blank" rel="noreferrer">
-        {String(website).replace(/^https?:\/\//, "")}
-      </HeaderContactLink>
-    </HeaderContactRow>
-
-    {contact.gsm && (
-      <HeaderContactRow>
-        <HeaderLabel>GSM:</HeaderLabel>
-        <HeaderContactText>{contact.gsm}</HeaderContactText>
-      </HeaderContactRow>
-    )}
-  </HeaderRight>
-
-  <HeaderDivider />
-</ResumeHeader>
-
-        {/* RIGHT COLUMN */}
-        <RightColumn>
-          <TallSection title="SUMMARY">{bio.description}</TallSection>
+        <RightColumn ref={rightColRef}>
+          <TallSection title="SUMMARY">
+            <SummaryText>{bio.description}</SummaryText>
+          </TallSection>
 
           <TallSection title="EXPERIENCE">
-            <SectionHeaderRight>Work</SectionHeaderRight>
-            <DividerBar />
-            {experience.work.map((item: EntryItem, i: number) => (
-              <Entry key={i} {...item} />
-            ))}
-
-            <SectionHeaderRight>Projects</SectionHeaderRight>
-            <DividerBar />
-            {experience.projects.map((item: EntryItem, i: number) => (
-              <Entry key={i} {...item} />
-            ))}
+            <ExperienceSubSection title="Work" items={experience.work} />
+            <ExperienceSubSection title="Projects" items={experience.projects} />
           </TallSection>
 
           <TallSection title="EDUCATION">

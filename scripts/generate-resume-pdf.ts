@@ -4,8 +4,15 @@ import path from "path";
 import fs from "fs";
 
 async function generateResumePDF(): Promise<void> {
-  const outputPath = path.join(process.cwd(), "public", "files", "resume.pdf");
-  const url = "http://localhost:3000/resume/raw";
+  const companyArg = process.argv
+    .slice(2)
+    .find((arg) => arg.startsWith("--company="));
+  const company = companyArg ? companyArg.slice("--company=".length) : null;
+
+  const fileName = company ? `resume-${company}.pdf` : "resume.pdf";
+  const outputPath = path.join(process.cwd(), "public", "files", fileName);
+  const baseUrl = "http://localhost:3000/resume/raw";
+  const url = company ? `${baseUrl}?company=${encodeURIComponent(company)}` : baseUrl;
 
   console.log("🟡 Launching browser...");
   const browser: Browser = await puppeteer.launch({
@@ -19,8 +26,26 @@ async function generateResumePDF(): Promise<void> {
     // Wait until the resume element exists
     await page.waitForSelector("#resume-page");
 
-    const resume = await page.$("#resume-page");
-    const box = await resume!.boundingBox();
+    // Wait for the layout pass to complete (data-ready signals any adjustment).
+    // If no adjustment was needed data-ready is never set, timeout is swallowed.
+    try {
+      await page.waitForFunction(
+        () => document.querySelector("#resume-page [data-ready]") !== null,
+        { timeout: 5000 },
+      );
+    } catch {
+      // Timeout: content already filled the page exactly — continue.
+    }
+
+    // Warn if content overflowed and had to be auto-compressed.
+    const didOverflow = await page.evaluate(
+      () => document.querySelector("#resume-page [data-overflow]") !== null,
+    );
+    if (didOverflow) {
+      console.warn(
+        "⚠️  Resume content overflowed A4 — spacing and font sizes were auto-compressed to fit. Consider reducing content.",
+      );
+    }
 
     const pdfBuffer = await page.pdf({
       path: outputPath,
@@ -29,9 +54,9 @@ async function generateResumePDF(): Promise<void> {
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
 
-    // Ensure /public exists
-    const publicDir = path.join(process.cwd(), "public");
-    if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir);
+    // Ensure /public/files exists
+    const filesDir = path.join(process.cwd(), "public", "files");
+    if (!fs.existsSync(filesDir)) fs.mkdirSync(filesDir, { recursive: true });
 
     // Save PDF
     fs.writeFileSync(outputPath, pdfBuffer);

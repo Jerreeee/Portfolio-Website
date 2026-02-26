@@ -90,10 +90,9 @@ experience: {
   ],
   projects: [
     {
-      title: "ISS Docking Simulator — Team Project",
-      right: "Sep–Dec 2021",
-      body:
-        "I created detailed 3D models and textures for ISS modules used in the “Space – The Human Quest” exhibition in Antwerp. Working within a shared pipeline and version-controlled environment, I collaborated closely with teammates to integrate assets reliably and efficiently. This project strengthened my ability to work within structured workflows, coordinate with others, and deliver technically correct real-time assets under constraints.",
+      title: 'ISS Docking Simulator — Team Project',
+      right: 'Sep–Dec 2021',
+      body: 'I created detailed 3D models and textures for ISS modules used in the \u201cSpace \u2013 The Human Quest\u201d exhibition in Antwerp. Working within a shared pipeline and version-controlled environment, I collaborated closely with teammates to integrate assets reliably and efficiently. This project strengthened my ability to work within structured workflows, coordinate with others, and deliver technically correct real-time assets under constraints.',
     },
   ],
 },
