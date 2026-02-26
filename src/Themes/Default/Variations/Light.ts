@@ -8,9 +8,9 @@ export const defaultLightBase: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
-      light: '#42a5f5',
-      dark: '#1565c0',
+      main: '#3949ab',
+      light: '#7986cb',
+      dark: '#283593',
     },
     secondary: {
       main: '#c2185b',
@@ -28,10 +28,10 @@ export const defaultLightBase: ThemeOptions = {
     divider: 'rgba(0,0,0,0.12)',
 
     gradients: {
-      primary: (dir = "135deg") => `linear-gradient(${dir}, #1976d2 0%, #7b72f0 50%, #c2185b 100%)`,
+      primary: (dir = "135deg") => `linear-gradient(${dir}, #3949ab 0%, #7b72f0 50%, #c2185b 100%)`,
       background: (dir = "to bottom") => `linear-gradient(${dir}, #e8eaf6, #fce4ec)`,
       subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(0,0,0,0.03), rgba(0,0,0,0.06))`,
-      h1: (dir = '135deg') => `linear-gradient(${dir}, #1976d2 0%, #7b72f0 50%, #c2185b 100%)`,
+      h1: (dir = '135deg') => `linear-gradient(${dir}, #3949ab 0%, #7b72f0 50%, #c2185b 100%)`,
       column: () => 'rgba(255,255,255,0.45)',
     },
     tone: 'light' as const,
@@ -41,7 +41,7 @@ export const defaultLightBase: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          background: 'linear-gradient(160deg, #eef1fb 0%, #fce8f3 100%)',
+          background: 'linear-gradient(160deg, #e8eaf6 0%, #fce8f3 100%)',
           backgroundAttachment: 'fixed',
           minHeight: '100vh',
         },
@@ -51,11 +51,11 @@ export const defaultLightBase: ThemeOptions = {
     ProjectCardCmp: {
       styleOverrides: {
         root: ({ theme }) => ({
-          background: 'linear-gradient(145deg, #ffffff 0%, #f0f5ff 100%)',
+          background: 'linear-gradient(145deg, #ffffff 0%, #eeefff 100%)',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           position: 'relative',
           '&:hover': {
-            background: 'linear-gradient(145deg, #e8f0fe 0%, #e8e4ff 100%)',
+            background: 'linear-gradient(145deg, #e8eaf6 0%, #e8e4ff 100%)',
             outline: `4px solid ${theme.palette.secondary.main}`,
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             '&::after': {
