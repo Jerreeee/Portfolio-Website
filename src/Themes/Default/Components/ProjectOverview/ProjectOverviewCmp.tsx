@@ -17,12 +17,9 @@ import PATHS from '@/Config/paths';
 
 const makeSlot = makeSlotFactory('ProjectOverviewCmp', projectOverviewCmp);
 
-const OverviewRoot = makeSlot(motion.div, 'root')(({ theme }) => ({
+const OverviewRoot = makeSlot(motion.div, 'root')({
   width: '100%',
-  background: theme.palette.action.hover,
-  boxShadow: theme.shadows[4],
-  borderRadius: `${theme.shape.borderRadius}px`,
-}));
+});
 
 const OverviewTextBox = makeSlot(motion.div, 'textBox')(({ theme }) => ({
   padding: theme.spacing(3),

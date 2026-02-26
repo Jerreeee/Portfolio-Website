@@ -95,12 +95,6 @@ export const defaultSharedBase: ThemeOptions = {
 
     ProjectOverviewCmp: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          background: `linear-gradient(145deg,
-            ${alpha(theme.palette.primary.main,   theme.palette.mode === 'dark' ? 0.08 : 0.06)} 0%,
-            ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.08 : 0.06)} 100%)`,
-          boxShadow: `0 2px 20px ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.10)}`,
-        }),
         techCategory: ({ theme }) => ({
           borderLeft: `3px solid ${theme.palette.secondary.main}`,
           background: `linear-gradient(135deg,
