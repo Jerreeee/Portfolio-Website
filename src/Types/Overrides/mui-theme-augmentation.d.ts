@@ -57,7 +57,6 @@ declare module '@mui/material/styles' {
       h1: (direction?: string) => string;
       column: () => string;
     };
-    gradientMid: string;
     tone: 'dark' | 'light';
   }
 
@@ -69,7 +68,6 @@ declare module '@mui/material/styles' {
       h1?: (direction?: string) => string;
       column?: () => string;
     };
-    gradientMid?: string;
     tone?: 'dark' | 'light';
   }
 

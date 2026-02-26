@@ -28,7 +28,6 @@ export const defaultDarkBase: ThemeOptions = {
       secondary: '#b0b0b0',
     },
     divider: 'rgba(255,255,255,0.12)',
-    gradientMid: '#c8a8f0', // soft violet — bridges primary → secondary
     tone: 'dark' as const,
   },
 
@@ -112,7 +111,7 @@ export const defaultDarkBase: ThemeOptions = {
 
 export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => {
   const { primary, secondary } = base.palette;
-  const primaryGrad = threeStopGrad(primary.main, base.palette.gradientMid, secondary.main);
+  const primaryGrad = threeStopGrad(primary.main, '#c8a8f0', secondary.main);
   const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, #151a2c, #221730)`;
   const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, rgba(255,255,255,0.05), rgba(0,0,0,0.05))`;
 

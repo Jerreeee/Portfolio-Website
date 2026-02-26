@@ -27,7 +27,6 @@ export const defaultJadeBase: ThemeOptions = {
       primary: '#d9f2e6',
       secondary: '#86c4a0',
     },
-    gradientMid: '#0891b2', // cyan — bridges primary → secondary
     tone: 'dark' as const,
   },
 
@@ -113,7 +112,7 @@ export const defaultJadeBase: ThemeOptions = {
 
 export const defaultJadeEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => {
   const { primary, secondary, background } = base.palette;
-  const primaryGrad = threeStopGrad(primary.main, base.palette.gradientMid, secondary.main);
+  const primaryGrad = threeStopGrad(primary.main, '#0891b2', secondary.main);
   const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, ${background.default}, #081810)`;
   const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, ${alpha(primary.main, 0.07)}, rgba(0,0,0,0.07))`;
 
