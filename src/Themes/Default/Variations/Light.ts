@@ -1,8 +1,10 @@
 //mui
 import { Theme, ThemeOptions } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 
 //custom
 import { RegisteredTheme } from '@/Themes';
+import { threeStopGrad } from '../themeUtils';
 
 export const defaultLightBase: ThemeOptions = {
   palette: {
@@ -26,14 +28,7 @@ export const defaultLightBase: ThemeOptions = {
       secondary: '#555555',
     },
     divider: 'rgba(0,0,0,0.12)',
-
-    gradients: {
-      primary: (dir = "135deg") => `linear-gradient(${dir}, #3949ab 0%, #7b72f0 50%, #c2185b 100%)`,
-      background: (dir = "to bottom") => `linear-gradient(${dir}, #e8eaf6, #fce4ec)`,
-      subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(0,0,0,0.03), rgba(0,0,0,0.06))`,
-      h1: (dir = '135deg') => `linear-gradient(${dir}, #3949ab 0%, #7b72f0 50%, #c2185b 100%)`,
-      column: () => 'rgba(255,255,255,0.45)',
-    },
+    gradientMid: '#7b72f0', // vivid purple — bridges primary → secondary
     tone: 'light' as const,
   },
 
@@ -62,7 +57,7 @@ export const defaultLightBase: ThemeOptions = {
               content: '""',
               position: 'absolute',
               inset: 0,
-              boxShadow: 'inset 0 0 30px rgba(194,24,91,0.30)',
+              boxShadow: `inset 0 0 30px ${alpha(theme.palette.secondary.main, 0.30)}`,
               borderRadius: 'inherit',
               pointerEvents: 'none',
               zIndex: 1,
@@ -127,54 +122,70 @@ export const defaultLightBase: ThemeOptions = {
   },
 };
 
-export const defaultLightEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => ({
-  typography: {
-    gradientH1: {
-      ...base.typography.h1,
-      background: base.palette.gradients.h1(),
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      display: "inline-block",
+export const defaultLightEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => {
+  const { primary, secondary } = base.palette;
+  const primaryGrad = threeStopGrad(primary.main, base.palette.gradientMid, secondary.main);
+  const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, #e8eaf6, #fce4ec)`;
+  const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, rgba(0,0,0,0.03), rgba(0,0,0,0.06))`;
+
+  return {
+    palette: {
+      gradients: {
+        primary:    primaryGrad,
+        background: bgGrad,
+        subtle:     subtleGrad,
+        h1:         primaryGrad,
+        column:     () => 'rgba(255,255,255,0.45)',
+      },
     },
-  },
-  components: {
-    ProjectsOverviewCmp: {
-      styleOverrides: {
-        root: {
-          background: base.palette.gradients.background(),
+    typography: {
+      gradientH1: {
+        ...base.typography.h1,
+        background: primaryGrad(),
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        display: "inline-block",
+      },
+    },
+    components: {
+      ProjectsOverviewCmp: {
+        styleOverrides: {
+          root: {
+            background: bgGrad(),
+          },
+          header: {
+            textAlign: 'center',
+            '& .MuiTypography-root': {
+              display: 'inline-block',
+              background: primaryGrad(),
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            },
+          },
         },
-        header: {
-          textAlign: 'center',
-          '& .MuiTypography-root': {
-            display: 'inline-block',
-            background: base.palette.gradients.primary(),
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+      },
+
+      ProjectOverviewCmp: {
+        styleOverrides: {
+          textBox: {
+            background: 'linear-gradient(135deg, #f8faff 0%, #fdf4fb 100%)',
+            boxShadow: '0 1px 8px rgba(0,0,0,0.07)',
+          },
+        },
+      },
+
+      NavbarCmp: {
+        styleOverrides: {
+          brand: {
+            '& .MuiTypography-root': {
+              display: 'inline-block',
+              background: primaryGrad(),
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            },
           },
         },
       },
     },
-
-    ProjectOverviewCmp: {
-      styleOverrides: {
-        textBox: {
-          background: 'linear-gradient(135deg, #f8faff 0%, #fdf4fb 100%)',
-          boxShadow: '0 1px 8px rgba(0,0,0,0.07)',
-        },
-      },
-    },
-
-    NavbarCmp: {
-      styleOverrides: {
-        brand: {
-          '& .MuiTypography-root': {
-            display: 'inline-block',
-            background: base.palette.gradients.primary(),
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          },
-        },
-      },
-    },
-  },
-});
+  };
+};

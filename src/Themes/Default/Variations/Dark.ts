@@ -1,8 +1,10 @@
 //mui
 import { Theme, ThemeOptions } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 
 //custom
 import { RegisteredTheme } from '@/Themes';
+import { threeStopGrad } from '../themeUtils';
 
 export const defaultDarkBase: ThemeOptions = {
   palette: {
@@ -26,14 +28,7 @@ export const defaultDarkBase: ThemeOptions = {
       secondary: '#b0b0b0',
     },
     divider: 'rgba(255,255,255,0.12)',
-
-    gradients: {
-      primary: (dir = "135deg") => `linear-gradient(${dir}, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)`,
-      background: (dir = "to bottom") => `linear-gradient(${dir}, #151a2c, #221730)`,
-      subtle: (dir = "135deg") => `linear-gradient(${dir}, rgba(255,255,255,0.05), rgba(0,0,0,0.05))`,
-      h1: (dir = '135deg') => `linear-gradient(${dir}, #3fa0ff 0%, #7b72f0 50%, #ec38bc 100%)`,
-      column: () => 'rgba(0,0,0,0.15)',
-    },
+    gradientMid: '#c8a8f0', // soft violet — bridges primary → secondary
     tone: 'dark' as const,
   },
 
@@ -51,40 +46,42 @@ export const defaultDarkBase: ThemeOptions = {
               content: '""',
               position: 'absolute',
               inset: 0,
-              boxShadow: 'inset 0 0 30px rgba(244,143,177,0.85)',
+              boxShadow: `inset 0 0 30px ${alpha(theme.palette.secondary.light, 0.85)}`,
               borderRadius: 'inherit',
               pointerEvents: 'none',
               zIndex: 1,
             },
           },
         }),
-        header: {
-          color: '#F0F0F0',
-        },
+        header: ({ theme }) => ({
+          color: theme.palette.text.primary,
+        }),
         techList: {
           height: 30,
         },
       },
     },
+
     NavbarCmp: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           backgroundColor: '#141418',
-          borderBottom: '1px solid #3fa0ff',
-        },
+          borderBottom: `1px solid ${theme.palette.primary.main}`,
+        }),
         // brand styleOverride using palette.gradients is in defaultDarkEnhanced
         list: {},
         item: {},
-        link: {
+        link: ({ theme }) => ({
           color: '#888888',
           '&:hover': { color: '#d0d0d0' },
-          '&[data-active="true"]': { color: '#7b72f0' },
-        },
-        underline: {
-          backgroundColor: '#3fa0ff',
-        },
+          '&[data-active="true"]': { color: theme.palette.primary.main },
+        }),
+        underline: ({ theme }) => ({
+          backgroundColor: theme.palette.primary.main,
+        }),
       },
     },
+
     ProjectsOverviewCmp: {
       // styleOverrides using palette.gradients are in defaultDarkEnhanced
     },
@@ -113,44 +110,60 @@ export const defaultDarkBase: ThemeOptions = {
   },
 };
 
-export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => ({
-  typography: {
-    gradientH1: {
-      ...base.typography.h1,
-      background: base.palette.gradients.h1(),
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      display: "inline-block",
+export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => {
+  const { primary, secondary } = base.palette;
+  const primaryGrad = threeStopGrad(primary.main, base.palette.gradientMid, secondary.main);
+  const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, #151a2c, #221730)`;
+  const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, rgba(255,255,255,0.05), rgba(0,0,0,0.05))`;
+
+  return {
+    palette: {
+      gradients: {
+        primary:    primaryGrad,
+        background: bgGrad,
+        subtle:     subtleGrad,
+        h1:         primaryGrad,
+        column:     () => 'rgba(0,0,0,0.15)',
+      },
     },
-  },
-  components: {
-    ProjectsOverviewCmp: {
-      styleOverrides: {
-        root: {
-          background: base.palette.gradients.background(),
+    typography: {
+      gradientH1: {
+        ...base.typography.h1,
+        background: primaryGrad(),
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        display: "inline-block",
+      },
+    },
+    components: {
+      ProjectsOverviewCmp: {
+        styleOverrides: {
+          root: {
+            background: bgGrad(),
+          },
+          header: {
+            textAlign: 'center',
+            '& .MuiTypography-root': {
+              display: 'inline-block',
+              background: primaryGrad(),
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            },
+          },
         },
-        header: {
-          textAlign: 'center',
-          '& .MuiTypography-root': {
-            display: 'inline-block',
-            background: base.palette.gradients.primary(),
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+      },
+      NavbarCmp: {
+        styleOverrides: {
+          brand: {
+            '& .MuiTypography-root': {
+              display: 'inline-block',
+              background: primaryGrad(),
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            },
           },
         },
       },
     },
-    NavbarCmp: {
-      styleOverrides: {
-        brand: {
-          '& .MuiTypography-root': {
-            display: 'inline-block',
-            background: base.palette.gradients.primary(),
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          },
-        },
-      },
-    },
-  },
-});
+  };
+};
