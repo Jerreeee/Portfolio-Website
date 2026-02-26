@@ -14,30 +14,22 @@ const A4_H_PX = A4_H_MM * MM_TO_PX;
 
 export default function ResumePage() {
   const { theme } = useAppTheme();
-  const measureRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [fitScale, setFitScale] = useState(0);
   const [zoomScale, setZoomScale] = useState(1);
-  const [viewportH, setViewportH] = useState(0);
 
   const rawNavH = theme.components?.NavbarCmp?.defaultProps?.height ?? 0;
   const navH = typeof rawNavH === "number" ? rawNavH : parseFloat(rawNavH);
-  const borderThickness = 2;
-  const buttonH = 50;
+  const borderThickness = 4;
   const cornerR = Number.parseFloat(theme.shape.borderRadius.toString());
   const innerR = Math.max(0, cornerR - borderThickness);
 
-  // Track viewport height
-  useEffect(() => {
-    const update = () => setViewportH(window.innerHeight);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  // Auto-fit resume to container
+  // Auto-fit: resize observer on the scrollable canvas below the button bar.
+  // The canvas uses CSS flex (flex:1) so its measured dimensions already
+  // exclude the button bar — no need to track buttonH in JS.
   useLayoutEffect(() => {
-    const el = measureRef.current;
+    const el = containerRef.current;
     if (!el) return;
 
     const calc = (width: number, height: number) => {
@@ -53,24 +45,22 @@ export default function ResumePage() {
       calc(width, height);
     });
 
-    const rect = el.getBoundingClientRect();
-    calc(rect.width, rect.height);
+    const { width, height } = el.getBoundingClientRect();
+    calc(width, height);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  // Ctrl+scroll zoom
+  // Ctrl+scroll zoom (0.25× – 6×)
   useEffect(() => {
-    const el = measureRef.current;
+    const el = containerRef.current;
     if (!el) return;
-
-    const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
     const onWheel = (e: WheelEvent) => {
       if (!e.ctrlKey) return;
       e.preventDefault();
       const factor = Math.pow(1.0015, -e.deltaY);
-      setZoomScale((s) => clamp(s * factor, 0.25, 6));
+      setZoomScale((s) => Math.min(6, Math.max(0.25, s * factor)));
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -78,38 +68,35 @@ export default function ResumePage() {
   }, []);
 
   const appliedScale = fitScale * zoomScale;
-
   const scaledW = Math.round(A4_W_PX * appliedScale);
   const scaledH = Math.round(A4_H_PX * appliedScale);
-  const borderW = scaledW + 2 * borderThickness;
-  const borderH = scaledH + 2 * borderThickness;
-
-  const ready = viewportH > 0 && fitScale > 0;
+  const frameW = scaledW + 2 * borderThickness;
+  const frameH = scaledH + 2 * borderThickness;
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: viewportH - navH,
+        height: `calc(100dvh - ${navH}px)`,
         background: theme.palette.gradients.background(),
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* Top bar */}
+      {/* Download button bar — takes natural height, never grows */}
       <Box
         sx={{
-          width: "100%",
-          height: `${buttonH}px`,
+          flexShrink: 0,
           display: "grid",
           placeItems: "center",
+          py: "10px",
         }}
       >
         <Button
           variant="contained"
           size="small"
           startIcon={<DownloadIcon />}
-          sx={{ textTransform: "none", fontWeight: 600, borderRadius: `${theme.shape.borderRadius}px` }}
+          sx={{ textTransform: "none", fontWeight: 600, borderRadius: `${cornerR}px` }}
           href="/files/resume.pdf"
           download
         >
@@ -117,40 +104,36 @@ export default function ResumePage() {
         </Button>
       </Box>
 
-      {/* GREEN container */}
+      {/* Scrollable canvas — fills all remaining vertical space */}
       <Box
-        ref={measureRef}
+        ref={containerRef}
         sx={{
+          flex: 1,
+          minHeight: 0,
           position: "relative",
-          width: "100%",
-          height: `calc(100% - ${buttonH}px)`,
-          border: "0px solid green",
-          boxSizing: "border-box",
           overflowY: "auto",
           overflowX: "auto",
         }}
       >
-        {ready && (
-          // Outer rounded frame with gradient ring
+        {fitScale > 0 && (
+          // Bordered frame — sized to the scaled A4 page, centered horizontally
           <Box
             sx={{
               position: "absolute",
               top: 0,
               left: "50%",
               transform: "translateX(-50%)",
-              transformOrigin: "top center",
-              width: `${borderW}px`,
-              height: `${borderH}px`,
+              width: `${frameW}px`,
+              height: `${frameH}px`,
               boxSizing: "border-box",
               border: `${borderThickness}px solid transparent`,
               borderRadius: `${cornerR}px`,
-              background: `linear-gradient(#0000,#0000) padding-box, ${theme.palette.gradients.primary()} border-box`,
-
-              // clip INSIDE this frame so the resume can't overflow the rounded corners
+              background: `linear-gradient(#0000, #0000) padding-box,
+                           linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main}) border-box`,
               overflow: "hidden",
             }}
           >
-            {/* Middle clipper: exact inner area, rounded + hidden overflow */}
+            {/* Inner clip — rounded corners, white paper background */}
             <Box
               sx={{
                 width: `${scaledW}px`,
@@ -160,14 +143,13 @@ export default function ResumePage() {
                 background: "#fff",
               }}
             >
-              {/* Scaled A4 page (no radius here) */}
+              {/* A4 page scaled to fit */}
               <Box
                 sx={{
                   width: "210mm",
                   height: "297mm",
                   transform: `scale(${appliedScale})`,
                   transformOrigin: "top left",
-                  // rendering niceties
                   willChange: "transform",
                   backfaceVisibility: "hidden",
                 }}
