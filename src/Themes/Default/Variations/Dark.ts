@@ -28,7 +28,6 @@ export const defaultDarkBase: ThemeOptions = {
       secondary: '#b0b0b0',
     },
     divider: 'rgba(255,255,255,0.12)',
-    tone: 'dark' as const,
   },
 
   components: {

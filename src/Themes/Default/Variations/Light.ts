@@ -28,7 +28,6 @@ export const defaultLightBase: ThemeOptions = {
       secondary: '#555555',
     },
     divider: 'rgba(0,0,0,0.12)',
-    tone: 'light' as const,
   },
 
   components: {

@@ -4,7 +4,7 @@ const HOUDINI_ORANGE = '#FF6B35';
 const HOUDINI_ORANGE_DARK = '#CC4A15';
 
 export const themeExtension = (base: Theme): ThemeOptions => {
-  const isDark = base.palette.tone === 'dark';
+  const isDark = base.palette.mode === 'dark';
   const headingBg = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)';
 
   return {

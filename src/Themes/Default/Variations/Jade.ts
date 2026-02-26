@@ -27,7 +27,6 @@ export const defaultJadeBase: ThemeOptions = {
       primary: '#d9f2e6',
       secondary: '#86c4a0',
     },
-    tone: 'dark' as const,
   },
 
   components: {
