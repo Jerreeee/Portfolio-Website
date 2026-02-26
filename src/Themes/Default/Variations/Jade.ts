@@ -114,7 +114,6 @@ export const defaultJadeEnhanced: RegisteredTheme["enhance"] = (base: Theme): Th
   const { primary, secondary, background } = base.palette;
   const primaryGrad = threeStopGrad(primary.main, '#0891b2', secondary.main);
   const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, ${background.default}, #081810)`;
-  const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, ${alpha(primary.main, 0.07)}, rgba(0,0,0,0.07))`;
 
   return {
     palette: {
@@ -122,9 +121,6 @@ export const defaultJadeEnhanced: RegisteredTheme["enhance"] = (base: Theme): Th
       gradients: {
         primary:    primaryGrad,
         background: bgGrad,
-        subtle:     subtleGrad,
-        h1:         primaryGrad,
-        column:     () => alpha(primary.main, 0.12),
       },
     },
     typography: {

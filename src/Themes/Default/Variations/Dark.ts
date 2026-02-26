@@ -113,16 +113,12 @@ export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): Th
   const { primary, secondary } = base.palette;
   const primaryGrad = threeStopGrad(primary.main, '#c8a8f0', secondary.main);
   const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, #151a2c, #221730)`;
-  const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, rgba(255,255,255,0.05), rgba(0,0,0,0.05))`;
 
   return {
     palette: {
       gradients: {
         primary:    primaryGrad,
         background: bgGrad,
-        subtle:     subtleGrad,
-        h1:         primaryGrad,
-        column:     () => 'rgba(0,0,0,0.15)',
       },
     },
     typography: {

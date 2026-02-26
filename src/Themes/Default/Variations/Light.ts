@@ -125,16 +125,12 @@ export const defaultLightEnhanced: RegisteredTheme["enhance"] = (base: Theme): T
   const { primary, secondary } = base.palette;
   const primaryGrad = threeStopGrad(primary.main, '#7b72f0', secondary.main);
   const bgGrad      = (dir = 'to bottom') => `linear-gradient(${dir}, #e8eaf6, #fce4ec)`;
-  const subtleGrad  = (dir = '135deg')    => `linear-gradient(${dir}, rgba(0,0,0,0.03), rgba(0,0,0,0.06))`;
 
   return {
     palette: {
       gradients: {
         primary:    primaryGrad,
         background: bgGrad,
-        subtle:     subtleGrad,
-        h1:         primaryGrad,
-        column:     () => 'rgba(255,255,255,0.45)',
       },
     },
     typography: {

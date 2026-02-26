@@ -53,9 +53,6 @@ declare module '@mui/material/styles' {
     gradients: {
       primary: (direction?: string) => string;
       background: (direction?: string) => string;
-      subtle: (direction?: string) => string;
-      h1: (direction?: string) => string;
-      column: () => string;
     };
     tone: 'dark' | 'light';
   }
@@ -64,9 +61,6 @@ declare module '@mui/material/styles' {
     gradients?: {
       primary?: (direction?: string) => string;
       background?: (direction?: string) => string;
-      subtle?: (direction?: string) => string;
-      h1?: (direction?: string) => string;
-      column?: () => string;
     };
     tone?: 'dark' | 'light';
   }

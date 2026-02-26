@@ -23,7 +23,7 @@ export default function ProjectSlugLayout({
           maxWidth: theme.breakpoints.values.lg,
           mx: "auto",
           width: "100%",
-          background: theme.palette.gradients.column(),
+          background: theme.palette.gradients.background(),
         }}
       >
         <Container>
