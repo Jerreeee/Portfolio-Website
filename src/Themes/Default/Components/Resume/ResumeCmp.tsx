@@ -56,9 +56,9 @@ export const ResumeHeader = makeSlot('div', 'header')({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  paddingTop: '2mm',
-  paddingBottom: '6mm',
+  alignItems: 'center',
+  paddingTop: '3mm',
+  paddingBottom: '5mm',
   paddingLeft: '6mm',
   paddingRight: '6mm',
   position: 'relative',
@@ -82,43 +82,41 @@ export const HeaderLastName = makeSlot('span', 'headerLastName')({
 export const HeaderRight = makeSlot('div', 'headerRight')({
   display: 'flex',
   flexDirection: 'column',
-  gap: '2mm',
-  fontSize: '3.3mm',
+  alignItems: 'flex-end',
+  gap: '1.5mm',
+  fontSize: '3.2mm',
   lineHeight: 1.3,
-  opacity: 0.9,
 });
 
 export const HeaderContactRow = makeSlot('div', 'headerContactRow')({
-  display: 'grid',
-  gridTemplateColumns: '22mm auto',
-  alignItems: 'baseline',
-  columnGap: '3mm',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1.2mm',
 });
 
-export const HeaderLabel = makeSlot('span', 'headerLabel')({
-  fontWeight: 600,
-  textAlign: 'right',
-  opacity: 0.65,
-});
+export const HeaderLabel = makeSlot('span', 'headerLabel')({});
 
-export const HeaderContactLink = makeSlot(Link, 'headerContactLink')({
-  color: 'inherit',
+export const HeaderContactLink = makeSlot(Link, 'headerContactLink')(({ theme }) => ({
+  color: '#222',
   textDecoration: 'none',
-  borderBottom: '0.2mm solid rgba(0,0,0,0.2)',
-  paddingBottom: '0.2mm',
-  transition: 'border-color 0.2s ease',
+  transition: 'color 0.15s ease',
+  '&:hover': {
+    color: theme.palette.secondary.main,
+  },
+}));
+
+export const HeaderContactText = makeSlot('span', 'headerContactText')({
+  color: '#222',
 });
 
-export const HeaderContactText = makeSlot('span', 'headerContactText')({});
-
-export const HeaderDivider = makeSlot('div', 'headerDivider')({
+export const HeaderDivider = makeSlot('div', 'headerDivider')(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: '6mm',
   right: '6mm',
-  height: '1px',
-  backgroundColor: '#000',
-});
+  height: '2px',
+  backgroundColor: theme.palette.secondary.main,
+}));
 
 /* ===========================
    TALL SECTION

@@ -11,11 +11,13 @@ import {
   HeaderLastName,
   HeaderRight,
   HeaderContactRow,
-  HeaderLabel,
   HeaderContactLink,
   HeaderContactText,
   HeaderDivider,
 } from "./ResumeCmp";
+import EmailIcon from "@mui/icons-material/Email";
+import LanguageIcon from "@mui/icons-material/Language";
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 
 import { aboutInfo } from "@/Data/about";
 import { TallSection } from "./TallSection";
@@ -107,22 +109,20 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
 
           <HeaderRight>
             <HeaderContactRow>
-              <HeaderLabel>Email:</HeaderLabel>
+              <EmailIcon sx={{ fontSize: '3.4mm', opacity: 0.5, flexShrink: 0 }} />
               <HeaderContactLink href={`mailto:${contact.email}`}>
                 {contact.email}
               </HeaderContactLink>
             </HeaderContactRow>
-
             <HeaderContactRow>
-              <HeaderLabel>Website:</HeaderLabel>
+              <LanguageIcon sx={{ fontSize: '3.4mm', opacity: 0.5, flexShrink: 0 }} />
               <HeaderContactLink href={website} target="_blank" rel="noreferrer">
                 {String(website).replace(/^https?:\/\//, "")}
               </HeaderContactLink>
             </HeaderContactRow>
-
             {contact.gsm && (
               <HeaderContactRow>
-                <HeaderLabel>GSM:</HeaderLabel>
+                <PhoneAndroidIcon sx={{ fontSize: '3.4mm', opacity: 0.5, flexShrink: 0 }} />
                 <HeaderContactText>{contact.gsm}</HeaderContactText>
               </HeaderContactRow>
             )}
