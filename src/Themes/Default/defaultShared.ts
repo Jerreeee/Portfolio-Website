@@ -179,7 +179,7 @@ export const defaultSharedBase: ThemeOptions = {
           '@media (hover: hover)': {
             '&:hover': { filter: 'url(#card-hover)' },
           },
-          '&[data-pressed="true"]': { filter: 'url(#card-hover)' },
+          '&[data-revealed="true"]': { filter: 'url(#card-hover)' },
         },
         revealPanel: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,
