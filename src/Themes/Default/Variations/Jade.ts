@@ -43,15 +43,6 @@ export const defaultJadeEnhanced: RegisteredTheme["enhance"] = (base: Theme): Th
         background: bgGrad,
       },
     },
-    typography: {
-      gradientH1: {
-        ...base.typography.h1,
-        background: primaryGrad(),
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        display: "inline-block",
-      },
-    },
     components: {
       MuiCssBaseline: {
         styleOverrides: {

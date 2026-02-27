@@ -15,14 +15,6 @@ export const globalBase: ThemeOptions = {
       },
     },
 
-    MuiTypography: {
-      defaultProps: {
-        variantMapping: {
-          gradientH1: 'h1',
-        },
-      },
-    },
-
     MuiAccordion: {
       defaultProps: {
         disableGutters: true,

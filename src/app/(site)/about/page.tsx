@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
 import { aboutInfo } from '@/Data/about';
+import { gradientH1Styles } from '@/Themes/Default/themeUtils';
 
 export default function About() {
   const { theme } = useAppTheme();
@@ -108,7 +109,7 @@ export default function About() {
 
           {/* Bio */}
           <Grid size={{ xs: 12, md: 7 }}>
-            <Typography variant="gradientH1" sx={{ mb: 2 }}>
+            <Typography variant="h1" sx={[gradientH1Styles, { mb: 2 }]}>
               About Me
             </Typography>
 

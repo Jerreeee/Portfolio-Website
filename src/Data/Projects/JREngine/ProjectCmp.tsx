@@ -15,6 +15,7 @@ import PATHS from '@/Config/paths';
 import DrawioEmbed from '@/Themes/Default/Components/DrawioEmbed/DrawioEmbed';
 import { CardTabsCmp } from '@/Themes/Default/Components/CardTabs';
 import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
+import { gradientH1Styles } from '@/Themes/Default/themeUtils';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const { MediaCmp, ParentSizeObserverCmp: ParentSizeObserver, ImageMultiCompareCmp, CodeBlockCmp, ProjectOverviewCmp, IconCmp, MarkdownRendererCmp } = useComponents();
@@ -24,7 +25,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
     <Box>
       {/* ==================== HERO SECTION ==================== */}
       <Container maxWidth="md" sx={{ textAlign: 'center' }}>
-        <Typography variant="gradientH1">
+        <Typography variant="h1" sx={gradientH1Styles}>
           {data.title}
         </Typography>
       </Container>

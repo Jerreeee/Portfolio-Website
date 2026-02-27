@@ -18,6 +18,7 @@ import type { ProjectManifest } from '@/Types/projectManifest';
 
 import { data } from './data';
 import { useComponents } from '@/Themes/ThemeProvider';
+import { gradientH1Styles } from '@/Themes/Default/themeUtils';
 
 export default function ProjectCmp({ project }: ProjectCmpProps) {
   const { MediaCmp, ProjectOverviewCmp, MarkdownRendererCmp } = useComponents();
@@ -30,7 +31,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
         maxWidth="md"
         sx={{ textAlign: 'center', mb: 6 }}
       >
-        <Typography variant="gradientH1">{data.title}</Typography>
+        <Typography variant="h1" sx={gradientH1Styles}>{data.title}</Typography>
       </Container>
 
       {/* ================= OVERVIEW ================= */}

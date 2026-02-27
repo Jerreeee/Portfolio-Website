@@ -7,6 +7,7 @@ import type { ProjectCmpProps } from '../project';
 import { data } from './data';
 import { makeDefaultRangeProvider } from '@/Utils/RangeProvider';
 import { useAppTheme, useComponents } from '@/Themes/ThemeProvider';
+import { gradientH1Styles } from '@/Themes/Default/themeUtils';
 
 // ===========================================================================
 // Scrollable demo data
@@ -716,7 +717,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
     <Box>
       {/* ==================== HERO SECTION ==================== */}
       <Container maxWidth="md" sx={{ textAlign: 'center', mb: 6 }}>
-        <Typography variant="gradientH1">
+        <Typography variant="h1" sx={gradientH1Styles}>
           {data.title}
         </Typography>
       </Container>
