@@ -169,8 +169,11 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   }, [isRevealed]);
 
   // Touch: first tap reveals, second tap navigates. Mouse: always navigates.
+  // window.matchMedia('(hover: none)') is true on touch-primary devices (iOS,
+  // Android) and false on mouse devices — more reliable than pointerType which
+  // iOS Safari does not set correctly on synthesized click events.
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const isTouch = (e.nativeEvent as PointerEvent).pointerType === 'touch';
+    const isTouch = window.matchMedia('(hover: none)').matches;
     if (isTouch && !isRevealed) {
       e.preventDefault();
       setIsRevealed(true);
