@@ -32,22 +32,17 @@ export const defaultJadeBase: ThemeOptions = {
   components: {
     ProjectCardCmp: {
       styleOverrides: {
+        wrapper: {
+          filter: 'url(#card-border-jade)',
+          transition: 'filter 0.3s ease',
+          '&:hover': { filter: 'url(#card-hover-jade)' },
+        },
         root: ({ theme }) => ({
           background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, #112818 100%)`,
           boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
           position: 'relative',
           '&:hover': {
             background: 'linear-gradient(145deg, #163d26 0%, #143322 100%)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.60)',
-            filter: `drop-shadow(0 0 3px ${theme.palette.secondary.main}) drop-shadow(0 0 12px ${alpha(theme.palette.secondary.main, 0.75)})`,
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              inset: 0,
-              boxShadow: `inset 0 0 30px ${alpha(theme.palette.secondary.main, 0.85)}`,
-              pointerEvents: 'none',
-              zIndex: 1,
-            },
           },
         }),
         header: ({ theme }) => ({

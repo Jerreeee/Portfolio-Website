@@ -1,6 +1,5 @@
 //mui
 import { Theme, ThemeOptions } from '@mui/material/styles';
-import { alpha } from '@mui/material/styles';
 
 //custom
 import { RegisteredTheme } from '@/Themes';
@@ -33,21 +32,16 @@ export const defaultDarkBase: ThemeOptions = {
   components: {
     ProjectCardCmp: {
       styleOverrides: {
+        wrapper: {
+          filter: 'url(#card-border-dark)',
+          transition: 'filter 0.3s ease',
+          '&:hover': { filter: 'url(#card-hover-dark)' },
+        },
         root: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,
           position: 'relative',
           '&:hover': {
             backgroundColor: '#2c2c2c',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.60)',
-            filter: `drop-shadow(0 0 3px ${theme.palette.secondary.main}) drop-shadow(0 0 12px ${alpha(theme.palette.secondary.light, 0.75)})`,
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              inset: 0,
-              boxShadow: `inset 0 0 30px ${alpha(theme.palette.secondary.light, 0.85)}`,
-              pointerEvents: 'none',
-              zIndex: 1,
-            },
           },
         }),
         header: ({ theme }) => ({

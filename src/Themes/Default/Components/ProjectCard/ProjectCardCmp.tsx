@@ -100,6 +100,8 @@ const ProjectCardDescription = makeSlot(motion.div, 'description')({
   WebkitBoxOrient: 'vertical',
 });
 
+const ProjectCardWrapper = makeSlot('div', 'wrapper')({});
+
 // =====================================================================
 // ============================= Component =============================
 
@@ -120,6 +122,7 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
     (project.downloads && project.downloads.length > 0);
 
   return (
+    <ProjectCardWrapper>
     <ProjectCardRoot viewport={{ once: true, amount: 0.3 }}>
       <Link
         href={PATHS.PROJECT_PAGE({ slug: project.slug }).url().value}
@@ -214,5 +217,6 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
         </ProjectCardLinks>
       )}
     </ProjectCardRoot>
+    </ProjectCardWrapper>
   );
 }

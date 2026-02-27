@@ -1,6 +1,5 @@
 //mui
 import { Theme, ThemeOptions } from '@mui/material/styles';
-import { alpha } from '@mui/material/styles';
 
 //custom
 import { RegisteredTheme } from '@/Themes';
@@ -43,22 +42,17 @@ export const defaultLightBase: ThemeOptions = {
 
     ProjectCardCmp: {
       styleOverrides: {
+        wrapper: {
+          filter: 'url(#card-border-light)',
+          transition: 'filter 0.3s ease',
+          '&:hover': { filter: 'url(#card-hover-light)' },
+        },
         root: ({ theme }) => ({
           background: 'linear-gradient(145deg, #ffffff 0%, #eeefff 100%)',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           position: 'relative',
           '&:hover': {
             background: 'linear-gradient(145deg, #e8eaf6 0%, #e8e4ff 100%)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-            filter: `drop-shadow(0 0 3px ${theme.palette.secondary.main}) drop-shadow(0 0 12px ${alpha(theme.palette.secondary.main, 0.5)})`,
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              inset: 0,
-              boxShadow: `inset 0 0 30px ${alpha(theme.palette.secondary.main, 0.30)}`,
-              pointerEvents: 'none',
-              zIndex: 1,
-            },
           },
         }),
         header: ({ theme }) => ({
