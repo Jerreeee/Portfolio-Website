@@ -32,11 +32,6 @@ export const defaultJadeBase: ThemeOptions = {
   components: {
     ProjectCardCmp: {
       styleOverrides: {
-        wrapper: {
-          filter: 'url(#card-border-jade)',
-          transition: 'filter 0.3s ease',
-          '&:hover': { filter: 'url(#card-hover-jade)' },
-        },
         root: ({ theme }) => ({
           background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, #112818 100%)`,
           boxShadow: '0 2px 8px rgba(0,0,0,0.35)',

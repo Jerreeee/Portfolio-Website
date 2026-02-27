@@ -42,11 +42,6 @@ export const defaultLightBase: ThemeOptions = {
 
     ProjectCardCmp: {
       styleOverrides: {
-        wrapper: {
-          filter: 'url(#card-border-light)',
-          transition: 'filter 0.3s ease',
-          '&:hover': { filter: 'url(#card-hover-light)' },
-        },
         root: ({ theme }) => ({
           background: 'linear-gradient(145deg, #ffffff 0%, #eeefff 100%)',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',

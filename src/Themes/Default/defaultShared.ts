@@ -148,6 +148,33 @@ export const defaultSharedBase: ThemeOptions = {
     },
 
     ProjectCardCmp: {
+      svgFilters: [
+        (theme) => ({
+          type: 'outline',
+          id: 'card-border',
+          color: theme.palette.secondary.main,
+          opacity: theme.palette.mode === 'dark' ? 0.75 : 0.5,
+          radius: 1,
+        }),
+        (theme) => ({
+          type: 'combined',
+          id: 'card-hover',
+          borderColor: theme.palette.mode === 'dark' ? theme.palette.secondary.light : theme.palette.secondary.main,
+          borderOpacity: 1,
+          borderRadius: 2,
+          glowColor: theme.palette.mode === 'dark' ? theme.palette.secondary.light : theme.palette.secondary.main,
+          glowOpacity: 1,
+          glowStrength: 5,
+          glowBlendMode: theme.palette.mode === 'dark' ? 'screen' : 'multiply',
+        }),
+      ],
+      styleOverrides: {
+        wrapper: {
+          filter: 'url(#card-border)',
+          transition: 'filter 0.3s ease',
+          '&:hover': { filter: 'url(#card-hover)' },
+        },
+      },
       slotAnimations: {
         root:     mergeAnims(true, anims.hoverScale(1.025)),
         content:  mergeAnims(true, anims.staggerChildren(0.2)),

@@ -9,6 +9,7 @@ import type {
 // custom
 import type { ComponentsAnimations } from './componentAnimations';
 import { ComponentsSettings } from './componentSettings';
+import type { SvgFilterEntry } from '@/Svg/Filters';
 
 /**
  * Generic helper for a theme component definition.
@@ -20,4 +21,5 @@ export type ThemedComponent<Name extends keyof ComponentsProps> = {
   variants?: ComponentsVariants<Theme>[Extract<Name, keyof ComponentsVariants<Theme>>];
   slotAnimations?: ComponentsAnimations<Theme>[Extract<Name, keyof ComponentsAnimations<Theme>>];
   settings?: ComponentsSettings<Theme>[Extract<Name, keyof ComponentsSettings<Theme>>];
+  svgFilters?: SvgFilterEntry[];
 };

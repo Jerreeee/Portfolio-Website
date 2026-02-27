@@ -32,11 +32,6 @@ export const defaultDarkBase: ThemeOptions = {
   components: {
     ProjectCardCmp: {
       styleOverrides: {
-        wrapper: {
-          filter: 'url(#card-border-dark)',
-          transition: 'filter 0.3s ease',
-          '&:hover': { filter: 'url(#card-hover-dark)' },
-        },
         root: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,
           position: 'relative',
