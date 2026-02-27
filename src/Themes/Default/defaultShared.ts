@@ -172,7 +172,14 @@ export const defaultSharedBase: ThemeOptions = {
         wrapper: {
           filter: 'url(#card-border)',
           transition: 'filter 0.3s ease',
-          '&:hover, &:active': { filter: 'url(#card-hover)' },
+          // Hover only applies on real pointer devices — touch browsers assign a
+          // sticky :hover after a tap, which would keep the glow active after
+          // the press state is cleared. On touch, glow is driven solely by
+          // data-pressed (same React state as the description).
+          '@media (hover: hover)': {
+            '&:hover': { filter: 'url(#card-hover)' },
+          },
+          '&[data-pressed="true"]': { filter: 'url(#card-hover)' },
         },
         revealPanel: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,

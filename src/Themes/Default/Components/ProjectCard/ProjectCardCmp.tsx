@@ -1,6 +1,7 @@
 'use client';
 // @generate-component-classes
 
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
@@ -149,6 +150,48 @@ export interface ProjectCardCmpProps {
 }
 
 export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
+  const [isPressed, setIsPressed] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // True once the finger has been held still for 300 ms — after this point
+  // neither pointerup nor pointercancel clears the pressed state.
+  const committed = useRef(false);
+
+  // Dismiss when tapping outside this card
+  useEffect(() => {
+    if (!isPressed) return;
+    const handleGlobalPointerDown = (e: PointerEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsPressed(false);
+      }
+    };
+    document.addEventListener('pointerdown', handleGlobalPointerDown);
+    return () => document.removeEventListener('pointerdown', handleGlobalPointerDown);
+  }, [isPressed]);
+
+  const handlePointerDown = () => {
+    committed.current = false;
+    holdTimer.current = setTimeout(() => {
+      committed.current = true;
+      holdTimer.current = null;
+      setIsPressed(true); // nothing shows until threshold is crossed
+    }, 200);
+  };
+
+  const clearPress = () => {
+    if (holdTimer.current) {
+      clearTimeout(holdTimer.current);
+      holdTimer.current = null;
+    }
+    if (!committed.current) {
+      setIsPressed(false);
+    }
+    // Don't reset committed here — on mobile both pointercancel and pointerup
+    // fire for a drag gesture. If we reset after the first event, the second
+    // call would see committed=false and incorrectly clear isPressed.
+    // handlePointerDown resets committed at the start of each new press.
+  };
+
   const item: MediaItem = getMediaItemsFromManifest(project.manifest, [
     project.thumbnailImage,
   ])[0];
@@ -201,7 +244,13 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   );
 
   return (
-    <ProjectCardWrapper>
+    <ProjectCardWrapper
+      ref={wrapperRef}
+      data-pressed={isPressed ? 'true' : undefined}
+      onPointerDown={handlePointerDown}
+      onPointerUp={clearPress}
+      onPointerCancel={clearPress}
+    >
       <ProjectCardRoot viewport={{ once: true, amount: 0.3 }}>
 
         <Link
@@ -273,18 +322,25 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
         {iconButtons}
 
         <ProjectCardRevealPanel>
-          <Typography
-            variant="body2"
-            sx={{
-              mb: 1,
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitLineClamp: 4,
-              WebkitBoxOrient: 'vertical',
-            }}
+          <motion.div
+            initial={false}
+            animate={{ height: isPressed ? 'auto' : 0 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1.0] }}
+            style={{ overflow: 'hidden' }}
           >
-            {project.shortDescription}
-          </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                pb: 1,
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitLineClamp: 4,
+                WebkitBoxOrient: 'vertical',
+              }}
+            >
+              {project.shortDescription}
+            </Typography>
+          </motion.div>
 
           {project.technologies?.Core && (
             <Box sx={{ position: 'relative', overflow: 'hidden' }}>
