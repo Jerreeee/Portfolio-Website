@@ -172,11 +172,14 @@ export const defaultSharedBase: ThemeOptions = {
         wrapper: {
           filter: 'url(#card-border)',
           transition: 'filter 0.3s ease',
-          '&:hover': { filter: 'url(#card-hover)' },
+          '&:hover, &:active': { filter: 'url(#card-hover)' },
         },
+        revealPanel: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
+        }),
       },
       slotAnimations: {
-        root:     mergeAnims(true, anims.hoverScale(1.025)),
+        root:     mergeAnims(true, anims.hoverScale(1.025), { whileTap: { scale: 1.025 } }),
         content:  mergeAnims(true, anims.staggerChildren(0.2)),
         header:   mergeAnims(false, anims.fadeInUp()),
         techList: mergeAnims(false, anims.staggerChildren(0.05, 0.5)),

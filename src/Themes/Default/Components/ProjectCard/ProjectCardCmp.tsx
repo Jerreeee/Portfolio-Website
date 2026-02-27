@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import DownloadIcon from '@mui/icons-material/Download';
 import { ProjectInfo } from '@/Data/Projects/project';
 import IconCmp from '@/Themes/Default/Components/Icon/IconCmp';
@@ -80,9 +81,12 @@ const ProjectCardContentBox = makeSlot(motion(CardContent), 'content')(({ theme 
   '&:last-child': {
     paddingBottom: theme.spacing(2),
   },
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
 }));
 
-const ProjectCardLinks = makeSlot(motion.div, 'links')({
+const ProjectCardLinks = makeSlot(motion.div, 'links')(({ theme }) => ({
   position: 'absolute',
   top: 10,
   right: 12,
@@ -90,7 +94,12 @@ const ProjectCardLinks = makeSlot(motion.div, 'links')({
   alignItems: 'center',
   gap: '4px',
   zIndex: 2,
-});
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: '6px',
+  },
+}));
 
 const ProjectCardDescription = makeSlot(motion.div, 'description')({
   flex: 1,
@@ -101,6 +110,34 @@ const ProjectCardDescription = makeSlot(motion.div, 'description')({
 });
 
 const ProjectCardWrapper = makeSlot('div', 'wrapper')({});
+
+// Mobile-only: bottom gradient overlay with title, sits inside ProjectCardImage
+const ProjectCardMobileTitle = makeSlot('div', 'mobileTitle')(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.down('sm')]: {
+    display: 'flex',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '30%',
+    background: `linear-gradient(to top, ${theme.palette.background.paper} 0%, ${alpha(theme.palette.background.paper, 0)} 100%)`,
+    alignItems: 'flex-end',
+    padding: theme.spacing(0.5, 1),
+    zIndex: 2,
+    pointerEvents: 'none',
+  },
+}));
+
+// Mobile-only: reveal panel below the image (description + tech), animates height on scroll
+const ProjectCardRevealPanel = makeSlot(motion.div, 'revealPanel')(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.down('sm')]: {
+    display: 'block',
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(1.5, 2),
+  },
+}));
 
 // =====================================================================
 // ============================= Component =============================
@@ -121,49 +158,136 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
     project.steamURL ||
     (project.downloads && project.downloads.length > 0);
 
+  const iconButtons = hasLinks && (
+    <ProjectCardLinks>
+      {project.githubURL && (
+        <IconButton
+          size="small"
+          component="a"
+          href={project.githubURL}
+          target="_blank"
+        >
+          <IconCmp techName="GitHub" height={16} showDisplayName={false} />
+        </IconButton>
+      )}
+      {project.steamURL && (
+        <IconButton
+          size="small"
+          component="a"
+          href={project.steamURL}
+          target="_blank"
+        >
+          <IconCmp techName="Steam" height={16} showDisplayName={false} />
+        </IconButton>
+      )}
+      {project.downloads?.map((file, i) => (
+        <IconButton
+          key={i}
+          size="small"
+          component="a"
+          href={PATHS.PROJECT_DOWNLOAD({
+            projectName: project.slug,
+            fileName: file,
+          })
+            .url()
+            .value}
+          download
+          sx={{ color: 'text.primary' }}
+        >
+          <DownloadIcon sx={{ fontSize: 16 }} />
+        </IconButton>
+      ))}
+    </ProjectCardLinks>
+  );
+
   return (
     <ProjectCardWrapper>
-    <ProjectCardRoot viewport={{ once: true, amount: 0.3 }}>
-      <Link
-        href={PATHS.PROJECT_PAGE({ slug: project.slug }).url().value}
-        style={{
-          textDecoration: 'none',
-          color: 'inherit',
-          display: 'flex',
-          flex: 1,
-          minWidth: 0,
-        }}
-      >
-        <ProjectCardImage>
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+      <ProjectCardRoot viewport={{ once: true, amount: 0.3 }}>
+
+        <Link
+          href={PATHS.PROJECT_PAGE({ slug: project.slug }).url().value}
+          style={{
+            textDecoration: 'none',
+            color: 'inherit',
+            display: 'flex',
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          <ProjectCardImage>
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <MediaCmp item={item} fit="cover" />
+            </div>
+
+            {/* Mobile-only: bottom gradient overlay with title */}
+            <ProjectCardMobileTitle>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: 'text.primary',
+                  lineHeight: 1.3,
+                }}
+              >
+                {project.title}
+              </Typography>
+            </ProjectCardMobileTitle>
+          </ProjectCardImage>
+
+          {/* Desktop-only: title + description + tech in right panel */}
+          <ProjectCardContentBox>
+            <ProjectCardHeader>
+              <Typography variant="h6" sx={{ m: 0 }}>
+                {project.title}
+              </Typography>
+            </ProjectCardHeader>
+
+            <ProjectCardDescription>
+              <Typography variant="body2">{project.shortDescription}</Typography>
+            </ProjectCardDescription>
+
+            {project.technologies?.Core && (
+              <Box>
+                <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                  Core
+                </Typography>
+                <ProjectCardTechList>
+                  {project.technologies.Core.map((tech, i) => (
+                    <ProjectCardTechIcon key={i}>
+                      <IconCmp techName={tech.name} showDisplayName={false} />
+                    </ProjectCardTechIcon>
+                  ))}
+                </ProjectCardTechList>
+              </Box>
+            )}
+          </ProjectCardContentBox>
+        </Link>
+
+        {iconButtons}
+
+        <ProjectCardRevealPanel>
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 1,
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 4,
+              WebkitBoxOrient: 'vertical',
             }}
           >
-            <MediaCmp item={item} fit="cover" />
-          </div>
-        </ProjectCardImage>
-
-        <ProjectCardContentBox>
-          <ProjectCardHeader>
-            <Typography variant="h6" sx={{ m: 0 }}>
-              {project.title}
-            </Typography>
-          </ProjectCardHeader>
-
-          <ProjectCardDescription>
-            <Typography variant="body2">{project.shortDescription}</Typography>
-          </ProjectCardDescription>
+            {project.shortDescription}
+          </Typography>
 
           {project.technologies?.Core && (
-            <Box>
-              <Typography variant="caption" sx={{ opacity: 0.6 }}>
-                Core
-              </Typography>
+            <Box sx={{ position: 'relative', overflow: 'hidden' }}>
               <ProjectCardTechList>
                 {project.technologies.Core.map((tech, i) => (
                   <ProjectCardTechIcon key={i}>
@@ -171,53 +295,24 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
                   </ProjectCardTechIcon>
                 ))}
               </ProjectCardTechList>
+              {/* Gradient fade for overflowing tech icons */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 32,
+                  background: (theme) =>
+                    `linear-gradient(to right, transparent, ${theme.palette.background.paper})`,
+                  pointerEvents: 'none',
+                }}
+              />
             </Box>
           )}
-        </ProjectCardContentBox>
-      </Link>
+        </ProjectCardRevealPanel>
 
-      {hasLinks && (
-        <ProjectCardLinks>
-          {project.githubURL && (
-            <IconButton
-              size="small"
-              component="a"
-              href={project.githubURL}
-              target="_blank"
-            >
-              <IconCmp techName="GitHub" height={16} showDisplayName={false} />
-            </IconButton>
-          )}
-          {project.steamURL && (
-            <IconButton
-              size="small"
-              component="a"
-              href={project.steamURL}
-              target="_blank"
-            >
-              <IconCmp techName="Steam" height={16} showDisplayName={false} />
-            </IconButton>
-          )}
-          {project.downloads?.map((file, i) => (
-            <IconButton
-              key={i}
-              size="small"
-              component="a"
-              href={PATHS.PROJECT_DOWNLOAD({
-                projectName: project.slug,
-                fileName: file,
-              })
-                .url()
-                .value}
-              download
-              sx={{ color: 'text.primary' }}
-            >
-              <DownloadIcon sx={{ fontSize: 16 }} />
-            </IconButton>
-          ))}
-        </ProjectCardLinks>
-      )}
-    </ProjectCardRoot>
+      </ProjectCardRoot>
     </ProjectCardWrapper>
   );
 }
