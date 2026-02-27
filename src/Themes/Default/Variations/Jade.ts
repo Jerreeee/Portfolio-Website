@@ -28,71 +28,6 @@ export const defaultJadeBase: ThemeOptions = {
       secondary: '#86c4a0',
     },
   },
-
-  components: {
-    ProjectCardCmp: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, #112818 100%)`,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
-          position: 'relative',
-          '&:hover': {
-            background: 'linear-gradient(145deg, #163d26 0%, #143322 100%)',
-          },
-        }),
-        header: ({ theme }) => ({
-          color: theme.palette.text.primary,
-        }),
-      },
-    },
-
-    NavbarCmp: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          background: `linear-gradient(to right, ${theme.palette.background.paper} 0%, #0c2418 100%)`,
-          borderBottom: `1px solid ${theme.palette.primary.main}`,
-          boxShadow: `0 1px 6px ${alpha(theme.palette.primary.main, 0.15)}`,
-        }),
-        // brand styleOverride using palette.gradients is in defaultJadeEnhanced
-        list: {},
-        item: {},
-        link: ({ theme }) => ({
-          color: theme.palette.text.secondary,
-          '&:hover': { color: theme.palette.text.primary },
-          '&[data-active="true"]': { color: theme.palette.primary.main },
-        }),
-        underline: ({ theme }) => ({
-          backgroundColor: theme.palette.primary.main,
-        }),
-      },
-    },
-
-    ProjectsOverviewCmp: {
-      // styleOverrides using palette.gradients are in defaultJadeEnhanced
-    },
-
-    ScrollBarCmp: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'rgba(255,255,255,0.10)',
-        },
-        thumb: ({ theme }) => ({
-          backgroundColor: alpha(theme.palette.primary.main, 0.40),
-        }),
-      },
-    },
-
-    CardTabsCmp: {
-      styleOverrides: {
-        header: ({ theme }) => ({
-          background: `linear-gradient(to right, ${theme.palette.background.paper}, #112418)`,
-        }),
-        content: ({ theme }) => ({
-          background: `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
-        }),
-      },
-    },
-  },
 };
 
 export const defaultJadeEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => {
@@ -127,40 +62,94 @@ export const defaultJadeEnhanced: RegisteredTheme["enhance"] = (base: Theme): Th
           },
         },
       },
+
+      ProjectCardCmp: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, #112818 100%)`,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
+            position: 'relative',
+            '&:hover': {
+              background: 'linear-gradient(145deg, #163d26 0%, #143322 100%)',
+            },
+          }),
+          header: ({ theme }) => ({
+            color: theme.palette.text.primary,
+          }),
+        },
+      },
+
       NavbarCmp: {
         styleOverrides: {
-          brand: {
+          root: ({ theme }) => ({
+            background: `linear-gradient(to right, ${theme.palette.background.paper} 0%, #0c2418 100%)`,
+            borderBottom: `1px solid ${theme.palette.primary.main}`,
+            boxShadow: `0 1px 6px ${alpha(theme.palette.primary.main, 0.15)}`,
+          }),
+          link: ({ theme }) => ({
+            color: theme.palette.text.secondary,
+            '&:hover': { color: theme.palette.text.primary },
+            '&[data-active="true"]': { color: theme.palette.primary.main },
+          }),
+          underline: ({ theme }) => ({
+            backgroundColor: theme.palette.primary.main,
+          }),
+          brand: ({ theme }) => ({
             '& .MuiTypography-root': {
               display: 'inline-block',
-              background: primaryGrad(),
+              background: theme.palette.gradients.primary(),
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             },
-          },
+          }),
         },
       },
+
       ProjectsOverviewCmp: {
         styleOverrides: {
-          root: {
-            background: bgGrad(),
-          },
-          header: {
+          root: ({ theme }) => ({
+            background: theme.palette.gradients.background(),
+          }),
+          header: ({ theme }) => ({
             textAlign: 'center',
             '& .MuiTypography-root': {
               display: 'inline-block',
-              background: primaryGrad(),
+              background: theme.palette.gradients.primary(),
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             },
-          },
+          }),
         },
       },
+
       ProjectOverviewCmp: {
         styleOverrides: {
-          textBox: {
-            background: `linear-gradient(135deg, ${background.paper} 0%, #112418 100%)`,
+          textBox: ({ theme }) => ({
+            background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, #112418 100%)`,
             boxShadow: '0 1px 8px rgba(0,0,0,0.25)',
-          },
+          }),
+        },
+      },
+
+      ScrollBarCmp: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: 'rgba(255,255,255,0.10)',
+          }),
+          thumb: ({ theme }) => ({
+            backgroundColor: alpha(theme.palette.primary.main, 0.40),
+          }),
+        },
+      },
+
+      CardTabsCmp: {
+        styleOverrides: {
+          header: ({ theme }) => ({
+            background: `linear-gradient(to right, ${theme.palette.background.paper}, #112418)`,
+          }),
+          content: ({ theme }) => ({
+            background: `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
+          }),
         },
       },
     },

@@ -28,69 +28,6 @@ export const defaultDarkBase: ThemeOptions = {
     },
     divider: 'rgba(255,255,255,0.12)',
   },
-
-  components: {
-    ProjectCardCmp: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          backgroundColor: theme.palette.background.paper,
-          position: 'relative',
-          '&:hover': {
-            backgroundColor: '#2c2c2c',
-          },
-        }),
-        header: ({ theme }) => ({
-          color: theme.palette.text.primary,
-        }),
-      },
-    },
-
-    NavbarCmp: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          backgroundColor: '#141418',
-          borderBottom: `1px solid ${theme.palette.primary.main}`,
-        }),
-        // brand styleOverride using palette.gradients is in defaultDarkEnhanced
-        list: {},
-        item: {},
-        link: ({ theme }) => ({
-          color: '#888888',
-          '&:hover': { color: '#d0d0d0' },
-          '&[data-active="true"]': { color: theme.palette.primary.main },
-        }),
-        underline: ({ theme }) => ({
-          backgroundColor: theme.palette.primary.main,
-        }),
-      },
-    },
-
-    ProjectsOverviewCmp: {
-      // styleOverrides using palette.gradients are in defaultDarkEnhanced
-    },
-
-    ScrollBarCmp: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          backgroundColor: theme.palette.divider,
-        }),
-        thumb: {
-          backgroundColor: 'rgba(255,255,255,0.50)',
-        },
-      },
-    },
-
-    CardTabsCmp: {
-      styleOverrides: {
-        header: {
-          backgroundColor: '#0d0d12',
-        },
-        content: ({ theme }) => ({
-          backgroundColor: theme.palette.background.paper,
-        }),
-      },
-    },
-  },
 };
 
 export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): ThemeOptions => {
@@ -115,32 +52,82 @@ export const defaultDarkEnhanced: RegisteredTheme["enhance"] = (base: Theme): Th
       },
     },
     components: {
+      ProjectCardCmp: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.background.paper,
+            position: 'relative',
+            '&:hover': {
+              backgroundColor: '#2c2c2c',
+            },
+          }),
+          header: ({ theme }) => ({
+            color: theme.palette.text.primary,
+          }),
+        },
+      },
+
+      NavbarCmp: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            backgroundColor: '#141418',
+            borderBottom: `1px solid ${theme.palette.primary.main}`,
+          }),
+          link: ({ theme }) => ({
+            color: '#888888',
+            '&:hover': { color: '#d0d0d0' },
+            '&[data-active="true"]': { color: theme.palette.primary.main },
+          }),
+          underline: ({ theme }) => ({
+            backgroundColor: theme.palette.primary.main,
+          }),
+          brand: ({ theme }) => ({
+            '& .MuiTypography-root': {
+              display: 'inline-block',
+              background: theme.palette.gradients.primary(),
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            },
+          }),
+        },
+      },
+
       ProjectsOverviewCmp: {
         styleOverrides: {
-          root: {
-            background: bgGrad(),
-          },
-          header: {
+          root: ({ theme }) => ({
+            background: theme.palette.gradients.background(),
+          }),
+          header: ({ theme }) => ({
             textAlign: 'center',
             '& .MuiTypography-root': {
               display: 'inline-block',
-              background: primaryGrad(),
+              background: theme.palette.gradients.primary(),
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             },
-          },
+          }),
         },
       },
-      NavbarCmp: {
+
+      ScrollBarCmp: {
         styleOverrides: {
-          brand: {
-            '& .MuiTypography-root': {
-              display: 'inline-block',
-              background: primaryGrad(),
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            },
-          },
+          root: ({ theme }) => ({
+            backgroundColor: theme.palette.divider,
+          }),
+          thumb: ({ theme }) => ({
+            backgroundColor: 'rgba(255,255,255,0.50)',
+          }),
+        },
+      },
+
+      CardTabsCmp: {
+        styleOverrides: {
+          header: ({ theme }) => ({
+            backgroundColor: '#0d0d12',
+          }),
+          content: ({ theme }) => ({
+            backgroundColor: theme.palette.background.paper,
+          }),
         },
       },
     },
