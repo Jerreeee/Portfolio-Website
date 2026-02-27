@@ -185,6 +185,20 @@ export const defaultSharedBase: ThemeOptions = {
     },
 
     ProjectsOverviewCmp: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          background: theme.palette.gradients.background(),
+        }),
+        header: ({ theme }) => ({
+          textAlign: 'center',
+          '& .MuiTypography-root': {
+            display: 'inline-block',
+            background: theme.palette.gradients.primary(),
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          },
+        }),
+      },
       slotAnimations: {
         root:        mergeAnims(true, anims.staggerChildren(0.25)),
         header:      mergeAnims(false, anims.fadeInUp()),
@@ -236,6 +250,14 @@ export const defaultSharedBase: ThemeOptions = {
         height: '60px',
       },
       styleOverrides: {
+        brand: ({ theme }) => ({
+          '& .MuiTypography-root': {
+            display: 'inline-block',
+            background: theme.palette.gradients.primary(),
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          },
+        }),
         backArrow: ({ theme }) => ({
           '& .MuiButtonBase-root': {
             color: theme.palette.secondary.main,

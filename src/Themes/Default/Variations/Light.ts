@@ -93,31 +93,6 @@ export const defaultLightEnhanced: RegisteredTheme["enhance"] = (base: Theme): T
           underline: ({ theme }) => ({
             backgroundColor: theme.palette.primary.main,
           }),
-          brand: ({ theme }) => ({
-            '& .MuiTypography-root': {
-              display: 'inline-block',
-              background: theme.palette.gradients.primary(),
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            },
-          }),
-        },
-      },
-
-      ProjectsOverviewCmp: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            background: theme.palette.gradients.background(),
-          }),
-          header: ({ theme }) => ({
-            textAlign: 'center',
-            '& .MuiTypography-root': {
-              display: 'inline-block',
-              background: theme.palette.gradients.primary(),
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            },
-          }),
         },
       },
 
