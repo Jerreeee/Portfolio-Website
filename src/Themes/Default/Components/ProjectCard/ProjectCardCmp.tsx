@@ -210,6 +210,7 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
                 .url()
                 .value}
               download
+              sx={{ color: 'text.primary' }}
             >
               <DownloadIcon sx={{ fontSize: 16 }} />
             </IconButton>

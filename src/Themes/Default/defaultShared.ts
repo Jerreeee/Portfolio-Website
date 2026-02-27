@@ -152,14 +152,14 @@ export const defaultSharedBase: ThemeOptions = {
         (theme) => ({
           type: 'outline',
           id: 'card-border',
-          color: theme.palette.secondary.main,
+          color: theme.palette.primary.main,
           opacity: theme.palette.mode === 'dark' ? 0.75 : 0.5,
           radius: 1,
         }),
         (theme) => ({
           type: 'combined',
           id: 'card-hover',
-          borderColor: theme.palette.mode === 'dark' ? theme.palette.secondary.light : theme.palette.secondary.main,
+          borderColor: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.main,
           borderOpacity: 1,
           borderRadius: 2,
           glowColor: theme.palette.mode === 'dark' ? theme.palette.secondary.light : theme.palette.secondary.main,
