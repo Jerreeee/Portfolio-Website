@@ -2,8 +2,9 @@
 // @generate-component-classes
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -150,46 +151,39 @@ export interface ProjectCardCmpProps {
 }
 
 export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
-  const [isPressed, setIsPressed] = useState(false);
+  const router = useRouter();
+  const [isRevealed, setIsRevealed] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // True once the finger has been held still for 300 ms — after this point
-  // neither pointerup nor pointercancel clears the pressed state.
-  const committed = useRef(false);
+  const projectUrl = PATHS.PROJECT_PAGE({ slug: project.slug }).url().value;
 
-  // Dismiss when tapping outside this card
+  // Collapse when tapping outside this card
   useEffect(() => {
-    if (!isPressed) return;
+    if (!isRevealed) return;
     const handleGlobalPointerDown = (e: PointerEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setIsPressed(false);
+        setIsRevealed(false);
       }
     };
     document.addEventListener('pointerdown', handleGlobalPointerDown);
     return () => document.removeEventListener('pointerdown', handleGlobalPointerDown);
-  }, [isPressed]);
+  }, [isRevealed]);
 
-  const handlePointerDown = () => {
-    committed.current = false;
-    holdTimer.current = setTimeout(() => {
-      committed.current = true;
-      holdTimer.current = null;
-      setIsPressed(true); // nothing shows until threshold is crossed
-    }, 200);
+  // Touch: first tap reveals, second tap navigates. Mouse: always navigates.
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const isTouch = (e.nativeEvent as PointerEvent).pointerType === 'touch';
+    if (isTouch && !isRevealed) {
+      e.preventDefault();
+      setIsRevealed(true);
+    }
   };
 
-  const clearPress = () => {
-    if (holdTimer.current) {
-      clearTimeout(holdTimer.current);
-      holdTimer.current = null;
+  // Tapping the reveal panel (tech icons / description area) also reveals or navigates.
+  const handleRevealPanelClick = () => {
+    if (!isRevealed) {
+      setIsRevealed(true);
+    } else {
+      router.push(projectUrl);
     }
-    if (!committed.current) {
-      setIsPressed(false);
-    }
-    // Don't reset committed here — on mobile both pointercancel and pointerup
-    // fire for a drag gesture. If we reset after the first event, the second
-    // call would see committed=false and incorrectly clear isPressed.
-    // handlePointerDown resets committed at the start of each new press.
   };
 
   const item: MediaItem = getMediaItemsFromManifest(project.manifest, [
@@ -246,15 +240,13 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
   return (
     <ProjectCardWrapper
       ref={wrapperRef}
-      data-pressed={isPressed ? 'true' : undefined}
-      onPointerDown={handlePointerDown}
-      onPointerUp={clearPress}
-      onPointerCancel={clearPress}
+      data-revealed={isRevealed ? 'true' : undefined}
     >
       <ProjectCardRoot viewport={{ once: true, amount: 0.3 }}>
 
         <Link
-          href={PATHS.PROJECT_PAGE({ slug: project.slug }).url().value}
+          href={projectUrl}
+          onClick={handleLinkClick}
           style={{
             textDecoration: 'none',
             color: 'inherit',
@@ -321,10 +313,10 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
 
         {iconButtons}
 
-        <ProjectCardRevealPanel>
+        <ProjectCardRevealPanel onClick={handleRevealPanelClick}>
           <motion.div
             initial={false}
-            animate={{ height: isPressed ? 'auto' : 0 }}
+            animate={{ height: isRevealed ? 'auto' : 0 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1.0] }}
             style={{ overflow: 'hidden' }}
           >
@@ -342,30 +334,50 @@ export default function ProjectCardCmp({ project }: ProjectCardCmpProps) {
             </Typography>
           </motion.div>
 
-          {project.technologies?.Core && (
-            <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-              <ProjectCardTechList>
-                {project.technologies.Core.map((tech, i) => (
-                  <ProjectCardTechIcon key={i}>
-                    <IconCmp techName={tech.name} showDisplayName={false} />
-                  </ProjectCardTechIcon>
-                ))}
-              </ProjectCardTechList>
-              {/* Gradient fade for overflowing tech icons */}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 32,
-                  background: (theme) =>
-                    `linear-gradient(to right, transparent, ${theme.palette.background.paper})`,
-                  pointerEvents: 'none',
-                }}
-              />
-            </Box>
-          )}
+          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
+            {project.technologies?.Core && (
+              <Box sx={{ position: 'relative', overflow: 'hidden', flex: 1, minWidth: 0 }}>
+                <ProjectCardTechList>
+                  {project.technologies.Core.map((tech, i) => (
+                    <ProjectCardTechIcon key={i}>
+                      <IconCmp techName={tech.name} showDisplayName={false} />
+                    </ProjectCardTechIcon>
+                  ))}
+                </ProjectCardTechList>
+                {/* Gradient fade for overflowing tech icons */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 32,
+                    background: (theme) =>
+                      `linear-gradient(to right, transparent, ${theme.palette.background.paper})`,
+                    pointerEvents: 'none',
+                  }}
+                />
+              </Box>
+            )}
+            <AnimatePresence>
+              {isRevealed && (
+                <motion.div
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 8 }}
+                  transition={{ duration: 0.2, delay: 0.1 }}
+                  style={{ flexShrink: 0, marginLeft: 'auto', paddingLeft: 8 }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{ color: 'primary.main', whiteSpace: 'nowrap', fontWeight: 600 }}
+                  >
+                    View project →
+                  </Typography>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Box>
         </ProjectCardRevealPanel>
 
       </ProjectCardRoot>
