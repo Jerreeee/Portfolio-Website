@@ -21,6 +21,7 @@
             "generate:icons-transformed": "npm run ts -- scripts/generate-normalized-svgIcons.ts",
             "generate:icons-manifest": "npm run ts -- scripts/generate-icons-manifest.ts",
             "generate:resume": "npm run ts -- scripts/generate-resume-pdf.ts",
+            "generate:linkedin-banner": "npm run ts -- scripts/generate-linkedin-banner.ts",
             "generate:all": "npm run generate:projects && npm run generate:components && npm run generate:mui-theme-augmentation && npm run generate:svg-icons",
             "serve": "npx serve out"
       },

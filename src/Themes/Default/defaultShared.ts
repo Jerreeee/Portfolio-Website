@@ -147,6 +147,26 @@ export const defaultSharedBase: ThemeOptions = {
       },
     },
 
+    LinkedInBannerCmp: {
+      svgFilters: [
+        () => ({
+          type: 'outerGlow' as const,
+          id: 'code-snippet-glow',
+          color: 'white',
+          opacity: 1,
+          strength: 8,
+          glowOnly: true,
+        }),
+        (theme) => ({
+          type: 'gradient' as const,
+          id: 'code-snippet-gradient',
+          from: theme.palette.primary.main,
+          to: theme.palette.secondary.main,
+          angle: 135,
+        }),
+      ],
+    },
+
     ProjectCardCmp: {
       svgFilters: [
         (theme) => ({

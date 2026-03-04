@@ -4,6 +4,8 @@ import { useAppTheme } from '@/Themes/ThemeProvider';
 import { OutlineFilter } from './OutlineFilter';
 import { InnerGlowFilter } from './InnerGlowFilter';
 import { CombinedFilter } from './CombinedFilter';
+import { OuterGlowFilter } from './OuterGlowFilter';
+import { GradientFilter } from './GradientFilter';
 import type { SvgFilterDef, SvgFilterEntry } from '.';
 
 export function SvgFilterDefs() {
@@ -24,6 +26,8 @@ export function SvgFilterDefs() {
         {allFilters.map(def => {
           if (def.type === 'outline') return <OutlineFilter key={def.id} {...def} />;
           if (def.type === 'innerGlow') return <InnerGlowFilter key={def.id} {...def} />;
+          if (def.type === 'outerGlow') return <OuterGlowFilter key={def.id} {...def} />;
+          if (def.type === 'gradient') return <GradientFilter key={def.id} {...def} />;
           return <CombinedFilter key={def.id} {...def} />;
         })}
       </defs>
