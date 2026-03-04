@@ -87,7 +87,7 @@ export default function LinkedInBannerPage() {
           right: 0,
           width: '55%',
           height: '100%',
-          background: `linear-gradient(to right, transparent 0%, ${primary}15 60%, ${primary}28 100%)`,
+          background: `linear-gradient(to right, transparent 0%, ${primary}40 75%, ${primary}70 100%)`,
           pointerEvents: 'none',
         }}
       />
@@ -104,6 +104,24 @@ export default function LinkedInBannerPage() {
           pointerEvents: 'none',
         }}
       >
+        {/* Mask to dim circuit behind the code snippet */}
+        <defs>
+          <filter id="circuit-mask-blur">
+            <feGaussianBlur stdDeviation={40} />
+          </filter>
+          <mask id="circuit-dim">
+            <rect width="1584" height="396" fill="white" />
+            <g filter="url(#circuit-mask-blur)">
+              <polygon
+                points="240,90 900,30 860,396 120,396"
+                fill="black"
+                opacity={0.85}
+              />
+            </g>
+          </mask>
+        </defs>
+
+        <g mask="url(#circuit-dim)" style={{ filter: 'brightness(10)' }}>
         {/* === CIRCUIT TRACES === */}
 
         {/* Trace A: enters from left edge, runs right */}
@@ -230,6 +248,7 @@ export default function LinkedInBannerPage() {
           fill={secondary}
           opacity={0.26}
         />
+        </g>
       </Box>
 
       {/* Left side — 3D code snippet */}
@@ -273,13 +292,14 @@ export default function LinkedInBannerPage() {
               overflow: 'hidden',
               background: `${primary}33`,
               boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 60px ${primary}22`,
+              opacity: 0.6,
             }}
           >
             <SyntaxHighlighter
               language="cpp"
               style={transparentOneDark}
               wrapLines
-              lineProps={{ style: { filter: 'saturate(1.8) brightness(1.3)' } }}
+              lineProps={{ style: { filter: 'saturate(1.8) brightness(1.8)' } }}
               codeTagProps={{
                 style: { background: 'transparent' },
               }}
@@ -287,7 +307,7 @@ export default function LinkedInBannerPage() {
                 margin: 0,
                 padding: '16px 20px',
                 width: '100%',
-                fontSize: '19px',
+                fontSize: '24px',
                 lineHeight: '1.5',
                 background: 'transparent !important' as 'transparent',
                 backgroundColor: 'transparent',
@@ -320,6 +340,8 @@ export default function LinkedInBannerPage() {
           pr: 6,
           pb: 5,
           gap: 1,
+          zIndex: 1,
+          filter: 'drop-shadow(0 0 1px rgba(0,0,0,1)) brightness(1.3)',
         }}
       >
         {/* Name */}
