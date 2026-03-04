@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Box } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -46,6 +46,14 @@ const TECH_ICONS = [
 ];
 
 export default function LinkedInBannerPage() {
+  return (
+    <Suspense>
+      <LinkedInBannerContent />
+    </Suspense>
+  );
+}
+
+function LinkedInBannerContent() {
   const searchParams = useSearchParams();
   const { setTheme, theme } = useAppTheme();
 

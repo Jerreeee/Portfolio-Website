@@ -99,7 +99,7 @@ export default function ResumePage() {
           startIcon={<DownloadIcon />}
           sx={{ textTransform: "none", fontWeight: 600, borderRadius: `${cornerR}px` }}
           href="/files/resume.pdf"
-          download
+          download="resume-jeroen-denayer.pdf"
         >
           Download PDF
         </Button>

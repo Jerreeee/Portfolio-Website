@@ -45,6 +45,7 @@ declare module '@mui/material/styles' {
 
   // Custom component definitions
   interface ComponentsProps {
+        LinkedInBannerCmp?: Record<string, never>;
     // AUTO-GENERATED ComponentsProps START
     CardTabsCmp?: CardTabsCmpProps;
     CodeBlockCmp?: CodeBlockCmpProps;
@@ -89,6 +90,7 @@ declare module '@mui/material/styles' {
 // AUTO-GENERATED ComponentNameToClassKey END
   }
   interface Components {
+    LinkedInBannerCmp?: ThemedComponent<'LinkedInBannerCmp'>;
     // AUTO-GENERATED Components START
     CardTabsCmp?: ThemedComponent<'CardTabsCmp'>;
     CodeBlockCmp?: ThemedComponent<'CodeBlockCmp'>;
