@@ -135,7 +135,7 @@ export default function LinkedInBannerPage() {
             <rect width="1584" height="396" fill="white" />
             <g filter="url(#circuit-mask-blur)">
               <polygon
-                points="240,90 900,30 860,396 120,396"
+                points="361,94 1010,60 967,500 212,500"
                 fill="black"
                 opacity={0.85}
               />
@@ -281,7 +281,7 @@ export default function LinkedInBannerPage() {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          pl: 'calc(64px + 120px)',
+          pl: 'calc(64px + 140px)',
           pt: 4,
           perspective: '1200px',
         }}
@@ -447,6 +447,42 @@ export default function LinkedInBannerPage() {
             }}
           >
             ···
+          </Box>
+        </Box>
+
+        {/* Website link */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            mt: 0.5,
+          }}
+        >
+          <Box
+            component="svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={theme.palette.text.secondary}
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            sx={{ width: 24, height: 24, opacity: 0.7 }}
+          >
+            <circle cx={12} cy={12} r={10} />
+            <ellipse cx={12} cy={12} rx={4} ry={10} />
+            <line x1={2} y1={12} x2={22} y2={12} />
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              fontSize: '22px',
+              fontWeight: 400,
+              color: theme.palette.text.secondary,
+              opacity: 0.8,
+            }}
+          >
+            jeroendenayer.com
           </Box>
         </Box>
       </Box>
