@@ -40,6 +40,22 @@ export const iconManifest = {
     "aspectRatio": 0.9053879061528508,
     "displayName": "C"
   },
+  "Claude": {
+    "type": "svg",
+    "src": "/Icons/Claude.svg",
+    "width": 24,
+    "height": 24,
+    "aspectRatio": 1,
+    "displayName": "Claude"
+  },
+  "ClaudeCode": {
+    "type": "svg",
+    "src": "/Icons/ClaudeCode.svg",
+    "width": 128,
+    "height": 128,
+    "aspectRatio": 1,
+    "displayName": "ClaudeCode"
+  },
   "CMake": {
     "type": "svg",
     "src": "/Icons/CMake.svg",
@@ -72,14 +88,13 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "error"
   },
-  "GitHub": {
+  "Github": {
     "type": "svg",
-    "src": "/Icons/GitHub.svg",
+    "src": "/Icons/Github.svg",
     "width": 25,
     "height": 25,
     "aspectRatio": 1,
-    "displayName": "GitHub",
-    "invertOnDark": true
+    "displayName": "Github"
   },
   "GLM": {
     "type": "image",
@@ -113,13 +128,13 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "JSON"
   },
-  "LinkedIn": {
+  "Linkedin": {
     "type": "svg",
-    "src": "/Icons/LinkedIn.svg",
+    "src": "/Icons/Linkedin.svg",
     "width": 382,
     "height": 382,
     "aspectRatio": 1,
-    "displayName": "LinkedIn"
+    "displayName": "Linkedin"
   },
   "Lua": {
     "type": "svg",

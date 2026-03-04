@@ -39,7 +39,7 @@ const CODE_SNIPPET = `void Developer::StartDay()
 }`;
 
 const TECH_ICONS = [
-  { name: 'ClaudeCode', src: '/Icons/ClaudeCode.svg' },
+  { name: 'Claude', src: '/Icons/Claude.svg' },
   { name: 'C++', src: '/Icons/cplusplus.svg' },
   { name: 'Python', src: '/Icons/Python.svg' },
   { name: 'React', src: '/Icons/React.svg' },

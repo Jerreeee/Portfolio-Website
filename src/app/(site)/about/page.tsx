@@ -16,7 +16,7 @@ import { gradientH1Styles } from '@/Themes/Default/themeUtils';
 
 export default function About() {
   const { theme } = useAppTheme();
-  const { IconCmp } = useComponents();
+  const { IconCmp, MarkdownRendererCmp } = useComponents();
   const { bio, contact, skills } = aboutInfo;
 
   return (
@@ -113,15 +113,9 @@ export default function About() {
               About Me
             </Typography>
 
-            <Typography
-              variant="body1"
-              sx={{
-                color: theme.palette.text.secondary,
-                maxWidth: 700,
-              }}
-            >
-              {bio.description}
-            </Typography>
+            <Box sx={{ maxWidth: 700 }}>
+              <MarkdownRendererCmp markdown={bio.description} />
+            </Box>
           </Grid>
         </Grid>
 

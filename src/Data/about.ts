@@ -5,9 +5,9 @@ export const aboutInfo: AboutInfo = {
   bio: {
     firstName: "Jeroen",
     lastName: "Denayer",
-    tagline: "C++ Programmer & Technical Artist",
+    tagline: "Software Developer",
     description:
-      "I’m Jeroen Denayer, a C++ programmer and technical artist with a strong interest in building reliable systems and tools that improve workflows and performance. During my studies in Game Graphics Production, I discovered procedural workflows through Houdini and became interested in how technical solutions can make complex production pipelines more efficient. While working at Neopica, I developed procedural tools used in real production environments, which motivated me to pursue a second bachelor focused on C++ and low-level graphics programming. There, I worked on rendering systems, engine features, and custom tools, learning how to analyze problems, optimize performance, and design structured technical solutions.",
+      "Software developer specializing in **C++** and **low-level systems programming**. I build tools and systems that make complex workflows faster and less repetitive.\n\nI’m excited about the future of **AI in software development** and actively integrate AI tools into my own workflow, from code generation to architectural planning. It’s changing how I build software, and I want to be at the forefront of that shift.\n\nMy background is in game technology: I studied Game Graphics Production and Game Development at **DAE**, worked at **Neopica** building procedural pipeline tools, and developed a strong foundation in **C++**, **GPU programming**, and **real-time rendering**. That experience taught me to write code that’s both performant and practical.",
     profileImage: "/Images/profilepic.jpg",
   },
 
@@ -54,6 +54,7 @@ export const aboutInfo: AboutInfo = {
       {
         title: "Tools & Pipeline",
         items: [
+          "Claude",
           "Houdini",
           "Visual_Studio",
           "Visual_Studio_Code",
