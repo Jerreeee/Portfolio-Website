@@ -33,6 +33,10 @@ import { data as MayaReferencePlaneSetupData } from '@/Data/Projects/MayaReferen
 import MayaReferencePlaneSetupCmp from '@/Data/Projects/MayaReferencePlaneSetup/ProjectCmp';
 import { projectManifest as MayaReferencePlaneSetupManifest } from '@/Data/Projects/MayaReferencePlaneSetup/manifest';
 
+import { data as AIPoweredDevelopmentData } from '@/Data/Projects/AIPoweredDevelopment/data';
+import AIPoweredDevelopmentCmp from '@/Data/Projects/AIPoweredDevelopment/ProjectCmp';
+import { projectManifest as AIPoweredDevelopmentManifest } from '@/Data/Projects/AIPoweredDevelopment/manifest';
+
 const Overpass2ProjectInfo: ProjectInfo = {
   ...Overpass2Data,
   component: Overpass2Cmp,
@@ -75,7 +79,14 @@ const MayaReferencePlaneSetupProjectInfo: ProjectInfo = {
   manifest: MayaReferencePlaneSetupManifest,
 };
 
+const AIPoweredDevelopmentProjectInfo: ProjectInfo = {
+  ...AIPoweredDevelopmentData,
+  component: AIPoweredDevelopmentCmp,
+  manifest: AIPoweredDevelopmentManifest,
+};
+
 export const projects: ProjectInfo[] = [
+  AIPoweredDevelopmentProjectInfo,
   Overpass2ProjectInfo,
   VulkanDeferredRendererProjectInfo,
   PythonHoudiniTrackToolProjectInfo,
@@ -86,6 +97,7 @@ export const projects: ProjectInfo[] = [
 ];
 
 export const projectSlugs = [
+  "AIPoweredDevelopment",
   "Overpass2",
   "VulkanDeferredRenderer",
   "PythonHoudiniTrackTool",
@@ -98,4 +110,6 @@ export const projectSlugs = [
 // AUTO-GENERATED PROJECT IMPORTS END
 
 export type ValidProjectSlug = typeof projectSlugs[number];
+
+
 

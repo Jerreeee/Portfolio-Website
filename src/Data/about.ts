@@ -9,7 +9,7 @@ export const aboutInfo: AboutInfo = {
     description:
       "Software developer specializing in **C++** and **low-level systems programming**. I build tools and systems that make complex workflows faster and less repetitive.",
     aiDescription:
-      "I’m excited about the future of **AI in software development** and actively integrate AI tools into my own workflow. I’ve found that working with AI doesn’t replace the need for strong fundamentals — it amplifies them. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short. It’s changing how I build software, and I want to be at the forefront of that shift.",
+      "I’m excited about the future of **AI in software development** and actively integrate AI tools into my own workflow. I’ve found that working with AI doesn’t replace the need for strong fundamentals, it amplifies them. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short. It’s changing how I build software, and I want to be at the forefront of that shift.",
     backgroundDescription:
       "My background is in game technology: I studied Game Graphics Production and Game Development at **DAE**, worked at **Neopica** building procedural pipeline tools, and developed a strong foundation in **C++**, **GPU programming**, and **real-time rendering**. That experience taught me to write code that’s both performant and practical.",
     profileImage: "/Images/profilepic.jpg",
