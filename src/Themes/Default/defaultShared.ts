@@ -247,6 +247,15 @@ export const defaultSharedBase: ThemeOptions = {
     },
 
     CardTabsCmp: {
+      svgFilters: [
+        (theme) => ({
+          type: 'outline' as const,
+          id: 'timeline-tab-selected',
+          color: theme.palette.secondary.main,
+          opacity: 1,
+          radius: 1,
+        }),
+      ],
       styleOverrides: {
         tab: ({ theme }) => ({
           backgroundColor: alpha(theme.palette.common.white, theme.palette.mode === 'dark' ? 0.06 : 0.60),
@@ -255,6 +264,16 @@ export const defaultSharedBase: ThemeOptions = {
           },
           '&[data-selected="true"]': {
             borderColor: theme.palette.secondary.main,
+            background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.12)}, ${alpha(theme.palette.secondary.main, 0.10)})`,
+            color: theme.palette.text.primary,
+          },
+        }),
+        timelineTab: ({ theme }) => ({
+          backgroundColor: alpha(theme.palette.common.white, theme.palette.mode === 'dark' ? 0.06 : 0.60),
+          '&:hover': {
+            backgroundColor: alpha(theme.palette.primary.main, 0.10),
+          },
+          '&[data-selected="true"]': {
             background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.12)}, ${alpha(theme.palette.secondary.main, 0.10)})`,
             color: theme.palette.text.primary,
           },

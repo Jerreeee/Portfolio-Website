@@ -14,7 +14,7 @@ export const projectCardCmp = createUtilityClasses('ProjectCardCmp', [
   'description',
   'wrapper',
   'mobileTitle',
-  'revealPanel',
+  'revealPanel'
 ] as const);
 
 export type ProjectCardCmpClassKey = typeof projectCardCmp.slots[number];

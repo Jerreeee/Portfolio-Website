@@ -7,6 +7,7 @@ export const cardTabsCmp = createUtilityClasses('CardTabsCmp', [
   'root',
   'header',
   'tab',
+  'timelineTab',
   'content'
 ] as const);
 

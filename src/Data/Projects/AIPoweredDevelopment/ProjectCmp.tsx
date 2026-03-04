@@ -44,7 +44,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
           My Journey with AI
         </Typography>
 
-        <CardTabsCmp>
+        <CardTabsCmp variant="timeline">
           <CardTabsCmp.Item label="Skeptic">
             <MarkdownRendererCmp
               markdown={`
