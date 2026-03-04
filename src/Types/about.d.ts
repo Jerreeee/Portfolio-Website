@@ -39,6 +39,8 @@ export interface AboutBio {
   lastName: string;
   tagline: string;
   description: string;
+  aiDescription: string;
+  backgroundDescription: string;
   profileImage: string;
 }
 

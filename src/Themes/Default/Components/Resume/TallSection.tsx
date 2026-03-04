@@ -8,7 +8,7 @@ import {
 } from "./ResumeCmp";
 
 export interface TallSectionProps {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 }
 

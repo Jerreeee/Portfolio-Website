@@ -61,6 +61,10 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
       let v = Math.max(Math.min(start, max), min);
       for (let i = 0; i < 8; i++) {
         page.style.setProperty(prop, String(v));
+        // Keep --sl in sync with --sm during measurement
+        if (prop === "--sm") {
+          page.style.setProperty("--sl", String(1 + (v - 1) * 0.3));
+        }
         col.style.flex = "none";
         const h = col.getBoundingClientRect().height;
         col.style.flex = "";
@@ -99,7 +103,7 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
         ref={pageContainerRef}
         data-ready={sm !== 1 || sf !== 1 ? "true" : undefined}
         data-overflow={overflowed ? "true" : undefined}
-        style={{ "--sm": sm, "--sf": sf } as React.CSSProperties}
+        style={{ "--sm": sm, "--sf": sf, "--sl": 1 + (sm - 1) * 0.3 } as React.CSSProperties}
       >
         <ResumeHeader>
           <HeaderName>
@@ -133,7 +137,11 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
 
         <RightColumn ref={rightColRef}>
           <TallSection title="SUMMARY">
-            <SummaryText>{bio.description}</SummaryText>
+            <SummaryText>{`${bio.description}\n\n${bio.backgroundDescription}`.replace(/\*\*/g, '')}</SummaryText>
+          </TallSection>
+
+          <TallSection title={<>AI <span style={{ fontSize: '0.65em', marginLeft: '1.5mm' }}>POWERED DEVELOPMENT</span></>}>
+            <SummaryText>{bio.aiDescription.replace(/\*\*/g, '')}</SummaryText>
           </TallSection>
 
           <TallSection title="EXPERIENCE">

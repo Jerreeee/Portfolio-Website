@@ -5,6 +5,7 @@ import { Box, Button } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useAppTheme } from "@/Themes/ThemeProvider";
 import Resume from "@/Themes/Default/Components/Resume/Resume";
+import { getTailoring } from "@/Data/Companies";
 
 const A4_W_MM = 210;
 const A4_H_MM = 297;
@@ -154,7 +155,7 @@ export default function ResumePage() {
                   backfaceVisibility: "hidden",
                 }}
               >
-                <Resume />
+                <Resume tailoring={getTailoring(null)} />
               </Box>
             </Box>
           </Box>

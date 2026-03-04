@@ -161,7 +161,8 @@ export const TallDivider = makeSlot(Divider, 'tallDivider')({
 
 export const SummaryText = makeSlot(Typography, 'summaryText')({
   fontSize: 'calc(3.3mm * var(--sf, 1))',
-  lineHeight: 'calc(1.5 * var(--sm, 1))',
+  lineHeight: 'calc(1.5 * var(--sl, 1))',
+  whiteSpace: 'pre-line',
 });
 
 /* ===========================
@@ -224,7 +225,7 @@ export const EntrySub = makeSlot(Typography, 'entrySub')({
 
 export const EntryBody = makeSlot(Typography, 'entryBody')({
   fontSize: 'calc(3.1mm * var(--sf, 1))',
-  lineHeight: 'calc(1.45 * var(--sm, 1))',
+  lineHeight: 'calc(1.45 * var(--sl, 1))',
 });
 
 export const EntryLink = makeSlot(Link, 'entryLink')({

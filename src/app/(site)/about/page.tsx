@@ -114,7 +114,7 @@ export default function About() {
             </Typography>
 
             <Box sx={{ maxWidth: 700 }}>
-              <MarkdownRendererCmp markdown={bio.description} />
+              <MarkdownRendererCmp markdown={`${bio.description}\n\n${bio.aiDescription}\n\n${bio.backgroundDescription}`} />
             </Box>
           </Grid>
         </Grid>

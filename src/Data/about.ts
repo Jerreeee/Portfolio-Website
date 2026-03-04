@@ -7,7 +7,11 @@ export const aboutInfo: AboutInfo = {
     lastName: "Denayer",
     tagline: "Software Developer",
     description:
-      "Software developer specializing in **C++** and **low-level systems programming**. I build tools and systems that make complex workflows faster and less repetitive.\n\nI’m excited about the future of **AI in software development** and actively integrate AI tools into my own workflow, from code generation to architectural planning. It’s changing how I build software, and I want to be at the forefront of that shift.\n\nMy background is in game technology: I studied Game Graphics Production and Game Development at **DAE**, worked at **Neopica** building procedural pipeline tools, and developed a strong foundation in **C++**, **GPU programming**, and **real-time rendering**. That experience taught me to write code that’s both performant and practical.",
+      "Software developer specializing in **C++** and **low-level systems programming**. I build tools and systems that make complex workflows faster and less repetitive.",
+    aiDescription:
+      "I’m excited about the future of **AI in software development** and actively integrate AI tools into my own workflow. I’ve found that working with AI doesn’t replace the need for strong fundamentals — it amplifies them. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short. It’s changing how I build software, and I want to be at the forefront of that shift.",
+    backgroundDescription:
+      "My background is in game technology: I studied Game Graphics Production and Game Development at **DAE**, worked at **Neopica** building procedural pipeline tools, and developed a strong foundation in **C++**, **GPU programming**, and **real-time rendering**. That experience taught me to write code that’s both performant and practical.",
     profileImage: "/Images/profilepic.jpg",
   },
 
@@ -83,10 +87,10 @@ export const aboutInfo: AboutInfo = {
 experience: {
   work: [
     {
-      title: "Technical Artist — Neopica",
+      title: "Tool Developer — Neopica",
       right: "2022–23",
       body:
-        "I developed and maintained Houdini-based procedural tools for Unreal Engine used in the production of Overpass 2. Each tool handled a specific stage of the level pipeline—terrain, roads, cliffs, and vegetation—connected through PCG to generate large open worlds efficiently and predictably. I extended functionality, fixed pipeline issues, and ensured the tools remained stable, performant, and reliable for the environment art team. This work required structured problem-solving, debugging complex systems, and designing tools that behaved consistently under production constraints.",
+        "I developed and maintained Houdini-based procedural tools for Unreal Engine used in the production of Overpass 2. Each tool handled a specific stage of the level pipeline—terrain, roads, cliffs, and vegetation—connected through PCG to generate large open worlds efficiently and predictably. This involved writing geometry-processing algorithms in VEX (Houdini's C-like scripting language) and Python scripts for pipeline automation. I extended functionality, fixed pipeline issues, and ensured the tools remained stable, performant, and reliable for the environment art team. This work required structured problem-solving, debugging complex systems, and making sure everything kept working reliably in production.",
     },
   ],
   projects: [
