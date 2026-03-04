@@ -88,13 +88,14 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "error"
   },
-  "Github": {
+  "GitHub": {
     "type": "svg",
-    "src": "/Icons/Github.svg",
+    "src": "/Icons/GitHub.svg",
     "width": 25,
     "height": 25,
     "aspectRatio": 1,
-    "displayName": "Github"
+    "displayName": "GitHub",
+    "invertOnDark": true
   },
   "GLM": {
     "type": "image",
