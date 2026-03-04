@@ -62,7 +62,7 @@ export default function LinkedInBannerPage() {
 
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
-  const bgGrad = `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${primary}15 35%, ${secondary}18 65%, ${theme.palette.background.default} 100%)`;
+  const bgColor = `color-mix(in srgb, ${theme.palette.background.default} 92%, ${primary})`;
 
   return (
     <Box
@@ -73,21 +73,43 @@ export default function LinkedInBannerPage() {
         height: 396,
         display: 'flex',
         alignItems: 'center',
-        background: bgGrad,
+        background: bgColor,
         overflow: 'hidden',
         position: 'relative',
         fontFamily: '"Inter", "Roboto", sans-serif',
+        filter: 'contrast(1.3) saturate(1.6) brightness(1.1)',
       }}
     >
+      {/* #OPENTOWORK badge */}
+      <Box
+        component="span"
+        sx={{
+          position: 'absolute',
+          top: 16,
+          left: 24,
+          zIndex: 2,
+          fontSize: '22px',
+          fontWeight: 800,
+          letterSpacing: '0.06em',
+          background: `linear-gradient(135deg, ${primary}, ${secondary})`,
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.5))',
+        }}
+      >
+        #OPENTOWORK
+      </Box>
+
       {/* Right edge gradient overlay */}
       <Box
         sx={{
           position: 'absolute',
           top: 0,
           right: 0,
-          width: '55%',
+          width: '30%',
           height: '100%',
-          background: `linear-gradient(to right, transparent 0%, ${primary}40 75%, ${primary}70 100%)`,
+          background: `linear-gradient(to right, transparent 0%, ${primary}50 75%, ${primary}80 100%)`,
           pointerEvents: 'none',
         }}
       />
@@ -259,7 +281,7 @@ export default function LinkedInBannerPage() {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          pl: 8,
+          pl: 'calc(64px + 120px)',
           pt: 4,
           perspective: '1200px',
         }}
@@ -341,7 +363,7 @@ export default function LinkedInBannerPage() {
           pb: 5,
           gap: 1,
           zIndex: 1,
-          filter: 'drop-shadow(0 0 1px rgba(0,0,0,1)) brightness(1.3)',
+          filter: 'drop-shadow(0 0 0px rgba(0,0,0,1)) brightness(1.3)',
         }}
       >
         {/* Name */}
