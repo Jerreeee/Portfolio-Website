@@ -8,7 +8,7 @@ export const data: ProjectRequiredInfo = {
   overviewMedia: ['ai-workflow'],
   shortDescription:
     'How AI transformed my development workflow - from skeptic to daily user.',
-  mediumDescription: `I'm excited about the future of **AI in software development** and actively integrate AI tools into my workflow. Working with AI doesn't replace the need for strong fundamentals, it amplifies them. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short.
+  mediumDescription: `I'm excited about the future of **AI in software development** and actively integrate AI tools into my workflow. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short.
 
 This page covers my journey from skepticism to daily use, the workflow I've developed around **Claude Code**, and what I've learned about the evolving role of the developer.`,
   technologies: {
