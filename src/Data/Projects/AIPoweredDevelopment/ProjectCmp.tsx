@@ -54,7 +54,7 @@ When AI coding tools first started gaining traction, I was skeptical. My concern
 - **Over-reliance is dangerous.** If you let AI write your code, you stop learning how things actually work. Debugging, system design, understanding low-level behavior, these take years to build. AI shortcuts felt like they'd undermine that.
 - **What happens when it's wrong?** Without those deep skills, you won't even notice when the AI gets it wrong, let alone know how to fix it.
 
-I'd spent years learning C++, Vulkan, and systems programming the hard way. The idea that someone could skip all of that with a prompt felt wrong.
+I had spent years building up my programming skills the hard way - through struggle, mistakes, and figuring things out myself. The idea that someone could skip all of that with a prompt felt wrong.
 `}
             />
           </CardTabsCmp.Item>

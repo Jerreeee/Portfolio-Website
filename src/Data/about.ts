@@ -87,15 +87,15 @@ export const aboutInfo: AboutInfo = {
 experience: {
   work: [
     {
-      title: "Tool Developer — Neopica",
+      title: "Tool Developer - Neopica",
       right: "2022–23",
       body:
-        "I developed and maintained Houdini-based procedural tools for Unreal Engine used in the production of Overpass 2. Each tool handled a specific stage of the level pipeline—terrain, roads, cliffs, and vegetation—connected through PCG to generate large open worlds efficiently and predictably. This involved writing geometry-processing algorithms in VEX (Houdini's C-like scripting language) and Python scripts for pipeline automation. I extended functionality, fixed pipeline issues, and ensured the tools remained stable, performant, and reliable for the environment art team. This work required structured problem-solving, debugging complex systems, and making sure everything kept working reliably in production.",
+        "I developed and maintained Houdini-based procedural tools for Unreal Engine used in the production of Overpass 2. Each tool handled a specific stage of the level pipeline - terrain, roads, cliffs, and vegetation - connected through PCG to generate large open worlds efficiently and predictably. This involved writing geometry-processing algorithms in VEX (Houdini's C-like scripting language) and Python scripts for pipeline automation. I extended functionality, fixed pipeline issues, and ensured the tools remained stable, performant, and reliable for the environment art team. This work required structured problem-solving, debugging complex systems, and making sure everything kept working reliably in production.",
     },
   ],
   projects: [
     {
-      title: 'ISS Docking Simulator — Team Project',
+      title: 'ISS Docking Simulator - Team Project',
       right: 'Sep–Dec 2021',
       body: 'I created detailed 3D models and textures for ISS modules used in the \u201cSpace - The Human Quest\u201d exhibition in Antwerp. Working within a shared pipeline and version-controlled environment, I collaborated closely with teammates to integrate assets reliably and efficiently. This project strengthened my ability to work within structured workflows, coordinate with others, and deliver technically correct real-time assets under constraints.',
     },
@@ -104,14 +104,14 @@ experience: {
 
 education: [
   {
-    title: "Digital Arts & Entertainment — Game Development",
+    title: "Digital Arts & Entertainment - Game Development",
     right: "2023–25",
     sub: "Graduated magna cum laude",
     body:
       "I focused on C++ programming and engine-level systems, working on graphics, rendering, tools and UI. I implemented real-time rendering features using Vulkan and built supporting tools, including custom C# WPF utilities, to improve workflows and performance. This taught me how to analyze performance bottlenecks, reason about system behavior, and design efficient technical solutions that scale. I gained strong experience working with structured codebases and understanding how low-level systems interact.",
   },
   {
-    title: "Digital Arts & Entertainment — Game Graphics Production",
+    title: "Digital Arts & Entertainment - Game Graphics Production",
     right: "2019–22",
     sub: "Graduated cum laude",
     body:

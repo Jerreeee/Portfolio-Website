@@ -4,7 +4,7 @@ import guerrillaGamesTailoring from './GuerrillaGames';
 const defaultTailoring: ResumeTailoring = {
   experience: {
     projects: {
-      'ISS Docking Simulator — Team Project': {
+      'ISS Docking Simulator - Team Project': {
         exclude: true,
       },
     },

@@ -400,7 +400,7 @@ Before creating a viewer state let's first create our UI and the rest of our too
                     markdown={`
 Use [\`hou.phm()\`](https://www.sidefx.com/docs/houdini/hom/hou/phm.html) to get a reference to the [Python Module](https://www.sidefx.com/docs/houdini/hom/hou/HDAModule.html), and then call the function you created inside that module.
 
-Pass **\`kwargs\`** as an argument — it contains useful information such as the current node, the parameter being changed, and other event context.
+Pass **\`kwargs\`** as an argument - it contains useful information such as the current node, the parameter being changed, and other event context.
 
 Make sure the script language is set to **Python**.
 `}

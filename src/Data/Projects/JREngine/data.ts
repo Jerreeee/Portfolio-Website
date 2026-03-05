@@ -17,7 +17,7 @@ export const data: ProjectRequiredInfo = {
   shortDescription: 'A small custom 2D Game-Engine made from scratch in c++',
   mediumDescription: `**JREngine** is a 2D game engine I wrote in **C++** from the ground up.
 
-I’d used Unity and Unreal before, but I wanted to see how an engine works behind the scenes—how systems are organized and how common problems are solved. Building my own was the simplest way to learn that.
+I’d used Unity and Unreal before, but I wanted to see how an engine works behind the scenes - how systems are organized and how common problems are solved. Building my own was the simplest way to learn that.
 
 JREngine includes a component-based setup, input handling, asset loading, a basic AABB collision system and more. The goal is to keep it simple, fast, and easy to work with.
 

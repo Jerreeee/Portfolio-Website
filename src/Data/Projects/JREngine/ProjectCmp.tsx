@@ -52,7 +52,7 @@ export default function ProjectCmp({ project }: ProjectCmpProps) {
     markdown={`
 A GameObject is the basic entity that exists in a scene.  
 It represents something in the world (player, enemy, UI element, camera, trigger, etc.), but it doesn't do anything by itself.  
-A GameObject only provides identity, transform, hierarchy, and lifecycle — behavior is added by attaching components.
+A GameObject only provides identity, transform, hierarchy, and lifecycle - behavior is added by attaching components.
 
 #### What a GameObject Stores
 - A name and unique ID
@@ -71,7 +71,7 @@ auto* player = scene->CreateObject("Player");
 player->AddComponent<PlayerScriptComponent>();   // movement, input, etc.
 \`\`\`
 
-The GameObject itself does not define gameplay logic — it acts as the container that components attach to.  
+The GameObject itself does not define gameplay logic - it acts as the container that components attach to.  
 This allows the same GameObject system to represent anything: characters, UI widgets, physics bodies, triggers, cameras, etc.
 `}
   />
@@ -114,7 +114,7 @@ player->AddComponent<PlayerControllerComponent>(actionMapIndex);
 - Add behavior with \`AddComponent<T>()\`
 - Look up other components with \`GetComponent<T>()\`
 - Components may expose events or listen to events from others
-- No inheritance chains — gameplay is built by composition
+- No inheritance chains - gameplay is built by composition
 `}
   />
 </CardTabsCmp.Item>
@@ -123,7 +123,7 @@ player->AddComponent<PlayerControllerComponent>(actionMapIndex);
   <MarkdownRendererCmp
     markdown={`
 The engine uses a localized event/observer system.  
-Events are not dispatched through a global bus — instead, individual components expose their own \`Event\` objects, and other components subscribe to them.
+Events are not dispatched through a global bus - instead, individual components expose their own \`Event\` objects, and other components subscribe to them.
 
 Each event type defines:
 - a unique \`EventID\`
@@ -212,11 +212,11 @@ This allows platform-specific systems, editor overrides, unit-testing stubs, and
   <MarkdownRendererCmp
     markdown={`
 The input system is managed by an \`InputManager\` that polls devices, evaluates bindings, and executes commands.  
-Input is not queried directly inside gameplay code — it is mapped through **ActionMaps**, which can be enabled or disabled depending on the active state.
+Input is not queried directly inside gameplay code - it is mapped through **ActionMaps**, which can be enabled or disabled depending on the active state.
 
 #### Devices
-- \`SDLKeyboard\` — tracks only keys that are bound
-- \`XBoxController\` — XInput-based, supports \`Pressed\`, \`DownThisFrame\`, \`UpThisFrame\`
+- \`SDLKeyboard\` - tracks only keys that are bound
+- \`XBoxController\` - XInput-based, supports \`Pressed\`, \`DownThisFrame\`, \`UpThisFrame\`
 
 #### Action Maps
 An ActionMap groups input bindings for a specific context (menu, gameplay, pause, etc.).  
@@ -273,8 +273,8 @@ The physics system is based on axis-aligned box colliders and a single physics s
 It handles gravity, collision checks, collision response, and dispatches collision events to components.
 
 #### Collider Components
-- \`Box2DColliderComponent\` — dynamic collider attached to a GameObject  
-- \`RigidBody2DComponent\` — applies gravity and velocity, but does **not** handle collision on its own  
+- \`Box2DColliderComponent\` - dynamic collider attached to a GameObject  
+- \`RigidBody2DComponent\` - applies gravity and velocity, but does **not** handle collision on its own  
 
 #### Physics System
 \`BoxPhysicsSystem\` tracks:
@@ -456,7 +456,7 @@ auto tilemap = ResourceManager::GetAsset<TileMap>(handle);
 #### Key Points
 - Assets are imported once, referenced by handle
 - ResourceManager loads and caches automatically
-- No direct file paths in gameplay code — only handles and refs
+- No direct file paths in gameplay code - only handles and refs
 - SoftAssetRef allows delayed loading and lightweight storage
 - New asset types + importers can be added outside the engine
 `}

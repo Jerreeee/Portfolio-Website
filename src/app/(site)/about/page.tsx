@@ -185,7 +185,7 @@ export default function About() {
                   }}
                 >
                   {lang.name}
-                  {lang.level ? ` — ${lang.level}` : ''}
+                  {lang.level ? ` - ${lang.level}` : ''}
                 </Typography>
               ))}
             </Box>
