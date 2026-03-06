@@ -7,7 +7,7 @@ export const aboutInfo: AboutInfo = {
     lastName: "Denayer",
     tagline: "Software Engineer",
     description:
-      "Software engineer with experience building tools and automation for large-scale workflows. Strong fundamentals in C++, algorithms, and systems-level thinking, combined with practical AI tooling to work faster and more effectively.",
+      "Software engineer with experience in building tools, systems, and automation. I combine strong programming fundamentals with practical AI tooling to work faster and more effectively.",
     aiDescription:
       "I actively integrate AI tools into my workflow for planning, code generation, refactoring, and problem-solving. I treat AI as a force multiplier that I guide and verify, not a replacement for understanding. It changed how I fundamentally approach every project.",
     resumeSkills: {

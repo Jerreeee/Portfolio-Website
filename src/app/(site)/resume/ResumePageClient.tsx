@@ -131,19 +131,17 @@ export default function ResumePage() {
         sx={{
           flex: 1,
           minHeight: 0,
-          position: "relative",
-          overflowY: "auto",
-          overflowX: "auto",
+          overflow: "auto",
+          display: "flex",
+          justifyContent: "safe center",
+          alignItems: "flex-start",
         }}
       >
         {fitScale > 0 && (
           // Bordered frame — sized to the scaled A4 page, centered horizontally
           <Box
             sx={{
-              position: "absolute",
-              top: 0,
-              left: "50%",
-              transform: "translateX(-50%)",
+              flexShrink: 0,
               width: `${frameW}px`,
               height: `${frameH}px`,
               boxSizing: "border-box",

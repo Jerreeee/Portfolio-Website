@@ -1,3 +1,4 @@
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import {
   EntryWrapper,
   EntryRow,
@@ -20,7 +21,14 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
   return (
     <EntryWrapper>
       <EntryRow>
-        <EntryTitle>{title}</EntryTitle>
+        <EntryTitle>
+          {title}
+          {link && (
+            <EntryLink href={`https://${link}`} target="_blank" rel="noreferrer" underline="none" sx={{ display: 'inline-flex', alignItems: 'center', ml: '1.5mm', verticalAlign: 'baseline' }}>
+              <OpenInNewIcon sx={{ fontSize: '1em', color: '#0a84ff' }} />
+            </EntryLink>
+          )}
+        </EntryTitle>
         {right && <EntryRight>{right}</EntryRight>}
       </EntryRow>
       {sub && <EntrySub>{sub}</EntrySub>}
@@ -33,7 +41,6 @@ export function Entry({ title, right, sub, body, link }: EntryProps) {
       ) : (
         <EntryBody>{body}</EntryBody>
       )}
-      {link && <EntryLink href={link} underline="hover">{link}</EntryLink>}
     </EntryWrapper>
   );
 }
