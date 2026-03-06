@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import {
   PageContainer,
   RightColumn,
@@ -18,11 +18,14 @@ import {
 import EmailIcon from "@mui/icons-material/Email";
 import LanguageIcon from "@mui/icons-material/Language";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 import { aboutInfo } from "@/Data/about";
 import { TallSection } from "./TallSection";
 import { Entry } from "./Entry";
 import { ExperienceSubSection } from "./ExperienceSubSection";
+import IconCmp from "@/Themes/Default/Components/Icon/IconCmp";
+import { iconManifest, type IconKey } from "@/Data/Icons/icons-manifest";
 import type { EntryItem } from "@/Types/about";
 import type { ResumeTailoring } from "@/Types/resume-tailoring";
 import { applyResumeTailoring } from "@/Utils/applyResumeTailoring";
@@ -32,7 +35,8 @@ interface ResumeProps {
 }
 
 export default function Resume({ tailoring }: ResumeProps = {}) {
-  const { website, bio, contact, experience, education } = applyResumeTailoring(aboutInfo, tailoring);
+  const { website, bio, contact, experience, resumeProjects, education } = applyResumeTailoring(aboutInfo, tailoring);
+  const { resumeSkills } = bio;
 
   const pageContainerRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
@@ -80,7 +84,7 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
       setSm(iterate("--sm", available / natural, 1, 2));
     } else {
       // Content overflows — phase 1: compress spacing.
-      const smVal = iterate("--sm", available / natural, 0.75, 1);
+      const smVal = iterate("--sm", available / natural, 0.5, 1);
       setSm(smVal);
 
       // Remeasure after spacing compression.
@@ -90,7 +94,7 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
 
       if (afterPhase1 > available) {
         // Phase 2: also compress font sizes.
-        setSf(iterate("--sf", available / afterPhase1, 0.85, 1));
+        setSf(iterate("--sf", available / afterPhase1, 0.78, 1));
       }
 
       setOverflowed(true);
@@ -124,6 +128,12 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
                 {String(website).replace(/^https?:\/\//, "")}
               </HeaderContactLink>
             </HeaderContactRow>
+            <HeaderContactRow>
+              <GitHubIcon sx={{ fontSize: '3.4mm', opacity: 0.5, flexShrink: 0 }} />
+              <HeaderContactLink href={contact.links.github?.href} target="_blank" rel="noreferrer">
+                {contact.links.github?.href?.replace(/^https?:\/\//, '')}
+              </HeaderContactLink>
+            </HeaderContactRow>
             {contact.gsm && (
               <HeaderContactRow>
                 <PhoneAndroidIcon sx={{ fontSize: '3.4mm', opacity: 0.5, flexShrink: 0 }} />
@@ -137,16 +147,45 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
 
         <RightColumn ref={rightColRef}>
           <TallSection title="SUMMARY">
-            <SummaryText>{`${bio.description}\n\n${bio.backgroundDescription}`.replace(/\*\*/g, '')}</SummaryText>
+            <SummaryText>{bio.description}</SummaryText>
           </TallSection>
 
           <TallSection title={<>AI <span style={{ fontSize: '0.65em', marginLeft: '1.5mm' }}>POWERED DEVELOPMENT</span></>}>
             <SummaryText>{bio.aiDescription.replace(/\*\*/g, '')}</SummaryText>
           </TallSection>
 
+          <TallSection title="SKILLS">
+            <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', rowGap: 'calc(1mm * var(--sm, 1))', columnGap: '2mm', alignItems: 'center', fontSize: 'calc(3.3mm * var(--sf, 1))' }}>
+              {(
+                [
+                  ['Languages', resumeSkills.languages],
+                  ['Frameworks', resumeSkills.frameworks],
+                  ['Tools', resumeSkills.tools],
+                  ['Concepts', resumeSkills.concepts],
+                ] as const
+              ).map(([label, items]) => (
+                <React.Fragment key={label}>
+                  <strong>{label}:</strong>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '1.5mm', flexWrap: 'wrap' }}>
+                    {items.map((key, i) => {
+                      const icon = iconManifest[key as IconKey];
+                      const name = icon?.displayName ?? key;
+                      return (
+                        <span key={key} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.8mm' }}>
+                          {icon && <IconCmp techName={key} height="3.5mm" />}
+                          <span>{name}{i < items.length - 1 ? ',' : ''}</span>
+                        </span>
+                      );
+                    })}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
+          </TallSection>
+
           <TallSection title="EXPERIENCE">
             <ExperienceSubSection title="Work" items={experience.work} />
-            <ExperienceSubSection title="Projects" items={experience.projects} />
+            <ExperienceSubSection title="Projects" items={resumeProjects} />
           </TallSection>
 
           <TallSection title="EDUCATION">

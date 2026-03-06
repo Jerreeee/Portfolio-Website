@@ -231,4 +231,6 @@ export const EntryBody = makeSlot(Typography, 'entryBody')({
 export const EntryLink = makeSlot(Link, 'entryLink')({
   fontSize: 'calc(3.1mm * var(--sf, 1))',
   color: '#0a84ff',
+  marginTop: '-0.5mm',
+  display: 'block',
 });

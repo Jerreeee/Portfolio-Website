@@ -57,15 +57,35 @@ export default function ResumePage() {
     const el = containerRef.current;
     if (!el) return;
 
+    const clamp = (v: number) => Math.min(6, Math.max(0.25, v));
+
     const onWheel = (e: WheelEvent) => {
       if (!e.ctrlKey) return;
       e.preventDefault();
       const factor = Math.pow(1.0015, -e.deltaY);
-      setZoomScale((s) => Math.min(6, Math.max(0.25, s * factor)));
+      setZoomScale((s) => clamp(s * factor));
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!e.ctrlKey) return;
+      if (e.key === '=' || e.key === '+') {
+        e.preventDefault();
+        setZoomScale((s) => clamp(s * 1.15));
+      } else if (e.key === '-') {
+        e.preventDefault();
+        setZoomScale((s) => clamp(s / 1.15));
+      } else if (e.key === '0') {
+        e.preventDefault();
+        setZoomScale(1);
+      }
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel as EventListener);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      el.removeEventListener("wheel", onWheel as EventListener);
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   const appliedScale = fitScale * zoomScale;
@@ -144,15 +164,12 @@ export default function ResumePage() {
                 background: "#fff",
               }}
             >
-              {/* A4 page scaled to fit */}
+              {/* A4 page rendered at target size via zoom (not bitmap-scaled) */}
               <Box
                 sx={{
                   width: "210mm",
                   height: "297mm",
-                  transform: `scale(${appliedScale})`,
-                  transformOrigin: "top left",
-                  willChange: "transform",
-                  backfaceVisibility: "hidden",
+                  zoom: appliedScale,
                 }}
               >
                 <Resume tailoring={getTailoring(null)} />

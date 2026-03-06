@@ -88,6 +88,14 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "error"
   },
+  "Git": {
+    "type": "svg",
+    "src": "/Icons/Git.svg",
+    "width": 128,
+    "height": 128,
+    "aspectRatio": 1,
+    "displayName": "Git"
+  },
   "GitHub": {
     "type": "svg",
     "src": "/Icons/GitHub.svg",
@@ -161,6 +169,15 @@ export const iconManifest = {
     "aspectRatio": 1,
     "displayName": "Maya"
   },
+  "Next.js": {
+    "type": "svg",
+    "src": "/Icons/Next.js.svg",
+    "width": 128,
+    "height": 128,
+    "aspectRatio": 1,
+    "displayName": "Next.js",
+    "invertOnDark": true
+  },
   "NodeJS": {
     "type": "svg",
     "src": "/Icons/NodeJS.svg",
@@ -192,6 +209,14 @@ export const iconManifest = {
     "height": 128,
     "aspectRatio": 1,
     "displayName": "OpenGL"
+  },
+  "Perforce": {
+    "type": "svg",
+    "src": "/Icons/Perforce.svg",
+    "width": 24,
+    "height": 24,
+    "aspectRatio": 1,
+    "displayName": "Perforce"
   },
   "Photoshop": {
     "type": "svg",

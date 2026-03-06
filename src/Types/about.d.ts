@@ -34,6 +34,13 @@ export interface SkillSet {
   languages: Language[];
 }
 
+export interface ResumeSkills {
+  languages: string[];
+  frameworks: string[];
+  tools: string[];
+  concepts: string[];
+}
+
 export interface AboutBio {
   firstName: string;
   lastName: string;
@@ -42,13 +49,15 @@ export interface AboutBio {
   aiDescription: string;
   backgroundDescription: string;
   profileImage: string;
+  resumeSkills: ResumeSkills;
 }
 
 export interface EntryItem {
   title: string;
   right?: string;
   sub?: string;
-  body: string;
+  body: string | string[];
+  link?: string;
 }
 
 export interface Experience {
@@ -62,5 +71,6 @@ export interface AboutInfo {
   contact: Contact;
   skills: SkillSet;
   experience: Experience;
+  resumeProjects: EntryItem[];
   education: EntryItem[];
 }

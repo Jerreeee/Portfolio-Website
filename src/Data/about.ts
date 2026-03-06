@@ -5,13 +5,19 @@ export const aboutInfo: AboutInfo = {
   bio: {
     firstName: "Jeroen",
     lastName: "Denayer",
-    tagline: "Software Developer",
+    tagline: "Software Engineer",
     description:
-      "Software developer who builds tools and systems that make complex workflows faster. I combine strong software engineering fundamentals with AI tooling to work faster and more effectively.",
+      "Software engineer with experience building tools and automation for large-scale workflows. Strong fundamentals in C++, algorithms, and systems-level thinking, combined with practical AI tooling to work faster and more effectively.",
     aiDescription:
-      "I’m excited about the future of **AI in software development** and actively integrate AI tools into my own workflow. I’ve found that working with AI doesn’t replace the need for strong fundamentals, it amplifies them. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short. It’s changing how I build software, and I want to be at the forefront of that shift.",
+      "I actively integrate AI tools into my workflow for planning, code generation, refactoring, and problem-solving. I treat AI as a force multiplier that I guide and verify, not a replacement for understanding. It changed how I fundamentally approach every project.",
+    resumeSkills: {
+      languages: ['cplusplus', 'csharp', 'Python', 'Typescript', 'Lua'],
+      frameworks: ['React', 'Next.js'],
+      tools: ['Git', 'GitHub', 'CMake', 'Perforce'],
+      concepts: ['Algorithms', 'Design Patterns', 'Memory Management', 'Debugging', 'Automation', 'API Design'],
+    },
     backgroundDescription:
-      "My background is in game technology: I studied Game Graphics Production and Game Development at **DAE**, worked at **Neopica** building procedural pipeline tools, and developed a strong foundation in **C++**, **GPU programming**, and **real-time rendering**. That experience taught me to write code that’s both performant and practical.",
+      "I built a foundation in **C++**, **algorithms**, and **software design** during my studies. After graduating, I joined **Neopica** to build tools for a production pipeline in a multidisciplinary team. That combination of strong fundamentals and real-world team experience shapes how I approach software development today.",
     profileImage: "/Images/profilepic.jpg",
   },
 
@@ -48,6 +54,10 @@ export const aboutInfo: AboutInfo = {
         items: ["cplusplus", "csharp", "Python", "Typescript", "Lua"],
       },
       {
+        title: "Frameworks",
+        items: ["React", "Next.js"],
+      },
+      {
         title: "APIs & Libraries",
         items: ["Vulkan", "DirectX 11", "OpenGL", "SDL", "GLM"],
       },
@@ -58,6 +68,7 @@ export const aboutInfo: AboutInfo = {
       {
         title: "Tools & Pipeline",
         items: [
+          "Git",
           "Claude",
           "Houdini",
           "Visual_Studio",
@@ -89,8 +100,11 @@ experience: {
     {
       title: "Tool Developer - Neopica",
       right: "2022–23",
-      body:
-        "I developed and maintained Houdini-based procedural tools for Unreal Engine used in the production of Overpass 2. Each tool handled a specific stage of the level pipeline - terrain, roads, cliffs, and vegetation - connected through PCG to generate large open worlds efficiently and predictably. This involved writing geometry-processing algorithms in VEX (Houdini's C-like scripting language) and Python scripts for pipeline automation. I extended functionality, fixed pipeline issues, and ensured the tools remained stable, performant, and reliable for the environment art team. This work required structured problem-solving, debugging complex systems, and making sure everything kept working reliably in production.",
+      body: [
+        "Owned procedural tools end-to-end across multiple stages of a large production pipeline, used daily by the environment team.",
+        "Wrote geometry-processing algorithms in a C-like scripting language and Python scripts to automate repetitive workflows.",
+        "Gathered feedback from artists and designers daily; iterated on tools to fit their actual needs and drove adoption.",
+      ],
     },
   ],
   projects: [
@@ -102,20 +116,33 @@ experience: {
   ],
 },
 
+resumeProjects: [
+  {
+    title: "Vulkan Deferred Renderer",
+    body: "Built a deferred rendering pipeline from scratch in C++20 and Vulkan 1.3, handling GPU memory, synchronization, and render passes directly. Implements PBR materials, multiple light types, and HDR tone mapping.",
+    link: "jeroen.denayer.com/projects/VulkanDeferredRenderer",
+  },
+  {
+    title: "Portfolio Website",
+    body: "Designed and built a statically exported portfolio site with Next.js, React, TypeScript, and MUI. Includes code generation scripts for project manifests and component indexes, plus a theming system built on top of MUI.",
+    link: "jeroen.denayer.com",
+  },
+],
+
 education: [
   {
-    title: "Digital Arts & Entertainment - Game Development",
+    title: "Digital Arts & Entertainment - game development",
     right: "2023–25",
     sub: "Graduated magna cum laude",
     body:
-      "I focused on C++ programming and engine-level systems, working on graphics, rendering, tools and UI. I implemented real-time rendering features using Vulkan and built supporting tools, including custom C# WPF utilities, to improve workflows and performance. This taught me how to analyze performance bottlenecks, reason about system behavior, and design efficient technical solutions that scale. I gained strong experience working with structured codebases and understanding how low-level systems interact.",
+      "Focused on C++ programming, algorithms, and design patterns like State and Observer, which helped me think more structurally about organizing and scaling codebases. Coursework involved real-time systems and GPU programming in larger structured projects, where performance matters and you have to reason about what's happening under the hood. Used Python and Lua for scripting and tooling alongside C++.",
   },
   {
-    title: "Digital Arts & Entertainment - Game Graphics Production",
+    title: "Digital Arts & Entertainment - game graphics production",
     right: "2019–22",
     sub: "Graduated cum laude",
     body:
-      "I created optimized 2D and 3D assets from blockout to engine integration, covering modeling, texturing, lighting, and shading in real-time pipelines while balancing visual quality with performance targets. This gave me a solid understanding of production workflows and their technical constraints, which led me to explore procedural approaches in Houdini and develop an interest in building tools that automate repetitive tasks and improve reliability.",
+      "Covered the full production pipeline from concept to integration, balancing quality with real-time performance constraints. Over time I got more into procedural tooling and automation, writing algorithms in VEX and building procedural systems in Houdini to replace manual work. That's what got me interested in building tools and pushed me toward software development.",
   },
 ],
 };
