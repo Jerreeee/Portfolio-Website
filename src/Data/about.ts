@@ -124,7 +124,7 @@ resumeProjects: [
   },
   {
     title: "Portfolio Website",
-    body: "Designed and built a statically exported portfolio site with Next.js, React, TypeScript, and MUI. Includes code generation scripts for project manifests and component indexes, plus a theming system built on top of MUI.",
+    body: "Designed and built a statically exported website with Next.js, React, TypeScript, and MUI. Includes code generation scripts for project manifests and component indexes, plus a custom theming system built on top of MUI.",
     link: "jeroen.denayer.com",
   },
 ],

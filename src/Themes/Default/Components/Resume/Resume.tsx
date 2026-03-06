@@ -124,7 +124,7 @@ export default function Resume({ tailoring }: ResumeProps = {}) {
             </HeaderContactRow>
             <HeaderContactRow>
               <LanguageIcon sx={{ fontSize: '3.4mm', opacity: 0.5, flexShrink: 0 }} />
-              <HeaderContactLink href={website} target="_blank" rel="noreferrer">
+              <HeaderContactLink href={`https://${website}`} target="_blank" rel="noreferrer">
                 {String(website).replace(/^https?:\/\//, "")}
               </HeaderContactLink>
             </HeaderContactRow>
