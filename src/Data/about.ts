@@ -7,9 +7,9 @@ export const aboutInfo: AboutInfo = {
     lastName: "Denayer",
     tagline: "Software Engineer",
     description:
-      "Software engineer with experience in building tools, systems, and automation. I combine strong programming fundamentals with practical AI tooling to work faster and more effectively.",
+      "Software engineer with experience in building tools, systems, and automation. Grounded in algorithms and design patterns, I combine strong fundamentals with practical AI tooling to work faster and more effectively.",
     aiDescription:
-      "I actively integrate AI tools into my workflow for planning, code generation, refactoring, and problem-solving. I treat AI as a force multiplier that I guide and verify, not a replacement for understanding. It changed how I fundamentally approach every project.",
+      "I'm excited about the future of AI in software development and actively integrate AI tools into my own workflow. I've found that working with AI doesn't replace the need for strong fundamentals, it amplifies them. Understanding systems deeply lets me guide AI tools more effectively and catch where they fall short. It's changing how I build software, and I want to be at the forefront of that shift.",
     resumeSkills: {
       languages: ['cplusplus', 'csharp', 'Python', 'Typescript', 'Lua'],
       frameworks: ['React', 'Next.js'],
@@ -135,7 +135,7 @@ education: [
     right: "2023–25",
     sub: "Graduated magna cum laude",
     body:
-      "Focused on C++ programming, algorithms, and design patterns like State and Observer, which helped me think more structurally about organizing and scaling codebases. Coursework involved real-time systems and GPU programming in larger structured projects, where performance matters and you have to reason about what's happening under the hood. Used Python and Lua for scripting and tooling alongside C++.",
+      "Focused on C++ programming, memory management, and low-level systems thinking. Projects involved real-time systems and GPU programming in larger structured projects, where performance matters and you have to reason about what's happening under the hood. Used Python and Lua for scripting and tooling alongside C++.",
   },
   {
     title: "Digital Arts & Entertainment - game graphics production",
